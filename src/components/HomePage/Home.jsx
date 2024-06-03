@@ -148,11 +148,11 @@ export default function Home() {
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
                         <span
@@ -191,11 +191,11 @@ export default function Home() {
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
                         <span
@@ -234,11 +234,11 @@ export default function Home() {
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
                         <span
@@ -277,11 +277,11 @@ export default function Home() {
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
                         <span
@@ -320,11 +320,11 @@ export default function Home() {
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
                         <span
@@ -363,11 +363,11 @@ export default function Home() {
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
                         <span
@@ -406,11 +406,11 @@ export default function Home() {
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
                         <span
@@ -449,11 +449,11 @@ export default function Home() {
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
-                        <i className="fa-solid fa-star"></i>
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
                         <span
@@ -668,11 +668,11 @@ export default function Home() {
                               <tr>
                                 <td>
                                   <div className="voting-feedback">
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
                                   </div>
                                 </td>
                               </tr>
@@ -717,11 +717,11 @@ export default function Home() {
                               <tr>
                                 <td>
                                   <div className="voting-feedback">
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
                                   </div>
                                 </td>
                               </tr>
@@ -766,11 +766,11 @@ export default function Home() {
                               <tr>
                                 <td>
                                   <div className="voting-feedback">
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
                                   </div>
                                 </td>
                               </tr>
@@ -821,11 +821,11 @@ export default function Home() {
                               <tr>
                                 <td>
                                   <div className="voting-feedback">
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
                                   </div>
                                 </td>
                               </tr>
@@ -870,11 +870,11 @@ export default function Home() {
                               <tr>
                                 <td>
                                   <div className="voting-feedback">
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
                                   </div>
                                 </td>
                               </tr>
@@ -919,11 +919,11 @@ export default function Home() {
                               <tr>
                                 <td>
                                   <div className="voting-feedback">
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
-                                    <i className="fa-solid fa-star"></i>
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    <FontAwesomeIcon icon="fa-solid fa-star" />
                                   </div>
                                 </td>
                               </tr>
@@ -957,7 +957,7 @@ export default function Home() {
               </a>
               <a href="#" style={{ textDecoration: "none", color: "#3C75A6" }}>
                 <span className="fw-bold">
-                  Xem thêm <i className="fa-solid fa-angles-right"></i>
+                  Xem thêm <FontAwesomeIcon icon="fa-solid fa-angles-right" />
                 </span>
               </a>
             </div>

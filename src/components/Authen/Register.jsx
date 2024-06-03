@@ -1,13 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './styleregister.css'
 
 export default function Register() {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    //...
-  };
+  const [recaptchaResponse, setRecaptchaResponse] = useState('');
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        // Load the reCAPTCHA script
+        const script = document.createElement('script');
+        script.src = 'https://www.google.com/recaptcha/api.js';
+        script.async = true;
+        script.defer = true;
+        document.body.appendChild(script);
+
+        // Cleanup script on unmount
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (recaptchaResponse) {
+            setError('Captcha lỗi');
+            
+            console.log('Form submitted');
+        } else {
+            setError('Please complete the reCAPTCHA');
+        }
+    };
+
+    const onRecaptchaChange = (response) => {
+        setRecaptchaResponse(response);
+    };
 
   return (
     <>
@@ -98,14 +125,17 @@ export default function Register() {
                       </tr>
                       <tr>
                         <td colSpan="2" className="captcha-login">
-                          <div className="captcha-content py-3 text-center">
-                            Day la captcha
+                          <div className=" text-center g-recaptcha"
+                               data-sitekey="6LfY-e8pAAAAAJH3O_hy9ZWSIrNlQQLB2fRPnbNO" 
+                               data-callback={onRecaptchaChange}
+                          >
+                          
                           </div>
                           <div
                             className="hidden"
                             style={{ color: "red", fontSize: "15px" }}
                           >
-                            Captcha lỗi
+                            {error}
                           </div>
                         </td>
                       </tr>

@@ -38,7 +38,7 @@ export default function Footer() {
                   <tbody>
                     <tr>
                       <td className="logop-footer fs-4">
-                        <img src={logoinsta} className="logo-footer w-25 float-end" />
+                        <img src={logofacebook} className="logo-footer w-25 float-end" />
                       </td>
                       <td className="ps-2 py-2">
                         <a href="https://www.facebook.com/" className="mxh-footer text-noticia">fb.com/littlejoystore</a>
@@ -46,7 +46,7 @@ export default function Footer() {
                     </tr>
                     <tr>
                       <td className="logop-footer fs-4">
-                        <img src={logofacebook} className="logo-footer w-25 float-end" />
+                        <img src={logoinsta} className="logo-footer w-25 float-end" />
                       </td>
                       <td className="ps-2 py-2">
                         <a href="https://www.instagram.com/" className="mxh-footer text-noticia">instagram.com/littlejoystore</a>
