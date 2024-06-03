@@ -125,8 +125,8 @@ export default function Register() {
                       </tr>
                       <tr>
                         <td colSpan="2" className="captcha-login">
-                          <div className=" text-center g-recaptcha"
-                               data-sitekey="6LfY-e8pAAAAAJH3O_hy9ZWSIrNlQQLB2fRPnbNO" 
+                          <div className=" g-recaptcha"
+                               data-sitekey="6LeUy-8pAAAAAF4UncmMSagSyDveemB2A3IgscOP" 
                                data-callback={onRecaptchaChange}
                           >
                           
