@@ -1,0 +1,117 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.Roboto{
+    font-family: 'Roboto', serif;
+}
+
+.Opensans{
+    font-family: 'Open Sans', serif;
+}
+
+.w-15{
+    width: 15%;
+}
+
+.w-60{
+    width: 60%;
+}
+
+.w-85{
+    width: 85%;
+}
+
+.banner {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("../../assets/img/Banner.png");
+    font-family: "Vidaloka", serif;
+}
+
+.body-content {
+    background: linear-gradient(180deg,
+            rgba(60, 117, 166, 0.2) 0%,
+            rgba(255, 255, 255, 0.15) 53%,
+            #fff 68%,
+            #fff 100%);
+    min-height: 100em;
+}
+
+.item-filter-top {
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.item-filter-top-active {
+    background: linear-gradient(90deg, #1a469e 0%, #28e1fd 100%);
+    color: white;
+    font-weight: 600;
+}
+
+.item-filter-top:hover {
+    background: linear-gradient(90deg, #1a469e 0%, #28e1fd 100%);
+    color: white;
+    /* font-weight: 600; */
+}
+
+/* .scroll-filter-left{
+    max-height: 20em;
+    overflow-y: auto;
+} */
+
+.item-filter-left{
+    background-color: #FAFAFA;
+    border-radius: 15px;
+}
+.product-image{
+    background-color: rgba(155, 155, 155, 0.05);
+    border-radius: 15px;
+}
+.product-content{
+    background-color: rgba(155, 155, 155, 0.05);
+    border-radius: 15px;
+}
+.rank-product{
+    color: #C79F2F;
+}
+.product-image img{
+    transition: transform 0.3s ease;
+}
+
+.product-image:hover img{
+    transform: scale(1.2);
+}
+
+.product-image{
+    overflow: hidden;
+}
+
+.product-image .addcart-item{
+    text-decoration: none;
+    color: black;
+    background-color: white;
+    font-size: 15px;
+    font-weight: 600;
+    bottom: 0%;
+    border-radius: 5px;
+    width: 14em;
+    padding: 5px 0;
+    opacity: 0;
+    transition: bottom 0.3s ease, opacity 0.3s ease;
+}
+
+.product-image .addcart-item:hover{
+    color: white;
+    background-color: #005B96;
+    width: 14em;
+    padding: 5px 0;
+}
+
+.product-image:hover .addcart-item{
+    opacity: 1;
+    bottom: 5%;
+}

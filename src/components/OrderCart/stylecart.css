@@ -1,0 +1,72 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+.w-10{
+    width: 10%;
+}
+.w-15{
+    width: 15%;
+}
+.banner {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("../../assets/img/Banner.png");
+    text-align: center;
+}
+
+.banner h1 {
+    font-family: 'Vidaloka', serif;
+}
+
+.banner p {
+    color: #3C75A6;
+    font-family: 'Myanmar Sans Pro';
+    font-size: 16px;
+}
+
+.banner a {
+    text-decoration: none;
+    color: #3C75A6;
+    font-family: 'Myanmar Sans Pro';
+    
+}
+.a{
+    background-color: #F7FBFF;
+    border: 1px solid #000000;
+}
+.Dongle
+{
+    font-family: 'Dongle' , serif;
+    font-size: 30px;
+    font-weight: 600;
+}
+.textbody,
+p{
+    font-family: 'Dongle' , serif;
+    font-size: 30px;
+}
+.operator{
+    background-color: #EDEDED;   
+}
+.checkout-input{
+    background-color: #6F0505;
+    color: #FFFFFF;
+    margin: 20px;
+    border-radius: 5px;
+}
+.trash{
+    cursor: pointer;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.py-table td {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}

@@ -1,0 +1,89 @@
+* {
+    /*từng cái css đều phải có*/
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /*font-family: "Roboto Condensed", serif;*/
+}
+
+.w-90 {
+    width: 90%;
+}
+
+.w-70 {
+    width: 70%;
+}
+
+.w-15 {
+    width: 15%;
+}
+
+/* banner */
+.banner {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("../../assets/img/Banner.png");
+    text-align: center;
+}
+
+.banner h1 {
+    font-family: 'Vidaloka', serif;
+}
+
+.banner p {
+    color: #3C75A6;
+    font-family: 'Myanmar Sans Pro';
+    font-size: 16px;
+}
+
+.banner a {
+    text-decoration: none;
+    color: #3C75A6;
+    font-family: 'Myanmar Sans Pro';
+    
+}
+
+
+/* side bar icon */
+.border-avatar{
+    border: 1px solid rgba(128, 128, 128, 0.315);
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+/* Adress info */
+#ButtonAdd{
+    border: 1px solid; 
+    color: #3C75A6;
+    border-color: #3C75A6;
+    background-color: white;
+}
+
+#ButtonAddSpecial{
+    border: 1px solid; 
+    color: white;
+    border-color: #3C75A6;
+    background-image: linear-gradient( to right, #1A469E, #28E1FD);;
+}
+
+#inputAddress{
+    border: 1px solid #CCCCCC; 
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: rgba(128, 128, 128, 0.24);
+}
+
+.CoverButton{
+    border: 1px solid ;
+    background-color: rgba(60, 117, 166, 0.46);
+    border-radius: 10px;
+    border-style: none;
+}
+
+.user-address-sidebar:hover{
+    background-color: rgba(60, 117, 166, 0.46) !important;
+    border: 1px solid ;
+    border-radius: 10px;
+    border-style: none;
+    cursor: pointer;
+}

@@ -1,0 +1,62 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.header-content{
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    background-color: white;
+}
+
+.header-content img{
+    max-width: 8em;
+    min-width: 6em;
+}
+
+.header-item{
+    font-size: 18px;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-item a{
+    color: #3C75A6;
+    font-weight: 600;
+}
+
+.header-item a:hover{
+    color: #3C75A6;
+}
+
+.header-item::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0; /* Kích thước mặc định là 0 */
+    height: 2px; /* Độ dày của thanh trượt */
+    background-color: #3C75A6; /* Màu sắc của thanh trượt */
+    transition: width 0.3s ease; /* Thêm transition cho hiệu ứng mượt mà */
+}
+
+.header-item:hover::after{
+    width: 100%;
+}
+
+.header-right{
+    color: #3C75A6;
+}
+
+.header-right a{
+    text-decoration: none;
+    font-size: 18px;
+    color: #3C75A6;
+}
+
+.header-right span{
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+}
