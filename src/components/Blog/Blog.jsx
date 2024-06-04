@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '../../assets/css/styleblog.css';
 import axios from 'axios';
+import blog1 from "../../assets/img/blog1.png";
 
 Modal.setAppElement("#root");
 
@@ -27,7 +28,7 @@ const Blog = () => {
         title: "Sample Blog 1",
         date: "01/01/2022",
         content: "<p>This is the first sample blog content.</p>",
-        img: "https://via.placeholder.com/150",
+        img: "blog1",
         author: "littlejoystore",
       },
       {
@@ -35,7 +36,7 @@ const Blog = () => {
         title: "Sample Blog 2",
         date: "02/01/2022",
         content: "<p>This is the second sample blog content.</p>",
-        img: "https://via.placeholder.com/150",
+        img: "blog1",
         author: "littlejoystore",
       },
     ];
@@ -213,7 +214,7 @@ const Blog = () => {
                     >
                       <div className="blog-image">
                         <img
-                          src={blog.img}
+                          src={blog1}
                           alt={""}
                           style={{ width: "100%", height: "auto", borderRadius: "15px", aspectRatio: '2/1',
                           backgroundPosition: 'center',
