@@ -2,7 +2,7 @@ import React from "react";
 import logoshop from "../../assets/img/logoshop.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import './stylehome.css'
+import '../../assets/css/stylehome.css'
 import product from "../../assets/img/product.png";
 import abbottgrow from "../../assets/img/abbottgrow.png";
 import ensure from "../../assets/img/ensure.png";

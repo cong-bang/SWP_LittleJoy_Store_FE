@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./styleUserOrderManagement.css";
+import "../../assets/css/styleUserOrderManagement.css";
 import Ellipse2 from "../../assets/img/Ellipse2.png";
 import Abott from "../../assets/img/Abott.png";
 import similac from "../../assets/img/similac.png";

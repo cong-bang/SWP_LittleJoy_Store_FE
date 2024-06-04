@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import './styleregister.css'
+import '../../assets/css/styleregister.css'
 
 export default function Register() {
   const [recaptchaResponse, setRecaptchaResponse] = useState('');
@@ -124,20 +124,24 @@ export default function Register() {
                         </td>
                       </tr>
                       <tr>
-                        <td colSpan="2" className="captcha-login">
+                        <td colSpan="2" className="captcha-login d-flex flex-column align-items-center justify-content-center">
+                          <div>
                           <div className=" g-recaptcha"
-                               data-sitekey="6LfH-u8pAAAAACxMyEJsEvLYjW8YDlJ2uCZFZMa0" 
+                               data-sitekey="6LeUy-8pAAAAAF4UncmMSagSyDveemB2A3IgscOP" 
                                data-callback={onRecaptchaChange}
                           >
                           
                           </div>
+                          </div>
                           <div
-                            className="hidden"
+                            className=""
                             style={{ color: "red", fontSize: "15px" }}
                           >
                             {error}
                           </div>
                         </td>
+
+                        
                       </tr>
                       <tr>
                         <td colSpan="2" className="reg-btn py-2">

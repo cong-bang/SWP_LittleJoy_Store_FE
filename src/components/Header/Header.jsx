@@ -1,5 +1,5 @@
 import React from 'react'
-import './styleheader.css'
+import '../../assets/css/styleheader.css'
 import logoshop from '../../assets/img/logoshop.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'

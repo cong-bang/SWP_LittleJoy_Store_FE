@@ -4,34 +4,43 @@ import Modal from "react-modal";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import '../../assets/css/styleblog.css';
+import axios from 'axios';
 
 Modal.setAppElement("#root");
 
 const Blog = () => {
+
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editorContent, setEditorContent] = useState("");
-  const [nextId, setNextId] = useState(1);
   const [title, setTitle] = useState("");
   const [img, setImg] = useState("");
   const [blogs, setBlogs] = useState([]);
-  
-
   const navigate = useNavigate();
 
+  // Simulating fetching data from an API
   useEffect(() => {
-    const savedBlogs = localStorage.getItem("blogs");
-    if (savedBlogs) {
-      const parsedBlogs = JSON.parse(savedBlogs);
-      setBlogs(parsedBlogs);
-      const maxId = Math.max(0, ...parsedBlogs.map(blog => blog.id));
-      setNextId(maxId + 1);
-    }
+    const initialBlogs = [
+      {
+        id: 1,
+        title: "Sample Blog 1",
+        date: "01/01/2022",
+        content: "<p>This is the first sample blog content.</p>",
+        img: "https://via.placeholder.com/150",
+        author: "littlejoystore",
+      },
+      {
+        id: 2,
+        title: "Sample Blog 2",
+        date: "02/01/2022",
+        content: "<p>This is the second sample blog content.</p>",
+        img: "https://via.placeholder.com/150",
+        author: "littlejoystore",
+      },
+    ];
+    setBlogs(initialBlogs);
   }, []);
-
-  const saveBlogsToLocalStorage = (blogs) => {
-    localStorage.setItem("blogs", JSON.stringify(blogs));
-  };
 
   const showModal = () => {
     setModalIsOpen(true);
@@ -50,30 +59,97 @@ const Blog = () => {
       alert("Please fill out all fields.");
       return;
     }
+
     const newBlog = {
-      id: nextId,
+      id: blogs.length > 0 ? blogs[blogs.length - 1].id + 1 : 1,
       title: title,
       date: new Date().toLocaleDateString(),
       content: editorContent,
       img: img,
       author: "littlejoystore",
     };
-    const updatedBlogs = [...blogs, newBlog];
-    setBlogs(updatedBlogs);
-    saveBlogsToLocalStorage(updatedBlogs);
-    setNextId(nextId + 1);
+
+    setBlogs([...blogs, newBlog]);
     setTitle("");
     setEditorContent("");
     setImg("");
     closeModal();
-
   };
 
   const handleDeleteBlog = (id) => {
-    const updatedBlogs = blogs.filter((blog) => blog.id !== id);
-    setBlogs(updatedBlogs);
-    saveBlogsToLocalStorage(updatedBlogs);
+    setBlogs(blogs.filter(blog => blog.id !== id));
   };
+
+
+
+  // const [modalIsOpen, setModalIsOpen] = useState(false);
+  // const [editorContent, setEditorContent] = useState("");
+  // const [title, setTitle] = useState("");
+  // const [img, setImg] = useState("");
+  // const [blogs, setBlogs] = useState([]);
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   // Fetch blogs from API
+  //   axios.get('/api/blogs')
+  //     .then(response => {
+  //       setBlogs(response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error("There was an error fetching the blogs!", error);
+  //     });
+  // }, []);
+
+  // const showModal = () => {
+  //   setModalIsOpen(true);
+  // };
+
+  // const closeModal = () => {
+  //   setModalIsOpen(false);
+  // };
+
+  // const handleEditorChange = (content) => {
+  //   setEditorContent(content);
+  // };
+
+  // const handleSaveBlog = () => {
+  //   if (title.trim() === "" || img.trim() === "" || editorContent.trim() === "") {
+  //     alert("Please fill out all fields.");
+  //     return;
+  //   }
+
+  //   const newBlog = {
+  //     title: title,
+  //     date: new Date().toLocaleDateString(),
+  //     content: editorContent,
+  //     img: img,
+  //     author: "littlejoystore",
+  //   };
+
+  //   // Send the new blog to the backend
+  //   axios.post('/api/blogs', newBlog)
+  //     .then(response => {
+  //       setBlogs([...blogs, response.data]);
+  //       setTitle("");
+  //       setEditorContent("");
+  //       setImg("");
+  //       closeModal();
+  //     })
+  //     .catch(error => {
+  //       console.error("There was an error saving the blog!", error);
+  //     });
+  // };
+
+  // const handleDeleteBlog = (id) => {
+  //   // Delete the blog from the backend
+  //   axios.delete(`/api/blogs/${id}`)
+  //     .then(() => {
+  //       setBlogs(blogs.filter(blog => blog.id !== id));
+  //     })
+  //     .catch(error => {
+  //       console.error("There was an error deleting the blog!", error);
+  //     });
+  // };
 
   return (
     <>
@@ -130,7 +206,6 @@ const Blog = () => {
                     }}
                     className="w-100"
                     style={{ textDecoration: "none", color: "black" }}
-                    
                   >
                     <div
                       className="blog-content-main w-100 p-4"
@@ -239,6 +314,7 @@ const Blog = () => {
 };
 
 export default Blog;
+
 
 
 // import React, { useState } from 'react';

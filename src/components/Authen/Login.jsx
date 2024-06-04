@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./stylelogin.css";
+import "../../assets/css/stylelogin.css";
 import logogoogle from "../../assets/img/logogoogle.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";

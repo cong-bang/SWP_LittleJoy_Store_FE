@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import './styleshop.css'
+import '../../assets/css/styleshop.css'
 import product from "../../assets/img/product.png";
 
 export default function Shop() {

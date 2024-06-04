@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./styleUserAddress.css";
+import "../../assets/css/styleUserAddress.css";
 import Ellipse2 from "../../assets/img/Ellipse2.png";
 
 export default function UserAddress() {

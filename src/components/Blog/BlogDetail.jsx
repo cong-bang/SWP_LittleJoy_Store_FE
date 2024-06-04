@@ -20,7 +20,7 @@ const BlogDetail = () => {
 
   return (
     <div className="container-fluid" style={{ background: 'linear-gradient(180deg, rgba(60, 117, 166, 0.2) 0%, rgba(255, 255, 255, 0.15) 53%, #fff 68%, #fff 100%)'}}>
-      <div className="container pt-5">
+      <div className="container pt-5" >
         <div className='p-5 my-4' style={{backgroundColor: 'white', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)'}}>
           <div className='text-center fw-bold my-5' style={{ fontSize: '2rem' }}>{blog.title}</div>
           <div className='text-center'>

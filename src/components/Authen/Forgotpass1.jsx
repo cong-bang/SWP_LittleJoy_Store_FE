@@ -1,5 +1,5 @@
 import React from 'react'
-import './styleforgot_password.css'
+import '../../assets/css/styleforgot_password.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Forgotpass1() {

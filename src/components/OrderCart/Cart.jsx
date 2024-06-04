@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import similac from "../../assets/img/similac.png";
-import "./stylecart.css";
+import "../../assets/css/stylecart.css";
 
 export default function Cart() {
   return (

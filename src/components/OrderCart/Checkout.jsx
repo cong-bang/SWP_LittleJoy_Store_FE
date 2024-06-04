@@ -4,7 +4,7 @@ import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
 import similac from "../../assets/img/similac.png";
 import vnpay from "../../assets/img/vnpay.png";
 import icon_payondelivery from "../../assets/img/icon_payondelivery.png";
-import "./stylecheckout.css";
+import "../../assets/css/stylecheckout.css";
 import { Link } from "react-router-dom";
 
 export default function Checkout() {

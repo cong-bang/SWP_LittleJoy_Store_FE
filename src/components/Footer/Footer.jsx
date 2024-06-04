@@ -3,7 +3,7 @@ import logoinsta from '../../assets/img/logoinsta.png'
 import logofacebook from '../../assets/img/logofacebook.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import './stylefooter.css'
+import '../../assets/css/stylefooter.css'
 
 export default function Footer() {
     return (
