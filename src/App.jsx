@@ -26,7 +26,7 @@ import BlogDetail from './components/Blog/BlogDetail'
 
 import { BlogProvider } from './components/Blog/BlogContext';
 
-import Admindashboard from './pages/admin/Admindashboard';
+// import Admindashboard from './pages/admin/Admindashboard';
 // import AdminLayout from './layouts/AdminLayout';
 
 
@@ -87,6 +87,7 @@ export default App
 // import Admindashboard from './pages/admin/Admindashboard';
 // import ManageUser from './components/ManageUser/ManageUser';
 // import ManageOrder from './components/ManageOrder/ManageOrder';
+// import ManageProduct from './components/ManageProduct/ManageProduct';
 // // import AdminLayout from './layouts/AdminLayout';
 
 
@@ -110,6 +111,7 @@ export default App
 //         <Route path="/dashboard" element={<Admindashboard />} />
 //         <Route path="/manageuser" element={<ManageUser />} />
 //         <Route path="/manageorder" element={<ManageOrder />} />
+//         <Route path="/manageproduct" element={<ManageProduct />} />
 
 //       </Routes>
       
