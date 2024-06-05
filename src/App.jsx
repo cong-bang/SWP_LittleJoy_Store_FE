@@ -85,6 +85,8 @@ export default App
 // import { fas } from '@fortawesome/free-solid-svg-icons';
 
 // import Admindashboard from './pages/admin/Admindashboard';
+// import ManageUser from './components/ManageUser/ManageUser';
+// import ManageOrder from './components/ManageOrder/ManageOrder';
 // // import AdminLayout from './layouts/AdminLayout';
 
 
@@ -106,6 +108,8 @@ export default App
 //       <Routes>
         
 //         <Route path="/dashboard" element={<Admindashboard />} />
+//         <Route path="/manageuser" element={<ManageUser />} />
+//         <Route path="/manageorder" element={<ManageOrder />} />
 
 //       </Routes>
       

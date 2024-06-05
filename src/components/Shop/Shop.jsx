@@ -35,7 +35,7 @@ export default function Shop() {
                 <div className="col-md-4">
                     <div className="content px-4 py-3" style={{ backgroundColor: '#FAFAFA', borderRadius: '15px' }}>
                         <span style={{color: '#67686C'}} className="fw-bold">Tìm kiếm</span>
-                        <input type="text" value="" className="w-100 ps-2 py-1 mt-1"
+                        <input type="text" className="w-100 ps-2 py-1 mt-1"
                             style={{borderRadius: '15px', backgroundColor: '#D9D9D9', color: 'black', border: 'none' }}/>
                     </div>
                 </div>
