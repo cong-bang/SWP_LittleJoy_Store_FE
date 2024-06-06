@@ -420,7 +420,7 @@ export default function Product() {
                                     <tr>
                                         <td className="w-15"><span className="fw-bold">phamhieu2k3</span></td>
                                         <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>22-01-2024</span></td>
-                                        <td className="w-70 fs-5" rowSpan="2"><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
+                                        <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
                                     </tr>
                                     <tr>
                                         <td colSpan="2"><span className="fw-bold py-1"
@@ -443,7 +443,7 @@ export default function Product() {
                                     <tr>
                                         <td className="w-15"><span className="fw-bold">phamhieu2k3</span></td>
                                         <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>22-01-2024</span></td>
-                                        <td className="w-70 fs-5" rowSpan="2"><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
+                                        <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
                                     </tr>
                                     <tr>
                                         <td colSpan="2"><span className="fw-bold py-1"
@@ -466,7 +466,7 @@ export default function Product() {
                                     <tr>
                                         <td className="w-15"><span className="fw-bold">phamhieu2k3</span></td>
                                         <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>22-01-2024</span></td>
-                                        <td className="w-70 fs-5" rowSpan="2"><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
+                                        <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
                                     </tr>
                                     <tr>
                                         <td colSpan="2"><span className="fw-bold py-1"
@@ -489,7 +489,7 @@ export default function Product() {
                                     <tr>
                                         <td className="w-15"><span className="fw-bold">phamhieu2k3</span></td>
                                         <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>22-01-2024</span></td>
-                                        <td className="w-70 fs-5" rowSpan="2"><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
+                                        <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
                                     </tr>
                                     <tr>
                                         <td colSpan="2"><span className="fw-bold py-1"
@@ -512,7 +512,7 @@ export default function Product() {
                                     <tr>
                                         <td className="w-15"><span className="fw-bold">phamhieu2k3</span></td>
                                         <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>22-01-2024</span></td>
-                                        <td className="w-70 fs-5" rowSpan="2"><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
+                                        <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
                                     </tr>
                                     <tr>
                                         <td colSpan="2"><span className="fw-bold py-1"
@@ -535,7 +535,7 @@ export default function Product() {
                                     <tr>
                                         <td className="w-15"><span className="fw-bold">phamhieu2k3</span></td>
                                         <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>22-01-2024</span></td>
-                                        <td className="w-70 fs-5" rowSpan="2"><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
+                                        <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
                                     </tr>
                                     <tr>
                                         <td colSpan="2"><span className="fw-bold py-1"

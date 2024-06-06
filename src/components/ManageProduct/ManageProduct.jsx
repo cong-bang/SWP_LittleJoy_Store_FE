@@ -401,7 +401,7 @@ import similac from "../../assets/img/similac.png";
                                 <td>
                                     <div className="btn-quantity w-100 d-flex justify-content-start p-2">
                                         <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                            id="quantity-down" onclick="sub('quantity1')">
+                                            id="quantity-down" onClick="sub('quantity1')">
                                             <span>-</span>
                                         </div>
                                         <div className="button w-15">
@@ -409,7 +409,7 @@ import similac from "../../assets/img/similac.png";
                                                 value="5"></input>
                                         </div>
                                         <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                            id="quantity-up" onclick="add('quantity1')">
+                                            id="quantity-up" onClick="add('quantity1')">
                                             <span>+</span>
                                         </div>
                                     </div>
@@ -486,7 +486,7 @@ import similac from "../../assets/img/similac.png";
                                 <td>
                                     <div className="btn-quantity w-100 d-flex justify-content-start p-2">
                                         <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                            id="quantity-down" onclick="sub('quantity2')">
+                                            id="quantity-down" onClick="sub('quantity2')">
                                             <span>-</span>
                                         </div>
                                         <div className="button w-15">
@@ -494,7 +494,7 @@ import similac from "../../assets/img/similac.png";
                                                 value="5"></input>
                                         </div>
                                         <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                            id="quantity-up" onclick="add('quantity2')">
+                                            id="quantity-up" onClick="add('quantity2')">
                                             <span>+</span>
                                         </div>
                                     </div>
@@ -505,7 +505,7 @@ import similac from "../../assets/img/similac.png";
                                 <td>
                                     <div className="btn-quantity w-100 d-flex justify-content-start p-2">
                                         <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                            id="quantity-down" onclick="subfloat('rate2')">
+                                            id="quantity-down" onClick="subfloat('rate2')">
                                             <span>-</span>
                                         </div>
                                         <div className="button w-15">
@@ -513,7 +513,7 @@ import similac from "../../assets/img/similac.png";
                                                 value="5"></input>
                                         </div>
                                         <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                            id="quantity-up" onclick="addfloat('rate2')">
+                                            id="quantity-up" onClick="addfloat('rate2')">
                                             <span>+</span>
                                         </div>
                                     </div>
