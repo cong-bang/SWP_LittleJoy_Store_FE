@@ -38,6 +38,7 @@ export default function Register() {
 
   return (
     <>
+    <div style={{marginBottom: '7%'}}>
       <div className="container p-5 mt-5 mb-5">
         <div className="row">
           <div className="col-md-12 text-center nav-login">
@@ -174,6 +175,7 @@ export default function Register() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   );

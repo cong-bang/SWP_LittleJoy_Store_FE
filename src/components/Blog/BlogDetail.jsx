@@ -1,10 +1,39 @@
 import React from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import '../../assets/css/styleblogdetail.css'
+import { Link } from 'react-router-dom';
 
  const BlogDetail = () => {
   return (
     <>
+
+<div className="container-fluid">
+        <div className="row">
+          <div className="col-md-12 banner py-5 text-center">
+            <h1 className="text-center" style={{ color: "#3C75A6", fontWeight: "600", fontFamily: "sans-serif" }}>
+              Blog
+            </h1>
+            <div className="d-inline-block">
+              <div className="d-flex align-content-between">
+                <p className="px-2">
+                  <Link to="/" style={{ color: "#103A71", textDecoration: "none" }}>
+                    Home
+                  </Link>
+                </p>
+                <p className="px-2">
+                  <FontAwesomeIcon icon="fa-solid fa-angles-right" style={{ color: "#3c75a6" }} />
+                </p>
+                <p className="px-2">
+                  <Link to="/blog" style={{ color: "#103A71", textDecoration: "none" }}>
+                    Blog
+                  </Link>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="container-fluid" style={{background: 'linear-gradient(180deg, rgba(60, 117, 166, 0.2) 0%, rgba(255, 255, 255, 0.15) 53%, #fff 68%, #fff 100%)',
     padding: '2rem 0'}}>
         <div className="container" style={{maxWidth: '1200px', margin: '0 auto', padding: '0 1rem'}}>
@@ -13,7 +42,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
             boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.1)',
             padding: '3rem',
             margin: '2rem 0'}}>
-                <div className="w-100 mt-4 pt-3">
+                <div className="w-100">
                         <FontAwesomeIcon icon="fa-solid fa-angles-left" />
                         <a style={{textDecoration: 'none', color: 'black'}} href="#"><span className='px-2'>Trở lại</span></a>
                     </div>
@@ -70,7 +99,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
                     <div className="col-md-4 p-3">
                         <a href="" className="w-100" style={{textDecoration: 'none', color: 'black'}}>
                             <div className="blog-content-main w-100 p-4"
-                                style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px'}}>
+                                style={{backgroundColor: 'rgba(155, 155, 155, 0.05)', borderRadius: '15px'}}>
                                 <div className="blog-image">
                                 </div>
                                 <div className="mt-3">
@@ -86,7 +115,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
                     <div className="col-md-4 p-3">
                         <a href="" className="w-100" style={{textDecoration: 'none', color: 'black'}}>
                             <div className="blog-content-main w-100 p-4"
-                                style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px'}}>
+                                style={{backgroundColor: 'rgba(155, 155, 155, 0.05)', borderRadius: '15px'}}>
                                 <div className="blog-image">
                                 </div>
                                 <div className="mt-3">
@@ -102,7 +131,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
                     <div className="col-md-4 p-3">
                         <a href="" className="w-100" style={{textDecoration: 'none', color: 'black'}}>
                             <div className="blog-content-main w-100 p-4"
-                                style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px'}}>
+                                style={{backgroundColor: 'rgba(155, 155, 155, 0.05)', borderRadius: '15px'}}>
                                 <div className="blog-image">
                                 </div>
                                 <div className="mt-3">

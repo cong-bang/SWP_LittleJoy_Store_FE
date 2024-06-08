@@ -58,9 +58,10 @@ const Blog = () => {
   const handleSaveBlog = () => {
     if (title.trim() === "" || img.trim() === "" || editorContent.trim() === "") {
       alert("Please fill out all fields.");
+      
       return;
     }
-
+    console.log(editorContent);
     const newBlog = {
       id: blogs.length > 0 ? blogs[blogs.length - 1].id + 1 : 1,
       title: title,
@@ -68,6 +69,7 @@ const Blog = () => {
       content: editorContent,
       img: img,
       author: "littlejoystore",
+      
     };
 
     setBlogs([...blogs, newBlog]);
@@ -185,10 +187,12 @@ const Blog = () => {
         <div className="container pt-5">
           <div className="row">
             <div className="col-md-12 mt-5 mb-5 d-flex justify-content-end">
+              <Link to='/createblog'>
               <div onClick={showModal} className="btn-create-blog d-inline-block px-4 py-2" 
                    style={{ backgroundColor: 'rgba(60, 117, 166, 1)', color: 'white', borderRadius: '15px' }}>
                 <span>Tạo mới</span>
               </div>
+              </Link>
             </div>
             {blogs.map((blog) => (
               <div key={blog.id} className="col-md-4 p-3">

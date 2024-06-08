@@ -74,6 +74,17 @@ const ManageUser = () => {
                       </td>
                     </tr>
                     <tr>
+                      <td></td>
+                      <td className="py-1 ps-3 hover-dashboard">
+                        <Link to="/manageblog">
+                          <FontAwesomeIcon icon={faBoxOpen} />{" "}
+                          <span style={{ fontFamily: "sans-serif" }}>
+                            Quản lý bài viết
+                          </span>
+                        </Link>
+                      </td>
+                    </tr>
+                    <tr>
                     <td className="py-2">
                       <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
                         <FontAwesomeIcon icon={faRightFromBracket} />{" "}
@@ -94,7 +105,7 @@ const ManageUser = () => {
                     <div className="col-md-2 text-center">
                         <div className="dashboard p-2 py-3">
                             <a href="" className="">
-                                <p className="m-0" style={{ fontFamily: 'sans-serif' }}>Dashboard</p>
+                                <p className="m-0" style={{ fontFamily: 'sans-serif', fontSize: '16px' }}>Dashboard</p>
                             </a>
                         </div>
                     </div>
@@ -103,12 +114,12 @@ const ManageUser = () => {
                             <i className="fa-solid fa-house"></i>
                         </div>
                         <div className="pos-nav d-flex align-content-center p-2 py-3">
-                            <p className="m-0" style={{ fontFamily: 'sans-serif' }}>Home</p><span style={{ fontFamily: 'sans-serif' }}>/User Management</span>
+                            <p className="m-0" style={{ fontFamily: 'sans-serif', fontSize: '16px' }}>Home</p><span style={{ fontFamily: 'sans-serif' }}>/User Management</span>
                         </div>
                     </div>
                     <div className="col-md-2 d-flex align-content-center justify-content-center">
                         <div className="pos-nav d-flex align-content-center p-2 py-3">
-                            <p className="m-0">phamhieu</p>
+                            <p className="m-0" style={{fontFamily: "sans-serif", fontSize: '16px'}}>phamhieu</p>
                         </div>
                         <div className="icon-nav-log p-2 py-3 text-white">
                             <FontAwesomeIcon icon={faPowerOff} />

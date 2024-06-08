@@ -40,6 +40,7 @@ export default function Login() {
 
   return (
     <>
+    <div style={{marginBottom: '7%'}}>
       <div className="container p-5 mt-5 mb-xl-5">
         <div className="row">
           <div className="col-md-12 text-center nav-login">
@@ -54,7 +55,7 @@ export default function Login() {
         </div>
       </div>
 
-      <div className="body-login container-fluid mb-4">
+      <div className="body-login container-fluid">
         <div className="container">
           <div className="row">
             <div className="col-md-6">
@@ -153,6 +154,7 @@ export default function Login() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   );

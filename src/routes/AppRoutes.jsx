@@ -24,6 +24,8 @@ import Dashboard from "../pages/admin/Dashboard";
 import ManageProduct from "../components/ManageProduct/ManageProduct";
 import { useAuth } from "../context/AuthContext";
 import { useLocation } from "react-router-dom";
+import ManageBlog from "../components/ManageBlog/ManageBlog";
+import CreateBlog from "../components/Blog/CreateBlog";
 
 const UserRoute = () => {
   return (
@@ -60,7 +62,7 @@ const AppRoutes = () => {
 
   // Ẩn Header và Footer khi vào Dashboard
   useEffect(() => {
-    if (location.pathname === "/dashboard" || location.pathname === "/manageuser" || location.pathname === "/manageorder" || location.pathname === "/manageproduct"  && isAdminOrStaff) {
+    if (location.pathname === "/dashboard" || location.pathname === "/manageuser" || location.pathname === "/manageorder" || location.pathname === "/manageproduct" || location.pathname === "/manageblog"  && isAdminOrStaff) {
       setShowHeaderFooter(false);
     } else {
       setShowHeaderFooter(true);
@@ -81,6 +83,7 @@ const AppRoutes = () => {
             <Route path="/manageuser" element={<ManageUser />} />
             <Route path="/manageorder" element={<ManageOrder />} />
             <Route path="/manageproduct" element={<ManageProduct />} />
+            <Route path="/manageblog" element={<ManageBlog />} />
           </>
         )}
         <Route path="/shop" element={<Shop />} />
@@ -88,7 +91,8 @@ const AppRoutes = () => {
         <Route path="/forgotpass" element={<Forgotpass1 />} />
         <Route path="/register" element={<Register />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<BlogDetail />} />
+        <Route path="/createblog" element={<CreateBlog />} />
+        <Route path="/blogdetail" element={<BlogDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/product/:id" element={<Product />} />
