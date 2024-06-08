@@ -115,9 +115,20 @@ import similac from "../../assets/img/similac.png";
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
                         <Link to="/manageblog">
-                          <FontAwesomeIcon icon={faBoxOpen} />{" "}
+                        <FontAwesomeIcon icon="fa-solid fa-paste" />{" "}
                           <span style={{ fontFamily: "sans-serif" }}>
                             Quản lý bài viết
+                          </span>
+                        </Link>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td className="py-1 ps-3 hover-dashboard">
+                        <Link to="/requestrefund">
+                        <FontAwesomeIcon icon="fa-solid fa-credit-card" />{" "}
+                          <span style={{ fontFamily: "sans-serif" }}>
+                            Yêu cầu hoàn tiền
                           </span>
                         </Link>
                       </td>
@@ -521,25 +532,7 @@ import similac from "../../assets/img/similac.png";
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td><span className="py-2">Rate:</span></td>
-                                <td>
-                                    <div className="btn-quantity w-100 d-flex justify-content-start p-2">
-                                        <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                            id="quantity-down" onClick="subfloat('rate2')">
-                                            <span>-</span>
-                                        </div>
-                                        <div className="button w-15">
-                                            <input type="text" pattern="[0-9]*[.,]?[0-9]+" className="text-center w-100 p-2" id="rate2"
-                                                value="5"></input>
-                                        </div>
-                                        <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                            id="quantity-up" onClick="addfloat('rate2')">
-                                            <span>+</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                            
                             </tbody>
                         </table>
                     </div>

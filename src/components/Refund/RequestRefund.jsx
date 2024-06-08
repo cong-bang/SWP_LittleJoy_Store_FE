@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../../assets/css/stylerequestrefund.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,40 +17,6 @@ export default function ManageBlog() {
   const navigate = useNavigate();
   const handleLogout = () => {
     navigate("/");
-  };
-  const [blogs, setBlogs] = useState([
-    {
-      id: 1,
-      title: "First Blog",
-      banner: "banner1.jpg",
-      content: "Content of the first blog",
-      date: "2024-01-01",
-    },
-    {
-      id: 2,
-      title: "Second Blog",
-      banner: "banner2.jpg",
-      content: "Content of the second blog",
-      date: "2024-02-01",
-    },
-  ]);
-  const [newBlog, setNewBlog] = useState({
-    title: "",
-    banner: "",
-    content: "",
-    date: "",
-  });
-  const [editing, setEditing] = useState(false);
-  const [currentBlog, setCurrentBlog] = useState(null);
-  const handleEditBlog = (blog) => {
-    setEditing(true);
-    setCurrentBlog(blog);
-    setNewBlog(blog);
-    //openModal();
-  };
-
-  const handleDeleteBlog = (id) => {
-    setBlogs(blogs.filter((blog) => blog.id !== id));
   };
 
   return (
@@ -143,7 +110,7 @@ export default function ManageBlog() {
 
                     <tr>
                       <td></td>
-                      <td className="py-1 ps-3 active-admin">
+                      <td className="py-1 ps-3 hover-dashboard">
                         <Link to="/manageblog">
                         <FontAwesomeIcon icon="fa-solid fa-paste" />{" "}
                           <span style={{ fontFamily: "sans-serif" }}>
@@ -154,8 +121,8 @@ export default function ManageBlog() {
                     </tr>
                     <tr>
                       <td></td>
-                      <td className="py-1 ps-3 hover-dashboard">
-                        <Link to="/requestrefund">
+                      <td className="py-1 ps-3 active-admin  ">
+                        <Link to="/manageblog">
                         <FontAwesomeIcon icon="fa-solid fa-credit-card" />{" "}
                           <span style={{ fontFamily: "sans-serif" }}>
                             Yêu cầu hoàn tiền
@@ -244,10 +211,11 @@ export default function ManageBlog() {
                             fontFamily: "sans-serif",
                           }}
                         >
-                          Blog Management
+                          Request Refund
                         </span>
                       </div>
                     </div>
+
                     <div className="body-center">
                       <div className="container-fluid">
                         <div className="row">
@@ -256,22 +224,8 @@ export default function ManageBlog() {
                               <input
                                 type="text"
                                 className="p-1 ps-3"
-                                placeholder="Search title"
+                                placeholder="Search Orderid"
                               />
-                            </div>
-                            <div className="search-user float-start p-3">
-                              <input
-                                type="text"
-                                className="p-1 ps-3"
-                                placeholder="Search userid"
-                              />
-                            </div>
-                            <div className=" d-flex align-items-center ps-3" style={{width: '10%'}}>
-                            <select className="w-100 p-1 " style={{borderRadius: '5px', background: '#151C2C', color: '#888888'}}>
-                              <option disabled selected >Ngày</option>
-                              <option value="">thấp - cao</option>
-                              <option value="">cao - thấp</option>
-                            </select>
                             </div>
                           </div>
                           <div className="col-md-12 p-0">
@@ -279,19 +233,23 @@ export default function ManageBlog() {
                               <tbody>
                                 <tr className="table-header">
                                   <td className="p-3 px-4">
-                                    <span className="float-start">ID</span>
+                                    <span className="float-start">OrderID</span>
                                   </td>
                                   <td className="p-3 px-4 ">
-                                    <span className="float-start">Title</span>
+                                    <span className="float-start">
+                                      Date Order
+                                    </span>
                                   </td>
                                   <td className="p-3 px-4 ">
-                                    <span className="float-start">Banner</span>
+                                    <span className="float-start">Reason</span>
                                   </td>
                                   <td className="p-3 px-4 ">
-                                    <span className="float-start">Content</span>
+                                    <span className="float-start">
+                                      Description
+                                    </span>
                                   </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">Date</span>
+                                  <td className="p-3 px-4">
+                                    <span className="text-center ">Status</span>
                                   </td>
                                   <td className="p-3 px-4 ">
                                     <span>Action</span>
@@ -303,97 +261,132 @@ export default function ManageBlog() {
                                     <span className="float-start">001</span>
                                   </td>
                                   <td className="p-3 px-4 ">
-                                    <span className="float-start">Title here</span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">Imgae</span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">
-                                      Content here
-                                    </span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
                                     <span className="float-start">
                                       6/8/2024
                                     </span>
                                   </td>
-                                  <td className="p-3 px-4 d-flex justify-content-center">
-                                    <div
-                                      className="edit-user p-2"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#edit-user"
-                                    >
-                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
+                                  <td className="p-3 px-4 ">
+                                    <span className="float-start">
+                                      Reason...
+                                    </span>
+                                  </td>
+                                  <td className="p-3 px-4">
+                                    <span className="float-start">
+                                      Description...
+                                    </span>
+                                  </td>
+                                  <td className="p-3 px-4 ">
+                                    <div className=" d-flex justify-content-center">
+                                      <div
+                                        className="status-order-pending  px-1 py-2"
+                                        style={{ width: "60%" }}
+                                      >
+                                        <span className="inter">PENDING</span>
+                                      </div>
                                     </div>
-                                    <div className="delete-user p-2">
-                                      <FontAwesomeIcon icon="fa-solid fa-trash" />
+                                  </td>
+                                  <td className="p-3 px-4">
+                                    <div
+                                      className="view-details d-flex justify-content-center"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#details-order"
+                                    >
+                                      <div className="edit-order p-2">
+                                        <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
+                                      </div>
+                                      <div className="edit-user-2 p-2 ps-1">
+                                        <span>View Details</span>
+                                      </div>
                                     </div>
                                   </td>
                                 </tr>
+
                                 <tr className="table-content">
                                   <td className="p-3 px-4 ">
                                     <span className="float-start">002</span>
                                   </td>
                                   <td className="p-3 px-4 ">
-                                    <span className="float-start">Title here</span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">Imgae</span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">
-                                      Content here
-                                    </span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
                                     <span className="float-start">
                                       6/8/2024
                                     </span>
                                   </td>
-                                  <td className="p-3 px-4 d-flex justify-content-center">
-                                    <div
-                                      className="edit-user p-2"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#edit-user"
-                                    >
-                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
+                                  <td className="p-3 px-4 ">
+                                    <span className="float-start">
+                                      Reason...
+                                    </span>
+                                  </td>
+                                  <td className="p-3 px-4 ">
+                                    <span className="float-start">
+                                      Description...
+                                    </span>
+                                  </td>
+                                  <td className="p-3 px-4 ">
+                                    <div className=" d-flex justify-content-center">
+                                      <div
+                                        className="status-order-cancelled  px-1 py-2"
+                                        style={{ width: "60%" }}
+                                      >
+                                        <span className="inter">CANCELLED</span>
+                                      </div>
                                     </div>
-                                    <div className="delete-user p-2">
-                                      <FontAwesomeIcon icon="fa-solid fa-trash" />
+                                  </td>
+                                  <td className="p-3 px-4">
+                                    <div
+                                      className="view-details d-flex justify-content-center"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#details-order"
+                                    >
+                                      <div className="edit-order p-2">
+                                        <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
+                                      </div>
+                                      <div className="edit-user-2 p-2 ps-1">
+                                        <span>View Details</span>
+                                      </div>
                                     </div>
                                   </td>
                                 </tr>
+
                                 <tr className="table-content">
                                   <td className="p-3 px-4 ">
                                     <span className="float-start">003</span>
                                   </td>
                                   <td className="p-3 px-4 ">
-                                    <span className="float-start">Title here</span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">Image</span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">
-                                      Content here
-                                    </span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
                                     <span className="float-start">
                                       6/8/2024
                                     </span>
                                   </td>
-                                  <td className="p-3 px-4 d-flex justify-content-center">
-                                    <div
-                                      className="edit-user p-2"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#edit-user"
-                                    >
-                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
+                                  <td className="p-3 px-4 ">
+                                    <span className="float-start">
+                                      Reason...
+                                    </span>
+                                  </td>
+                                  <td className="p-3 px-4 ">
+                                    <span className="float-start">
+                                      Description...
+                                    </span>
+                                  </td>
+                                  <td className="p-3 px-4 ">
+                                    <div className=" d-flex justify-content-center">
+                                      <div
+                                        className="status-order-complete  px-1 py-2"
+                                        style={{ width: "60%" }}
+                                      >
+                                        <span className="inter">COMPLETED</span>
+                                      </div>
                                     </div>
-                                    <div className="delete-user p-2">
-                                      <FontAwesomeIcon icon="fa-solid fa-trash" />
+                                  </td>
+                                  <td className="p-3 px-4">
+                                    <div
+                                      className="view-details d-flex justify-content-center"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#details-order"
+                                    >
+                                      <div className="edit-order p-2">
+                                        <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
+                                      </div>
+                                      <div className="edit-user-2 p-2 ps-1">
+                                        <span>View Details</span>
+                                      </div>
                                     </div>
                                   </td>
                                 </tr>
@@ -423,45 +416,127 @@ export default function ManageBlog() {
             </div>
           </div>
         </div>
+
+        {/* <!-- Modal details order --> */}
+        <div className="modal" id="details-order">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              {/* <!-- Modal Header --> */}
+              <div className="py-2 header-modal d-flex justify-content-between">
+                <h4 className="modal-title inter ms-3">Details Order</h4>
+                <div className="btn-close-modal me-3" data-bs-dismiss="modal">
+                  <i className="fa-solid fa-x"></i>
+                </div>
+              </div>
+
+              {/* <!-- Modal body --> */}
+              <div className="modal-body">
+                <table className="w-100 table-modal">
+                  <tbody>
+                    <tr>
+                      <td className="p-2">
+                        <span>Order ID:</span>
+                      </td>
+                      <td className="p-2">
+                        <span>200803</span>
+                      </td>
+                      <td className="p-2">
+                        <span>Customer:</span>
+                      </td>
+                      <td className="p-2">
+                        <span>taile03</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="p-2">Date:</td>
+                      <td className="p-2">2024-1-2 13:23:44</td>
+                      <td className="p-2">Method:</td>
+                      <td className="p-2">VNPAY</td>
+                    </tr>
+                    <tr>
+                      <td className="p-2">Location</td>
+                      <td colSpan="3" className="p-2">
+                        <input
+                          type="text"
+                          name=""
+                          id=""
+                          className="w-100 ps-2"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="p-2">Phone Number: </td>
+                      <td colSpan="3" className="p-2">
+                        <input
+                          type="text"
+                          name=""
+                          id=""
+                          className="w-100 ps-2"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="title-product-modal p-2 my-1">
+                  <span className="w-100">Product:</span>
+                </div>
+                
+                <div className="p-2 mt-2">
+                  <table className="w-100 table-option-modal">
+                    <tbody>
+                      <tr>
+                        <td className="py-2 w-20">
+                          <span>Status:</span>
+                        </td>
+                        <td className="py-2 w-80">
+                          <select name="" id="" className="ps-2">
+                            <option value="">Cancelled</option>
+                            <option value="">Pending</option>
+                            <option value="">Completed</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 w-20">
+                          <span>Note:</span>
+                        </td>
+                        <td className="py-2 w-80">
+                          <textarea
+                            id="myTextarea"
+                            name="myTextarea"
+                            rows="4"
+                            cols="50"
+                            className="w-75 p-2"
+                          ></textarea>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* <!-- Modal footer --> */}
+              <div className="footer-modal py-4 d-flex justify-content-end">
+                <div className="close me-4">
+                  <div
+                    className="modal-btn-close p-2 px-4"
+                    data-bs-dismiss="modal"
+                  >
+                    <span>Close</span>
+                  </div>
+                </div>
+                <div className="save-modal me-4">
+                  <input
+                    type="submit"
+                    value="Save"
+                    className="input-submit p-2 px-4 inter"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
 }
-
-// <div className="row">
-// <div className="col-md-12">
-//   <h2 className="text-white">Manage Blogs</h2>
-
-//   <table className="table table-dark">
-//     <thead>
-//       <tr>
-//         <th>ID</th>
-//         <th>Title</th>
-//         <th>Banner</th>
-//         <th>Content</th>
-//         <th>Date</th>
-//         <th>Actions</th>
-//       </tr>
-//     </thead>
-//     <tbody>
-//       {blogs.map((blog) => (
-//         <tr key={blog.id}>
-//           <td>{blog.id}</td>
-//           <td>{blog.title}</td>
-//           <td><img src={blog.banner} alt={blog.title} style={{ width: '50px' }} /></td>
-//           <td>{blog.content}</td>
-//           <td>{blog.date}</td>
-//           <td>
-//             <button className="btn btn-warning btn-sm me-2" onClick={() => handleEditBlog(blog)}>
-//               <FontAwesomeIcon icon={faEdit} />
-//             </button>
-//             <button className="btn btn-danger btn-sm" onClick={() => handleDeleteBlog(blog.id)}>
-//               <FontAwesomeIcon icon={faTrashAlt} />
-//             </button>
-//           </td>
-//         </tr>
-//       ))}
-//     </tbody>
-//   </table>
-// </div>
-// </div>
