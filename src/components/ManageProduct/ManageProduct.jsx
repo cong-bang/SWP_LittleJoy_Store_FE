@@ -12,14 +12,20 @@ import {
   faUsers,
   faBan,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import '../../assets/css/styleadminproduct.css'
 import similac from "../../assets/img/similac.png";
 
  const ManageProduct = () => {
+
+    const navigate = useNavigate();
+    const handleLogout = () => {
+    navigate("/");
+  };
+
   return (
     <>
-
+<div style={{ background: "#151C2C" }}>
 <div className="container-fluid">
         <div className="row">
         <div className="col-md-2 nav-admin-left">
@@ -96,7 +102,7 @@ import similac from "../../assets/img/similac.png";
                   </tr>
                   <tr>
                     <td></td>
-                    <td className="py-1 ps-3 active ">
+                    <td className="py-1 ps-3 active-admin ">
                       <Link to="/manageproduct">
                         <FontAwesomeIcon icon={faBoxOpen} />{" "}
                         <span style={{ fontFamily: "sans-serif" }}>
@@ -106,12 +112,16 @@ import similac from "../../assets/img/similac.png";
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-2">
-                      <FontAwesomeIcon icon={faRightFromBracket} />
-                    </td>
-                    <td>
-                      <span>Logout</span>
-                    </td>
+                  <td className="py-2">
+                      <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
+                        <FontAwesomeIcon icon={faRightFromBracket} />{" "}
+                        </Link>
+                      </td>
+                      <td>
+                      <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
+                        <span >Logout</span>
+                        </Link>
+                      </td>
                   </tr>
                 </tbody>
               </table>
@@ -550,7 +560,7 @@ import similac from "../../assets/img/similac.png";
             </div>
         </div>
     </div>
-
+    </div>
     </>
   )
 }

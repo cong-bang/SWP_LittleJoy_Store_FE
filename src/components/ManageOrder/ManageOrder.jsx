@@ -13,11 +13,18 @@ import {
   faUsers,
   faBan,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ManageOrder = () => {
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    navigate("/");
+  };
+
   return (
     <>
+    <div style={{ background: "#151C2C" }}>
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-2 nav-admin-left">
@@ -83,7 +90,7 @@ const ManageOrder = () => {
                   </tr>
                   <tr>
                     <td></td>
-                    <td className="py-1 ps-3 active">
+                    <td className="py-1 ps-3 active-admin">
                       <Link to="/manageorder">
                         <FontAwesomeIcon icon={faCartShopping} />{" "}
                         <span style={{ fontFamily: "sans-serif" }}>
@@ -104,12 +111,16 @@ const ManageOrder = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-2">
-                      <FontAwesomeIcon icon={faRightFromBracket} />
-                    </td>
-                    <td>
-                      <span>Logout</span>
-                    </td>
+                  <td className="py-2">
+                      <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
+                        <FontAwesomeIcon icon={faRightFromBracket} />{" "}
+                        </Link>
+                      </td>
+                      <td>
+                      <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
+                        <span >Logout</span>
+                        </Link>
+                      </td>
                   </tr>
                 </tbody>
               </table>
@@ -756,6 +767,7 @@ const ManageOrder = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   );

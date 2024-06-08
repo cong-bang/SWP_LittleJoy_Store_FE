@@ -1,10 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/css/styleUserProfile.css";
 import Ellipse2 from "../../assets/img/Ellipse2.png";
 
 export default function UserProfile() {
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    navigate("/");
+  };
+
   return (
     <>
       <section>
@@ -146,13 +152,13 @@ export default function UserProfile() {
                 <tr>
                   <td colSpan="2" className="pt-4">
                     <div className="fs-5">
-                      <a href="#" style={{ textDecoration: "none" }}>
+                      <Link to="/" style={{ textDecoration: "none" }} onClick={handleLogout}>
                         
                         <FontAwesomeIcon icon="fa-solid fa-arrow-right-from-bracket" style={{ color: "#CCCCCC" }} />
                         <span style={{ color: "black" }} className="ps-4">
                           Đăng xuất
                         </span>
-                      </a>
+                      </Link>
                     </div>
                   </td>
                 </tr>

@@ -209,7 +209,8 @@ export default function UserOrderManagement() {
 
                 <tr>
                   <td className="pt-4" colSpan="3">
-                    <span className="textBlue fs-5">#200803</span>
+                    <Link to='/userorderdetail' style={{textDecoration: 'none'}}>
+                    <span className="textBlue fs-5">#200803</span></Link>
                   </td>
 
                   <td className="w-40 pt-4 ps-4">
@@ -332,7 +333,8 @@ export default function UserOrderManagement() {
 
                 <tr>
                   <td className="pt-4" colSpan="3">
-                    <span className="textBlue fs-5">#200803</span>
+                  <Link to='/userorderdetail' style={{textDecoration: 'none'}}>
+                    <span className="textBlue fs-5">#200803</span></Link>
                   </td>
 
                   <td className="w-40 pt-4 ps-4">
@@ -458,7 +460,8 @@ export default function UserOrderManagement() {
 
                 <tr>
                   <td className="pt-4" colSpan="3">
-                    <span className="textBlue fs-5">#200803</span>
+                  <Link to='/userorderdetail' style={{textDecoration: 'none'}}>
+                    <span className="textBlue fs-5">#200803</span></Link>
                   </td>
 
                   <td className="w-40 pt-4 ps-4">

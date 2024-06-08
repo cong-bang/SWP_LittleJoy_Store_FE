@@ -34,14 +34,10 @@
 // export default App
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-
-import ManageUser from "./components/ManageUser/ManageUser";
-import ManageOrder from "./components/ManageOrder/ManageOrder";
-import ManageProduct from "./components/ManageProduct/ManageProduct";
-import AdminDashboard from "./pages/admin/Dashboard";
+import AppRoutes from "./routes/AppRoutes";
+import { AuthProvider } from './context/AuthContext';
 
 // import AdminLayout from './layouts/AdminLayout';
 
@@ -55,12 +51,12 @@ library.add(fas);
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/dashboard" element={<AdminDashboard />} />
-        <Route path="/manageuser" element={<ManageUser />} />
-        <Route path="/manageorder" element={<ManageOrder />} />
-        <Route path="/manageproduct" element={<ManageProduct />} />
-      </Routes>
+      <AuthProvider>
+      
+        <AppRoutes />
+      
+    </AuthProvider>
+
     </>
   );
 }

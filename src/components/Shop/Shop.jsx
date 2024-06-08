@@ -130,6 +130,7 @@ export default function Shop() {
             <div className="col-md-2">
               <div className="w-100 d-flex justify-content-center item-filter-left py-4 mb-4 scroll-filter-left">
                 <table className="w-75">
+                  <tbody>
                   <tr>
                     <td
                       colSpan="2"
@@ -175,10 +176,13 @@ export default function Shop() {
                     </td>
                     <td>Sữa lúa mạch</td>
                   </tr>
+                  </tbody>
                 </table>
               </div>
               <div className="w-100 d-flex justify-content-center item-filter-left py-3 mb-5">
+                
                 <table className="w-75">
+                  <tbody>
                   <tr>
                     <td
                       colSpan="2"
@@ -230,6 +234,7 @@ export default function Shop() {
                     </td>
                     <td>Khác</td>
                   </tr>
+                  </tbody>
                 </table>
               </div>
               <div className="w-100 d-flex justify-content-center item-filter-left py-3 mb-5">

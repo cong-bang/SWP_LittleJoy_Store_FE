@@ -27,7 +27,8 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 ChartJS.register(
   CategoryScale,
@@ -151,6 +152,12 @@ const Dashboard = () => {
     },
   };
 
+  
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    navigate("/");
+  };
+
   return (
     <>
       <div style={{ background: "#151C2C" }}>
@@ -239,14 +246,21 @@ const Dashboard = () => {
                         </Link>
                       </td>
                     </tr>
+                    
                     <tr>
+                    
                       <td className="py-2">
-                        <FontAwesomeIcon icon={faRightFromBracket} />
+                      <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
+                        <FontAwesomeIcon icon={faRightFromBracket} />{" "}
+                        </Link>
                       </td>
                       <td>
-                        <span>Logout</span>
+                      <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
+                        <span >Logout</span>
+                        </Link>
                       </td>
                     </tr>
+                    
                   </tbody>
                 </table>
               </div>

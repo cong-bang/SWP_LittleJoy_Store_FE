@@ -3,7 +3,7 @@
     padding: 0;
     box-sizing: border-box;
 }
-body{
+.body-dashboard{
     background-color: #151C2C;
 }
 .inter{
@@ -94,11 +94,11 @@ body{
     margin: 0 auto;
     border: 1px solid #30394B;
 }
-.active{
+.active-admin{
     background-color: #182237;
     border-radius: 5px;
 }
-.active a{
+.active-admin a{
     text-decoration: none;
     color: #F8B940;
 }

@@ -2,12 +2,19 @@ import React from 'react'
 import '../../assets/css/styleadminuser.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCartShopping, faBoxOpen, faRightFromBracket, faHouse, faPowerOff, faDollarSign, faClipboardList, faUsers, faBan } from "@fortawesome/free-solid-svg-icons";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 
 const ManageUser = () => {
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    navigate("/");
+  };
+
   return (
     <>
-        <div className="container-fluid">
+    <div style={{ background: "#151C2C" }}>
+        <div className="container-fluid  ">
         <div className="row">
         <div className="col-md-2 nav-admin-left">
               <div className="logo-admin d-flex justify-content-center w-100 mt-3">
@@ -41,7 +48,7 @@ const ManageUser = () => {
                     </tr>
                     <tr>
                       <td></td>
-                      <td className="py-1 ps-3 active">
+                      <td className="py-1 ps-3 active-admin">
                         <Link to="/manageuser">
                           <FontAwesomeIcon icon={faUser} />{" "}
                           <span style={{ fontFamily: 'sans-serif' }}>Quản lý người dùng</span>
@@ -67,11 +74,15 @@ const ManageUser = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-2">
-                        <FontAwesomeIcon icon={faRightFromBracket} />
+                    <td className="py-2">
+                      <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
+                        <FontAwesomeIcon icon={faRightFromBracket} />{" "}
+                        </Link>
                       </td>
                       <td>
-                        <span>Logout</span>
+                      <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
+                        <span >Logout</span>
+                        </Link>
                       </td>
                     </tr>
                   </tbody>
@@ -413,7 +424,7 @@ const ManageUser = () => {
           </div>
         </div>
       </div>
-      
+      </div>
     </>
   )
 }

@@ -195,8 +195,10 @@ export default function UserOrderDetail() {
                     <div className="col-md-12">
                         <div className="w-100">
                             <div className="w-100 mt-4 pt-3">
-                            <FontAwesomeIcon icon="fa-solid fa-angle-left" />
-                                <Link style={{textDecoration: 'none', color: 'black'}} to="/userordermanagement"><span className='px-2'>Trở lại</span></Link>
+                            <Link style={{textDecoration: 'none', color: 'black'}} to="/userordermanagement">
+                              <FontAwesomeIcon icon="fa-solid fa-angle-left" />
+                                <span className='px-2'>Trở lại</span>
+                            </Link>
                             </div>
                         </div>
                     </div>
