@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/css/styleheader.css";
 import logoshop from "../../assets/img/logoshop.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,12 +7,16 @@ import { useAuth } from "../../context/AuthContext";
 
 export default function Header() {
   const { user } = useAuth();
+  const [username, setUsername] = useState("");
 
-  // Kiểm tra role từ localStorage
   useEffect(() => {
     const roleFromLocalStorage = localStorage.getItem("role");
+    const usernameFromLocalStorage = localStorage.getItem("username");
+    if (roleFromLocalStorage === "ADMIN" || roleFromLocalStorage === "STAFF" || roleFromLocalStorage === "USER" && usernameFromLocalStorage) {
+      setUsername(usernameFromLocalStorage);
+    }
+
     if (!roleFromLocalStorage) {
-      // Nếu không có role trong localStorage, ẩn liên kết "My Profile" và "Admin Dashboard"
       const profileLink = document.getElementById("profile-link");
       const dashboardLink = document.getElementById("dashboard-link");
       if (profileLink) profileLink.style.display = "none";
@@ -69,7 +73,12 @@ export default function Header() {
               </Link>
               <Link to="/login" className="px-3">
                 <FontAwesomeIcon icon="fa-solid fa-user" />
-                <span className="px-1">Login</span>
+                {username ? (
+                  <Link to='/userprofile'>
+                  <span className="px-1">{username}</span></Link>
+                ) : (
+                  <span className="px-1">Login</span>
+                )}
               </Link>
             </div>
           </div>

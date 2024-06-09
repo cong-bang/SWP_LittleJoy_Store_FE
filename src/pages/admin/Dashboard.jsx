@@ -13,7 +13,7 @@ import {
   faUsers,
   faBan,
 } from "@fortawesome/free-solid-svg-icons";
-import { Line, Pie } from "react-chartjs-2";
+import { Line, Pie, Bar } from "react-chartjs-2";
 import "../../assets/css/styleadmin.css";
 import {
   Chart as ChartJS,
@@ -26,6 +26,7 @@ import {
   Tooltip,
   Legend,
   Filler,
+  BarElement,
 } from "chart.js";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -36,6 +37,7 @@ ChartJS.register(
   ArcElement,
   PointElement,
   LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
@@ -152,7 +154,71 @@ const Dashboard = () => {
     },
   };
 
-  
+  const topProductsMonthly = [
+    { name: "Product A", revenue: 25000000 },
+    { name: "Product B", revenue: 22000000 },
+    { name: "Product C", revenue: 13000000 },
+    { name: "Product D", revenue: 12000000 },
+    { name: "Product E", revenue: 10000000 },
+  ];
+
+  const chartDataBar = {
+    labels: topProductsMonthly.map((product) => product.name),
+    datasets: [
+      {
+        label: "Revenue (VND)",
+        data: topProductsMonthly.map((product) => product.revenue),
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgb(255, 99, 132)",
+        borderWidth: 1,
+        barThickness: 30,
+      },
+    ],
+  };
+
+  const optionsBar = {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+        labels: {
+          color: "white",
+        },
+      },
+      tooltip: {
+        bodyFont: {
+          color: "white",
+        },
+        titleFont: {
+          color: "white",
+        },
+      },
+      title: {
+        display: false,
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: "white",
+        },
+        grid: {
+          color: "rgba(255, 255, 255, 0.2)",
+        },
+      },
+      y: {
+        ticks: {
+          color: "white",
+        },
+        grid: {
+          color: "rgba(255, 255, 255, 0.2)",
+        },
+      },
+    },
+    
+  };
+
   const navigate = useNavigate();
   const handleLogout = () => {
     navigate("/");
@@ -250,7 +316,7 @@ const Dashboard = () => {
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
                         <Link to="/manageblog">
-                        <FontAwesomeIcon icon="fa-solid fa-paste" />{" "}
+                          <FontAwesomeIcon icon="fa-solid fa-paste" />{" "}
                           <span style={{ fontFamily: "sans-serif" }}>
                             Quản lý bài viết
                           </span>
@@ -268,21 +334,29 @@ const Dashboard = () => {
                         </Link>
                       </td>
                     </tr>
-                    
+
                     <tr>
-                    
                       <td className="py-2">
-                      <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
-                        <FontAwesomeIcon icon={faRightFromBracket} />{" "}
+                        <Link
+                          to="/"
+                          style={{ textDecoration: "none" }}
+                          className="text-white"
+                          onClick={handleLogout}
+                        >
+                          <FontAwesomeIcon icon={faRightFromBracket} />{" "}
                         </Link>
                       </td>
                       <td>
-                      <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
-                        <span >Logout</span>
+                        <Link
+                          to="/"
+                          style={{ textDecoration: "none" }}
+                          className="text-white"
+                          onClick={handleLogout}
+                        >
+                          <span>Logout</span>
                         </Link>
                       </td>
                     </tr>
-                    
                   </tbody>
                 </table>
               </div>
@@ -292,7 +366,10 @@ const Dashboard = () => {
                 <div className="col-md-2 text-center">
                   <div className="dashboard p-2 py-3">
                     <a href="">
-                      <p className="m-0" style={{ fontFamily: "sans-serif", fontSize: '16px' }}>
+                      <p
+                        className="m-0"
+                        style={{ fontFamily: "sans-serif", fontSize: "16px" }}
+                      >
                         Dashboard
                       </p>
                     </a>
@@ -303,7 +380,10 @@ const Dashboard = () => {
                     <FontAwesomeIcon icon={faHouse} />
                   </div>
                   <div className="pos-admin-nav d-flex align-content-center p-2 py-3">
-                    <p className="m-0" style={{ fontFamily: "sans-serif", fontSize: '16px' }}>
+                    <p
+                      className="m-0"
+                      style={{ fontFamily: "sans-serif", fontSize: "16px" }}
+                    >
                       Home
                     </p>
                     <span style={{ fontFamily: "sans-serif" }}>/Dashboard</span>
@@ -311,7 +391,12 @@ const Dashboard = () => {
                 </div>
                 <div className="col-md-2 d-flex align-content-center justify-content-center">
                   <div className="pos-admin-nav d-flex align-content-center p-2 py-3">
-                    <p className="m-0" style={{fontFamily: "sans-serif", fontSize: '16px'}}>phamhieu</p>
+                    <p
+                      className="m-0"
+                      style={{ fontFamily: "sans-serif", fontSize: "16px" }}
+                    >
+                      phamhieu
+                    </p>
                   </div>
                   <div className="icon-admin-nav-log p-2 py-3 text-white">
                     <FontAwesomeIcon icon={faPowerOff} />
@@ -499,18 +584,533 @@ const Dashboard = () => {
                             >
                               <div className="card-body">
                                 <div
-                                  className="fw-bold"
+                                  className="fw-bold mb-2"
                                   style={{ fontSize: "20px" }}
                                 >
-                                  Danh mục các loại sản phẩm
+                                  Danh mục sản phẩm sắp hết hàng
                                 </div>
-                                <Pie data={categoryData} options={optionPie} />
-                                <div className="pt-2">
-                                  Danh mục các loại sản phẩm bán chạy
+                                <div
+                                  style={{
+                                    maxHeight: "20em",
+                                    overflowY: "auto",
+                                    border: "1px solid white",
+                                  }}
+                                >
+                                  <table
+                                    style={{
+                                      border: "1px solid white",
+                                      borderCollapse: "collapse",
+                                      tableLayout: "fixed",
+                                      width: "100%",
+                                    }}
+                                  >
+                                    <thead>
+                                      <tr>
+                                        <th
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          ID
+                                        </th>
+                                        <th
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Tên sản phẩm
+                                        </th>
+                                        <th
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Số lượng còn lại
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          001
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          Product A
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                          }}
+                                        >
+                                          5
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
                                 </div>
                               </div>
+
+                              {/* Sản phẩm có doanh thu cao trong tháng */}
+
+                              
+
                             </div>
                           </div>
+
+                          <div
+                                className="col-md-8 mb-5"
+                                style={{ color: "white" }}
+                              >
+                                <div
+                                  className="card"
+                                  style={{ backgroundColor: "#222B40" }}
+                                >
+                                  <div className="card-body">
+                                    <div
+                                      className="fw-bold"
+                                      style={{ fontSize: "20px" }}
+                                    >
+                                      Sản phẩm có doanh thu cao trong tháng
+                                    </div>
+                                    <Bar
+                                      data={chartDataBar}
+                                      options={optionsBar} 
+                                      
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
                         </div>
                       </div>
                     </div>
