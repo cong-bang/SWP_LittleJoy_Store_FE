@@ -2,13 +2,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', serif;
 }
 .body-dashboard{
     background-color: #151C2C;
-}
-.inter{
-    font-family: 'Inter', serif;
 }
 .w-27{
     width: 27%;
@@ -25,7 +21,6 @@
     color: white;
 }
 .nav-admin span{
-    font-family: 'Inter', serif;
 }
 .nav-admin-title{
     font-size: 15px;
@@ -42,13 +37,11 @@
     color: black;
     font-weight: 700;
     font-size: 18px;
-    font-family: 'Inter', serif;
 }
 .logo-admin-right{
     color: white;
     font-weight: 700;
     font-size: 18px;
-    font-family: 'Inter', serif;
 }
 .top-admin-nav{
     background-color: #182237;
@@ -57,7 +50,6 @@
     text-decoration: none;
 }
 .dashboard a{
-    font-family: 'Inter', serif;
     font-size: 18px;
     color: white;
 }
@@ -90,7 +82,6 @@
     height: 100%;
 }
 .body-admin-title span{
-    font-family: 'Inter', serif;
     font-weight: 500;
     font-size: 16px;
 }

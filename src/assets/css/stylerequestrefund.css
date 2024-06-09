@@ -13,7 +13,6 @@
     width: 80%;
 }
 .inter{
-    font-family: 'Inter', serif;
 }
 .nav-left{
     border: 1px solid black;
@@ -24,7 +23,6 @@
     color: white;
 }
 .nav-admin span{
-    font-family: 'Inter', serif;
 }
 .nav-title{
     font-size: 15px;
@@ -41,13 +39,11 @@
     color: black;
     font-weight: 700;
     font-size: 18px;
-    font-family: 'Inter', serif;
 }
 .logo-right{
     color: white;
     font-weight: 700;
     font-size: 18px;
-    font-family: 'Inter', serif;
 }
 .top-nav{
     background-color: #182237;
@@ -56,7 +52,6 @@
     text-decoration: none;
 }
 .dashboard a{
-    font-family: 'Inter', serif;
     font-size: 18px;
     color: white;
 }
@@ -89,7 +84,6 @@
     height: 100%;
 }
 .body-title span{
-    font-family: 'Inter', serif;
     font-weight: 500;
     font-size: 16px;
 }

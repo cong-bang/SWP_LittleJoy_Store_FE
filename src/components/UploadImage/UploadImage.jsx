@@ -7,8 +7,8 @@ import "./modal-upload.css";
 
 const UploadImage = ({
   aspectRatio = 1,
-  maxWidth = 500,
-  maxHeight = 500,
+  maxWidth = 1000,
+  maxHeight = 1000,
   onUploadComplete,
   minWidth = 300,
   minHeight = 300,
@@ -37,6 +37,23 @@ const UploadImage = ({
             setCroppedImage(blob);
           });
         },
+        cropmove(event) {
+          const cropBoxData = this.cropper.getCropBoxData();
+          if (cropBoxData.width < minWidth) {
+            this.cropper.setCropBoxData({
+              left: cropBoxData.left,
+              top: cropBoxData.top,
+              width: minWidth,
+            });
+          }
+          if (cropBoxData.height < minHeight) {
+            this.cropper.setCropBoxData({
+              left: cropBoxData.left,
+              top: cropBoxData.top,
+              height: minHeight,
+            });
+          }
+        },
       });
     }
     return () => {
@@ -44,7 +61,7 @@ const UploadImage = ({
         cropperRef.current.destroy();
       }
     };
-  }, [image, aspectRatio]);
+  }, [image, aspectRatio, minWidth, minHeight]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -196,5 +213,3 @@ const UploadImage = ({
 };
 
 export default UploadImage;
-
-
