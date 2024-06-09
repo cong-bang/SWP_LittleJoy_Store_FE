@@ -26,12 +26,12 @@ export default function Header() {
 
   return (
     <>
-      <div className="container-fluid header-content sticky-top">
+      <div className="container-fluid header-content sticky-top" style={{zIndex: '1000'}}>
         <div className="row">
           <div className="col-md-3 text-center">
-            <a href="#" className="w-100">
+            <Link to="#" className="w-100">
               <img src={logoshop} alt="Logo Shop" className="w-25" />
-            </a>
+            </Link>
           </div>
           <div className="col-md-6 align-content-center d-flex justify-content-center">
             <div className="w-75 align-content-center">
