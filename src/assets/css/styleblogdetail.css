@@ -28,7 +28,7 @@
     /* min-height: 1000em; */
 }
 .blog-image{
-    background-image: url('../../assets/img/blog1.png');
+    
     aspect-ratio: 2/1;
     background-position: center;
     background-size: cover;

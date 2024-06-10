@@ -28,7 +28,7 @@
     /* min-height: 1000em; */
 }
 .blog-image{
-    background-image: url('../../assets/img/blog1.png');
+    
     aspect-ratio: 2/1;
     background-position: center;
     background-size: cover;
@@ -38,4 +38,15 @@
     background-color: rgba(60, 117, 166, 1);
     color: white;
     border-radius: 15px;
+}
+.create-blog-title{
+    /* background-color: rgb(78, 148, 209); */
+}
+.create-blog-title::placeholder {
+    /* color: white; */
+}
+.text-xemtrc p{
+    margin: 0;
+    font-size: 18px;
+    font-family: sans-serif;
 }

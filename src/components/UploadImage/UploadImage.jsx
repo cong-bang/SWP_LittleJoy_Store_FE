@@ -162,7 +162,7 @@ const UploadImage = ({
   }, [isModalOpen]);
 
   return (
-    <div>
+    <div className="d-inline-block">
       <input
         type="file"
         onChange={handleImageChange}
