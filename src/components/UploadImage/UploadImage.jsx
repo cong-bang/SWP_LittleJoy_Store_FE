@@ -166,8 +166,8 @@ const UploadImage = ({
       <input
         type="file"
         onChange={handleImageChange}
-        style={{ backgroundColor: "white" }}
-        className="px-2 py-1"
+        style={{ backgroundColor: "white", borderRadius: '5px' }}
+        className="p-2"
         placeholder="Tải ảnh lên"
       />
       {error && <p style={{ color: "red" }}>{error}</p>}

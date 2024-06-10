@@ -4,6 +4,7 @@ import ReactQuill from "react-quill";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "react-quill/dist/quill.snow.css";
 import '../../assets/css/styleblog.css';
+import UploadImage from "../UploadImage/UploadImage";
 
 const CreateBlog = () => {
   const [editorContent, setEditorContent] = useState("");
@@ -48,11 +49,14 @@ const CreateBlog = () => {
       .catch(error => {
         console.error('Lỗi tạo blog:', error);
       });
-      
   };
 
   const togglePreview = () => {
     setShowPreview(!showPreview);
+  };
+
+  const handleUploadComplete = (url) => {
+    setBanner(url);
   };
 
   return (
@@ -84,7 +88,7 @@ const CreateBlog = () => {
         </div>
       </div>
 
-      <div className="container-fluid body-content ">
+      <div className="container-fluid body-content">
         <div className="container pt-5">
           <div className="mt-5 p-3" style={{backgroundColor: '#D3D3D3', borderRadius: '10px'}}>
             <div className="text-center fw-bold" style={{ fontSize: "24px", color: "#333333", marginBottom: "20px" }}>
@@ -97,13 +101,16 @@ const CreateBlog = () => {
               onChange={(e) => setTitle(e.target.value)}
               style={{ width: "100%", marginBottom: "10px", padding: "10px", border: "1px solid #cccccc", borderRadius: "5px" }}
             />
-            <input
-              type="text"
-              placeholder="Banner URL"
-              value={banner}
-              onChange={(e) => setBanner(e.target.value)}
-              style={{ width: "100%", marginBottom: "10px", padding: "10px", border: "1px solid #cccccc", borderRadius: "5px" }}
+            <div style={{ marginBottom: '10px'}}>
+            <UploadImage
+              aspectRatio={3/2}
+              onUploadComplete={handleUploadComplete}
+              maxWidth={10000}
+              maxHeight={10000}
+              minWidth={300}
+              minHeight={300}
             />
+            </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <ReactQuill
                 value={editorContent}
@@ -149,3 +156,5 @@ const CreateBlog = () => {
 };
 
 export default CreateBlog;
+
+
