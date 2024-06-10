@@ -176,6 +176,28 @@ const Dashboard = () => {
     ],
   };
 
+  const topPoints = [
+    {name: 'User A', points: 25000},
+    {name: 'User B', points: 20000},
+    {name: 'User C', points: 17000},
+    {name: 'User D', points: 13000},
+    {name: 'User E', points: 9999},
+  ];
+
+  const chartBarPoints = {
+    labels: topPoints.map((point) => point.name),
+    datasets: [
+      {
+        label: "Point",
+        data: topPoints.map((point) => point.points),
+        backgroundColor: "rgba(255, 205, 86, 0.2)",
+        borderColor: "rgb(255, 205, 86)",
+        borderWidth: 1,
+        barThickness: 30,
+      },
+    ],
+  }
+
   const optionsBar = {
     indexAxis: "y",
     responsive: true,
@@ -997,11 +1019,11 @@ const Dashboard = () => {
                                   className="fw-bold mb-2"
                                   style={{ fontSize: "20px" }}
                                 >
-                                  Sản phẩm có doanh thu cao trong tháng
+                                  Top 5 người dùng có số điểm cao nhất
                                 </div>
                                 <div className="p-2">
                                   <Bar
-                                    data={chartDataBar}
+                                    data={chartBarPoints}
                                     options={optionsBar}
                                   />
                                 </div>

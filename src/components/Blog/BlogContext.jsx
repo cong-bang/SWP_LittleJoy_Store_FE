@@ -1,37 +1,25 @@
-import React, { createContext, useState, useEffect } from 'react';
+// import React, { createContext, useContext, useState } from "react";
 
-export const BlogContext = createContext();
+// const BlogContext = createContext();
 
-export const BlogProvider = ({ children }) => {
-  const [blogs, setBlogs] = useState([]);
+// export const useBlogs = () => useContext(BlogContext);
 
-  useEffect(() => {
-    const savedBlogs = localStorage.getItem('blogs');
-    if (savedBlogs) {
-      setBlogs(JSON.parse(savedBlogs));
-    }
-  }, []);
+// export const BlogProvider = ({ children }) => {
+//   const [blogs, setBlogs] = useState([]);
 
-  const saveBlogsToLocalStorage = (blogs) => {
-    localStorage.setItem('blogs', JSON.stringify(blogs));
-  };
+//   const addBlog = (newBlog) => {
+//     setBlogs((prevBlogs) => [...prevBlogs, newBlog]);
+//   };
 
-  const addBlog = (blog) => {
-    const updatedBlogs = [...blogs, blog];
-    setBlogs(updatedBlogs);
-    saveBlogsToLocalStorage(updatedBlogs);
-  };
+//   const handleDeleteBlog = (id) => {
+//     setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
+//   };
 
-  const deleteBlog = (id) => {
-    const updatedBlogs = blogs.filter((blog) => blog.id !== id);
-    setBlogs(updatedBlogs);
-    saveBlogsToLocalStorage(updatedBlogs);
-  };
+//   return (
+//     <BlogContext.Provider value={{ blogs, addBlog, handleDeleteBlog }}>
+//       {children}
+//     </BlogContext.Provider>
+//   );
+// };
 
-  return (
-    <BlogContext.Provider value={{ blogs, addBlog, deleteBlog }}>
-      {children}
-    </BlogContext.Provider>
-  );
-};
 

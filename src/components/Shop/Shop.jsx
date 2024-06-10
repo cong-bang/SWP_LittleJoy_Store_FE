@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/css/styleshop.css";
 import product from "../../assets/img/product.png";
+import { Link } from "react-router-dom";
 
 export default function Shop() {
   return (
@@ -349,7 +350,7 @@ export default function Shop() {
                       THÊM VÀO GIỎ HÀNG
                     </a>
                   </div>
-                  <a href="" style={{ textDecoration: "none", color: "black" }}>
+                  <Link to="/product/1" style={{ textDecoration: "none", color: "black" }}>
                     <div className="product-content mt-3 px-3 py-2">
                       <span className="Roboto" style={{ fontSize: "1.2em" }}>
                         Sữa bầu Friso Mum Gold 900g hương cam
@@ -370,7 +371,7 @@ export default function Shop() {
                         </span>
                       </div>
                     </div>
-                  </a>
+                  </Link>
                 </div>
                 <div className="col-md-3 p-3 mt-3">
                   <div className="product-image text-center px-3 py-2 position-relative">

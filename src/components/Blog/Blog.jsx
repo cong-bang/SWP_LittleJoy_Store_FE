@@ -1,158 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Modal from "react-modal";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '../../assets/css/styleblog.css';
-import axios from 'axios';
 import blog1 from "../../assets/img/blog1.png";
-
-Modal.setAppElement("#root");
+import { useAuth } from "../../context/AuthContext";
 
 const Blog = () => {
-
-
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [editorContent, setEditorContent] = useState("");
-  const [title, setTitle] = useState("");
-  const [img, setImg] = useState("");
   const [blogs, setBlogs] = useState([]);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
-  // Simulating fetching data from an API
   useEffect(() => {
-    const initialBlogs = [
-      {
-        id: 1,
-        title: "Sample Blog 1",
-        date: "01/01/2022",
-        content: "<p>This is the first sample blog content.</p>",
-        img: "blog1",
-        author: "littlejoystore",
-      },
-      {
-        id: 2,
-        title: "Sample Blog 2",
-        date: "02/01/2022",
-        content: "<p>This is the second sample blog content.</p>",
-        img: "blog1",
-        author: "littlejoystore",
-      },
-    ];
-    setBlogs(initialBlogs);
+    fetch('https://littlejoyapi.azurewebsites.net/api/blog')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Đã thất bại trong việc lấy dữ liệu blog');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setBlogs(data);
+      })
+      .catch(error => {
+        console.error('Lỗi khi lấy dữ liệu blog:', error.message);
+      });
   }, []);
-
-  const showModal = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
-  const handleEditorChange = (content) => {
-    setEditorContent(content);
-  };
-
-  const handleSaveBlog = () => {
-    if (title.trim() === "" || img.trim() === "" || editorContent.trim() === "") {
-      alert("Please fill out all fields.");
       
-      return;
-    }
-    console.log(editorContent);
-    const newBlog = {
-      id: blogs.length > 0 ? blogs[blogs.length - 1].id + 1 : 1,
-      title: title,
-      date: new Date().toLocaleDateString(),
-      content: editorContent,
-      img: img,
-      author: "littlejoystore",
-      
-    };
-
-    setBlogs([...blogs, newBlog]);
-    setTitle("");
-    setEditorContent("");
-    setImg("");
-    closeModal();
-  };
-
   const handleDeleteBlog = (id) => {
-    setBlogs(blogs.filter(blog => blog.id !== id));
+    
   };
-
-
-
-  // const [modalIsOpen, setModalIsOpen] = useState(false);
-  // const [editorContent, setEditorContent] = useState("");
-  // const [title, setTitle] = useState("");
-  // const [img, setImg] = useState("");
-  // const [blogs, setBlogs] = useState([]);
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   // Fetch blogs from API
-  //   axios.get('/api/blogs')
-  //     .then(response => {
-  //       setBlogs(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error("There was an error fetching the blogs!", error);
-  //     });
-  // }, []);
-
-  // const showModal = () => {
-  //   setModalIsOpen(true);
-  // };
-
-  // const closeModal = () => {
-  //   setModalIsOpen(false);
-  // };
-
-  // const handleEditorChange = (content) => {
-  //   setEditorContent(content);
-  // };
-
-  // const handleSaveBlog = () => {
-  //   if (title.trim() === "" || img.trim() === "" || editorContent.trim() === "") {
-  //     alert("Please fill out all fields.");
-  //     return;
-  //   }
-
-  //   const newBlog = {
-  //     title: title,
-  //     date: new Date().toLocaleDateString(),
-  //     content: editorContent,
-  //     img: img,
-  //     author: "littlejoystore",
-  //   };
-
-  //   // Send the new blog to the backend
-  //   axios.post('/api/blogs', newBlog)
-  //     .then(response => {
-  //       setBlogs([...blogs, response.data]);
-  //       setTitle("");
-  //       setEditorContent("");
-  //       setImg("");
-  //       closeModal();
-  //     })
-  //     .catch(error => {
-  //       console.error("There was an error saving the blog!", error);
-  //     });
-  // };
-
-  // const handleDeleteBlog = (id) => {
-  //   // Delete the blog from the backend
-  //   axios.delete(`/api/blogs/${id}`)
-  //     .then(() => {
-  //       setBlogs(blogs.filter(blog => blog.id !== id));
-  //     })
-  //     .catch(error => {
-  //       console.error("There was an error deleting the blog!", error);
-  //     });
-  // };
 
   return (
     <>
@@ -187,28 +63,22 @@ const Blog = () => {
         <div className="container pt-5">
           <div className="row">
             <div className="col-md-12 mt-5 mb-5 d-flex justify-content-end">
-              <Link to='/createblog'>
-              <div onClick={showModal} className="btn-create-blog d-inline-block px-4 py-2" 
-                   style={{ backgroundColor: 'rgba(60, 117, 166, 1)', color: 'white', borderRadius: '15px' }}>
-                <span>Tạo mới</span>
-              </div>
-              </Link>
+            {user && user.role !== "USER" && (
+                    <Link 
+                    to="/createblog"
+                    className="btn-create-blog d-inline-block px-4 py-2" 
+                    style={{ backgroundColor: 'rgba(60, 117, 166, 1)', color: 'white', borderRadius: '15px', textDecoration: 'none' }}
+                  >
+                    <span>Tạo mới</span>
+                  </Link>
+                  )}
+              
             </div>
             {blogs.map((blog) => (
               <div key={blog.id} className="col-md-4 p-3">
                 <div className="w-100" style={{ position: "relative" }}>
                   <Link
-                    to={{
-                      pathname: `/blogdetail/${blog.id}`,
-                      state: {
-                        id: blog.id,
-                        title: blog.title,
-                        img: blog.img,
-                        author: blog.author,
-                        content: blog.content,
-                        date: blog.date,
-                      },
-                    }}
+                    to={`/blogdetail/${blog.id}`}
                     className="w-100"
                     style={{ textDecoration: "none", color: "black" }}
                   >
@@ -218,8 +88,8 @@ const Blog = () => {
                     >
                       <div className="blog-image">
                         <img
-                          src={blog1}
-                          alt={""}
+                          src={blog.banner}
+                          alt=""
                           style={{ width: "100%", height: "auto", borderRadius: "15px", aspectRatio: '2/1',
                           backgroundPosition: 'center',
                           backgroundSize: 'cover',
@@ -245,73 +115,6 @@ const Blog = () => {
               </div>
             ))}
           </div>
-
-          <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
-            contentLabel="Create Blog Modal"
-            style={{
-              overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 999 },
-              content: {
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                backgroundColor: "#f7f7f7",
-                border: "none",
-                borderRadius: "10px",
-                boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-                padding: "20px",
-                maxWidth: "90%",
-                minWidth: "300px",
-                width: "50%",
-                fontFamily: "Arial, sans-serif",
-                position: "fixed",
-                margin: "auto",
-                maxHeight: "90vh",
-                overflowY: "auto",
-              },
-            }}
-          >
-            <div className="text-center" style={{ fontSize: "24px", color: "#333333", marginBottom: "20px" }}>
-              Create a new blog
-            </div>
-            <input
-              type="text"
-              placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              style={{ width: "100%", marginBottom: "10px", padding: "10px", border: "1px solid #cccccc", borderRadius: "5px" }}
-            />
-            <input
-              type="text"
-              placeholder="Image URL"
-              value={img}
-              onChange={(e) => setImg(e.target.value)}
-              style={{ width: "100%", marginBottom: "10px", padding: "10px", border: "1px solid #cccccc", borderRadius: "5px" }}
-            />
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <ReactQuill
-                value={editorContent}
-                onChange={handleEditorChange}
-                style={{ width: "100%", height: "auto", marginBottom: "10px", padding: "10px", border: "1px solid #cccccc", borderRadius: "5px" }}
-              />
-
-              <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px" }}>
-                <button
-                  onClick={handleSaveBlog}
-                  style={{ backgroundColor: "#3c75a6", color: "#ffffff", border: "none", borderRadius: "5px", padding: "10px 20px", cursor: "pointer", marginLeft: "10px" }}
-                >
-                  Save
-                </button>
-                <button
-                  onClick={closeModal}
-                  style={{ backgroundColor: "#e74c3c", color: "#ffffff", border: "none", borderRadius: "5px", padding: "10px 20px", cursor: "pointer", marginLeft: "10px" }}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </Modal>
         </div>
       </div>
     </>
@@ -319,6 +122,337 @@ const Blog = () => {
 };
 
 export default Blog;
+
+
+
+
+
+
+
+
+
+
+// import React, { useState, useEffect } from "react";
+// import { Link, useNavigate } from "react-router-dom";
+// import Modal from "react-modal";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import '../../assets/css/styleblog.css';
+// import axios from 'axios';
+// import blog1 from "../../assets/img/blog1.png";
+
+// Modal.setAppElement("#root");
+
+// const Blog = () => {
+
+
+//   const [modalIsOpen, setModalIsOpen] = useState(false);
+//   const [editorContent, setEditorContent] = useState("");
+//   const [title, setTitle] = useState("");
+//   const [img, setImg] = useState("");
+//   const [blogs, setBlogs] = useState([]);
+//   const navigate = useNavigate();
+
+//   // Simulating fetching data from an API
+//   useEffect(() => {
+//     const initialBlogs = [
+//       {
+//         id: 1,
+//         title: "Sample Blog 1",
+//         date: "01/01/2022",
+//         content: "<p>This is the first sample blog content.</p>",
+//         img: "blog1",
+//         author: "littlejoystore",
+//       },
+//       {
+//         id: 2,
+//         title: "Sample Blog 2",
+//         date: "02/01/2022",
+//         content: "<p>This is the second sample blog content.</p>",
+//         img: "blog1",
+//         author: "littlejoystore",
+//       },
+//     ];
+//     setBlogs(initialBlogs);
+//   }, []);
+
+//   const showModal = () => {
+//     setModalIsOpen(true);
+//   };
+
+//   const closeModal = () => {
+//     setModalIsOpen(false);
+//   };
+
+//   const handleEditorChange = (content) => {
+//     setEditorContent(content);
+//   };
+
+//   const handleSaveBlog = () => {
+//     if (title.trim() === "" || img.trim() === "" || editorContent.trim() === "") {
+//       alert("Please fill out all fields.");
+      
+//       return;
+//     }
+//     console.log(editorContent);
+//     const newBlog = {
+//       id: blogs.length > 0 ? blogs[blogs.length - 1].id + 1 : 1,
+//       title: title,
+//       date: new Date().toLocaleDateString(),
+//       content: editorContent,
+//       img: img,
+//       author: "littlejoystore",
+      
+//     };
+
+//     setBlogs([...blogs, newBlog]);
+//     setTitle("");
+//     setEditorContent("");
+//     setImg("");
+//     closeModal();
+//   };
+
+//   const handleDeleteBlog = (id) => {
+//     setBlogs(blogs.filter(blog => blog.id !== id));
+//   };
+
+
+
+//   // const [modalIsOpen, setModalIsOpen] = useState(false);
+//   // const [editorContent, setEditorContent] = useState("");
+//   // const [title, setTitle] = useState("");
+//   // const [img, setImg] = useState("");
+//   // const [blogs, setBlogs] = useState([]);
+//   // const navigate = useNavigate();
+
+//   // useEffect(() => {
+//   //   // Fetch blogs from API
+//   //   axios.get('/api/blogs')
+//   //     .then(response => {
+//   //       setBlogs(response.data);
+//   //     })
+//   //     .catch(error => {
+//   //       console.error("There was an error fetching the blogs!", error);
+//   //     });
+//   // }, []);
+
+//   // const showModal = () => {
+//   //   setModalIsOpen(true);
+//   // };
+
+//   // const closeModal = () => {
+//   //   setModalIsOpen(false);
+//   // };
+
+//   // const handleEditorChange = (content) => {
+//   //   setEditorContent(content);
+//   // };
+
+//   // const handleSaveBlog = () => {
+//   //   if (title.trim() === "" || img.trim() === "" || editorContent.trim() === "") {
+//   //     alert("Please fill out all fields.");
+//   //     return;
+//   //   }
+
+//   //   const newBlog = {
+//   //     title: title,
+//   //     date: new Date().toLocaleDateString(),
+//   //     content: editorContent,
+//   //     img: img,
+//   //     author: "littlejoystore",
+//   //   };
+
+//   //   // Send the new blog to the backend
+//   //   axios.post('/api/blogs', newBlog)
+//   //     .then(response => {
+//   //       setBlogs([...blogs, response.data]);
+//   //       setTitle("");
+//   //       setEditorContent("");
+//   //       setImg("");
+//   //       closeModal();
+//   //     })
+//   //     .catch(error => {
+//   //       console.error("There was an error saving the blog!", error);
+//   //     });
+//   // };
+
+//   // const handleDeleteBlog = (id) => {
+//   //   // Delete the blog from the backend
+//   //   axios.delete(`/api/blogs/${id}`)
+//   //     .then(() => {
+//   //       setBlogs(blogs.filter(blog => blog.id !== id));
+//   //     })
+//   //     .catch(error => {
+//   //       console.error("There was an error deleting the blog!", error);
+//   //     });
+//   // };
+
+//   return (
+//     <>
+//       <div className="container-fluid">
+//         <div className="row">
+//           <div className="col-md-12 banner py-5 text-center">
+//             <h1 className="text-center" style={{ color: "#3C75A6", fontWeight: "600", fontFamily: "sans-serif" }}>
+//               Blog
+//             </h1>
+//             <div className="d-inline-block">
+//               <div className="d-flex align-content-between">
+//                 <p className="px-2">
+//                   <Link to="/" style={{ color: "#103A71", textDecoration: "none" }}>
+//                     Home
+//                   </Link>
+//                 </p>
+//                 <p className="px-2">
+//                   <FontAwesomeIcon icon="fa-solid fa-angles-right" style={{ color: "#3c75a6" }} />
+//                 </p>
+//                 <p className="px-2">
+//                   <Link to="/blog" style={{ color: "#103A71", textDecoration: "none" }}>
+//                     Blog
+//                   </Link>
+//                 </p>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className="container-fluid body-content">
+//         <div className="container pt-5">
+//           <div className="row">
+//             <div className="col-md-12 mt-5 mb-5 d-flex justify-content-end">
+//               <Link to='/createblog'>
+//               <div onClick={showModal} className="btn-create-blog d-inline-block px-4 py-2" 
+//                    style={{ backgroundColor: 'rgba(60, 117, 166, 1)', color: 'white', borderRadius: '15px' }}>
+//                 <span>Tạo mới</span>
+//               </div>
+//               </Link>
+//             </div>
+//             {blogs.map((blog) => (
+//               <div key={blog.id} className="col-md-4 p-3">
+//                 <div className="w-100" style={{ position: "relative" }}>
+//                   <Link
+//                     to={{
+//                       pathname: `/blogdetail/${blog.id}`,
+//                       state: {
+//                         id: blog.id,
+//                         title: blog.title,
+//                         img: blog.img,
+//                         author: blog.author,
+//                         content: blog.content,
+//                         date: blog.date,
+//                       },
+//                     }}
+//                     className="w-100"
+//                     style={{ textDecoration: "none", color: "black" }}
+//                   >
+//                     <div
+//                       className="blog-content-main w-100 p-4"
+//                       style={{ backgroundColor: "rgba(255, 255, 255, 0.8)", borderRadius: "15px" }}
+//                     >
+//                       <div className="blog-image">
+//                         <img
+//                           src={blog1}
+//                           alt={""}
+//                           style={{ width: "100%", height: "auto", borderRadius: "15px", aspectRatio: '2/1',
+//                           backgroundPosition: 'center',
+//                           backgroundSize: 'cover',
+//                           backgroundRepeat: 'no-repeat' }}
+//                         />
+//                       </div>
+//                       <div className="mt-3">
+//                         <span className="fs-5 fw-bold">{blog.title}</span>
+//                       </div>
+//                       <div className="blog-date mt-3 w-100 d-flex justify-content-end">
+//                         <span style={{ color: "#97999D" }}>{blog.date}</span>
+//                       </div>
+//                     </div>
+//                   </Link>
+//                   <div
+//                     className="delete-blog"
+//                     onClick={() => handleDeleteBlog(blog.id)}
+//                     style={{ position: "absolute", top: "10px", right: "10px", cursor: "pointer" }}
+//                   >
+//                     <FontAwesomeIcon icon="fa-solid fa-circle-xmark" />
+//                   </div>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+
+//           <Modal
+//             isOpen={modalIsOpen}
+//             onRequestClose={closeModal}
+//             contentLabel="Create Blog Modal"
+//             style={{
+//               overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 999 },
+//               content: {
+//                 top: "50%",
+//                 left: "50%",
+//                 transform: "translate(-50%, -50%)",
+//                 backgroundColor: "#f7f7f7",
+//                 border: "none",
+//                 borderRadius: "10px",
+//                 boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+//                 padding: "20px",
+//                 maxWidth: "90%",
+//                 minWidth: "300px",
+//                 width: "50%",
+//                 fontFamily: "Arial, sans-serif",
+//                 position: "fixed",
+//                 margin: "auto",
+//                 maxHeight: "90vh",
+//                 overflowY: "auto",
+//               },
+//             }}
+//           >
+//             <div className="text-center" style={{ fontSize: "24px", color: "#333333", marginBottom: "20px" }}>
+//               Create a new blog
+//             </div>
+//             <input
+//               type="text"
+//               placeholder="Title"
+//               value={title}
+//               onChange={(e) => setTitle(e.target.value)}
+//               style={{ width: "100%", marginBottom: "10px", padding: "10px", border: "1px solid #cccccc", borderRadius: "5px" }}
+//             />
+//             <input
+//               type="text"
+//               placeholder="Image URL"
+//               value={img}
+//               onChange={(e) => setImg(e.target.value)}
+//               style={{ width: "100%", marginBottom: "10px", padding: "10px", border: "1px solid #cccccc", borderRadius: "5px" }}
+//             />
+//             <div style={{ display: "flex", flexDirection: "column" }}>
+//               <ReactQuill
+//                 value={editorContent}
+//                 onChange={handleEditorChange}
+//                 style={{ width: "100%", height: "auto", marginBottom: "10px", padding: "10px", border: "1px solid #cccccc", borderRadius: "5px" }}
+//               />
+
+//               <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px" }}>
+//                 <button
+//                   onClick={handleSaveBlog}
+//                   style={{ backgroundColor: "#3c75a6", color: "#ffffff", border: "none", borderRadius: "5px", padding: "10px 20px", cursor: "pointer", marginLeft: "10px" }}
+//                 >
+//                   Save
+//                 </button>
+//                 <button
+//                   onClick={closeModal}
+//                   style={{ backgroundColor: "#e74c3c", color: "#ffffff", border: "none", borderRadius: "5px", padding: "10px 20px", cursor: "pointer", marginLeft: "10px" }}
+//                 >
+//                   Close
+//                 </button>
+//               </div>
+//             </div>
+//           </Modal>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default Blog;
 
 
 
