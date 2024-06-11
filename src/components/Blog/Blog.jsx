@@ -1,85 +1,70 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSquareCaretLeft,
-  faSquareCaretRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSquareCaretLeft, faSquareCaretRight, } from "@fortawesome/free-solid-svg-icons";
 import "../../assets/css/styleblog.css";
 import { useAuth } from "../../context/AuthContext";
 import no_found from "../../assets/img/404.jpg";
-import { elements } from "chart.js";
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
-  const navigate = useNavigate();
   const { user } = useAuth();
   const [paging, setPaging] = useState([]);
 
   useEffect(() => {
-    // Chỉ fetch khi paging.CurrentPage đã được thiết lập
-    if (paging.CurrentPage !== undefined) {
-      fetch(
-        `https://littlejoyapi.azurewebsites.net/api/blog?PageIndex=${paging.CurrentPage}&PageSize=9`
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Đã thất bại trong việc lấy dữ liệu blog");
-          }
+    const fetchData = async () => {
+      try {
+        if (paging.CurrentPage === undefined) {
+          // Nếu đây là lần đầu fetch, đặt paging.CurrentPage là 1
+          setPaging((prevState) => ({
+            ...prevState,
+            CurrentPage: 1,
+          }));
+          return;
+        }
 
-          const paginationData = JSON.parse(
-            response.headers.get("X-Pagination")
-          );
-          setPaging(paginationData);
+        const response = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/blog?PageIndex=${paging.CurrentPage}&PageSize=9`
+        );
 
+        const paginationData = JSON.parse(response.headers.get('X-Pagination'));
+        setPaging(paginationData);
 
-          const previous = document.getElementById("blog-pre");
-          const next = document.getElementById("blog-next");
+        const previous = document.getElementById('blog-pre');
+        const next = document.getElementById('blog-next');
 
-          if (paging.CurrentPage === 1) {
-            // Trang đầu tiên
-            previous.style.opacity = "0.5"; // Mờ đi vì không có trang trước
-            next.style.opacity = paginationData.TotalPages > 1 ? "1" : "0.5"; // Hiển thị nút "next" nếu có nhiều hơn một trang
-            if(paginationData.TotalPages <= 1){
-            }
-          } else if (paging.CurrentPage === paginationData.TotalPages) {
-            // Trang cuối cùng
-            previous.style.opacity = "1"; // Hiển thị nút "previous"
-            next.style.opacity = "0.5"; // Mờ đi vì không có trang sau
-          } else {
-            // Các trang ở giữa
-            previous.style.opacity = "1"; // Hiển thị nút "previous"
-            next.style.opacity = "1"; // Hiển thị nút "next"
-          }
+        if (paging.CurrentPage === 1) {
+          // Trang đầu tiên
+          previous.style.opacity = '0.5'; // Mờ đi vì không có trang trước
+          next.style.opacity = paginationData.TotalPages > 1 ? '1' : '0.5'; // Hiển thị nút "next" nếu có nhiều hơn một trang
+        } else if (paging.CurrentPage === paginationData.TotalPages) {
+          // Trang cuối cùng
+          previous.style.opacity = '1'; // Hiển thị nút "previous"
+          next.style.opacity = '0.5'; // Mờ đi vì không có trang sau
+        } else {
+          // Các trang ở giữa
+          previous.style.opacity = '1'; // Hiển thị nút "previous"
+          next.style.opacity = '1'; // Hiển thị nút "next"
+        }
 
-          return response.json();
-        })
-        .then((data) => {
-          const updatedData = data.map((blog) => {
-            const dateParts = blog.date.split("T")[0].split("-");
-            const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+        const data = await response.json();
+        const updatedData = data.map((blog) => {
+          const dateParts = blog.date.split('T')[0].split('-');
+          const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 
-            return {
-              ...blog,
-              banner:
-                blog.banner == null || blog.banner == ""
-                  ? no_found
-                  : blog.banner,
-              date: formattedDate, // Chuyển đổi định dạng ngày
-            };
-          });
-          setBlogs(updatedData);
-        })
-        .catch((error) => {
-          console.error("Lỗi khi lấy dữ liệu blog:", error.message);
+          return {
+            ...blog,
+            banner: blog.banner == null || blog.banner === '' ? no_found : blog.banner,
+            date: formattedDate, // Chuyển đổi định dạng ngày
+          };
         });
-    } else {
-      // Nếu đây là lần đầu fetch, đặt paging.CurrentPage là 1
-      setPaging((prevState) => ({
-        ...prevState,
-        CurrentPage: 1,
-      }));
-    }
+        setBlogs(updatedData);
+      } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu blog:', error.message);
+      }
+    };
+
+    fetchData();
   }, [paging.CurrentPage]);
 
   const handleDeleteBlog = (id) => {};
@@ -177,7 +162,7 @@ const Blog = () => {
                     <div
                       className="blog-content-main w-100 p-4"
                       style={{
-                        backgroundColor: '#ededed',
+                        backgroundColor: "#ededed",
                         borderRadius: "15px",
                       }}
                     >
@@ -223,683 +208,32 @@ const Blog = () => {
           </div>
         </div>
       </div>
-      <div
-          className="mt-3 mb-5 py-5"
-          style={{fontSize: "25px" }}
-        >
-          <div className="d-inline-block float-end" >
-            <div className="fs-5 px-5">
-              <Link
-                className="pe-2 fs-3"
-                to="#"
-                style={{ color: "#3C75A6" }}
-              >
-                <FontAwesomeIcon
-                  id="blog-pre"
-                  icon={faSquareCaretLeft}
-                  onClick={handlePrevious}
-                />
-              </Link>
-              <span className="px-2 fs-4" style={{ fontFamily: "Roboto" }}>
-                Trang {paging.CurrentPage}
-              </span>
-              <Link
-                className="ps-2 fs-3"
-                to="#"
-                style={{ color: "#3C75A6" }}
-              >
-                <FontAwesomeIcon
-                  id="blog-next"
-                  icon={faSquareCaretRight}
-                  className="pe-3"
-                  onClick={handleNext}
-                />
-              </Link>
-            </div>
+      <div className="mt-3 mb-5 py-5" style={{ fontSize: "25px" }}>
+        <div className="d-inline-block float-end">
+          <div className="fs-5 px-5">
+            <Link className="pe-2 fs-3" to="#" style={{ color: "#3C75A6" }}>
+              <FontAwesomeIcon
+                id="blog-pre"
+                icon={faSquareCaretLeft}
+                onClick={handlePrevious}
+              />
+            </Link>
+            <span className="px-2 fs-4" style={{ fontFamily: "Roboto" }}>
+              Trang {paging.CurrentPage}
+            </span>
+            <Link className="ps-2 fs-3" to="#" style={{ color: "#3C75A6" }}>
+              <FontAwesomeIcon
+                id="blog-next"
+                icon={faSquareCaretRight}
+                className="pe-3"
+                onClick={handleNext}
+              />
+            </Link>
           </div>
         </div>
+      </div>
     </>
   );
 };
 
 export default Blog;
-
-// import React, { useState, useEffect } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import Modal from "react-modal";
-// import ReactQuill from "react-quill";
-// import "react-quill/dist/quill.snow.css";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import '../../assets/css/styleblog.css';
-// import axios from 'axios';
-// import blog1 from "../../assets/img/blog1.png";
-
-// Modal.setAppElement("#root");
-
-// const Blog = () => {
-
-//   const [modalIsOpen, setModalIsOpen] = useState(false);
-//   const [editorContent, setEditorContent] = useState("");
-//   const [title, setTitle] = useState("");
-//   const [img, setImg] = useState("");
-//   const [blogs, setBlogs] = useState([]);
-//   const navigate = useNavigate();
-
-//   // Simulating fetching data from an API
-//   useEffect(() => {
-//     const initialBlogs = [
-//       {
-//         id: 1,
-//         title: "Sample Blog 1",
-//         date: "01/01/2022",
-//         content: "<p>This is the first sample blog content.</p>",
-//         img: "blog1",
-//         author: "littlejoystore",
-//       },
-//       {
-//         id: 2,
-//         title: "Sample Blog 2",
-//         date: "02/01/2022",
-//         content: "<p>This is the second sample blog content.</p>",
-//         img: "blog1",
-//         author: "littlejoystore",
-//       },
-//     ];
-//     setBlogs(initialBlogs);
-//   }, []);
-
-//   const showModal = () => {
-//     setModalIsOpen(true);
-//   };
-
-//   const closeModal = () => {
-//     setModalIsOpen(false);
-//   };
-
-//   const handleEditorChange = (content) => {
-//     setEditorContent(content);
-//   };
-
-//   const handleSaveBlog = () => {
-//     if (title.trim() === "" || img.trim() === "" || editorContent.trim() === "") {
-//       alert("Please fill out all fields.");
-
-//       return;
-//     }
-//     console.log(editorContent);
-//     const newBlog = {
-//       id: blogs.length > 0 ? blogs[blogs.length - 1].id + 1 : 1,
-//       title: title,
-//       date: new Date().toLocaleDateString(),
-//       content: editorContent,
-//       img: img,
-//       author: "littlejoystore",
-
-//     };
-
-//     setBlogs([...blogs, newBlog]);
-//     setTitle("");
-//     setEditorContent("");
-//     setImg("");
-//     closeModal();
-//   };
-
-//   const handleDeleteBlog = (id) => {
-//     setBlogs(blogs.filter(blog => blog.id !== id));
-//   };
-
-//   // const [modalIsOpen, setModalIsOpen] = useState(false);
-//   // const [editorContent, setEditorContent] = useState("");
-//   // const [title, setTitle] = useState("");
-//   // const [img, setImg] = useState("");
-//   // const [blogs, setBlogs] = useState([]);
-//   // const navigate = useNavigate();
-
-//   // useEffect(() => {
-//   //   // Fetch blogs from API
-//   //   axios.get('/api/blogs')
-//   //     .then(response => {
-//   //       setBlogs(response.data);
-//   //     })
-//   //     .catch(error => {
-//   //       console.error("There was an error fetching the blogs!", error);
-//   //     });
-//   // }, []);
-
-//   // const showModal = () => {
-//   //   setModalIsOpen(true);
-//   // };
-
-//   // const closeModal = () => {
-//   //   setModalIsOpen(false);
-//   // };
-
-//   // const handleEditorChange = (content) => {
-//   //   setEditorContent(content);
-//   // };
-
-//   // const handleSaveBlog = () => {
-//   //   if (title.trim() === "" || img.trim() === "" || editorContent.trim() === "") {
-//   //     alert("Please fill out all fields.");
-//   //     return;
-//   //   }
-
-//   //   const newBlog = {
-//   //     title: title,
-//   //     date: new Date().toLocaleDateString(),
-//   //     content: editorContent,
-//   //     img: img,
-//   //     author: "littlejoystore",
-//   //   };
-
-//   //   // Send the new blog to the backend
-//   //   axios.post('/api/blogs', newBlog)
-//   //     .then(response => {
-//   //       setBlogs([...blogs, response.data]);
-//   //       setTitle("");
-//   //       setEditorContent("");
-//   //       setImg("");
-//   //       closeModal();
-//   //     })
-//   //     .catch(error => {
-//   //       console.error("There was an error saving the blog!", error);
-//   //     });
-//   // };
-
-//   // const handleDeleteBlog = (id) => {
-//   //   // Delete the blog from the backend
-//   //   axios.delete(`/api/blogs/${id}`)
-//   //     .then(() => {
-//   //       setBlogs(blogs.filter(blog => blog.id !== id));
-//   //     })
-//   //     .catch(error => {
-//   //       console.error("There was an error deleting the blog!", error);
-//   //     });
-//   // };
-
-//   return (
-//     <>
-//       <div className="container-fluid">
-//         <div className="row">
-//           <div className="col-md-12 banner py-5 text-center">
-//             <h1 className="text-center" style={{ color: "#3C75A6", fontWeight: "600", fontFamily: "sans-serif" }}>
-//               Blog
-//             </h1>
-//             <div className="d-inline-block">
-//               <div className="d-flex align-content-between">
-//                 <p className="px-2">
-//                   <Link to="/" style={{ color: "#103A71", textDecoration: "none" }}>
-//                     Home
-//                   </Link>
-//                 </p>
-//                 <p className="px-2">
-//                   <FontAwesomeIcon icon="fa-solid fa-angles-right" style={{ color: "#3c75a6" }} />
-//                 </p>
-//                 <p className="px-2">
-//                   <Link to="/blog" style={{ color: "#103A71", textDecoration: "none" }}>
-//                     Blog
-//                   </Link>
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="container-fluid body-content">
-//         <div className="container pt-5">
-//           <div className="row">
-//             <div className="col-md-12 mt-5 mb-5 d-flex justify-content-end">
-//               <Link to='/createblog'>
-//               <div onClick={showModal} className="btn-create-blog d-inline-block px-4 py-2"
-//                    style={{ backgroundColor: 'rgba(60, 117, 166, 1)', color: 'white', borderRadius: '15px' }}>
-//                 <span>Tạo mới</span>
-//               </div>
-//               </Link>
-//             </div>
-//             {blogs.map((blog) => (
-//               <div key={blog.id} className="col-md-4 p-3">
-//                 <div className="w-100" style={{ position: "relative" }}>
-//                   <Link
-//                     to={{
-//                       pathname: `/blogdetail/${blog.id}`,
-//                       state: {
-//                         id: blog.id,
-//                         title: blog.title,
-//                         img: blog.img,
-//                         author: blog.author,
-//                         content: blog.content,
-//                         date: blog.date,
-//                       },
-//                     }}
-//                     className="w-100"
-//                     style={{ textDecoration: "none", color: "black" }}
-//                   >
-//                     <div
-//                       className="blog-content-main w-100 p-4"
-//                       style={{ backgroundColor: "rgba(255, 255, 255, 0.8)", borderRadius: "15px" }}
-//                     >
-//                       <div className="blog-image">
-//                         <img
-//                           src={blog1}
-//                           alt={""}
-//                           style={{ width: "100%", height: "auto", borderRadius: "15px", aspectRatio: '2/1',
-//                           backgroundPosition: 'center',
-//                           backgroundSize: 'cover',
-//                           backgroundRepeat: 'no-repeat' }}
-//                         />
-//                       </div>
-//                       <div className="mt-3">
-//                         <span className="fs-5 fw-bold">{blog.title}</span>
-//                       </div>
-//                       <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-//                         <span style={{ color: "#97999D" }}>{blog.date}</span>
-//                       </div>
-//                     </div>
-//                   </Link>
-//                   <div
-//                     className="delete-blog"
-//                     onClick={() => handleDeleteBlog(blog.id)}
-//                     style={{ position: "absolute", top: "10px", right: "10px", cursor: "pointer" }}
-//                   >
-//                     <FontAwesomeIcon icon="fa-solid fa-circle-xmark" />
-//                   </div>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-
-//           <Modal
-//             isOpen={modalIsOpen}
-//             onRequestClose={closeModal}
-//             contentLabel="Create Blog Modal"
-//             style={{
-//               overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 999 },
-//               content: {
-//                 top: "50%",
-//                 left: "50%",
-//                 transform: "translate(-50%, -50%)",
-//                 backgroundColor: "#f7f7f7",
-//                 border: "none",
-//                 borderRadius: "10px",
-//                 boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-//                 padding: "20px",
-//                 maxWidth: "90%",
-//                 minWidth: "300px",
-//                 width: "50%",
-//                 fontFamily: "Arial, sans-serif",
-//                 position: "fixed",
-//                 margin: "auto",
-//                 maxHeight: "90vh",
-//                 overflowY: "auto",
-//               },
-//             }}
-//           >
-//             <div className="text-center" style={{ fontSize: "24px", color: "#333333", marginBottom: "20px" }}>
-//               Create a new blog
-//             </div>
-//             <input
-//               type="text"
-//               placeholder="Title"
-//               value={title}
-//               onChange={(e) => setTitle(e.target.value)}
-//               style={{ width: "100%", marginBottom: "10px", padding: "10px", border: "1px solid #cccccc", borderRadius: "5px" }}
-//             />
-//             <input
-//               type="text"
-//               placeholder="Image URL"
-//               value={img}
-//               onChange={(e) => setImg(e.target.value)}
-//               style={{ width: "100%", marginBottom: "10px", padding: "10px", border: "1px solid #cccccc", borderRadius: "5px" }}
-//             />
-//             <div style={{ display: "flex", flexDirection: "column" }}>
-//               <ReactQuill
-//                 value={editorContent}
-//                 onChange={handleEditorChange}
-//                 style={{ width: "100%", height: "auto", marginBottom: "10px", padding: "10px", border: "1px solid #cccccc", borderRadius: "5px" }}
-//               />
-
-//               <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px" }}>
-//                 <button
-//                   onClick={handleSaveBlog}
-//                   style={{ backgroundColor: "#3c75a6", color: "#ffffff", border: "none", borderRadius: "5px", padding: "10px 20px", cursor: "pointer", marginLeft: "10px" }}
-//                 >
-//                   Save
-//                 </button>
-//                 <button
-//                   onClick={closeModal}
-//                   style={{ backgroundColor: "#e74c3c", color: "#ffffff", border: "none", borderRadius: "5px", padding: "10px 20px", cursor: "pointer", marginLeft: "10px" }}
-//                 >
-//                   Close
-//                 </button>
-//               </div>
-//             </div>
-//           </Modal>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Blog;
-
-// import React, { useState } from 'react';
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import './styleblog.css'
-// import { Link } from 'react-router-dom';
-// import ReactQuill from 'react-quill';
-// import 'react-quill/dist/quill.snow.css';
-// import Modal from 'react-modal';
-
-// const Blog = () => {
-
-//     const [modalIsOpen, setModalIsOpen] = useState(false);
-//     const [editorContent, setEditorContent] = useState('');
-
-//     const showModal = () => {
-//         setModalIsOpen(true);
-//     };
-
-//     const closeModal = () => {
-//         setModalIsOpen(false);
-//     };
-
-//     const handleEditorChange = (content) => {
-//         setEditorContent(content);
-//     };
-
-//   return (
-//     <>
-//       <div className="container-fluid">
-//         <div className="row">
-//             <div className="col-md-12 banner py-5 text-center">
-//                 <h1 className="text-center" style={{color: '#3C75A6', fontWeight: '600', fontFamily: 'sans-serif'}}>Blog</h1>
-//                 <div className="d-inline-block">
-//                     <div className="d-flex align-content-between">
-//                         <p className="px-2">
-//                             <Link to="/" style={{color: '#103A71', textDecoration: 'none'}}>Home</Link>
-//                         </p>
-//                         <p className="px-2">
-//                           <FontAwesomeIcon icon="fa-solid fa-angles-right" style={{color: '#3c75a6'}} />
-//                         </p>
-//                         <p className="px-2">
-//                             <Link to="/blog" style={{color: '#103A71', textDecoration: 'none'}}>Blog</Link>
-//                         </p>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     </div>
-
-//     <div className="container-fluid body-content">
-//         <div className="container pt-5">
-//             <div className="row">
-//                 <div className="col-md-12 mt-5 mb-5 d-flex justify-content-end" style={{display: 'none !important'}}>
-//                     <a href="">
-//                         <div onClick={showModal} className="btn-create-blog d-inline-block px-4 py-2">
-//                             <span>Tạo mới</span>
-//                         </div>
-//                     </a>
-//                 </div>
-//                 <div className="col-md-4 p-3">
-//                     <a href="" className="w-100" style={{textDecoration: 'none', color: 'black' }}>
-//                         <div className="blog-content-main w-100 p-4"
-//                             style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px' }}>
-//                             <div className="blog-image">
-//                             </div>
-//                             <div className="mt-3">
-//                                 <span className="fs-5 fw-bold">Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-//                                     dùng</span>
-//                             </div>
-//                             <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-//                                 <span style={{color: '#97999D' }}>07/12/2003</span>
-//                             </div>
-//                         </div>
-//                     </a>
-//                 </div>
-//                 <div className="col-md-4 p-3">
-//                     <a href="" className="w-100" style={{textDecoration: 'none', color: 'black' }}>
-//                         <div className="blog-content-main w-100 p-4"
-//                             style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px' }}>
-//                             <div className="blog-image">
-//                             </div>
-//                             <div className="mt-3">
-//                                 <span className="fs-5 fw-bold">Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-//                                     dùng</span>
-//                             </div>
-//                             <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-//                                 <span style={{color: '#97999D' }}>07/12/2003</span>
-//                             </div>
-//                         </div>
-//                     </a>
-//                 </div>
-//                 <div className="col-md-4 p-3">
-//                     <a href="" className="w-100" style={{textDecoration: 'none', color: 'black' }}>
-//                         <div className="blog-content-main w-100 p-4"
-//                             style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px' }}>
-//                             <div className="blog-image">
-//                             </div>
-//                             <div className="mt-3">
-//                                 <span className="fs-5 fw-bold">Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-//                                     dùng</span>
-//                             </div>
-//                             <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-//                                 <span style={{color: '#97999D' }}>07/12/2003</span>
-//                             </div>
-//                         </div>
-//                     </a>
-//                 </div>
-//                 <div className="col-md-4 p-3">
-//                     <a href="" className="w-100" style={{textDecoration: 'none', color: 'black' }}>
-//                         <div className="blog-content-main w-100 p-4"
-//                             style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px' }}>
-//                             <div className="blog-image">
-//                             </div>
-//                             <div className="mt-3">
-//                                 <span className="fs-5 fw-bold">Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-//                                     dùng</span>
-//                             </div>
-//                             <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-//                                 <span style={{color: '#97999D' }}>07/12/2003</span>
-//                             </div>
-//                         </div>
-//                     </a>
-//                 </div>
-//                 <div className="col-md-4 p-3">
-//                     <a href="" className="w-100" style={{textDecoration: 'none', color: 'black' }}>
-//                         <div className="blog-content-main w-100 p-4"
-//                             style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px' }}>
-//                             <div className="blog-image">
-//                             </div>
-//                             <div className="mt-3">
-//                                 <span className="fs-5 fw-bold">Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-//                                     dùng</span>
-//                             </div>
-//                             <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-//                                 <span style={{color: '#97999D' }}>07/12/2003</span>
-//                             </div>
-//                         </div>
-//                     </a>
-//                 </div>
-//                 <div className="col-md-4 p-3">
-//                     <a href="" className="w-100" style={{textDecoration: 'none', color: 'black' }}>
-//                         <div className="blog-content-main w-100 p-4"
-//                             style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px' }}>
-//                             <div className="blog-image">
-//                             </div>
-//                             <div className="mt-3">
-//                                 <span className="fs-5 fw-bold">Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-//                                     dùng</span>
-//                             </div>
-//                             <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-//                                 <span style={{color: '#97999D' }}>07/12/2003</span>
-//                             </div>
-//                         </div>
-//                     </a>
-//                 </div>
-//                 <div className="col-md-4 p-3">
-//                     <a href="" className="w-100" style={{textDecoration: 'none', color: 'black' }}>
-//                         <div className="blog-content-main w-100 p-4"
-//                             style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px' }}>
-//                             <div className="blog-image">
-//                             </div>
-//                             <div className="mt-3">
-//                                 <span className="fs-5 fw-bold">Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-//                                     dùng</span>
-//                             </div>
-//                             <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-//                                 <span style={{color: '#97999D' }}>07/12/2003</span>
-//                             </div>
-//                         </div>
-//                     </a>
-//                 </div>
-//                 <div className="col-md-4 p-3">
-//                     <a href="" className="w-100" style={{textDecoration: 'none', color: 'black' }}>
-//                         <div className="blog-content-main w-100 p-4"
-//                             style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px' }}>
-//                             <div className="blog-image">
-//                             </div>
-//                             <div className="mt-3">
-//                                 <span className="fs-5 fw-bold">Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-//                                     dùng</span>
-//                             </div>
-//                             <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-//                                 <span style={{color: '#97999D' }}>07/12/2003</span>
-//                             </div>
-//                         </div>
-//                     </a>
-//                 </div>
-//                 <div className="col-md-4 p-3">
-//                     <a href="" className="w-100" style={{textDecoration: 'none', color: 'black' }}>
-//                         <div className="blog-content-main w-100 p-4"
-//                             style={{backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px' }}>
-//                             <div className="blog-image">
-//                             </div>
-//                             <div className="mt-3">
-//                                 <span className="fs-5 fw-bold">Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-//                                     dùng</span>
-//                             </div>
-//                             <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-//                                 <span style={{color: '#97999D' }}>07/12/2003</span>
-//                             </div>
-//                         </div>
-//                     </a>
-//                 </div>
-//                 <div className="col-md-12 mt-5">
-//                     <div className="fs-5 d-flex justify-content-end">
-//                         <a className="px-3 inconCursor" href="#" style={{color: '#3C75A6' }}>
-//                         <FontAwesomeIcon icon="fa-solid fa-circle-chevron-left" className="opacity-50" /></a>
-//                         <span style={{fontFamily: 'Poppins'}}>Trang 1</span>
-//                         <a className="px-3" href="#" style={{color: '#3C75A6' }}>
-//                         <FontAwesomeIcon icon="fa-solid fa-circle-chevron-right"/></a>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-
-//         <Modal
-//                 isOpen={modalIsOpen}
-//                 onRequestClose={closeModal}
-//                 contentLabel="Create Blog Modal"
-//                 style={{
-//                     content: {
-//                         top: '50%',
-//                         left: '50%',
-//                         right: 'auto',
-//                         bottom: 'auto',
-//                         marginRight: '-50%',
-//                         transform: 'translate(-50%, -50%)'
-//                     }
-//                 }}
-//             >
-//                 <h2>Create a New Blog Post</h2>
-//                 <button onClick={closeModal}>Close</button>
-//                 <ReactQuill value={editorContent} onChange={handleEditorChange} />
-//             </Modal>
-
-//     </div>
-//     </>
-//   )
-// }
-
-// export default Blog;
-
-/*
-export default function Blog() {
-  const totalBlogs = 12;
-  const blogsPerPage = 9;
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const blogList = Array.from({ length: totalBlogs }, (_, i) => ({
-    id: i + 1,
-    title: `Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên dùng ${i + 1}`,
-    date: '10/05/2024'
-  }));
-
-  const currentBlogs = blogList.slice((currentPage - 1) * blogsPerPage, currentPage * blogsPerPage);
-
-  // Xử lý khi nhấn nút next (chuyển trang)
-  const handleNextPage = () => {
-    if (currentPage * blogsPerPage < totalBlogs) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  // Xử lý khi nhấn nút previous (trở lại trang trước)
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  return (
-    <>
-      <div classNameName="banner my-1">
-        <img src={Banner} alt="Banner" />
-        <div classNameName="title-page">
-          <div classNameName="title">
-            <h1>Blog</h1>
-          </div>
-          <div classNameName="navigation">
-            <Link to="/">Home</Link>
-            <span classNameName="separator">
-              <FontAwesomeIcon icon={faAnglesRight} classNameName="px-4" />
-            </span>
-            <Link to="/blog">Blog</Link>
-          </div>
-        </div>
-      </div>
-
-      <div classNameName="py-2"></div>
-
-      <div classNameName="container ctn">
-        <div classNameName="row">
-          {currentBlogs.map((blog, index) => (
-            <div classNameName="col-md-4 mb-4" key={index}>
-              <div classNameName="blog-card">
-                <div><img src={blogimage} alt="Blog" classNameName="img-fluid" /></div>
-                <div>{blog.title}</div>
-                <div classNameName="text-end">{blog.date}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div classNameName="my-5" style={{ paddingRight: '5rem' }}>
-        <div classNameName="w-80" style={{ textAlign: 'right' }}>
-          <div classNameName="fs-5 my-xl-5 mx-xl-4 px-xl-5">
-            <a classNameName="pe-2 fs-4" href="#" style={{ color: '#3C75A6' }} onClick={handlePreviousPage}>
-              <FontAwesomeIcon icon={faSquareCaretLeft} classNameName="opacity-50" />
-            </a>
-            <span style={{ fontFamily: 'Roboto' }}> Trang {currentPage} </span>
-            <a classNameName="ps-2 fs-4" href="#" style={{ color: '#3C75A6' }} onClick={handleNextPage}>
-              <FontAwesomeIcon icon={faSquareCaretRight} classNameName="pe-3" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
-*/
