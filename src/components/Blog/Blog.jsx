@@ -15,7 +15,6 @@ const Blog = () => {
     const fetchData = async () => {
       try {
         if (paging.CurrentPage === undefined) {
-          // Nếu đây là lần đầu fetch, đặt paging.CurrentPage là 1
           setPaging((prevState) => ({
             ...prevState,
             CurrentPage: 1,
@@ -34,7 +33,6 @@ const Blog = () => {
         const next = document.getElementById('blog-next');
 
         if (paging.CurrentPage === 1) {
-          // Trang đầu tiên
           previous.style.opacity = '0.5'; // Mờ đi vì không có trang trước
           next.style.opacity = paginationData.TotalPages > 1 ? '1' : '0.5'; // Hiển thị nút "next" nếu có nhiều hơn một trang
         } else if (paging.CurrentPage === paginationData.TotalPages) {
@@ -63,7 +61,6 @@ const Blog = () => {
         console.error('Lỗi khi lấy dữ liệu blog:', error.message);
       }
     };
-
     fetchData();
   }, [paging.CurrentPage]);
 
@@ -73,7 +70,7 @@ const Blog = () => {
     if (paging.CurrentPage > 1) {
       setPaging((prevState) => ({
         ...prevState,
-        CurrentPage: prevState.CurrentPage - 1, // Giảm CurrentPage đi 1 khi nhấn Previous
+        CurrentPage: prevState.CurrentPage - 1, 
       }));
     }
   };
@@ -155,7 +152,8 @@ const Blog = () => {
               <div key={blog.id} className="col-md-4 p-3">
                 <div className="w-100" style={{ position: "relative" }}>
                   <Link
-                    to={`/blogdetail/${blog.id}`}
+                    to={{pathname: `/blogdetail/${blog.id}`, state: { blog }}}
+                    
                     className="w-100"
                     style={{ textDecoration: "none", color: "black" }}
                   >
@@ -190,6 +188,7 @@ const Blog = () => {
                       </div>
                     </div>
                   </Link>
+                  {user && user.role !== "USER" && (
                   <div
                     className="delete-blog"
                     onClick={() => handleDeleteBlog(blog.id)}
@@ -202,6 +201,7 @@ const Blog = () => {
                   >
                     <FontAwesomeIcon icon="fa-solid fa-circle-xmark" />
                   </div>
+                  )}
                 </div>
               </div>
             ))}

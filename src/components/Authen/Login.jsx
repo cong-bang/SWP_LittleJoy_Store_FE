@@ -4,6 +4,8 @@ import "../../assets/css/stylelogin.css";
 import logogoogle from "../../assets/img/logogoogle.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { loginUser } from "../../redux/apiRequest";
+import { useDispatch } from "react-redux";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -11,6 +13,7 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const users = [
     { username: "admin", password: "admin", role: "ADMIN" },
@@ -18,19 +21,56 @@ export default function Login() {
     { username: "user", password: "user", role: "USER" },
   ];
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const user = users.find(
-      (user) => user.username === username && user.password === password
-    );
+  
+  // const handleLogin = (e) => {
+  //   e.preventDefault();
+  //   const user = users.find(
+  //     (user) => user.username === username && user.password === password
+  //   );
 
-    if (user) {
-      localStorage.setItem("role", user.role);
-      localStorage.setItem("username", user.username);
-      navigate("/");
-      window.location.reload();
-    } else {
-      setError("Tên đăng nhập hoặc mật khẩu không đúng");
+  //   if (user) {
+  //     localStorage.setItem("role", user.role);
+  //     localStorage.setItem("username", user.username);
+  //     navigate("/");
+  //     window.location.reload();
+  //   } else {
+  //     setError("Tên đăng nhập hoặc mật khẩu không đúng");
+  //   }
+  // };
+
+  //LoginAPI - store
+  // const handleLogin = (e) => {
+  //   e.preventDefault();
+  //   const newUser = {
+  //     username: username,
+  //     password: password
+  //   };
+  //   loginUser(newUser,dispatch,navigate);
+  // }
+
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch('https://littlejoyapi.azurewebsites.net/api/authen/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('accessToken', data.accessToken);
+        navigate("/");
+      } else {
+        setError(data.message || 'Login failed');
+      }
+    } catch (error) {
+      setError(error.message);
     }
   };
 

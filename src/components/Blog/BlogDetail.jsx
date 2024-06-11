@@ -1,30 +1,72 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import '../../assets/css/styleblogdetail.css'
-import { Link } from 'react-router-dom';
+import "../../assets/css/styleblogdetail.css";
+import { Link, useParams } from "react-router-dom";
+import no_found from "../../assets/img/404.jpg";
 
- const BlogDetail = () => {
+const BlogDetail = () => {
+  const { id } = useParams();
+  const [blog, setBlog] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/blog/${id}`
+        );
+        const data = await response.json();
+        if (data.httpCode != 404) {
+          const dateParts = data.date.split("T")[0].split("-");
+          const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+          data.date = formattedDate;
+          data.banner =
+            data.banner == null || data.banner == "" ? no_found : data.banner;
+          console.log(data);
+        }
+        setBlog(data);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
-
-<div className="container-fluid">
+      <div className="container-fluid">
         <div className="row">
           <div className="col-md-12 banner py-5 text-center">
-            <h1 className="text-center" style={{ color: "#3C75A6", fontWeight: "600", fontFamily: "sans-serif" }}>
+            <h1
+              className="text-center"
+              style={{
+                color: "#3C75A6",
+                fontWeight: "600",
+                fontFamily: "sans-serif",
+              }}
+            >
               Blog
             </h1>
             <div className="d-inline-block">
               <div className="d-flex align-content-between">
                 <p className="px-2">
-                  <Link to="/" style={{ color: "#103A71", textDecoration: "none" }}>
+                  <Link
+                    to="/"
+                    style={{ color: "#103A71", textDecoration: "none" }}
+                  >
                     Home
                   </Link>
                 </p>
                 <p className="px-2">
-                  <FontAwesomeIcon icon="fa-solid fa-angles-right" style={{ color: "#3c75a6" }} />
+                  <FontAwesomeIcon
+                    icon="fa-solid fa-angles-right"
+                    style={{ color: "#3c75a6" }}
+                  />
                 </p>
                 <p className="px-2">
-                  <Link to="/blog" style={{ color: "#103A71", textDecoration: "none" }}>
+                  <Link
+                    to="/blog"
+                    style={{ color: "#103A71", textDecoration: "none" }}
+                  >
                     Blog
                   </Link>
                 </p>
@@ -33,149 +75,209 @@ import { Link } from 'react-router-dom';
           </div>
         </div>
       </div>
-
-      <div className="container-fluid" style={{background: 'linear-gradient(180deg, rgba(60, 117, 166, 0.2) 0%, rgba(255, 255, 255, 0.15) 53%, #fff 68%, #fff 100%)',
-    padding: '2rem 0'}}>
-        <div className="container" style={{maxWidth: '1200px', margin: '0 auto', padding: '0 1rem'}}>
-            <div style={{backgroundColor: 'white',
-            borderRadius: '10px',
-            boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.1)',
-            padding: '3rem',
-            margin: '2rem 0'}}>
-                <div className="w-100">
-                        <FontAwesomeIcon icon="fa-solid fa-angles-left" />
-                        <a style={{textDecoration: 'none', color: 'black'}} href="#"><span className='px-2'>Trở lại</span></a>
-                    </div>
-                <div className="title" style={{fontSize: '2.5rem',
-                fontWeight: '700',
-                margin: '2rem 0',
-                textAlign: 'center',
-                color: '#3c75a6'}}>Mách mẹ cách pha sữa bầu Morinaga vị trà sữa đúng chuẩn</div>
-                <div style={{textAlign: 'center'}}>
-                    <img src="https://cdn1.concung.com/storage/data/2021/thong-tin-bo-ich/2024/06/cach-pha-sua-bau-morinaga-2.webp"
-                        alt="Morinaga Milk" style={{width: '100%',
-                    maxWidth: '800px',
-                    maxHeight: '400px',
-                    objectFit: 'cover',
-                    borderRadius: '10px',
-                    margin: '2rem 0'}}/>
-                </div>
-                <div style={{fontSize: '1.125rem',
-                lineHeight: '1.8',
-                color: '#555',
-                padding: '0 1rem',
-                textAlign: 'justify'}}>
-                    Pha sữa bầu Morinaga vị trà sữa đúng cách giúp dưỡng chất được bảo toàn một cách trọn vẹn và mang
-                    lại hiệu quả tốt nhất. Nhờ đó, mẹ bầu có thể yên tâm là cơ thể được cung cấp đầy đủ dưỡng chất trong
-                    thai kỳ.
-
-                    Các dưỡng chất trong sữa bầu Morinaga vị trà sữa đều được khoa học chứng minh là cần thiết đối với
-                    mẹ bầu và sự phát triển của thai nhi. Không những thế, hàm lượng của mỗi dưỡng chất cũng phù hợp với
-                    khuyến nghị y tế. Vậy nên, nếu không được pha đúng cách, có thể làm sản phẩm mất đi hoặc giảm công
-                    dụng của các thành phần.
-                </div>
-                <div style={{textAlign: 'right',
-                color: '#97999D',
-                fontSize: '0.875rem',
-                marginTop: '2rem',
-                padding: '0 1rem'}}>
-                    <span style={{display: 'block'}}>Author: littlejoystore</span>
-                    <span style={{display: 'block'}}>24/02/2024</span>
-                </div>
+      {blog.httpCode != 404 ? (
+        <div
+          className="container-fluid"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(60, 117, 166, 0.2) 0%, rgba(255, 255, 255, 0.15) 53%, #fff 68%, #fff 100%)",
+            padding: "2rem 0",
+          }}
+        >
+          <div
+            className="container"
+            style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1rem" }}
+          >
+            <div
+              style={{
+                backgroundColor: "white",
+                borderRadius: "10px",
+                boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.1)",
+                padding: "3rem",
+                margin: "2rem 0",
+              }}
+            >
+              <div className="w-100">
+                <FontAwesomeIcon icon="fa-solid fa-angles-left" />
+                <Link
+                  style={{ textDecoration: "none", color: "black" }}
+                  to="/blog"
+                >
+                  <span className="px-2">Trở lại</span>
+                </Link>
+              </div>
+              <div
+                className="title"
+                style={{
+                  fontSize: "2.5rem",
+                  fontWeight: "700",
+                  margin: "2rem 0",
+                  textAlign: "center",
+                  color: "#3c75a6",
+                }}
+              >
+                {blog.title}
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <img
+                  src={blog.banner}
+                  className="mt-3, w-50"
+                  alt="Morinaga Milk"
+                  style={{
+                    width: "100%",
+                    maxWidth: "800px",
+                    maxHeight: "400px",
+                  }}
+                />
+              </div>
+              <div
+                className="mt-3 fs-5"
+                style={{
+                  color: "#555",
+                  padding: "0 1rem",
+                  textAlign: "justify",
+                }}
+              >
+                {blog.content}
+              </div>
+              <div
+                style={{
+                  textAlign: "right",
+                  color: "#97999D",
+                  fontSize: "0.875rem",
+                  marginTop: "2rem",
+                  padding: "0 1rem",
+                }}
+              >
+                <span style={{ display: "block" }}>Author: littlejoystore</span>
+                <span style={{ display: "block" }}>{blog.date}</span>
+              </div>
             </div>
-        </div>
+          </div>
 
-        
-        <div className="mt-5" style={{fontSize: '2rem',
-                fontWeight: '500',
-                
-                textAlign: 'center',
-                color: '#00000089'}}>Bài viết có liên quan</div>
+          <div
+            className="mt-5"
+            style={{
+              fontSize: "2rem",
+              fontWeight: "500",
 
-        <div className="container-fluid">
+              textAlign: "center",
+              color: "#00000089",
+            }}
+          >
+            Bài viết có liên quan
+          </div>
+
+          <div className="container-fluid">
             <div className="container">
-                <div className="row">
-                
-                    <div className="col-md-4 p-3">
-                        <a href="" className="w-100" style={{textDecoration: 'none', color: 'black'}}>
-                            <div className="blog-content-main w-100 p-4"
-                                style={{backgroundColor: 'rgba(155, 155, 155, 0.05)', borderRadius: '15px'}}>
-                                <div className="blog-image">
-                                </div>
-                                <div className="mt-3">
-                                    <span className="fs-5 fw-bold">Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-                                        dùng</span>
-                                </div>
-                                <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-                                    <span style={{color: '#97999D'}}>07/12/2003</span>
-                                </div>
-                            </div>
-                        </a>
+              <div className="row">
+                <div className="col-md-4 p-3">
+                  <a
+                    href=""
+                    className="w-100"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <div
+                      className="blog-content-main w-100 p-4"
+                      style={{
+                        backgroundColor: "rgba(155, 155, 155, 0.05)",
+                        borderRadius: "15px",
+                      }}
+                    >
+                      <div className="blog-image"></div>
+                      <div className="mt-3">
+                        <span className="fs-5 fw-bold">
+                          Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
+                          dùng
+                        </span>
+                      </div>
+                      <div className="blog-date mt-3 w-100 d-flex justify-content-end">
+                        <span style={{ color: "#97999D" }}>07/12/2003</span>
+                      </div>
                     </div>
-                    <div className="col-md-4 p-3">
-                        <a href="" className="w-100" style={{textDecoration: 'none', color: 'black'}}>
-                            <div className="blog-content-main w-100 p-4"
-                                style={{backgroundColor: 'rgba(155, 155, 155, 0.05)', borderRadius: '15px'}}>
-                                <div className="blog-image">
-                                </div>
-                                <div className="mt-3">
-                                    <span className="fs-5 fw-bold">Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-                                        dùng</span>
-                                </div>
-                                <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-                                    <span style={{color: '#97999D'}}>07/12/2003</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div className="col-md-4 p-3">
-                        <a href="" className="w-100" style={{textDecoration: 'none', color: 'black'}}>
-                            <div className="blog-content-main w-100 p-4"
-                                style={{backgroundColor: 'rgba(155, 155, 155, 0.05)', borderRadius: '15px'}}>
-                                <div className="blog-image">
-                                </div>
-                                <div className="mt-3">
-                                    <span className="fs-5 fw-bold">Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-                                        dùng</span>
-                                </div>
-                                <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-                                    <span style={{color: '#97999D'}}>07/12/2003</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    
+                  </a>
                 </div>
+                <div className="col-md-4 p-3">
+                  <a
+                    href=""
+                    className="w-100"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <div
+                      className="blog-content-main w-100 p-4"
+                      style={{
+                        backgroundColor: "rgba(155, 155, 155, 0.05)",
+                        borderRadius: "15px",
+                      }}
+                    >
+                      <div className="blog-image"></div>
+                      <div className="mt-3">
+                        <span className="fs-5 fw-bold">
+                          Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
+                          dùng
+                        </span>
+                      </div>
+                      <div className="blog-date mt-3 w-100 d-flex justify-content-end">
+                        <span style={{ color: "#97999D" }}>07/12/2003</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div className="col-md-4 p-3">
+                  <a
+                    href=""
+                    className="w-100"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <div
+                      className="blog-content-main w-100 p-4"
+                      style={{
+                        backgroundColor: "rgba(155, 155, 155, 0.05)",
+                        borderRadius: "15px",
+                      }}
+                    >
+                      <div className="blog-image"></div>
+                      <div className="mt-3">
+                        <span className="fs-5 fw-bold">
+                          Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
+                          dùng
+                        </span>
+                      </div>
+                      <div className="blog-date mt-3 w-100 d-flex justify-content-end">
+                        <span style={{ color: "#97999D" }}>07/12/2003</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      ) : (
+        <div className="container-fluid" 
+          style={{background:"linear-gradient(180deg, rgba(60, 117, 166, 0.2) 0%, rgba(255, 255, 255, 0.15) 53%, #fff 68%, #fff 100%)"}}
+        >
+          <div className="container">
+            <div className="row">
+              <div className="col-md-12 py-5 my-5 text-center">
+                <span
+                  className="text-center fs-3"
+                  style={{
+                    fontFamily: "sans-serif",
+                  }}
+                >
+                  Trang Blog không tồn tại
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
+      )}
     </>
-  )
-}
+  );
+};
 
 export default BlogDetail;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useContext, useEffect, useState } from 'react';
 // import { useParams } from 'react-router-dom';
@@ -220,16 +322,13 @@ export default BlogDetail;
 
 // export default BlogDetail;
 
-
-
-
 // import React from "react";
 // import { useParams } from "react-router-dom";
 
 // const BlogDetail = ({ blogs }) => {
 //   const { id } = useParams();
 //   console.log(blogs);
-  
+
 //   // Kiểm tra xem danh sách blogs có tồn tại không
 //   if (!blogs || !Array.isArray(blogs) || blogs.length === 0) {
 //     return <div>No blogs found</div>;
@@ -268,4 +367,3 @@ export default BlogDetail;
 // };
 
 // export default BlogDetail;
-

@@ -33,26 +33,23 @@ const CreateBlog = () => {
       content: editorContent,
     };
 
-    fetch("https://littlejoyapi.azurewebsites.net/api/blog", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newBlog),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Tạo blog mới thất bại");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Tạo blog thành công", data);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/blog`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newBlog)
+        })
+        const data = await response.json();
         navigate("/blog");
-      })
-      .catch((error) => {
-        console.error("Lỗi tạo blog:", error);
-      });
+
+      } catch (error) {
+          console.error("Lỗi tạo blog:", error);
+      }
+    }
+    fetchData();
   };
 
   const togglePreview = () => {
