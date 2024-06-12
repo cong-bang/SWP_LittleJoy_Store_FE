@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "react-quill/dist/quill.snow.css";
@@ -9,10 +9,39 @@ import { apiFetch } from "../../services/api"
 
 const UpdateBlog = () => {
   const [editorContent, setEditorContent] = useState("");
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState();
   const [banner, setBanner] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [oldData, setOldData] = useState({});
+  const [isLoading, setIsLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/blog/${id}`
+        );
+        if (!response.ok) {
+          throw new Error('Có lỗi trong quá trình fetch dữ liệu');
+        }
+        const data = await response.json();
+        console.log('Fetched data:', data);  
+
+        setTitle(data.title);
+        setBanner(data.banner);
+        setEditorContent(data.content);
+        setIsLoading(false); 
+      } catch (error) {
+        console.error('Fetch error:', error.message);
+        setError(error.message);
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [id]);
 
   const handleEditorChange = (content) => {
     setEditorContent(content);
@@ -28,28 +57,30 @@ const UpdateBlog = () => {
       return;
     }
 
-    const newBlog = {
+    const updateBlog = {
+      id: id,
       userId: localStorage.getItem("userId"),
       title: title,
       banner: banner,
       content: editorContent,
     };
-    console.log(newBlog);
+    console.log(updateBlog);
 
     const fetchData = async () => {
       try {
-        const response = await apiFetch(`https://littlejoyapi.azurewebsites.net/api/blog/`, {
-          method: "POST",
+        const response = await apiFetch(`https://littlejoyapi.azurewebsites.net/api/blog`, {
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newBlog)
+          body: JSON.stringify(updateBlog)
         })
+
         const data = await response.json();
         navigate("/blog");
         
       } catch (error) {
-          console.error("Lỗi tạo blog:", error);
+          console.error("Lỗi update blog:", error);
       }
     }
     fetchData();

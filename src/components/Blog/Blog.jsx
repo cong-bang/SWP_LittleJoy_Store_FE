@@ -206,7 +206,11 @@ const Blog = () => {
                         <span className="fs-5 fw-bold">{blog.title}</span>
                       </div>
                       <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-                        <Link to={{pathname: `/updateblog/${blog.id}`, state: { blog }}}><span className="pe-5">Chỉnh sửa</span></Link> <span style={{ color: "#97999D" }}>{blog.date}</span>
+                      {user && user.role !== "USER" && (
+                        <Link to={{pathname: `/updateblog/${blog.id}`, state: { blog }}}>
+                        <span className="pe-5">Chỉnh sửa</span></Link> 
+                      )}
+                      <span style={{ color: "#97999D" }}>{blog.date}</span>
                       </div>
                     </div>
                   </Link>

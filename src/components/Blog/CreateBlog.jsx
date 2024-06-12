@@ -32,7 +32,7 @@ const CreateBlog = () => {
       userId: localStorage.getItem("userId"),
       title: title,
       banner: banner,
-      content: editorContent,
+      content: editorContent,   
     };
     console.log(newBlog);
 
