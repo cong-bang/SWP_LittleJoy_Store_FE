@@ -10,8 +10,8 @@ export default function Header() {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    const roleFromLocalStorage = localStorage.getItem("role");
-    const usernameFromLocalStorage = localStorage.getItem("username");
+    const roleFromLocalStorage = localStorage.getItem("userRole");
+    const usernameFromLocalStorage = localStorage.getItem("userName");
     if (roleFromLocalStorage === "ADMIN" || roleFromLocalStorage === "STAFF" || roleFromLocalStorage === "USER" && usernameFromLocalStorage) {
       setUsername(usernameFromLocalStorage);
     }
@@ -23,6 +23,8 @@ export default function Header() {
       if (dashboardLink) dashboardLink.style.display = "none";
     }
   }, []);
+
+  
 
   return (
     <>
@@ -71,15 +73,18 @@ export default function Header() {
               <Link to="/cart" className="px-3">
                 <FontAwesomeIcon icon="fa-solid fa-cart-shopping" />
               </Link>
-              <Link to="/login" className="px-3">
-                <FontAwesomeIcon icon="fa-solid fa-user" />
+              
+              
                 {username ? (
-                  <Link to='/userprofile'>
+                  <Link to='/userprofile' className="px-3">
+                    <FontAwesomeIcon icon="fa-solid fa-user" />
                   <span className="px-1">{username}</span></Link>
-                ) : (
-                  <span className="px-1">Login</span>
+                ) : ( 
+                  <Link to="/login" className="px-3">
+                  <FontAwesomeIcon icon="fa-solid fa-user" />
+                  <span className="px-1">Login</span></Link>
                 )}
-              </Link>
+              
             </div>
           </div>
         </div>

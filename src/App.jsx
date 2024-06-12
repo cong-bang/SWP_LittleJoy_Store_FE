@@ -38,7 +38,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import AppRoutes from "./routes/AppRoutes";
 import { AuthProvider } from './context/AuthContext';
-
+import { refreshAccessToken } from './services/authService';
+import { useEffect } from 'react';
 // import AdminLayout from './layouts/AdminLayout';
 
 // Nếu bạn cài thêm các gói khác, bạn có thể import chúng như sau:
@@ -49,6 +50,11 @@ import { AuthProvider } from './context/AuthContext';
 library.add(fas);
 
 function App() {
+  
+  useEffect(() => {
+    refreshAccessToken();
+  }, []);
+
   return (
     <>
       <AuthProvider>

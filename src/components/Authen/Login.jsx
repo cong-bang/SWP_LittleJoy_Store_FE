@@ -4,8 +4,7 @@ import "../../assets/css/stylelogin.css";
 import logogoogle from "../../assets/img/logogoogle.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-import { loginUser } from "../../redux/apiRequest";
-import { useDispatch } from "react-redux";
+import { jwtDecode } from "jwt-decode";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -13,7 +12,6 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const users = [
     { username: "admin", password: "admin", role: "ADMIN" },
@@ -51,7 +49,7 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     try {
       const response = await fetch('https://littlejoyapi.azurewebsites.net/api/authen/login', {
         method: 'POST',
@@ -65,7 +63,27 @@ export default function Login() {
 
       if (response.ok) {
         localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.refreshToken);
+
+        // Decode
+        const decodedToken = jwtDecode(data.accessToken);
+        console.log(decodedToken);
+        const nameClaim = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
+        const roleClaim = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+        const userClaim = 'user_ID';
+        
+        const userName = decodedToken[nameClaim];
+        const userRole = decodedToken[roleClaim];
+        const userId = decodedToken[userClaim];
+
+        localStorage.setItem('userName', userName);
+        localStorage.setItem('userRole', userRole);
+        localStorage.setItem('userId', userId);
+
+        console.log(userName, userRole, userId);
+
         navigate("/");
+        window.location.reload();
       } else {
         setError(data.message || 'Login failed');
       }
@@ -73,6 +91,8 @@ export default function Login() {
       setError(error.message);
     }
   };
+  
+
 
   return (
     <>

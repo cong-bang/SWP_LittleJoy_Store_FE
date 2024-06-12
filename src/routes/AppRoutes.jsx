@@ -27,6 +27,7 @@ import { useLocation } from "react-router-dom";
 import ManageBlog from "../components/ManageBlog/ManageBlog";
 import CreateBlog from "../components/Blog/CreateBlog";
 import RequestRefund from "../components/Refund/RequestRefund";
+import UpdateBlog from "../components/Blog/UpdateBlog";
 
 const UserRoute = () => {
   return (
@@ -94,6 +95,7 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/createblog" element={<CreateBlog />} />
+        <Route path="/updateblog" element={<UpdateBlog />} />
         <Route path="/blogdetail/:id" element={<BlogDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />

@@ -5,11 +5,13 @@ import { faSquareCaretLeft, faSquareCaretRight, } from "@fortawesome/free-solid-
 import "../../assets/css/styleblog.css";
 import { useAuth } from "../../context/AuthContext";
 import no_found from "../../assets/img/404.jpg";
+import { apiFetch } from '../../services/api';
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const { user } = useAuth();
   const [paging, setPaging] = useState([]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +66,27 @@ const Blog = () => {
     fetchData();
   }, [paging.CurrentPage]);
 
-  const handleDeleteBlog = (id) => {};
+  const handleDeleteBlog = (id) => {
+    const newBlogs = blogs.filter((b) => b.id !== id);
+    console.log(id);
+    setBlogs(newBlogs);
+    const fetchData = async () => {
+      try {
+        const response = await apiFetch(`https://littlejoyapi.azurewebsites.net/api/blog?id=${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        const data = await response.json();
+        
+        
+      } catch (error) {
+          console.error(error.message);
+      }
+    }
+    fetchData();
+  };
 
   const handlePrevious = () => {
     if (paging.CurrentPage > 1) {
@@ -184,7 +206,7 @@ const Blog = () => {
                         <span className="fs-5 fw-bold">{blog.title}</span>
                       </div>
                       <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-                        <span style={{ color: "#97999D" }}>{blog.date}</span>
+                        <Link to={{pathname: `/updateblog/${blog.id}`, state: { blog }}}><span className="pe-5">Chỉnh sửa</span></Link> <span style={{ color: "#97999D" }}>{blog.date}</span>
                       </div>
                     </div>
                   </Link>

@@ -3,10 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/css/styleblogdetail.css";
 import { Link, useParams } from "react-router-dom";
 import no_found from "../../assets/img/404.jpg";
+import sorry from "../../assets/img/sorry.png";
 
 const BlogDetail = () => {
   const { id } = useParams();
   const [blog, setBlog] = useState({});
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +26,12 @@ const BlogDetail = () => {
           console.log(data);
         }
         setBlog(data);
+
+        const resUserId = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/user/${data.userId}`
+        );
+        const dataUser = await resUserId.json();
+        setUser(dataUser);
       } catch (error) {
         console.error(error.message);
       }
@@ -138,7 +146,7 @@ const BlogDetail = () => {
                   textAlign: "justify",
                 }}
               >
-                {blog.content}
+                <div dangerouslySetInnerHTML={{ __html: blog.content }} />
               </div>
               <div
                 style={{
@@ -149,7 +157,9 @@ const BlogDetail = () => {
                   padding: "0 1rem",
                 }}
               >
-                <span style={{ display: "block" }}>Author: littlejoystore</span>
+                <span style={{ display: "block" }}>
+                  Author: {user.userName}
+                </span>
                 <span style={{ display: "block" }}>{blog.date}</span>
               </div>
             </div>
@@ -254,20 +264,36 @@ const BlogDetail = () => {
           </div>
         </div>
       ) : (
-        <div className="container-fluid" 
-          style={{background:"linear-gradient(180deg, rgba(60, 117, 166, 0.2) 0%, rgba(255, 255, 255, 0.15) 53%, #fff 68%, #fff 100%)"}}
+        <div
+          className="container-fluid py-5"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(60, 117, 166, 0.2) 0%, rgba(255, 255, 255, 0.15) 53%, #fff 68%, #fff 100%)",
+          }}
         >
           <div className="container">
             <div className="row">
               <div className="col-md-12 py-5 my-5 text-center">
-                <span
-                  className="text-center fs-3"
+                <div
+                  className="d-inline-block p-5"
                   style={{
-                    fontFamily: "sans-serif",
+                    backgroundColor: "#FAFAFA",
+                    border: "1px dotted black",
+                    borderRadius: "15px",
                   }}
                 >
-                  Trang Blog không tồn tại
-                </span>
+                  <div className="d-flex flex-column align-items-center p-3">
+                    <img src={sorry} alt="" className="w-50" />
+                    <span
+                      className="text-center fs-4 pt-3"
+                      style={{
+                        fontFamily: "sans-serif",
+                      }}
+                    >
+                      Không tìm thấy blog
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -278,92 +304,3 @@ const BlogDetail = () => {
 };
 
 export default BlogDetail;
-
-// import React, { useContext, useEffect, useState } from 'react';
-// import { useParams } from 'react-router-dom';
-// import { BlogContext } from './BlogContext';
-
-// const BlogDetail = () => {
-//   const { id } = useParams();
-//   const { blogs } = useContext(BlogContext);
-//   const [blog, setBlog] = useState(null);
-
-//   useEffect(() => {
-//     const foundBlog = blogs.find((blog) => blog.id === parseInt(id));
-//     if (foundBlog) {
-//       setBlog(foundBlog);
-//     }
-//   }, [blogs, id]);
-
-//   if (!blog) {
-//     return null;
-//   }
-
-//   return (
-//     <div classNameName="container-fluid" style={{ background: 'linear-gradient(180deg, rgba(60, 117, 166, 0.2) 0%, rgba(255, 255, 255, 0.15) 53%, #fff 68%, #fff 100%)'}}>
-//       <div classNameName="container pt-5" >
-//         <div classNameName='p-5 my-4' style={{backgroundColor: 'white', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)'}}>
-//           <div classNameName='text-center fw-bold my-5' style={{ fontSize: '2rem' }}>{blog.title}</div>
-//           <div classNameName='text-center'>
-//             <img src={blog.img} alt='' style={{ width: '80%', maxHeight: '400px', objectFit: 'cover', borderRadius: '10px' }} classNameName='my-5' />
-//           </div>
-//           <div classNameName='px-4' style={{ fontSize: '1rem', lineHeight: '1.6', color: '#555' }}>
-//             <div dangerouslySetInnerHTML={{ __html: blog.content }} />
-//           </div>
-//           <div classNameName='px-4 mt-4' style={{ textAlign: 'right', color: "#97999D", fontSize: '0.8rem' }}>
-//             <span>Author: {blog.author}</span><br />
-//             <span>{blog.date}</span>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default BlogDetail;
-
-// import React from "react";
-// import { useParams } from "react-router-dom";
-
-// const BlogDetail = ({ blogs }) => {
-//   const { id } = useParams();
-//   console.log(blogs);
-
-//   // Kiểm tra xem danh sách blogs có tồn tại không
-//   if (!blogs || !Array.isArray(blogs) || blogs.length === 0) {
-//     return <div>No blogs found</div>;
-//   }
-
-//   // Tìm bài blog tương ứng với id
-//   const blog = blogs.find(blog => blog.id === parseInt(id));
-
-//   // Kiểm tra xem bài blog có tồn tại không
-//   if (!blog) {
-//     return <div>Blog not found</div>;
-//   }
-
-//   return (
-//     <div classNameName="container">
-//       <div classNameName="row">
-//         <div classNameName="col-md-12">
-//           <div classNameName="text-center">
-//             <h2>{blog.title}</h2>
-//           </div>
-//         </div>
-//       </div>
-//       <div classNameName="row">
-//         <div classNameName="col-md-8">
-//           <div>{blog.content}</div>
-//         </div>
-//         <div classNameName="col-md-4">
-//           <div>
-//             <p>Author: {blog.author}</p>
-//             <p>Date: {blog.date}</p>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default BlogDetail;

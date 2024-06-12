@@ -49,6 +49,10 @@ const About = () => {
     setImageUrl(url);
   };
 
+  const handleUserId = () => {
+    
+  }
+ 
   return (
     <div>
       <UploadImage
@@ -65,3 +69,5 @@ const About = () => {
 };
 
 export default About;
+
+

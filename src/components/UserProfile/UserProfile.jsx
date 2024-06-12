@@ -3,12 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/css/styleUserProfile.css";
 import Ellipse2 from "../../assets/img/Ellipse2.png";
+import { apiFetch } from '../../services/api';
 
 export default function UserProfile() {
 
   const navigate = useNavigate();
   const handleLogout = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    
     navigate("/");
+    window.location.reload();
   };
 
   return (

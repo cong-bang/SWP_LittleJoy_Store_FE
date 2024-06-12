@@ -7,7 +7,7 @@ import "../../assets/css/styleblog.css";
 import UploadImage from "../UploadImage/UploadImage";
 import { apiFetch } from "../../services/api"
 
-const CreateBlog = () => {
+const UpdateBlog = () => {
   const [editorContent, setEditorContent] = useState("");
   const [title, setTitle] = useState("");
   const [banner, setBanner] = useState("");
@@ -38,7 +38,7 @@ const CreateBlog = () => {
 
     const fetchData = async () => {
       try {
-        const response = await apiFetch(`https://littlejoyapi.azurewebsites.net/api/blog`, {
+        const response = await apiFetch(`https://littlejoyapi.azurewebsites.net/api/blog/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -124,7 +124,7 @@ const CreateBlog = () => {
               className="text-center fw-bold my-3"
               style={{ fontSize: "24px", color: "white" }}
             >
-              Tạo Mới Blog
+                Chỉnh sửa Blog
             </div>
             <div>
               <input
@@ -274,4 +274,4 @@ const CreateBlog = () => {
   );
 };
 
-export default CreateBlog;
+export default UpdateBlog;

@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const role = localStorage.getItem("role") || sessionStorage.getItem("role");
+    const role = localStorage.getItem("userRole") || sessionStorage.getItem("userRole");
     if (role) {
       setUser({ role });
     }
