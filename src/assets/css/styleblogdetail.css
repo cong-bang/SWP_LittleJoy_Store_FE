@@ -5,18 +5,15 @@
 }
 
 .Roboto{
-    font-family: 'Roboto', serif;
 }
 
 .Opensans{
-    font-family: 'Open Sans', serif;
 }
 
 .banner {
     background-repeat: no-repeat;
     background-size: cover;
     background-image: url("../../assets/img/Banner.png");
-    font-family: "Vidaloka", serif;
 }
 
 .body-content {
@@ -28,7 +25,6 @@
     /* min-height: 1000em; */
 }
 .blog-image{
-    
     aspect-ratio: 2/1;
     background-position: center;
     background-size: cover;

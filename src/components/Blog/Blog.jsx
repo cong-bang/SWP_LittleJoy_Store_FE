@@ -121,7 +121,7 @@ const Blog = () => {
             >
               Blog
             </h1>
-            <div className="d-inline-block">
+            <div className="d-inline-block roboto">
               <div className="d-flex align-content-between">
                 <p className="px-2">
                   <Link
@@ -151,7 +151,7 @@ const Blog = () => {
         </div>
       </div>
 
-      <div className="container-fluid body-content">
+      <div className="container-fluid body-content roboto">
         <div className="container pt-5">
           <div className="row">
             <div className="col-md-12 mt-5 mb-5 d-flex justify-content-end">
@@ -234,7 +234,7 @@ const Blog = () => {
           </div>
         </div>
       </div>
-      <div className="mt-3 mb-5 py-5" style={{ fontSize: "25px" }}>
+      <div className="mt-3 mb-5 py-5 roboto" style={{ fontSize: "25px" }}>
         <div className="d-inline-block float-end">
           <div className="fs-5 px-5">
             <Link className="pe-2 fs-3" to="#" style={{ color: "#3C75A6" }}>

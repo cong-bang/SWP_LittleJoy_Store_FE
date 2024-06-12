@@ -76,7 +76,7 @@ export default function Register() {
   return (
     <>
       <div style={{ marginBottom: '7%' }}>
-        <div className="container p-5 mt-5 mb-5">
+        <div className="container p-5 mt-5 mb-5 roboto">
           <div className="row">
             <div className="col-md-12 text-center nav-login">
               <div className="d-flex align-items-center justify-content-center">
@@ -92,7 +92,7 @@ export default function Register() {
           </div>
         </div>
 
-        <div className="body-register container-fluid mb-4">
+        <div className="body-register container-fluid mb-4 roboto">
           <div className="container">
             <div className="row">
               <div className="col-md-6">

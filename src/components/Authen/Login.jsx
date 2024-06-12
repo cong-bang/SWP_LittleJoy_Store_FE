@@ -97,7 +97,7 @@ export default function Login() {
   return (
     <>
       <div style={{ marginBottom: '7%' }}>
-        <div className="container p-5 mt-5 mb-xl-5">
+        <div className="container p-5 mt-5 mb-xl-5 roboto">
           <div className="row">
             <div className="col-md-12 text-center nav-login">
               <Link to="/" className="nav-link d-inline-block px-4">
@@ -111,7 +111,7 @@ export default function Login() {
           </div>
         </div>
 
-        <div className="body-login container-fluid">
+        <div className="body-login container-fluid roboto">
           <div className="container">
             <div className="row">
               <div className="col-md-6">
@@ -152,13 +152,14 @@ export default function Login() {
                           </tr>
                         )}
                         <tr>
-                          <td className="remember-login">
+                          <td className="remember-login py-2">
                             <input
                               type="checkbox"
                               checked={rememberMe}
                               onChange={(e) => setRememberMe(e.target.checked)}
+                              id="remember"
                             />
-                            <p>Remember me</p>
+                            <span className="ps-3"><label htmlFor="remember">Remember me</label></span>
                           </td>
                           <td className="forgot-pass">
                             <Link to="/forgotpass1" className="float-end">
@@ -186,7 +187,7 @@ export default function Login() {
                   <div className="d-flex justify-content-center">
                     <div className="login-google text-center">
                       <img src={logogoogle} alt="Google Logo" />
-                      <p className="mb-0">Đăng nhập với Google</p>
+                      <span className="mb-0">Đăng nhập với Google</span>
                     </div>
                   </div>
                 </form>

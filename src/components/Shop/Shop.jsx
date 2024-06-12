@@ -132,202 +132,205 @@ export default function Shop() {
               <div className="w-100 d-flex justify-content-center item-filter-left py-4 mb-4 scroll-filter-left">
                 <table className="w-75">
                   <tbody>
-                  <tr>
-                    <td
-                      colSpan="2"
-                      className="pb-3 fs-5"
-                      style={{ color: "#67686C" }}
-                    >
-                      <span>Loại sữa</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td className="w-85">Sữa bột</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Sữa tươi</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Sữa bầu</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Sữa chua</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Sữa hạt</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Sữa lúa mạch</td>
-                  </tr>
+                    <tr>
+                      <td
+                        colSpan="2"
+                        className="pb-3 fs-5"
+                        style={{ color: "#67686C" }}
+                      >
+                        <span>Loại sữa</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td className="w-85">Sữa bột</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Sữa tươi</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Sữa bầu</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Sữa chua</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Sữa hạt</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Sữa lúa mạch</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
               <div className="w-100 d-flex justify-content-center item-filter-left py-3 mb-5">
-                
                 <table className="w-75">
                   <tbody>
-                  <tr>
-                    <td
-                      colSpan="2"
-                      className="pb-3 fs-5"
-                      style={{ color: "#67686C" }}
-                    >
-                      <span>Thương hiệu</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td className="w-85">Meji</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Ensure</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Kids Boost</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Abbott Grow</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Vinamilk</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Similac</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Khác</td>
-                  </tr>
+                    <tr>
+                      <td
+                        colSpan="2"
+                        className="pb-3 fs-5"
+                        style={{ color: "#67686C" }}
+                      >
+                        <span>Thương hiệu</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td className="w-85">Meji</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Ensure</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Kids Boost</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Abbott Grow</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Vinamilk</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Similac</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Khác</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
               <div className="w-100 d-flex justify-content-center item-filter-left py-3 mb-5">
                 <table className="w-75">
-                  <tr>
-                    <td
-                      colSpan="2"
-                      className="pb-3 fs-5"
-                      style={{ color: "#67686C" }}
-                    >
-                      <span>Theo tuổi</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td className="w-85">Dưới 6 tháng</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>6 - 12 tháng</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>1 - 2 tuổi</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>2 - 6 tuổi</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Từ 6 tuổi</td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <td
+                        colSpan="2"
+                        className="pb-3 fs-5"
+                        style={{ color: "#67686C" }}
+                      >
+                        <span>Theo tuổi</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td className="w-85">Dưới 6 tháng</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>6 - 12 tháng</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>1 - 2 tuổi</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>2 - 6 tuổi</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Từ 6 tuổi</td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
               <div className="w-100 d-flex justify-content-center item-filter-left py-3 mb-4">
                 <table className="w-75">
-                  <tr>
-                    <td
-                      colSpan="2"
-                      className="pb-3 fs-5"
-                      style={{ color: "#67686C" }}
-                    >
-                      <span>Xuất xứ</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td className="w-85">Việt Nam</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Châu Âu</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Mỹ</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Nhật</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Úc</td>
-                  </tr>
-                  <tr>
-                    <td className="w-15 py-1">
-                      <input type="checkbox" />
-                    </td>
-                    <td>Khác</td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <td
+                        colSpan="2"
+                        className="pb-3 fs-5"
+                        style={{ color: "#67686C" }}
+                      >
+                        <span>Xuất xứ</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td className="w-85">Việt Nam</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Châu Âu</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Mỹ</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Nhật</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Úc</td>
+                    </tr>
+                    <tr>
+                      <td className="w-15 py-1">
+                        <input type="checkbox" />
+                      </td>
+                      <td>Khác</td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -350,7 +353,10 @@ export default function Shop() {
                       THÊM VÀO GIỎ HÀNG
                     </a>
                   </div>
-                  <Link to="/product/1" style={{ textDecoration: "none", color: "black" }}>
+                  <Link
+                    to="/product/1"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
                     <div className="product-content mt-3 px-3 py-2">
                       <span className="Roboto" style={{ fontSize: "1.2em" }}>
                         Sữa bầu Friso Mum Gold 900g hương cam

@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /*font-family: "Roboto Condensed", serif;*/
 }
 
 .w-30{
@@ -26,19 +25,16 @@
 }
 
 .banner h1 {
-    font-family: 'Vidaloka', serif;
 }
 
 .banner p {
     color: #3C75A6;
-    font-family: 'Myanmar Sans Pro';
     font-size: 16px;
 }
 
 .banner a {
     text-decoration: none;
     color: #3C75A6;
-    font-family: 'Myanmar Sans Pro';
     
 }
 

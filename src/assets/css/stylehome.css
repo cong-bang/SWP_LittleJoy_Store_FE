@@ -21,7 +21,6 @@
 }
 
 .noticia {
-    font-family: 'Noticia Text', serif;
 }
 
 .box-sizing {
@@ -42,7 +41,7 @@
 
 .banner-subtitle {
     font-size: 13px;
-    color: #A7DCFE;
+    color: #A7DCFE !important;
 }
 
 .width-btn-banner {

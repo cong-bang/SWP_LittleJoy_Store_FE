@@ -39,22 +39,22 @@ export default function Header() {
             <div className="w-75 align-content-center">
               <ul className="nav justify-content-around">
                 <li className="nav-item header-item">
-                  <Link to="/" className="nav-link">
+                  <Link to="/" className="nav-link opensans">
                     Home
                   </Link>
                 </li>
                 <li className="nav-item header-item">
-                  <Link to="/shop" className="nav-link">
+                  <Link to="/shop" className="nav-link opensans">
                     Shop
                   </Link>
                 </li>
                 <li className="nav-item header-item">
-                  <Link to="/blog" className="nav-link">
+                  <Link to="/blog" className="nav-link opensans">
                     Blog
                   </Link>
                 </li>
                 <li className="nav-item header-item">
-                  <Link to="/about" className="nav-link">
+                  <Link to="/about" className="nav-link opensans">
                     About
                   </Link>
                 </li>
@@ -82,7 +82,7 @@ export default function Header() {
                 ) : ( 
                   <Link to="/login" className="px-3">
                   <FontAwesomeIcon icon="fa-solid fa-user" />
-                  <span className="px-1">Login</span></Link>
+                  <span className="px-1 opensans">Login</span></Link>
                 )}
               
             </div>

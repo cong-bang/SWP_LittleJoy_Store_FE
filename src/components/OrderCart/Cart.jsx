@@ -10,11 +10,22 @@ export default function Cart() {
       <section>
         <div>
           <div className="banner container-fluid pb-5 mb-5">
-            <h1 className="pt-5">Shopping Cart</h1>
+            <h1
+              className="pt-5"
+              style={{
+                color: "#3C75A6",
+                fontWeight: "600",
+              }}
+            >
+              Shopping Cart
+            </h1>
             <p className="myhome pt-2">
               <Link to="/">Home</Link>
               <span>
-              <FontAwesomeIcon icon="fa-solid fa-angles-right" className="px-4" />
+                <FontAwesomeIcon
+                  icon="fa-solid fa-angles-right"
+                  className="px-4"
+                />
               </span>
               <Link to="/cart">Cart</Link>
             </p>
@@ -23,184 +34,197 @@ export default function Cart() {
       </section>
 
       <section>
-        <div className="container-fluid my-xl-5">
+        <div className="container-fluid my-xl-5 roboto">
           <div className="container">
             <div className="row">
               <div className="col-md-12">
                 <form action="#">
                   <table className="w-100">
-                    <tr className="a">
-                      <td className="text-center Dongle p-3">Product</td>
-                      <td className="text-center p-3"></td>
-                      <td className="text-center Dongle p-3">Price</td>
-                      <td className="text-center Dongle p-3">Quatity</td>
-                      <td className="text-center Dongle p-3">Total</td>
-                      <td className="text-center Dongle p-3">Remove</td>
-                    </tr>
-                    <tr className="py-table">
-                      <td className="text-center p-1">
-                        <img src={similac} alt="" />
-                      </td>
-                      <td className="textbody">
-                        <p className="mb-0">Sữa Abbott Grow 4 1,7kg...</p>
-                      </td>
-                      <td className="text-center textbody ">
-                        <p className="mb-0">VND 299.000</p>
-                      </td>
-                      <td className="">
-                        <div className="btn-quantity w-100 d-flex justify-content-center">
-                          <div
-                            className="rounded-0 w-10 text-center p-2"
-                            style={{ backgroundColor: "#EDEDED" }}
-                            id="quantity-down"
-                            onclick="sub('quantity1')"
-                          >
-                            <span>-</span>
+                    <tbody>
+                      <tr className="a">
+                        <td className="text-center Dongle p-3">Product</td>
+                        <td className="text-center p-3"></td>
+                        <td className="text-center Dongle p-3">Price</td>
+                        <td className="text-center Dongle p-3">Quatity</td>
+                        <td className="text-center Dongle p-3">Total</td>
+                        <td className="text-center Dongle p-3">Remove</td>
+                      </tr>
+                      <tr className="py-table">
+                        <td className="text-center p-1">
+                          <img src={similac} alt="" />
+                        </td>
+                        <td className="textbody">
+                          <p className="mb-0">Sữa Abbott Grow 4 1,7kg...</p>
+                        </td>
+                        <td className="text-center textbody ">
+                          <p className="mb-0">VND 299.000</p>
+                        </td>
+                        <td className="">
+                          <div className="btn-quantity w-100 d-flex justify-content-center">
+                            <div
+                              className="rounded-0 w-10 text-center p-2"
+                              style={{ backgroundColor: "#EDEDED" }}
+                              id="quantity-down"
+                              onclick="sub('quantity1')"
+                            >
+                              <span>-</span>
+                            </div>
+                            <div className="button w-15">
+                              <input
+                                type="number"
+                                className="text-center w-100 p-2"
+                                id="quantity1"
+                                style={{
+                                  border: "none",
+                                  background: "#F7F7F7",
+                                }}
+                                value="5"
+                              ></input>
+                            </div>
+                            <div
+                              className=" rounded-0 w-10 text-center p-2"
+                              style={{ backgroundColor: "#EDEDED" }}
+                              id="quantity-up"
+                              onclick="add('quantity1')"
+                            >
+                              <span>+</span>
+                            </div>
                           </div>
-                          <div className="button w-15">
-                            <input
-                              type="number"
-                              className="text-center w-100 p-2"
-                              id="quantity1"
-                              style={{ border: "none", background: "#F7F7F7" }}
-                              value="5"
-                            ></input>
+                        </td>
+                        <td className="text-center textbody">
+                          <p className="mb-0">VND 1.495.000</p>
+                        </td>
+                        <td className="text-center ">
+                          <div className="trash">
+                            <FontAwesomeIcon icon="fa-solid fa-trash-can" />
                           </div>
-                          <div
-                            className=" rounded-0 w-10 text-center p-2"
-                            style={{ backgroundColor: "#EDEDED" }}
-                            id="quantity-up"
-                            onclick="add('quantity1')"
-                          >
-                            <span>+</span>
+                        </td>
+                      </tr>
+                      <tr className="py-table">
+                        <td className="text-center p-1">
+                          <img src={similac} alt="" />
+                        </td>
+                        <td className="textbody">
+                          <p className="mb-0">Sữa Abbott Grow 4 1,7kg...</p>
+                        </td>
+                        <td className="text-center textbody ">
+                          <p className="mb-0">VND 299.000</p>
+                        </td>
+                        <td className="">
+                          <div className="btn-quantity w-100 d-flex justify-content-center">
+                            <div
+                              className="rounded-0 w-10 text-center p-2"
+                              style={{ backgroundColor: "#EDEDED" }}
+                              id="quantity-down"
+                              onclick="sub('quantity2')"
+                            >
+                              <span>-</span>
+                            </div>
+                            <div className="button w-15">
+                              <input
+                                type="number"
+                                className="text-center w-100 p-2"
+                                id="quantity2"
+                                style={{
+                                  border: "none",
+                                  background: "#F7F7F7",
+                                }}
+                                value="5"
+                              ></input>
+                            </div>
+                            <div
+                              className="rounded-0 w-10 text-center p-2"
+                              style={{ backgroundColor: "#EDEDED" }}
+                              id="quantity-up"
+                              onclick="add('quantity2')"
+                            >
+                              <span>+</span>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td className="text-center textbody">
-                        <p className="mb-0">VND 1.495.000</p>
-                      </td>
-                      <td className="text-center ">
-                        <div className="trash">
-                          <FontAwesomeIcon icon="fa-solid fa-trash-can" />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr className="py-table">
-                      <td className="text-center p-1">
-                        <img src={similac} alt="" />
-                      </td>
-                      <td className="textbody">
-                        <p className="mb-0">Sữa Abbott Grow 4 1,7kg...</p>
-                      </td>
-                      <td className="text-center textbody ">
-                        <p className="mb-0">VND 299.000</p>
-                      </td>
-                      <td className="">
-                        <div className="btn-quantity w-100 d-flex justify-content-center">
-                          <div
-                            className="rounded-0 w-10 text-center p-2"
-                            style={{ backgroundColor: "#EDEDED" }}
-                            id="quantity-down"
-                            onclick="sub('quantity2')"
-                          >
-                            <span>-</span>
+                        </td>
+                        <td className="text-center textbody">
+                          <p className="mb-0">VND 1.495.000</p>
+                        </td>
+                        <td className="text-center ">
+                          <div className="trash">
+                            <FontAwesomeIcon icon="fa-solid fa-trash-can" />
                           </div>
-                          <div className="button w-15">
-                            <input
-                              type="number"
-                              className="text-center w-100 p-2"
-                              id="quantity2"
-                              style={{ border: "none", background: "#F7F7F7" }}
-                              value="5"
-                            ></input>
+                        </td>
+                      </tr>
+                      <tr className="py-table">
+                        <td className="text-center p-1">
+                          <img src={similac} alt="" />
+                        </td>
+                        <td className="textbody">
+                          <p className="mb-0">Sữa Abbott Grow 4 1,7kg...</p>
+                        </td>
+                        <td className="text-center textbody ">
+                          <p className="mb-0">VND 299.000</p>
+                        </td>
+                        <td className="">
+                          <div className="btn-quantity w-100 d-flex justify-content-center">
+                            <div
+                              className="rounded-0 w-10 text-center p-2"
+                              style={{ backgroundColor: "#EDEDED" }}
+                              id="quantity-down"
+                              onclick="sub('quantity3')"
+                            >
+                              <span>-</span>
+                            </div>
+                            <div className="button w-15">
+                              <input
+                                type="number"
+                                className="text-center w-100 p-2"
+                                id="quantity3"
+                                style={{
+                                  border: "none",
+                                  background: "#F7F7F7",
+                                }}
+                                value="5"
+                              ></input>
+                            </div>
+                            <div
+                              className="rounded-0 w-10 text-center p-2"
+                              style={{ backgroundColor: "#EDEDED" }}
+                              id="quantity-up"
+                              onclick="add('quantity3')"
+                            >
+                              <span>+</span>
+                            </div>
                           </div>
-                          <div
-                            className="rounded-0 w-10 text-center p-2"
-                            style={{ backgroundColor: "#EDEDED" }}
-                            id="quantity-up"
-                            onclick="add('quantity2')"
-                          >
-                            <span>+</span>
+                        </td>
+                        <td className="text-center textbody">
+                          <p className="mb-0">VND 1.495.000</p>
+                        </td>
+                        <td className="text-center ">
+                          <div className="trash">
+                            <FontAwesomeIcon icon="fa-solid fa-trash-can" />
                           </div>
-                        </div>
-                      </td>
-                      <td className="text-center textbody">
-                        <p className="mb-0">VND 1.495.000</p>
-                      </td>
-                      <td className="text-center ">
-                        <div className="trash">
-                          <FontAwesomeIcon icon="fa-solid fa-trash-can" />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr className="py-table">
-                      <td className="text-center p-1">
-                        <img src={similac} alt="" />
-                      </td>
-                      <td className="textbody">
-                        <p className="mb-0">Sữa Abbott Grow 4 1,7kg...</p>
-                      </td>
-                      <td className="text-center textbody ">
-                        <p className="mb-0">VND 299.000</p>
-                      </td>
-                      <td className="">
-                        <div className="btn-quantity w-100 d-flex justify-content-center">
-                          <div
-                            className="rounded-0 w-10 text-center p-2"
-                            style={{ backgroundColor: "#EDEDED" }}
-                            id="quantity-down"
-                            onclick="sub('quantity3')"
-                          >
-                            <span>-</span>
+                        </td>
+                      </tr>
+                      <tr className="a">
+                        <td className="text-center Dongle">
+                          <span className="ps-3">Tổng tiền: </span>
+                        </td>
+                        <td className="Dongle p-3 ">
+                          <p className="mb-0">VND 4.603.000</p>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td className="text-center  ">
+                          <div className="">
+                            <div
+                              className="textbody checkout-input py-1"
+                              type="submit"
+                              value=""
+                            >
+                              <span>Thanh toán</span>
+                            </div>
                           </div>
-                          <div className="button w-15">
-                            <input
-                              type="number"
-                              className="text-center w-100 p-2"
-                              id="quantity3"
-                              style={{ border: "none", background: "#F7F7F7" }}
-                              value="5"
-                            ></input>
-                          </div>
-                          <div
-                            className="rounded-0 w-10 text-center p-2"
-                            style={{ backgroundColor: "#EDEDED" }}
-                            id="quantity-up"
-                            onclick="add('quantity3')"
-                          >
-                            <span>+</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="text-center textbody">
-                        <p className="mb-0">VND 1.495.000</p>
-                      </td>
-                      <td className="text-center ">
-                        <div className="trash">
-                          <FontAwesomeIcon icon="fa-solid fa-trash-can" />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr className="a">
-                      <td className="text-center Dongle">Total payment:</td>
-                      <td className="Dongle p-3 ">
-                        <p className="mb-0">VND 4.603.000</p>
-                      </td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td className="text-center  ">
-                        <div className="">
-                          <div
-                            className="textbody checkout-input "
-                            type="submit"
-                            value=""
-                          >
-                            Checkout
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
                 </form>
               </div>

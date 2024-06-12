@@ -2,7 +2,7 @@ import React from "react";
 import logoshop from "../../assets/img/logoshop.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import '../../assets/css/stylehome.css'
+import "../../assets/css/stylehome.css";
 import product from "../../assets/img/product.png";
 import abbottgrow from "../../assets/img/abbottgrow.png";
 import ensure from "../../assets/img/ensure.png";
@@ -22,40 +22,45 @@ export default function Home() {
         <div className="row">
           <div className="col-md-12 d-flex justify-content-center">
             <table>
-              <tr>
-                <td colSpan="2">
-                  <p className="text-center noticia banner-title fs-1">
-                    Little Joy Store
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="2">
-                  <p className="text-center noticia banner-subtitle fs-4 fw-bold">
-                    Sự lựa chọn tốt nhất cho mẹ và bé
-                  </p>
-                </td>
-              </tr>
-              <tr className="">
-                <td className="width-btn-banner">
-                  <div className="d-flex justify-content-center">
-                    <div className="btn-banner text-center w-75">
-                      <a className="noticia text-white px-4 py-1" href="">
-                        MUA NGAY
-                      </a>
+              <tbody>
+                <tr>
+                  <td colSpan="2">
+                    <p className="text-center banner-title fs-1 roboto">
+                      Little Joy Store
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan="2">
+                    <p className="text-center banner-subtitle fs-4 A7DCFE">
+                      Sự lựa chọn tốt nhất cho mẹ và bé
+                    </p>
+                  </td>
+                </tr>
+                <tr className="">
+                  <td className="width-btn-banner">
+                    <div className="d-flex justify-content-center">
+                      <div className="btn-banner text-center w-75">
+                        <a className=" text-white px-4 py-1" href="">
+                          MUA NGAY
+                        </a>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="width-btn-banner">
-                  <div className="d-flex justify-content-center">
-                    <div className="btn-banner text-center w-75">
-                      <a className="noticia text-white px-4 py-1" href="#bestseller">
-                        MỚI RA MẮT
-                      </a>
+                  </td>
+                  <td className="width-btn-banner">
+                    <div className="d-flex justify-content-center">
+                      <div className="btn-banner text-center w-75">
+                        <a
+                          className=" text-white px-4 py-1"
+                          href="#bestseller"
+                        >
+                          MỚI RA MẮT
+                        </a>
+                      </div>
                     </div>
-                  </div>
-                </td>
-              </tr>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -64,9 +69,9 @@ export default function Home() {
         <div className="container pt-5 pb-5">
           <div className="row pt-lg-5">
             <div className="col-md-12 text-center">
-              <p className="fs-1 title-arrival noticia">Sản Phẩm Mới</p>
+              <p className="fs-1 title-arrival roboto">Sản Phẩm Mới</p>
               <span
-                className="d-inline-block w-50 text-center"
+                className="d-inline-block w-50 text-center roboto"
                 style={{ color: "#103A71", fontSize: "1.1em" }}
               >
                 Hãy khám phá những loại sữa mới nhất và tốt nhất từ chúng tôi.
@@ -79,7 +84,7 @@ export default function Home() {
                 className="w-18 d-inline-block"
                 style={{ textDecoration: "none", color: "black" }}
               >
-                <div className="w-100 text-center px-2 py-3 arrival-item">
+                <div className="w-100 text-center px-2 py-3 arrival-item roboto">
                   <span>Sữa cho mẹ bầu</span>
                 </div>
               </a>
@@ -88,7 +93,7 @@ export default function Home() {
                 className="w-18 d-inline-block"
                 style={{ textDecoration: "none", color: "black" }}
               >
-                <div className="w-100 text-center px-2 py-3 arrival-item arrival-active">
+                <div className="w-100 text-center px-2 py-3 arrival-item arrival-active roboto">
                   <span>Sữa bột cao cấp</span>
                 </div>
               </a>
@@ -97,7 +102,7 @@ export default function Home() {
                 className="w-18 d-inline-block"
                 style={{ textDecoration: "none", color: "black" }}
               >
-                <div className="w-100 text-center px-2 py-3 arrival-item">
+                <div className="w-100 text-center px-2 py-3 arrival-item roboto">
                   <span>Sữa Mỹ</span>
                 </div>
               </a>
@@ -106,7 +111,7 @@ export default function Home() {
                 className="w-18 d-inline-block"
                 style={{ textDecoration: "none", color: "black" }}
               >
-                <div className="w-100 text-center px-2 py-3 arrival-item">
+                <div className="w-100 text-center px-2 py-3 arrival-item roboto">
                   <span>Sữa Nhật</span>
                 </div>
               </a>
@@ -115,7 +120,7 @@ export default function Home() {
                 className="w-18 d-inline-block"
                 style={{ textDecoration: "none", color: "black" }}
               >
-                <div className="w-100 text-center px-2 py-3 arrival-item">
+                <div className="w-100 text-center px-2 py-3 arrival-item roboto">
                   <span>Châu Âu</span>
                 </div>
               </a>
@@ -134,17 +139,14 @@ export default function Home() {
                     </a>
                     <a
                       href="#"
-                      className="addcart-item position-absolute start-50 translate-middle"
+                      className="addcart-item position-absolute start-50 translate-middle roboto"
                     >
                       THÊM VÀO GIỎ HÀNG
                     </a>
                   </div>
                   <a href="" style={{ textDecoration: "none", color: "black" }}>
                     <div className="product-content mt-3 px-3 py-2">
-                      <span
-                        className="Roboto"
-                        style={{ fontSize: "1.2em" }}
-                      >
+                      <span className="roboto" style={{ fontSize: "1.2em" }}>
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
@@ -155,10 +157,7 @@ export default function Home() {
                         <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: 600 }}
-                        >
+                        <span className="roboto" style={{ fontWeight: 600 }}>
                           VND 249.000
                         </span>
                       </div>
@@ -184,10 +183,7 @@ export default function Home() {
                   </div>
                   <a href="" style={{ textDecoration: "none", color: "black" }}>
                     <div className="product-content mt-3 px-3 py-2">
-                      <span
-                        className="Roboto"
-                        style={{ fontSize: "1.2em" }}
-                      >
+                      <span className="roboto" style={{ fontSize: "1.2em" }}>
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
@@ -198,10 +194,7 @@ export default function Home() {
                         <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: 600 }}
-                        >
+                        <span className="roboto" style={{ fontWeight: 600 }}>
                           VND 249.000
                         </span>
                       </div>
@@ -227,10 +220,7 @@ export default function Home() {
                   </div>
                   <a href="" style={{ textDecoration: "none", color: "black" }}>
                     <div className="product-content mt-3 px-3 py-2">
-                      <span
-                        className="Roboto"
-                        style={{ fontSize: "1.2em" }}
-                      >
+                      <span className="roboto" style={{ fontSize: "1.2em" }}>
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
@@ -241,10 +231,7 @@ export default function Home() {
                         <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: 600 }}
-                        >
+                        <span className="roboto" style={{ fontWeight: 600 }}>
                           VND 249.000
                         </span>
                       </div>
@@ -270,10 +257,7 @@ export default function Home() {
                   </div>
                   <a href="" style={{ textDecoration: "none", color: "black" }}>
                     <div className="product-content mt-3 px-3 py-2">
-                      <span
-                        className="Roboto"
-                        style={{ fontSize: "1.2em" }}
-                      >
+                      <span className="roboto" style={{ fontSize: "1.2em" }}>
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
@@ -284,10 +268,7 @@ export default function Home() {
                         <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: 600 }}
-                        >
+                        <span className="roboto" style={{ fontWeight: 600 }}>
                           VND 249.000
                         </span>
                       </div>
@@ -313,10 +294,7 @@ export default function Home() {
                   </div>
                   <a href="" style={{ textDecoration: "none", color: "black" }}>
                     <div className="product-content mt-3 px-3 py-2">
-                      <span
-                        className="Roboto"
-                        style={{ fontSize: "1.2em" }}
-                      >
+                      <span className="roboto" style={{ fontSize: "1.2em" }}>
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
@@ -327,10 +305,7 @@ export default function Home() {
                         <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: 600 }}
-                        >
+                        <span className="roboto" style={{ fontWeight: 600 }}>
                           VND 249.000
                         </span>
                       </div>
@@ -356,10 +331,7 @@ export default function Home() {
                   </div>
                   <a href="" style={{ textDecoration: "none", color: "black" }}>
                     <div className="product-content mt-3 px-3 py-2">
-                      <span
-                        className="Roboto"
-                        style={{ fontSize: "1.2em" }}
-                      >
+                      <span className="roboto" style={{ fontSize: "1.2em" }}>
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
@@ -370,10 +342,7 @@ export default function Home() {
                         <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: 600 }}
-                        >
+                        <span className="roboto" style={{ fontWeight: 600 }}>
                           VND 249.000
                         </span>
                       </div>
@@ -399,10 +368,7 @@ export default function Home() {
                   </div>
                   <a href="" style={{ textDecoration: "none", color: "black" }}>
                     <div className="product-content mt-3 px-3 py-2">
-                      <span
-                        className="Roboto"
-                        style={{ fontSize: "1.2em" }}
-                      >
+                      <span className="roboto" style={{ fontSize: "1.2em" }}>
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
@@ -413,10 +379,7 @@ export default function Home() {
                         <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: 600 }}
-                        >
+                        <span className="roboto" style={{ fontWeight: 600 }}>
                           VND 249.000
                         </span>
                       </div>
@@ -442,10 +405,7 @@ export default function Home() {
                   </div>
                   <a href="" style={{ textDecoration: "none", color: "black" }}>
                     <div className="product-content mt-3 px-3 py-2">
-                      <span
-                        className="Roboto"
-                        style={{ fontSize: "1.2em" }}
-                      >
+                      <span className="roboto" style={{ fontSize: "1.2em" }}>
                         Sữa bầu Friso Mum Gold 900g hương cam
                       </span>
                       <div className="rank-product mt-2">
@@ -456,10 +416,7 @@ export default function Home() {
                         <FontAwesomeIcon icon="fa-solid fa-star" />
                       </div>
                       <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: 600 }}
-                        >
+                        <span className="roboto" style={{ fontWeight: 600 }}>
                           VND 249.000
                         </span>
                       </div>
@@ -475,7 +432,7 @@ export default function Home() {
                         borderRadius: "15px",
                       }}
                     >
-                      <span>Xem thêm</span>
+                      <span className="roboto">Xem thêm</span>
                     </div>
                   </a>
                 </div>
@@ -486,7 +443,7 @@ export default function Home() {
         <div className="container mt-5">
           <div className="row">
             <div className="col-md-12 text-center pt-5">
-              <p className="fs-1 title-arrival noticia">Thương Hiệu</p>
+              <p className="fs-1 title-arrival roboto">Thương Hiệu</p>
             </div>
             <div
               className="col-md-12 d-flex justify-content-evenly p-4"
@@ -557,21 +514,21 @@ export default function Home() {
               </div>
             </div>
             <div
-              className="col-md-12 mt-5 mb-5 position-relative"
+              className="col-md-12 mt-5 mb-5 position-relative p-2"
               style={{
                 backgroundColor: "rgba(155, 155, 155, 0.05)",
                 borderRadius: "15px",
                 height: "15em",
               }}
             >
-              <div className="title-brand d-flex justify-content-start fs-4 px-2 pt-3">
-                <p className="pe-2 m-0">Thương hiệu:</p>{" "}
-                <span className="fw-bold" style={{ color: "#103A71" }}>
+              <div className="title-brand d-flex justify-content-start fs-3 px-2 pt-3">
+                <span className="pe-2 m-0 roboto">Thương hiệu:</span>{" "}
+                <span className="fw-bold roboto" style={{ color: "#103A71" }}>
                   Meji
                 </span>
               </div>
               <div className="content-brand mt-2 px-2 w-90">
-                <span className="fs-6">
+                <span className="fs-6 roboto">
                   Meiji từ lâu được biết đến là một trong những thương hiệu sản
                   xuất sữa bột cho bé lâu đời bậc nhất tại Nhật Bản và châu Á.
                   Được thành lập năm 1917, sau hơn 100 năm hình thành và phát
@@ -584,7 +541,7 @@ export default function Home() {
               </div>
               <a href="#" className="" style={{ textDecoration: "none" }}>
                 <div className="xemthem position-absolute w-15 text-center px-3 py-2">
-                  <span style={{ color: "white" }}>Xem sản phẩm</span>
+                  <span className="roboto" style={{ color: "white" }}>Xem sản phẩm</span>
                 </div>
               </a>
             </div>
@@ -594,11 +551,11 @@ export default function Home() {
           <div className="row">
             <div className="col-md-12">
               <div className="col-md-12 text-center">
-                <p className="fs-1 title-arrival noticia">
+                <p className="fs-1 title-arrival roboto">
                   Phản Hồi Từ Khách Hàng
                 </p>
                 <span
-                  className="d-inline-block w-50 text-center"
+                  className="d-inline-block w-50 text-center roboto"
                   style={{ color: "#103A71", fontSize: "1em" }}
                 >
                   Hơn 1000 khách hàng tin tưởng và lựa chọn sữa được cung cấp
@@ -649,36 +606,89 @@ export default function Home() {
                         >
                           <div className="info-user-feedback py-3 px-2">
                             <table className="w-100">
-                              <tr>
-                                <td rowSpan="2">
-                                  <div className="d-flex justify-content-center align-content-center w-100">
-                                    <div className="avatar-user-feedback w-75">
-                                      <img
-                                        src={avatar1}
-                                        alt=""
-                                        className="w-100 avatar-user-feedback-img"
-                                      />
+                              <tbody>
+                                <tr>
+                                  <td rowSpan="2">
+                                    <div className="d-flex justify-content-center align-content-center w-100">
+                                      <div className="avatar-user-feedback w-75">
+                                        <img
+                                          src={avatar1}
+                                          alt=""
+                                          className="w-100 avatar-user-feedback-img"
+                                        />
+                                      </div>
                                     </div>
-                                  </div>
-                                </td>
-                                <td className="w-80 fw-bold">
-                                  Nguyễn Thanh Hùng
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="voting-feedback">
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                  </div>
-                                </td>
-                              </tr>
+                                  </td>
+                                  <td className="w-80 fw-bold roboto">
+                                    Nguyễn Thanh Hùng
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <div className="voting-feedback roboto">
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
                             </table>
                           </div>
                           <div className="content-feedback p-3">
+                            <span className="roboto">
+                              Tôi rất ấn tượng với sự đa dạng của các loại sữa
+                              tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
+                              hàng đều có đủ. Dịch vụ giao hàng cũng rất nhanh
+                              chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4 p-3">
+                        <div
+                          className="content-feedback-main"
+                          style={{
+                            backgroundColor: "rgba(155, 155, 155, 0.05)",
+                            height: "14em",
+                          }}
+                        >
+                          <div className="info-user-feedback py-3 px-2">
+                            <table className="w-100">
+                              <tbody>
+                                <tr>
+                                  <td rowSpan="2">
+                                    <div className="d-flex justify-content-center align-content-center w-100">
+                                      <div className="avatar-user-feedback w-75">
+                                        <img
+                                          src={avatar1}
+                                          alt=""
+                                          className="w-100 avatar-user-feedback-img"
+                                        />
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className="w-80 fw-bold roboto">
+                                    Nguyễn Thanh Hùng
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <div className="voting-feedback roboto">
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div className="content-feedback p-3 roboto">
                             <span>
                               Tôi rất ấn tượng với sự đa dạng của các loại sữa
                               tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
@@ -698,85 +708,38 @@ export default function Home() {
                         >
                           <div className="info-user-feedback py-3 px-2">
                             <table className="w-100">
-                              <tr>
-                                <td rowSpan="2">
-                                  <div className="d-flex justify-content-center align-content-center w-100">
-                                    <div className="avatar-user-feedback w-75">
-                                      <img
-                                        src={avatar1}
-                                        alt=""
-                                        className="w-100 avatar-user-feedback-img"
-                                      />
+                              <tbody>
+                                <tr>
+                                  <td rowSpan="2">
+                                    <div className="d-flex justify-content-center align-content-center w-100">
+                                      <div className="avatar-user-feedback w-75">
+                                        <img
+                                          src={avatar1}
+                                          alt=""
+                                          className="w-100 avatar-user-feedback-img"
+                                        />
+                                      </div>
                                     </div>
-                                  </div>
-                                </td>
-                                <td className="w-80 fw-bold">
-                                  Nguyễn Thanh Hùng
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="voting-feedback">
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                  </div>
-                                </td>
-                              </tr>
+                                  </td>
+                                  <td className="w-80 fw-bold roboto">
+                                    Nguyễn Thanh Hùng
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <div className="voting-feedback roboto">
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
                             </table>
                           </div>
-                          <div className="content-feedback p-3">
-                            <span>
-                              Tôi rất ấn tượng với sự đa dạng của các loại sữa
-                              tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
-                              hàng đều có đủ. Dịch vụ giao hàng cũng rất nhanh
-                              chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-4 p-3">
-                        <div
-                          className="content-feedback-main"
-                          style={{
-                            backgroundColor: "rgba(155, 155, 155, 0.05)",
-                            height: "14em",
-                          }}
-                        >
-                          <div className="info-user-feedback py-3 px-2">
-                            <table className="w-100">
-                              <tr>
-                                <td rowSpan="2">
-                                  <div className="d-flex justify-content-center align-content-center w-100">
-                                    <div className="avatar-user-feedback w-75">
-                                      <img
-                                        src={avatar1}
-                                        alt=""
-                                        className="w-100 avatar-user-feedback-img"
-                                      />
-                                    </div>
-                                  </div>
-                                </td>
-                                <td className="w-80 fw-bold">
-                                  Nguyễn Thanh Hùng
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="voting-feedback">
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
-                          </div>
-                          <div className="content-feedback p-3">
+                          <div className="content-feedback p-3 roboto">
                             <span>
                               Tôi rất ấn tượng với sự đa dạng của các loại sữa
                               tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
@@ -802,36 +765,38 @@ export default function Home() {
                         >
                           <div className="info-user-feedback py-3 px-2">
                             <table className="w-100">
-                              <tr>
-                                <td rowSpan="2">
-                                  <div className="d-flex justify-content-center align-content-center w-100">
-                                    <div className="avatar-user-feedback w-75">
-                                      <img
-                                        src={avatar1}
-                                        alt=""
-                                        className="w-100 avatar-user-feedback-img"
-                                      />
+                              <tbody>
+                                <tr>
+                                  <td rowSpan="2">
+                                    <div className="d-flex justify-content-center align-content-center w-100">
+                                      <div className="avatar-user-feedback w-75">
+                                        <img
+                                          src={avatar1}
+                                          alt=""
+                                          className="w-100 avatar-user-feedback-img"
+                                        />
+                                      </div>
                                     </div>
-                                  </div>
-                                </td>
-                                <td className="w-80 fw-bold">
-                                  Nguyễn Thanh Hùng
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="voting-feedback">
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                  </div>
-                                </td>
-                              </tr>
+                                  </td>
+                                  <td className="w-80 fw-bold roboto">
+                                    Nguyễn Thanh Hùng
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <div className="voting-feedback roboto">
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
                             </table>
                           </div>
-                          <div className="content-feedback p-3">
+                          <div className="content-feedback p-3 roboto">
                             <span>
                               Tôi rất ấn tượng với sự đa dạng của các loại sữa
                               tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
@@ -851,36 +816,38 @@ export default function Home() {
                         >
                           <div className="info-user-feedback py-3 px-2">
                             <table className="w-100">
-                              <tr>
-                                <td rowSpan="2">
-                                  <div className="d-flex justify-content-center align-content-center w-100">
-                                    <div className="avatar-user-feedback w-75">
-                                      <img
-                                        src={avatar1}
-                                        alt=""
-                                        className="w-100 avatar-user-feedback-img"
-                                      />
+                              <tbody>
+                                <tr>
+                                  <td rowSpan="2">
+                                    <div className="d-flex justify-content-center align-content-center w-100">
+                                      <div className="avatar-user-feedback w-75">
+                                        <img
+                                          src={avatar1}
+                                          alt=""
+                                          className="w-100 avatar-user-feedback-img"
+                                        />
+                                      </div>
                                     </div>
-                                  </div>
-                                </td>
-                                <td className="w-80 fw-bold">
-                                  Nguyễn Thanh Hùng
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="voting-feedback">
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                  </div>
-                                </td>
-                              </tr>
+                                  </td>
+                                  <td className="w-80 fw-bold roboto">
+                                    Nguyễn Thanh Hùng
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <div className="voting-feedback roboto">
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
                             </table>
                           </div>
-                          <div className="content-feedback p-3">
+                          <div className="content-feedback p-3 roboto">
                             <span>
                               Tôi rất ấn tượng với sự đa dạng của các loại sữa
                               tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
@@ -900,36 +867,38 @@ export default function Home() {
                         >
                           <div className="info-user-feedback py-3 px-2">
                             <table className="w-100">
-                              <tr>
-                                <td rowSpan="2">
-                                  <div className="d-flex justify-content-center align-content-center w-100">
-                                    <div className="avatar-user-feedback w-75">
-                                      <img
-                                        src={avatar1}
-                                        alt=""
-                                        className="w-100 avatar-user-feedback-img"
-                                      />
+                              <tbody>
+                                <tr>
+                                  <td rowSpan="2">
+                                    <div className="d-flex justify-content-center align-content-center w-100">
+                                      <div className="avatar-user-feedback w-75">
+                                        <img
+                                          src={avatar1}
+                                          alt=""
+                                          className="w-100 avatar-user-feedback-img"
+                                        />
+                                      </div>
                                     </div>
-                                  </div>
-                                </td>
-                                <td className="w-80 fw-bold">
-                                  Nguyễn Thanh Hùng
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="voting-feedback">
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    <FontAwesomeIcon icon="fa-solid fa-star" />
-                                  </div>
-                                </td>
-                              </tr>
+                                  </td>
+                                  <td className="w-80 fw-bold roboto">
+                                    Nguyễn Thanh Hùng
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <div className="voting-feedback roboto">
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      <FontAwesomeIcon icon="fa-solid fa-star" />
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
                             </table>
                           </div>
-                          <div className="content-feedback p-3">
+                          <div className="content-feedback p-3 roboto">
                             <span>
                               Tôi rất ấn tượng với sự đa dạng của các loại sữa
                               tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
@@ -953,10 +922,10 @@ export default function Home() {
           <div className="col-md-12">
             <div className="w-100 d-flex justify-content-between align-items-center">
               <a href="#" style={{ textDecoration: "none", color: "#3C75A6" }}>
-                <span className="fs-3 fw-bold">BLOG</span>
+                <span className="fs-3 fw-bold roboto">BLOG</span>
               </a>
               <a href="#" style={{ textDecoration: "none", color: "#3C75A6" }}>
-                <span className="fw-bold">
+                <span className="fw-bold roboto">
                   Xem thêm <FontAwesomeIcon icon="fa-solid fa-angles-right" />
                 </span>
               </a>
@@ -974,7 +943,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="position-absolute blog-title w-100">
-                  <span className="blog-span fs-5">
+                  <span className="blog-span fs-5 roboto">
                     Cách cho bé ăn dặm đúng chuẩn và dễ dàng áp dụng
                   </span>
                 </div>
@@ -993,7 +962,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="position-absolute blog-title w-100">
-                  <span className="blog-span fs-5">
+                  <span className="blog-span fs-5 roboto">
                     Cách cho bé ăn dặm đúng chuẩn và dễ dàng áp dụng
                   </span>
                 </div>
@@ -1012,7 +981,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="position-absolute blog-title w-100">
-                  <span className="blog-span fs-5">
+                  <span className="blog-span fs-5 roboto">
                     Cách cho bé ăn dặm đúng chuẩn và dễ dàng áp dụng
                   </span>
                 </div>

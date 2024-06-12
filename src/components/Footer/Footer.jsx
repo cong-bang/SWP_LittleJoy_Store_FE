@@ -12,8 +12,8 @@ export default function Footer() {
           <div className="container">
             <div className="row">
               <div className="col-md-4">
-                <p className="text-center title-footer">ABOUT OUR SHOP</p>
-                <table>
+                <p className="text-center title-footer opensans">THÔNG TIN CHUNG</p>
+                <table className='roboto'>
                   <tbody>
                     <tr className="pb-3">
                       <td><FontAwesomeIcon icon="fa-solid fa-location-dot" /></td>
@@ -33,8 +33,8 @@ export default function Footer() {
                 </table>
               </div>
               <div className="col-md-4">
-                <p className="text-center title-footer">INFORMATION</p>
-                <table className="mt-2">
+                <p className="text-center title-footer opensans">MẠNG XÃ HỘI</p>
+                <table className="mt-2 roboto">
                   <tbody>
                     <tr>
                       <td className="logop-footer fs-4">
@@ -74,7 +74,7 @@ export default function Footer() {
           <div className="row">
             <div className="col-md-12 copyright-border">
               <div className="text-center">
-                <p className="copyright-content m-0">©️LITTLE JOY STORE 2024.</p>
+                <p className="copyright-content m-0 roboto pt-1">©️LITTLE JOY STORE 2024.</p>
               </div>
             </div>
           </div>

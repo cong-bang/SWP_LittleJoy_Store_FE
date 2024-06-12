@@ -2,7 +2,6 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
 }
 
 .footer-content{
@@ -12,11 +11,9 @@
     font-size: 20px;
     color: #3C75A6;
     font-weight: 600;
-    font-family: 'Volkhov', serif;
     margin-bottom: 4px;
 }
 .text-noticia{
-    font-family: 'Noticia Text', serif;
     color: rgba(0, 0, 0, 0.5);
 }
 .icon-text-footer{
@@ -33,7 +30,6 @@
     background-color: #d9d9d963;
 }
 .copyright-content{
-    font-family: 'Dongle', serif;
     font-size: 15px;
     background-color: #ffffff;
 }

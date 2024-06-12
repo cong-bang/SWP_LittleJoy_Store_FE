@@ -2,7 +2,6 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
 }
 .w-10{
     width: 10%;
@@ -18,19 +17,16 @@
 }
 
 .banner h1 {
-    font-family: 'Vidaloka', serif;
 }
 
 .banner p {
     color: #3C75A6;
-    font-family: 'Myanmar Sans Pro';
     font-size: 16px;
 }
 
 .banner a {
     text-decoration: none;
     color: #3C75A6;
-    font-family: 'Myanmar Sans Pro';
     
 }
 .a{
@@ -39,20 +35,18 @@
 }
 .Dongle
 {
-    font-family: 'Dongle' , serif;
-    font-size: 30px;
+    font-size: 23px;
     font-weight: 600;
 }
 .textbody,
 p{
-    font-family: 'Dongle' , serif;
-    font-size: 30px;
+    font-size: 23px;
 }
 .operator{
     background-color: #EDEDED;   
 }
 .checkout-input{
-    background-color: #6F0505;
+    background-color: #1A469E;
     color: #FFFFFF;
     margin: 20px;
     border-radius: 5px;

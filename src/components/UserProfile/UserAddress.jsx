@@ -136,21 +136,20 @@ export default function UserAddress() {
                             className="text-center w-25"
                             style={{ color: "#3C75A6" }}
                           >
-                            <FontAwesomeIcon icon="fa-solid fa-map-location" className="fs-3" />
+                            <FontAwesomeIcon
+                              icon="fa-solid fa-map-location"
+                              className="fs-3"
+                            />
                           </div>
 
                           <div className="w-75">
-                            <span className="fs-5 ps-2">
-                            Địa chỉ
-                            </span>
+                            <span className="fs-5 ps-2">Địa chỉ</span>
                           </div>
                         </Link>
                       </div>
                     </div>
                   </td>
                 </tr>
-
-                
 
                 <tr>
                   <td colSpan="2" className="pt-4">
@@ -171,113 +170,113 @@ export default function UserAddress() {
             </table>
           </div>
 
-          
-
           {/* <!-- Address info --> */}
           <div className="col-md-9">
             <table className="w-100 mt-5">
-              <tr>
-                <td colSpan="5">
-                  <span className="fs-4">Địa chỉ nhận hàng</span>
-                </td>
-                <td className="w-15 pe-4">
-                  <div className="w-75">
+              <tbody>
+                <tr>
+                  <td colSpan="5">
+                    <span className="fs-4">Địa chỉ nhận hàng</span>
+                  </td>
+                  <td className="w-15 pe-4">
+                    <div className="w-75">
+                      <input
+                        id="ButtonAdd"
+                        type="submit"
+                        value="Thêm địa chỉ mới"
+                        className="px-4 py-1"
+                      />
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td className="pt-2" colSpan="6">
+                    <div
+                      className="w-100 h-100 d-flex justify-content-center"
+                      style={{ borderBottom: "1px solid black" }}
+                    ></div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td className="pt-3" colSpan="6">
+                    <span className="fs-5">Địa chỉ</span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td className="pt-4" colSpan="3">
                     <input
-                      id="ButtonAdd"
-                      type="submit"
-                      value="Thêm địa chỉ mới"
-                      className="px-4 py-1"
+                      type="text"
+                      name=""
+                      id="inputAddress"
+                      value="S1.02 vinhomes grandpark, Long Thạnh Mỹ"
+                      className="w-90 px-2 py-1"
                     />
-                  </div>
-                </td>
-              </tr>
+                  </td>
 
-              <tr>
-                <td className="pt-2" colSpan="6">
-                  <div
-                    className="w-100 h-100 d-flex justify-content-center"
-                    style={{ borderBottom: "1px solid black" }}
-                  ></div>
-                </td>
-              </tr>
+                  <td className="w-15 pe-4 pt-2">
+                    <div className="w-75 pt-3">
+                      <input
+                        id="ButtonAdd"
+                        type="submit"
+                        value="Cập nhật"
+                        className="px-3 py-1"
+                      />
+                    </div>
+                  </td>
 
-              <tr>
-                <td className="pt-3" colSpan="6">
-                  <span className="fs-5">Địa chỉ</span>
-                </td>
-              </tr>
+                  <td className="w-15 pe-4 pt-2">
+                    <div className="w-75 pt-3">
+                      <input
+                        id="ButtonAddSpecial"
+                        type="submit"
+                        value="Mặc định"
+                        className="px-3 py-1"
+                      />
+                    </div>
+                  </td>
 
-              <tr>
-                <td className="pt-4" colSpan="3">
-                  <input
-                    type="text"
-                    name=""
-                    id="inputAddress"
-                    value="S1.02 vinhomes grandpark, Long Thạnh Mỹ"
-                    className="w-90 px-2 py-1"
-                  />
-                </td>
+                  <td></td>
+                </tr>
 
-                <td className="w-15 pe-4 pt-2">
-                  <div className="w-75 pt-3">
+                <tr className="pt-2">
+                  <td className="pt-4" colSpan="3">
                     <input
-                      id="ButtonAdd"
-                      type="submit"
-                      value="Cập nhật"
-                      className="px-3 py-1"
+                      type="text"
+                      name=""
+                      id="inputAddress"
+                      value="S1.02 vinhomes grandpark, Long Thạnh Mỹ"
+                      className="w-90 px-2 py-1"
                     />
-                  </div>
-                </td>
+                  </td>
 
-                <td className="w-15 pe-4 pt-2">
-                  <div className="w-75 pt-3">
-                    <input
-                      id="ButtonAddSpecial"
-                      type="submit"
-                      value="Mặc định"
-                      className="px-3 py-1"
-                    />
-                  </div>
-                </td>
+                  <td className="w-15 pe-4 pt-2">
+                    <div className="w-75 pt-3">
+                      <input
+                        id="ButtonAdd"
+                        type="submit"
+                        value="Cập nhật"
+                        className="px-3 py-1"
+                      />
+                    </div>
+                  </td>
 
-                <td></td>
-              </tr>
+                  <td className="w-15 pe-4 pt-2">
+                    <div className="w-75 pt-3">
+                      <input
+                        id="ButtonAdd"
+                        type="submit"
+                        value=" Đặc làm mặc định"
+                        className="px-3 py-1"
+                      />
+                    </div>
+                  </td>
 
-              <tr className="pt-2">
-                <td className="pt-4" colSpan="3">
-                  <input
-                    type="text"
-                    name=""
-                    id="inputAddress"
-                    value="S1.02 vinhomes grandpark, Long Thạnh Mỹ"
-                    className="w-90 px-2 py-1"
-                  />
-                </td>
-
-                <td className="w-15 pe-4 pt-2">
-                  <div className="w-75 pt-3">
-                    <input
-                      id="ButtonAdd"
-                      type="submit"
-                      value="Cập nhật"
-                      className="px-3 py-1"
-                    />
-                  </div>
-                </td>
-
-                <td className="w-15 pe-4 pt-2">
-                  <div className="w-75 pt-3">
-                    <input
-                      id="ButtonAdd"
-                      type="submit"
-                      value=" Đặc làm mặc định"
-                      className="px-3 py-1"
-                    />
-                  </div>
-                </td>
-
-                <td></td>
-              </tr>
+                  <td></td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>

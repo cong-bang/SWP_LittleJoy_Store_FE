@@ -96,71 +96,86 @@ const BlogDetail = () => {
             className="container"
             style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1rem" }}
           >
-            <div
-              style={{
-                backgroundColor: "white",
-                borderRadius: "10px",
-                boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.1)",
-                padding: "3rem",
-                margin: "2rem 0",
-              }}
-            >
-              <div className="w-100">
-                <FontAwesomeIcon icon="fa-solid fa-angles-left" />
-                <Link
-                  style={{ textDecoration: "none", color: "black" }}
-                  to="/blog"
-                >
-                  <span className="px-2">Trở lại</span>
-                </Link>
-              </div>
-              <div
-                className="title"
-                style={{
-                  fontSize: "2.5rem",
-                  fontWeight: "700",
-                  margin: "2rem 0",
-                  textAlign: "center",
-                  color: "#3c75a6",
-                }}
-              >
-                {blog.title}
-              </div>
-              <div style={{ textAlign: "center" }}>
-                <img
-                  src={blog.banner}
-                  className="mt-3, w-50"
-                  alt="Morinaga Milk"
+            <div className="row">
+              <div className="col-md-12">
+                <div
                   style={{
-                    width: "100%",
-                    maxWidth: "800px",
-                    maxHeight: "400px",
+                    backgroundColor: "white",
+                    borderRadius: "10px",
+                    boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.1)",
+                    padding: "3rem",
+                    margin: "2rem 0",
+                    width: '100%'
                   }}
-                />
-              </div>
-              <div
-                className="mt-3 fs-5"
-                style={{
-                  color: "#555",
-                  padding: "0 1rem",
-                  textAlign: "justify",
-                }}
-              >
-                <div dangerouslySetInnerHTML={{ __html: blog.content }} />
-              </div>
-              <div
-                style={{
-                  textAlign: "right",
-                  color: "#97999D",
-                  fontSize: "0.875rem",
-                  marginTop: "2rem",
-                  padding: "0 1rem",
-                }}
-              >
-                <span style={{ display: "block" }}>
-                  Author: {user.userName}
-                </span>
-                <span style={{ display: "block" }}>{blog.date}</span>
+                >
+                  <div className="w-100">
+                    <FontAwesomeIcon icon="fa-solid fa-angles-left" />
+                    <Link
+                      style={{ textDecoration: "none", color: "black" }}
+                      to="/blog"
+                    >
+                      <span className="px-2">Trở lại</span>
+                    </Link>
+                  </div>
+                  <div
+                    className="title"
+                    style={{
+                      fontSize: "2.5rem",
+                      fontWeight: "700",
+                      margin: "2rem 0",
+                      textAlign: "center",
+                      color: "#3c75a6",
+                    }}
+                  >
+                    {blog.title}
+                  </div>
+                  <div style={{ textAlign: "center" }}>
+                    <img
+                      src={blog.banner}
+                      className="mt-3, w-50"
+                      alt="Morinaga Milk"
+                      style={{
+                        width: "100%",
+                        maxWidth: "800px",
+                        maxHeight: "400px",
+                      }}
+                    />
+                  </div>
+                  <div
+                    className="mt-3 fs-5"
+                    style={{
+                      color: "#555",
+                      padding: "0 1rem",
+                      textAlign: "justify",
+                    }}
+                  ></div>
+                  <div
+                    className="details-blog-content"
+                    dangerouslySetInnerHTML={{ __html: blog.content }}
+                  />
+                  <div
+                    style={{
+                      textAlign: "right",
+                      color: "#97999D",
+                      fontSize: "0.875rem",
+                      marginTop: "2rem",
+                      padding: "0 1rem",
+                    }}
+                  >
+                    <span
+                      className="roboto"
+                      style={{ display: "block", fontSize: "16px" }}
+                    >
+                      Tác giả: {user.userName}
+                    </span>
+                    <span
+                      className="roboto"
+                      style={{ display: "block", fontSize: "16px" }}
+                    >
+                      {blog.date}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
