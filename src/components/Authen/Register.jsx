@@ -74,7 +74,7 @@ export default function Register() {
 
       if (response.ok) {
         console.log('Registration successful:', data);
-        navigate('/login');
+        navigate('/confirmemail');
       } else {
         // setError(response.errors || 'Registration failed');
         const validationErrors = data.errors || {};
@@ -85,7 +85,7 @@ export default function Register() {
       setError({ general: 'Something went wrong. Please try again.' });
     }
   };
-
+ 
   const displayErrors = () => {
     if (error.general) {
       return <span>{error.general}</span>;

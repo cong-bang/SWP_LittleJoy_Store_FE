@@ -28,6 +28,7 @@ import ManageBlog from "../components/ManageBlog/ManageBlog";
 import CreateBlog from "../components/Blog/CreateBlog";
 import RequestRefund from "../components/Refund/RequestRefund";
 import UpdateBlog from "../components/Blog/UpdateBlog";
+import ConfirmEmail from "../components/Authen/ConfirmEmail";
 
 const UserRoute = () => {
   return (
@@ -105,6 +106,7 @@ const AppRoutes = () => {
         <Route path="/userchangepassword" element={<UserChangePassword />} />
         <Route path="/userorderdetail" element={<UserOrderDetail />} />
         <Route path="/userordermanagement" element={<UserOrderManagement />} />
+        <Route path="/confirm" element={<ConfirmEmail />} />
         {/* Logout */}
         <Route
           path="/logout"
