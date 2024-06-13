@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../../assets/css/styleregister.css';
 
@@ -12,6 +12,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [recaptchaResponse, setRecaptchaResponse] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Load the reCAPTCHA script
@@ -27,6 +28,17 @@ export default function Register() {
     };
   }, []);
 
+  useEffect(() => {
+    window.onRecaptchaChange = onRecaptchaChange;
+  
+    return () => {
+      delete window.onRecaptchaChange;
+    };
+  }, []);
+  
+  
+  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     
@@ -40,33 +52,55 @@ export default function Register() {
       return;
     }
 
+    const formRegister = {
+      fullName: fullName,
+      userName: userName,
+      email: email,
+      phoneNumber: phoneNumber,
+      password: password,
+    };
+    console.log(formRegister);
+
     try {
       const response = await fetch('https://littlejoyapi.azurewebsites.net/api/authen/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          fullName,
-          userName,
-          email,
-          phoneNumber,
-          password,
-        }),
+        body: JSON.stringify(formRegister),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Handle successful registration (e.g., redirect to login page)
         console.log('Registration successful:', data);
+        navigate('/login');
       } else {
-        // Handle errors (e.g., show error message)
-        setError(data.message || 'Registration failed');
+        // setError(response.errors || 'Registration failed');
+        const validationErrors = data.errors || {};
+        setError(validationErrors);
       }
     } catch (error) {
-      setError('Something went wrong. Please try again.');
+      // setError('Something went wrong. Please try again.');
+      setError({ general: 'Something went wrong. Please try again.' });
     }
+  };
+
+  const displayErrors = () => {
+    if (error.general) {
+      return <span>{error.general}</span>;
+    }
+    return Object.keys(error).map((key) => (
+      <span key={key}>
+        {Array.isArray(error[key]) ? (
+          error[key].map((error, index) => (
+            <><span key={index}>{error}</span><br></br></>
+          ))
+        ) : (
+          <span>{error[key]}</span>
+        )}
+      </span>
+    ));
   };
 
   const onRecaptchaChange = (response) => {
@@ -167,6 +201,7 @@ export default function Register() {
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
                             />
+                            
                           </td>
                         </tr>
                         <tr className="hidden">
@@ -196,10 +231,10 @@ export default function Register() {
                         <tr>
                           <td colSpan="2" className="captcha-login d-flex flex-column align-items-center justify-content-center">
                             <div>
-                              <div className="g-recaptcha" data-sitekey="6LeUy-8pAAAAAF4UncmMSagSyDveemB2A3IgscOP" data-callback={onRecaptchaChange}></div>
+                            <div className="g-recaptcha" data-sitekey="6LeUy-8pAAAAAF4UncmMSagSyDveemB2A3IgscOP" data-callback="onRecaptchaChange"></div>
                             </div>
                             <div style={{ color: "red", fontSize: "15px" }}>
-                              {error}
+                              {displayErrors()}
                             </div>
                           </td>
                         </tr>

@@ -143,39 +143,39 @@ export default function Shop() {
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='suabot' />
                       </td>
-                      <td className="w-85">Sữa bột</td>
+                      <td className="w-85"><label htmlFor="suabot">Sữa bột</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='suatuoi' />
                       </td>
-                      <td>Sữa tươi</td>
+                      <td><label htmlFor="suatuoi">Sữa tươi</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='suabau' />
                       </td>
-                      <td>Sữa bầu</td>
+                      <td><label htmlFor="suabau">Sữa bầu</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='suachua' />
                       </td>
-                      <td>Sữa chua</td>
+                      <td><label htmlFor="suachua">Sữa chua</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='suahat' />
                       </td>
-                      <td>Sữa hạt</td>
+                      <td><label htmlFor="suahat">Sữa hạt</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='sualuamach' />
                       </td>
-                      <td>Sữa lúa mạch</td>
+                      <td><label htmlFor="sualuamach">Sữa lúa mạch</label></td>
                     </tr>
                   </tbody>
                 </table>
@@ -194,45 +194,45 @@ export default function Shop() {
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='meji' />
                       </td>
-                      <td className="w-85">Meji</td>
+                      <td className="w-85"><label htmlFor="meji">Meji</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='ensure' />
                       </td>
-                      <td>Ensure</td>
+                      <td><label htmlFor="ensure">Ensure</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='kidsboost' />
                       </td>
-                      <td>Kids Boost</td>
+                      <td><label htmlFor="kidsboost">Kids Boost</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='abbottgrow' />
                       </td>
-                      <td>Abbott Grow</td>
+                      <td><label htmlFor="abbottgrow">Abbott Grow</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='vinamilk' />
                       </td>
-                      <td>Vinamilk</td>
+                      <td><label htmlFor="vinamilk">Vinamilk</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='similac' />
                       </td>
-                      <td>Similac</td>
+                      <td><label htmlFor="similac">Similac</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='khac' />
                       </td>
-                      <td>Khác</td>
+                      <td><label htmlFor="khac">Khác</label></td>
                     </tr>
                   </tbody>
                 </table>
@@ -251,33 +251,33 @@ export default function Shop() {
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='duoi6thang' />
                       </td>
-                      <td className="w-85">Dưới 6 tháng</td>
+                      <td className="w-85"><label htmlFor="duoi6thang">Dưới 6 tháng</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='6-12thang' />
                       </td>
-                      <td>6 - 12 tháng</td>
+                      <td><label htmlFor="6-12thang">6 - 12 tháng</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='1-2tuoi' />
                       </td>
-                      <td>1 - 2 tuổi</td>
+                      <td><label htmlFor="1-2tuoi">1 - 2 tuổi</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id="2-6tuoi" />
                       </td>
-                      <td>2 - 6 tuổi</td>
+                      <td><label htmlFor="2-6tuoi">2 - 6 tuổi</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='tu6tuoi' />
                       </td>
-                      <td>Từ 6 tuổi</td>
+                      <td><label htmlFor="tu6tuoi">Từ 6 tuổi</label></td>
                     </tr>
                   </tbody>
                 </table>
@@ -296,39 +296,39 @@ export default function Shop() {
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='vietnam' />
                       </td>
-                      <td className="w-85">Việt Nam</td>
+                      <td className="w-85"><label htmlFor="vietnam">Việt Nam</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='chauau' />
                       </td>
-                      <td>Châu Âu</td>
+                      <td><label htmlFor="chauau">Châu Âu</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='nuocmy' />
                       </td>
-                      <td>Mỹ</td>
+                      <td><label htmlFor="nuocmy">Mỹ</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='nhat' />
                       </td>
-                      <td>Nhật</td>
+                      <td><label htmlFor="nhat">Nhật</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id="uc" />
                       </td>
-                      <td>Úc</td>
+                      <td><label htmlFor="uc">Úc</label></td>
                     </tr>
                     <tr>
                       <td className="w-15 py-1">
-                        <input type="checkbox" />
+                        <input type="checkbox" id='nuockhac' />
                       </td>
-                      <td>Khác</td>
+                      <td><label htmlFor="nuockhac">Khác</label></td>
                     </tr>
                   </tbody>
                 </table>
