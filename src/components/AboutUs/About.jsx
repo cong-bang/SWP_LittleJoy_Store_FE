@@ -41,9 +41,12 @@
 
 import React, { useState } from "react";
 import UploadImage from "../UploadImage/UploadImage";
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 const About = () => {
   const [imageUrl, setImageUrl] = useState("");
+  const notify = () => toast("Wow so easy!");
 
   const handleUploadComplete = (url) => {
     setImageUrl(url);
@@ -64,6 +67,10 @@ const About = () => {
         minHeight={300}
       />
       {imageUrl && <div>{/* <p>Image URL: {imageUrl}</p> */}</div>}
+      <div>
+        <button onClick={notify}>Notify!</button>
+        <ToastContainer />
+      </div>
     </div>
   );
 };

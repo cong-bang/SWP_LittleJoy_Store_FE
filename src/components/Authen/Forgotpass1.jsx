@@ -1,10 +1,88 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../../assets/css/styleforgot_password.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from "react-router-dom";
+
 
 export default function Forgotpass1() {
+  const [email, setEmail] = useState("");
+  const [countdown, setCountdown] = useState(30);
+  const [btnDisabled, setBtnDisabled] = useState(false);
+  const [error, setError] = useState('');
+  const [otp, setOtp] = useState(0);
+  const navigate = useNavigate();
+  const [verified, setVerified] = useState(false);
+
+  const startCountdown = () => {
+    setBtnDisabled(true);
+    let seconds = 30;
+    const countdownInterval = setInterval(() => {
+      seconds--;
+      setCountdown(seconds);
+      if (seconds <= 0) {
+        setBtnDisabled(false);
+        clearInterval(countdownInterval);
+      }
+    }, 1000);
+
+    
+      try {
+        const response = fetch(`https://littlejoyapi.azurewebsites.net/api/authen/send-otp`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(email),
+        });
+        const data = response.json();
+        if (response.ok) {
+          console.log(data.message);
+          
+        }
+      } catch (error) {
+        setError('');
+      }
+    
+
+  };
+
+  useEffect(() => {
+    if (countdown <= 0) {
+      setCountdown(30);
+    }
+  }, [countdown]);
+
+  const handleSubmit = async () => {
+    try {
+      const formResetPass = {
+        email: email,
+        otpCode: otp,
+      }
+      console.log(formResetPass);
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/authen/verify-otp`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formResetPass)
+        }
+      );
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data.message);
+        setVerified(true);
+      } 
+    } catch (error) {
+      console.error("Fetch error:", error.message);
+    }
+  };
+
+
   return (
     <>
+    {verified != true ? (
       <section class="my-xl-5">
         <div class="container">
           <div class="row">
@@ -26,19 +104,29 @@ export default function Forgotpass1() {
                             type="text"
                             placeholder="example@gmail.com"
                             name="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                           />
                         </td>
-                        <td class="w-20">
+                        <td className="w-20">
                           <div
-                            class="text-center btn-send w-75 float-end"
-                            onclick="startCountdown(this)"
+                            className={`text-center btn-send w-75 float-end ${
+                              btnDisabled ? "btn-fade" : ""
+                            }`}
+                            onClick={!btnDisabled ? startCountdown : null}
                           >
-                            <FontAwesomeIcon icon="fa-solid fa-paper-plane" />
+                            <FontAwesomeIcon icon={faPaperPlane} />
                           </div>
                         </td>
-                        <td class="w-10">
-                          <div class="w-100 countdown-box hidden">
-                            <p class="countdown m-0 float-end">30s</p>
+                        <td className="w-10">
+                          <div
+                            className={`w-100 countdown-box ${
+                              btnDisabled ? "" : "hidden"
+                            }`}
+                          >
+                            <p className="countdown m-0 float-end">
+                              {countdown}s
+                            </p>
                           </div>
                         </td>
                       </tr>
@@ -52,6 +140,8 @@ export default function Forgotpass1() {
                             type="text"
                             placeholder=""
                             name="otp"
+                            value={otp}
+                            onChange={(e) => setOtp(e.target.value)}
                           />
                         </td>
                         <td></td>
@@ -62,11 +152,13 @@ export default function Forgotpass1() {
                         </td>
                       </tr>
                       <tr>
+                        
                         <td colspan="2" class="py-2">
                           <input
                             class="w-100 btn-continue p-1"
                             type="submit"
                             value="CONTINUE"
+                            onClick={handleSubmit}
                           />
                         </td>
                         <td></td>
@@ -84,6 +176,57 @@ export default function Forgotpass1() {
           </div>
         </div>
       </section>
+    ) : (
+    <section className="my-5">
+        <div className="container">
+            <div className="row">
+                <div className="col-md-12 d-flex justify-content-around">
+                    <div className="w-50 px-3 py-5 box-forgot">
+                        <p className="forgot-title text-center content-forgot">Reset Password</p>
+                        <div className="d-flex justify-content-center">
+                            <table className="w-50">
+                                <tr>
+                                    <td colspan="3">Password</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" className="w-100 pt-2"><input className="w-100 ps-2" type="text"
+                                            placeholder="" name="password"/></td>
+                                </tr>
+                                <tr className="hidden-error">
+                                    <td colspan="3">
+                                        <p className="text-error m-0">Mật khẩu phải từ 4 chữ số</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">Confirm password</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" className="pt-2"><input className="w-100" type="text" placeholder="" name="otp"/>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr className="hidden-error">
+                                    <td colspan="3">
+                                        <p className="text-error m-0">Mật khẩu không hợp lệ</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" className="py-2"><input className="w-100 btn-continue p-1" type="submit"
+                                            value="CONFIRM RESET"/></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" className="py-2">Không nhận được mail? Hãy thử lại</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    )}
     </>
   );
 }

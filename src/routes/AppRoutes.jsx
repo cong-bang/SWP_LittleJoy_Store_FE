@@ -30,6 +30,7 @@ import RequestRefund from "../components/Refund/RequestRefund";
 import UpdateBlog from "../components/Blog/UpdateBlog";
 import ConfirmEmail from "../components/Authen/ConfirmEmail";
 
+
 const UserRoute = () => {
   return (
     <>
@@ -107,6 +108,8 @@ const AppRoutes = () => {
         <Route path="/userorderdetail" element={<UserOrderDetail />} />
         <Route path="/userordermanagement" element={<UserOrderManagement />} />
         <Route path="/confirm/:id" element={<ConfirmEmail />} />
+        <Route path="/forgotpass1" element={<Forgotpass1 />} />
+        
         {/* Logout */}
         <Route
           path="/logout"

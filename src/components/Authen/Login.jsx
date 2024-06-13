@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../assets/css/stylelogin.css";
 import logogoogle from "../../assets/img/logogoogle.png";
@@ -46,6 +46,15 @@ export default function Login() {
   //   loginUser(newUser,dispatch,navigate);
   // }
 
+  useEffect(() => {
+    const rememberedUsername = sessionStorage.getItem('rememberedUsername');
+    const rememberedPassword = sessionStorage.getItem('rememberedPassword');
+    if (rememberedUsername && rememberedPassword) {
+      setUsername(rememberedUsername);
+      setPassword(rememberedPassword);
+      setRememberMe(true);
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -80,6 +89,15 @@ export default function Login() {
         localStorage.setItem('userRole', userRole);
         localStorage.setItem('userId', userId);
 
+        if (rememberMe) {
+          sessionStorage.setItem('rememberedUsername', username);
+          sessionStorage.setItem('rememberedPassword', password);
+        } else {
+          sessionStorage.removeItem('rememberedUsername');
+          sessionStorage.removeItem('rememberedPassword');
+        }
+        
+
         console.log(userName, userRole, userId);
 
         navigate("/");
@@ -91,6 +109,8 @@ export default function Login() {
       setError(error.message);
     }
   };
+
+  
   
 
 
