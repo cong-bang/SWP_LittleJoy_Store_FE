@@ -106,7 +106,7 @@ const AppRoutes = () => {
         <Route path="/userchangepassword" element={<UserChangePassword />} />
         <Route path="/userorderdetail" element={<UserOrderDetail />} />
         <Route path="/userordermanagement" element={<UserOrderManagement />} />
-        <Route path="/confirm" element={<ConfirmEmail />} />
+        <Route path="/confirm/:id" element={<ConfirmEmail />} />
         {/* Logout */}
         <Route
           path="/logout"
