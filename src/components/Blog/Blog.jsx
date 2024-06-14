@@ -10,87 +10,104 @@ import { apiFetch } from '../../services/api';
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const { user } = useAuth();
-  const [paging, setPaging] = useState([]);
+  const [paging, setPaging] = useState({
+    CurrentPage: 1,
+    PageSize: 9,
+    TotalPages: 1,
+    TotalCount: 0,
+  });
+  const [refresh, setRefresh] = useState(false); 
 
+  const fetchBlogs = async (pageIndex, pageSize) => {
+    try {
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/blog?PageIndex=${pageIndex}&PageSize=${pageSize}`
+      );
+
+      const paginationData = JSON.parse(response.headers.get('X-Pagination'));
+      setPaging(paginationData);
+
+      const previous = document.getElementById('blog-pre');
+      const next = document.getElementById('blog-next');
+
+      if (paginationData.CurrentPage === 1) {
+        previous.style.opacity = '0.5';
+        next.style.opacity = paginationData.TotalPages > 1 ? '1' : '0.5';
+      } else if (paginationData.CurrentPage === paginationData.TotalPages) {
+        previous.style.opacity = '1';
+        next.style.opacity = '0.5';
+      } else {
+        previous.style.opacity = '1';
+        next.style.opacity = '1';
+      }
+
+      const data = await response.json();
+      const updatedData = data.map((blog) => {
+        const dateParts = blog.date.split('T')[0].split('-');
+        const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+        return {
+          ...blog,
+          banner: blog.banner == null || blog.banner === '' ? no_found : blog.banner,
+          date: formattedDate,
+        };
+      });
+      setBlogs(updatedData);
+    } catch (error) {
+      console.error('Lỗi khi lấy dữ liệu blog:', error.message);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (paging.CurrentPage === undefined) {
-          setPaging((prevState) => ({
-            ...prevState,
-            CurrentPage: 1,
-          }));
-          return;
-        }
+    fetchBlogs(paging.CurrentPage, paging.PageSize);
+  }, [paging.CurrentPage, refresh]);
 
-        const response = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/blog?PageIndex=${paging.CurrentPage}&PageSize=9`
-        );
+  const handleDeleteBlog = async (id) => {
+    try {
+      const response = await apiFetch(`https://littlejoyapi.azurewebsites.net/api/blog?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-        const paginationData = JSON.parse(response.headers.get('X-Pagination'));
-        setPaging(paginationData);
-
-        const previous = document.getElementById('blog-pre');
-        const next = document.getElementById('blog-next');
-
-        if (paging.CurrentPage === 1) {
-          previous.style.opacity = '0.5'; // Mờ đi vì không có trang trước
-          next.style.opacity = paginationData.TotalPages > 1 ? '1' : '0.5'; // Hiển thị nút "next" nếu có nhiều hơn một trang
-        } else if (paging.CurrentPage === paginationData.TotalPages) {
-          // Trang cuối cùng
-          previous.style.opacity = '1'; // Hiển thị nút "previous"
-          next.style.opacity = '0.5'; // Mờ đi vì không có trang sau
-        } else {
-          // Các trang ở giữa
-          previous.style.opacity = '1'; // Hiển thị nút "previous"
-          next.style.opacity = '1'; // Hiển thị nút "next"
-        }
-
-        const data = await response.json();
-        const updatedData = data.map((blog) => {
-          const dateParts = blog.date.split('T')[0].split('-');
-          const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
-
-          return {
-            ...blog,
-            banner: blog.banner == null || blog.banner === '' ? no_found : blog.banner,
-            date: formattedDate, // Chuyển đổi định dạng ngày
-          };
-        });
-        setBlogs(updatedData);
-      } catch (error) {
-        console.error('Lỗi khi lấy dữ liệu blog:', error.message);
-      }
-    };
-    fetchData();
-  }, [paging.CurrentPage]);
-
-  const handleDeleteBlog = (id) => {
-    const newBlogs = blogs.filter((b) => b.id !== id);
-    console.log(id);
-    setBlogs(newBlogs);
-    const fetchData = async () => {
-      try {
-        const response = await apiFetch(`https://littlejoyapi.azurewebsites.net/api/blog?id=${id}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-
-        const responsePage = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/blog?PageIndex=${paging.CurrentPage}&PageSize=9`
-        );
-
-        // const data = await responsePage.json();
+      if (response.ok) {
         
-      } catch (error) {
-          console.error(error.message);
+        const newBlogs = blogs.filter((b) => b.id !== id);
+        setBlogs(newBlogs);
+
+        if (newBlogs.length < paging.PageSize) {
+          const nextPage = paging.CurrentPage + 1;
+          if (nextPage <= paging.TotalPages) {
+            const responseNextPage = await fetch(
+              `https://littlejoyapi.azurewebsites.net/api/blog?PageIndex=${nextPage}&PageSize=1`
+            );
+            const nextData = await responseNextPage.json();
+            if (nextData.length > 0) {
+              const updatedData = nextData.map((blog) => {
+                const dateParts = blog.date.split('T')[0].split('-');
+                const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+                return {
+                  ...blog,
+                  banner: blog.banner == null || blog.banner === '' ? no_found : blog.banner,
+                  date: formattedDate,
+                };
+              });
+              setBlogs([...newBlogs, ...updatedData]);
+            }
+          }
+        }
+
+        setRefresh((prevRefresh) => !prevRefresh);
+      } else {
+        console.error('Failed to delete the blog');
       }
+    } catch (error) {
+      console.error(error.message);
     }
-    fetchData();
   };
+
 
 
   const handlePrevious = () => {
@@ -221,7 +238,7 @@ const Blog = () => {
                       </div>
 
                       <div className="mt-3">
-                        <BlogTitle title={blog.title} maxLength={35} />
+                        <BlogTitle title={blog.title} maxLength={30} />
                       </div>
                       <div className="blog-date mt-3 w-100 d-flex justify-content-end">
                       {user && user.role !== "USER" && (

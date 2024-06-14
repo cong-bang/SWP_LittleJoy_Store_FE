@@ -42,7 +42,7 @@
 import React, { useState } from "react";
 import UploadImage from "../UploadImage/UploadImage";
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const About = () => {
   const [imageUrl, setImageUrl] = useState("");

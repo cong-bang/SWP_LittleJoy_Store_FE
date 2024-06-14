@@ -7,6 +7,8 @@ import "../../assets/css/styleblog.css";
 import UploadImage from "../UploadImage/UploadImage";
 import { apiFetch } from "../../services/api";
 import Editor from "../Quill/Editor";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateBlog = () => {
   const [editorContent, setEditorContent] = useState("");
@@ -14,6 +16,7 @@ const CreateBlog = () => {
   const [banner, setBanner] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const navigate = useNavigate();
+  const notify = () => toast("Please fill out all fields!");
 
   const handleEditorChange = (content) => {
     setEditorContent(content);
@@ -25,7 +28,7 @@ const CreateBlog = () => {
       banner.trim() === "" ||
       editorContent.trim() === ""
     ) {
-      alert("Please fill out all fields.");
+      notify();
       return;
     }
 
@@ -68,6 +71,7 @@ const CreateBlog = () => {
 
   return (
     <>
+    <ToastContainer />
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-12 banner py-5 text-center">
