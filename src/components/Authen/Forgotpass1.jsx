@@ -18,7 +18,7 @@ export default function Forgotpass1() {
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
   const [messResetPass, setMessResetPass] = useState([]);
 
-  const startCountdown = () => {
+  const startCountdown = async () => {
     setBtnDisabled(true);
     let seconds = 30;
     const countdownInterval = setInterval(() => {
@@ -29,27 +29,25 @@ export default function Forgotpass1() {
         clearInterval(countdownInterval);
       }
     }, 1000);
-
-    
-      try {
-        const response = fetch(`https://littlejoyapi.azurewebsites.net/api/authen/send-otp`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(email),
-        });
-        const data = response.json();
-        if (response.ok) {
-          console.log(data.message);
-        } else {
-          console.log(data.message);
-        }
-      } catch (error) {
-        setError('');
+  
+    try {
+      const response = await fetch('https://littlejoyapi.azurewebsites.net/api/authen/send-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(email),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data.message);
+      } else {
+        console.log(data.message);
+        setMess(data.message);
       }
-    
-
+    } catch (error) {
+      setError('');
+    }
   };
 
   useEffect(() => {
