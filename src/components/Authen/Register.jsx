@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import '../../assets/css/styleregister.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "../../assets/css/styleregister.css";
 
 export default function Register() {
-  const [fullName, setFullName] = useState('');
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [recaptchaResponse, setRecaptchaResponse] = useState('');
-  const [error, setError] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [recaptchaResponse, setRecaptchaResponse] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     // Load the reCAPTCHA script
-    const script = document.createElement('script');
-    script.src = 'https://www.google.com/recaptcha/api.js';
+    const script = document.createElement("script");
+    script.src = "https://www.google.com/recaptcha/api.js";
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
@@ -30,25 +30,22 @@ export default function Register() {
 
   useEffect(() => {
     window.onRecaptchaChange = onRecaptchaChange;
-  
+
     return () => {
       delete window.onRecaptchaChange;
     };
   }, []);
-  
-  
-  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     if (!recaptchaResponse) {
-      setError('Please complete the reCAPTCHA');
+      setError("Vui lòng xác thực reCaptcha");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Password không trùng khớp");
       return;
     }
 
@@ -62,30 +59,33 @@ export default function Register() {
     console.log(formRegister);
 
     try {
-      const response = await fetch('https://littlejoyapi.azurewebsites.net/api/authen/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formRegister),
-      });
+      const response = await fetch(
+        "https://littlejoyapi.azurewebsites.net/api/authen/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formRegister),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
         // console.log('Registration successful:', data);
-        navigate('/login');
+        navigate("/login");
       } else {
         // setError(response.errors || 'Registration failed');
-        const validationErrors = data.errors || {};
+        const validationErrors = data.message;
         setError(validationErrors);
       }
     } catch (error) {
       // setError('Something went wrong. Please try again.');
-      setError({ general: 'Something went wrong. Please try again.' });
+      setError({ general: "Something went wrong. Please try again." });
     }
   };
- 
+
   const displayErrors = () => {
     if (error.general) {
       return <span>{error.general}</span>;
@@ -94,7 +94,10 @@ export default function Register() {
       <span key={key}>
         {Array.isArray(error[key]) ? (
           error[key].map((error, index) => (
-            <><span key={index}>{error}</span><br></br></>
+            <>
+              <span key={index}>{error}</span>
+              <br></br>
+            </>
           ))
         ) : (
           <span>{error[key]}</span>
@@ -109,7 +112,7 @@ export default function Register() {
 
   return (
     <>
-      <div style={{ marginBottom: '7%' }}>
+      <div style={{ marginBottom: "7%" }}>
         <div className="container p-5 mt-5 mb-5 roboto">
           <div className="row">
             <div className="col-md-12 text-center nav-login">
@@ -142,6 +145,7 @@ export default function Register() {
                         <tr>
                           <td colSpan="2" className="input-login py-2">
                             <input
+                              required
                               type="text"
                               placeholder="FullName"
                               value={fullName}
@@ -152,6 +156,7 @@ export default function Register() {
                         <tr>
                           <td colSpan="2" className="input-login py-2">
                             <input
+                              required
                               type="text"
                               placeholder="Username"
                               value={userName}
@@ -169,7 +174,8 @@ export default function Register() {
                         <tr>
                           <td colSpan="2" className="input-login py-2">
                             <input
-                              type="text"
+                              required
+                              type="email"
                               placeholder="Email"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
@@ -186,6 +192,7 @@ export default function Register() {
                         <tr>
                           <td colSpan="2" className="input-login py-2">
                             <input
+                              required
                               type="text"
                               placeholder="Phone Number"
                               value={phoneNumber}
@@ -196,12 +203,12 @@ export default function Register() {
                         <tr>
                           <td colSpan="2" className="input-login py-2">
                             <input
+                              required
                               type="password"
                               placeholder="Password"
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
                             />
-                            
                           </td>
                         </tr>
                         <tr className="hidden">
@@ -214,10 +221,13 @@ export default function Register() {
                         <tr>
                           <td colSpan="2" className="input-login py-2">
                             <input
+                              required
                               type="password"
                               placeholder="Confirm Password"
                               value={confirmPassword}
-                              onChange={(e) => setConfirmPassword(e.target.value)}
+                              onChange={(e) =>
+                                setConfirmPassword(e.target.value)
+                              }
                             />
                           </td>
                         </tr>
@@ -229,18 +239,32 @@ export default function Register() {
                           </td>
                         </tr>
                         <tr>
-                          <td colSpan="2" className="captcha-login d-flex flex-column align-items-center justify-content-center">
+                          <td
+                            colSpan="2"
+                            className="captcha-login d-flex flex-column align-items-center justify-content-center"
+                          >
                             <div>
-                            <div className="g-recaptcha" data-sitekey="6LeUy-8pAAAAAF4UncmMSagSyDveemB2A3IgscOP" data-callback="onRecaptchaChange"></div>
+                              <div
+                                className="g-recaptcha"
+                                data-sitekey="6LeUy-8pAAAAAF4UncmMSagSyDveemB2A3IgscOP"
+                                data-callback="onRecaptchaChange"
+                              ></div>
                             </div>
-                            <div style={{ color: "red", fontSize: "15px" }}>
+                            <div
+                              className="m-1"
+                              style={{ color: "red", fontSize: "20px" }}
+                            >
                               {displayErrors()}
                             </div>
                           </td>
                         </tr>
                         <tr>
                           <td colSpan="2" className="reg-btn py-2">
-                            <input type="submit" className="p-2" value="Đăng ký" />
+                            <input
+                              type="submit"
+                              className="p-2"
+                              value="Đăng ký"
+                            />
                           </td>
                         </tr>
                       </tbody>
@@ -249,14 +273,18 @@ export default function Register() {
                 </form>
               </div>
               <div className="col-md-6">
-                <p className="text-center noticia-text title-login title-dangki">Đăng nhập</p>
+                <p className="text-center noticia-text title-login title-dangki">
+                  Đăng nhập
+                </p>
                 <div className="d-flex justify-content-center content-reg">
                   <p className="w-50 text-center noticia-text">
                     Bạn đã có tài khoản, đăng nhập ngay!
                   </p>
                 </div>
                 <div className="d-flex justify-content-center btn-reg">
-                  <Link to="/login" className="text-center">Đăng nhập</Link>
+                  <Link to="/login" className="text-center">
+                    Đăng nhập
+                  </Link>
                 </div>
               </div>
             </div>

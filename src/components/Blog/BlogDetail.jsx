@@ -190,7 +190,7 @@ const BlogDetail = () => {
               color: "#00000089",
             }}
           >
-            Bài viết có liên quan
+            Bài viết mới
           </div>
 
           <div className="container-fluid">

@@ -19,33 +19,6 @@ export default function Login() {
     { username: "user", password: "user", role: "USER" },
   ];
 
-  
-  // const handleLogin = (e) => {
-  //   e.preventDefault();
-  //   const user = users.find(
-  //     (user) => user.username === username && user.password === password
-  //   );
-
-  //   if (user) {
-  //     localStorage.setItem("role", user.role);
-  //     localStorage.setItem("username", user.username);
-  //     navigate("/");
-  //     window.location.reload();
-  //   } else {
-  //     setError("Tên đăng nhập hoặc mật khẩu không đúng");
-  //   }
-  // };
-
-  //LoginAPI - store
-  // const handleLogin = (e) => {
-  //   e.preventDefault();
-  //   const newUser = {
-  //     username: username,
-  //     password: password
-  //   };
-  //   loginUser(newUser,dispatch,navigate);
-  // }
-
   useEffect(() => {
     const rememberedUsername = sessionStorage.getItem('rememberedUsername');
     const rememberedPassword = sessionStorage.getItem('rememberedPassword');
@@ -103,16 +76,12 @@ export default function Login() {
         navigate("/");
         window.location.reload();
       } else {
-        setError(data.message || 'Login failed');
+        setError(data.message || 'Đăng nhập thất bại');
       }
     } catch (error) {
       setError(error.message);
     }
   };
-
-  
-  
-
 
   return (
     <>
@@ -125,7 +94,7 @@ export default function Login() {
               </Link>
               <FontAwesomeIcon icon="fa-solid fa-angles-right px-4" />
               <Link to="/login" className="nav-link d-inline-block px-4">
-                Account
+                Login
               </Link>
             </div>
           </div>
@@ -167,7 +136,7 @@ export default function Login() {
                         {error && (
                           <tr>
                             <td colSpan="2">
-                              <p className="noticia-text text-error">{error}</p>
+                              <p className="text-error m-0">{error}</p>
                             </td>
                           </tr>
                         )}
