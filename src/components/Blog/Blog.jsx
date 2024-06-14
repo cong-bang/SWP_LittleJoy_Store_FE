@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquareCaretLeft, faSquareCaretRight, } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSquareCaretLeft,
+  faSquareCaretRight,
+} from "@fortawesome/free-solid-svg-icons";
 import "../../assets/css/styleblog.css";
 import { useAuth } from "../../context/AuthContext";
 import no_found from "../../assets/img/404.jpg";
-import { apiFetch } from '../../services/api';
+import { apiFetch } from "../../services/api";
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -16,7 +19,7 @@ const Blog = () => {
     TotalPages: 1,
     TotalCount: 0,
   });
-  const [refresh, setRefresh] = useState(false); 
+  const [refresh, setRefresh] = useState(false);
 
   const fetchBlogs = async (pageIndex, pageSize) => {
     try {
@@ -24,37 +27,38 @@ const Blog = () => {
         `https://littlejoyapi.azurewebsites.net/api/blog?PageIndex=${pageIndex}&PageSize=${pageSize}`
       );
 
-      const paginationData = JSON.parse(response.headers.get('X-Pagination'));
+      const paginationData = JSON.parse(response.headers.get("X-Pagination"));
       setPaging(paginationData);
 
-      const previous = document.getElementById('blog-pre');
-      const next = document.getElementById('blog-next');
+      const previous = document.getElementById("blog-pre");
+      const next = document.getElementById("blog-next");
 
       if (paginationData.CurrentPage === 1) {
-        previous.style.opacity = '0.5';
-        next.style.opacity = paginationData.TotalPages > 1 ? '1' : '0.5';
+        previous.style.opacity = "0.5";
+        next.style.opacity = paginationData.TotalPages > 1 ? "1" : "0.5";
       } else if (paginationData.CurrentPage === paginationData.TotalPages) {
-        previous.style.opacity = '1';
-        next.style.opacity = '0.5';
+        previous.style.opacity = "1";
+        next.style.opacity = "0.5";
       } else {
-        previous.style.opacity = '1';
-        next.style.opacity = '1';
+        previous.style.opacity = "1";
+        next.style.opacity = "1";
       }
 
       const data = await response.json();
       const updatedData = data.map((blog) => {
-        const dateParts = blog.date.split('T')[0].split('-');
+        const dateParts = blog.date.split("T")[0].split("-");
         const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 
         return {
           ...blog,
-          banner: blog.banner == null || blog.banner === '' ? no_found : blog.banner,
+          banner:
+            blog.banner == null || blog.banner === "" ? no_found : blog.banner,
           date: formattedDate,
         };
       });
       setBlogs(updatedData);
     } catch (error) {
-      console.error('Lỗi khi lấy dữ liệu blog:', error.message);
+      console.error("Lỗi khi lấy dữ liệu blog:", error.message);
     }
   };
 
@@ -64,15 +68,17 @@ const Blog = () => {
 
   const handleDeleteBlog = async (id) => {
     try {
-      const response = await apiFetch(`https://littlejoyapi.azurewebsites.net/api/blog?id=${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await apiFetch(
+        `https://littlejoyapi.azurewebsites.net/api/blog?id=${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
-        
         const newBlogs = blogs.filter((b) => b.id !== id);
         setBlogs(newBlogs);
 
@@ -85,12 +91,15 @@ const Blog = () => {
             const nextData = await responseNextPage.json();
             if (nextData.length > 0) {
               const updatedData = nextData.map((blog) => {
-                const dateParts = blog.date.split('T')[0].split('-');
+                const dateParts = blog.date.split("T")[0].split("-");
                 const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 
                 return {
                   ...blog,
-                  banner: blog.banner == null || blog.banner === '' ? no_found : blog.banner,
+                  banner:
+                    blog.banner == null || blog.banner === ""
+                      ? no_found
+                      : blog.banner,
                   date: formattedDate,
                 };
               });
@@ -101,20 +110,18 @@ const Blog = () => {
 
         setRefresh((prevRefresh) => !prevRefresh);
       } else {
-        console.error('Failed to delete the blog');
+        console.error("Failed to delete the blog");
       }
     } catch (error) {
       console.error(error.message);
     }
   };
 
-
-
   const handlePrevious = () => {
     if (paging.CurrentPage > 1) {
       setPaging((prevState) => ({
         ...prevState,
-        CurrentPage: prevState.CurrentPage - 1, 
+        CurrentPage: prevState.CurrentPage - 1,
       }));
     }
   };
@@ -131,9 +138,9 @@ const Blog = () => {
   const BlogTitle = ({ title, maxLength }) => {
     const truncateTitle = (title, maxLength) => {
       if (title.length <= maxLength) return title;
-      return title.substring(0, maxLength) + '...';
+      return title.substring(0, maxLength) + "...";
     };
-  
+
     return (
       <>
         <span className="fs-5 fw-bold">{truncateTitle(title, maxLength)}</span>
@@ -209,8 +216,7 @@ const Blog = () => {
               <div key={blog.id} className="col-md-4 p-3">
                 <div className="w-100" style={{ position: "relative" }}>
                   <Link
-                    to={{pathname: `/blogdetail/${blog.id}`, state: { blog }}}
-                    
+                    to={{ pathname: `/blogdetail/${blog.id}`, state: { blog } }}
                     className="w-100"
                     style={{ textDecoration: "none", color: "black" }}
                   >
@@ -241,27 +247,35 @@ const Blog = () => {
                         <BlogTitle title={blog.title} maxLength={30} />
                       </div>
                       <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-                      {user && user.role !== "USER" && (
-                        <Link to={{pathname: `/updateblog/${blog.id}`, state: { blog }}}>
-                        <span className="pe-5">Chỉnh sửa</span></Link> 
-                      )}
-                      <span style={{ color: "#97999D" }}>{blog.date}</span>
+                        {user && user.role !== "USER" && (
+                          <Link className="me-2 px-3 py-2" style={{backgroundColor: 'rgb(60, 117, 166)', borderRadius: '15px'}}
+                            to={{
+                              pathname: `/updateblog/${blog.id}`,
+                              state: { blog },
+                            }}
+                          >
+                              <span style={{color: 'white'}}><FontAwesomeIcon icon="fa-solid fa-pen-to-square" style={{color: 'white'}}/></span>
+                          </Link>
+                        )}
+                        <div className="d-inline-block p-2">
+                          <span>{blog.date}</span>
+                        </div>
                       </div>
                     </div>
                   </Link>
                   {user && user.role !== "USER" && (
-                  <div
-                    className="delete-blog"
-                    onClick={() => handleDeleteBlog(blog.id)}
-                    style={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "10px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <FontAwesomeIcon icon="fa-solid fa-circle-xmark" />
-                  </div>
+                    <div
+                      className="delete-blog"
+                      onClick={() => handleDeleteBlog(blog.id)}
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <FontAwesomeIcon icon="fa-solid fa-circle-xmark" />
+                    </div>
                   )}
                 </div>
               </div>

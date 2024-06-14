@@ -7,8 +7,8 @@ import "../../assets/css/styleblog.css";
 import UploadImage from "../UploadImage/UploadImage";
 import { apiFetch } from "../../services/api";
 import Editor from "../Quill/Editor";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateBlog = () => {
   const [editorContent, setEditorContent] = useState("");
@@ -16,7 +16,17 @@ const CreateBlog = () => {
   const [banner, setBanner] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const navigate = useNavigate();
-  const notify = () => toast("Please fill out all fields!");
+  const notify = () =>
+    toast.error('Vui lòng nhập đủ thông tin', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
 
   const handleEditorChange = (content) => {
     setEditorContent(content);
@@ -71,8 +81,19 @@ const CreateBlog = () => {
 
   return (
     <>
-    <ToastContainer />
-      <div className="container-fluid">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+      <div className="container-fluid roboto">
         <div className="row">
           <div className="col-md-12 banner py-5 text-center">
             <h1
@@ -115,17 +136,18 @@ const CreateBlog = () => {
         </div>
       </div>
 
-      <div className="container-fluid">
+      <div className="container-fluid roboto mb-5 pb-5">
         <div className="container pt-5">
           <div
             className="mt-5 p-3"
             style={{
-              backgroundColor: "rgb(78, 148, 209)",
+              backgroundColor: "#6692b8",
               borderRadius: "5px",
+              border: "1px solid black",
             }}
           >
             <div
-              className="text-center fw-bold my-3"
+              className="text-center fw-bold mb-3"
               style={{ fontSize: "24px", color: "white" }}
             >
               Tạo Mới Blog
@@ -204,16 +226,18 @@ const CreateBlog = () => {
                       backgroundColor: "white",
                     }}
                   >
-                    <div dangerouslySetInnerHTML={{ __html: editorContent }}></div>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: editorContent }}
+                    ></div>
                   </div>
                 </div>
               )}
 
               <div
+                className="mt-3"
                 style={{
                   display: "flex",
                   justifyContent: "flex-end",
-                  marginTop: "5px",
                 }}
               >
                 <button
@@ -234,7 +258,7 @@ const CreateBlog = () => {
                         icon="fa-solid fa-eye-slash"
                         style={{ paddingRight: "5px" }}
                       />
-                      Preview
+                      Xem trước
                     </span>
                   ) : (
                     <span>
@@ -242,7 +266,7 @@ const CreateBlog = () => {
                         icon="fa-solid fa-eye"
                         style={{ paddingRight: "5px" }}
                       />
-                      Preview
+                      Xem trước
                     </span>
                   )}
                 </button>
@@ -258,7 +282,7 @@ const CreateBlog = () => {
                     marginLeft: "10px",
                   }}
                 >
-                  Save
+                  Lưu
                 </button>
                 <button
                   onClick={() => navigate("/blog")}
@@ -272,7 +296,7 @@ const CreateBlog = () => {
                     marginLeft: "10px",
                   }}
                 >
-                  Cancel
+                  Hủy
                 </button>
               </div>
             </div>
