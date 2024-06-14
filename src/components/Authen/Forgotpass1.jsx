@@ -56,8 +56,7 @@ export default function Forgotpass1() {
       );
       const data = await response.json();
       if (response.ok) {
-        console.log(data.message);
-        setMess(data.message);
+        notify("Gửi OTP thành công")
       } else {
         console.log(data.message);
         setMess(data.message);
