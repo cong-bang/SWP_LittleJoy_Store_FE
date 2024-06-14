@@ -73,8 +73,8 @@ export default function Register() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log('Registration successful:', data);
-        navigate('/confirmemail');
+        // console.log('Registration successful:', data);
+        navigate('/login');
       } else {
         // setError(response.errors || 'Registration failed');
         const validationErrors = data.errors || {};
