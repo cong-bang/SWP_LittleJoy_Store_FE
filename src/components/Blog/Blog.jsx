@@ -78,8 +78,12 @@ const Blog = () => {
             "Content-Type": "application/json",
           },
         })
-        const data = await response.json();
-        
+
+        const responsePage = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/blog?PageIndex=${paging.CurrentPage}&PageSize=9`
+        );
+
+        // const data = await responsePage.json();
         
       } catch (error) {
           console.error(error.message);
@@ -87,6 +91,7 @@ const Blog = () => {
     }
     fetchData();
   };
+
 
   const handlePrevious = () => {
     if (paging.CurrentPage > 1) {
@@ -104,6 +109,19 @@ const Blog = () => {
         CurrentPage: prevState.CurrentPage + 1,
       }));
     }
+  };
+
+  const BlogTitle = ({ title, maxLength }) => {
+    const truncateTitle = (title, maxLength) => {
+      if (title.length <= maxLength) return title;
+      return title.substring(0, maxLength) + '...';
+    };
+  
+    return (
+      <>
+        <span className="fs-5 fw-bold">{truncateTitle(title, maxLength)}</span>
+      </>
+    );
   };
 
   return (
@@ -203,7 +221,7 @@ const Blog = () => {
                       </div>
 
                       <div className="mt-3">
-                        <span className="fs-5 fw-bold">{blog.title}</span>
+                        <BlogTitle title={blog.title} maxLength={35} />
                       </div>
                       <div className="blog-date mt-3 w-100 d-flex justify-content-end">
                       {user && user.role !== "USER" && (
