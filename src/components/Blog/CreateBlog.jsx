@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "react-quill/dist/quill.snow.css";
 import "../../assets/css/styleblog.css";
 import UploadImage from "../UploadImage/UploadImage";
-import { apiFetch } from "../../services/api"
+import { apiFetch } from "../../services/api";
+import Editor from "../Quill/Editor";
 
 const CreateBlog = () => {
   const [editorContent, setEditorContent] = useState("");
@@ -32,34 +33,33 @@ const CreateBlog = () => {
       userId: localStorage.getItem("userId"),
       title: title,
       banner: banner,
-      content: editorContent,   
+      content: editorContent,
     };
     console.log(newBlog);
 
     const fetchData = async () => {
       try {
-        const response = await apiFetch(`https://littlejoyapi.azurewebsites.net/api/blog`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newBlog)
-        })
+        const response = await apiFetch(
+          `https://littlejoyapi.azurewebsites.net/api/blog`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newBlog),
+          }
+        );
         const data = await response.json();
         navigate("/blog");
-        
       } catch (error) {
-          console.error("Lỗi tạo blog:", error);
+        console.error("Lỗi tạo blog:", error);
       }
-    }
+    };
     fetchData();
   };
 
-    
-
   const togglePreview = () => {
     setShowPreview(!showPreview);
-    
   };
 
   const handleUploadComplete = (url) => {
@@ -167,13 +167,16 @@ const CreateBlog = () => {
                 </div>
               )}
             </div>
-            <div className="text-xemtrc" style={{ display: "flex", flexDirection: "column" }}>
-              <ReactQuill
+            <div
+              className="text-xemtrc"
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              {/* <ReactQuill
                 value={editorContent}
                 onChange={handleEditorChange}
                 style={{backgroundColor: 'white', borderRadius: '5px', overflow: 'hidden'}}
-              />
-
+              /> */}
+              <Editor value={editorContent} onChange={handleEditorChange} />
               {showPreview && (
                 <div
                   className="mt-5 p-3"
@@ -189,14 +192,16 @@ const CreateBlog = () => {
                   >
                     Xem trước
                   </div>
-                  <div className="p-2 text-xemtrc"
-                    dangerouslySetInnerHTML={{ __html: editorContent }}
+                  <div
+                    className="p-2 text-xemtrc"
                     style={{
                       border: "1px solid #cccccc",
                       borderRadius: "5px",
                       backgroundColor: "white",
                     }}
-                  ></div>
+                  >
+                    <div dangerouslySetInnerHTML={{ __html: editorContent }}></div>
+                  </div>
                 </div>
               )}
 

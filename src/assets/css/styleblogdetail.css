@@ -4,11 +4,9 @@
     box-sizing: border-box;
 }
 
-.Roboto{
-}
+.Roboto {}
 
-.Opensans{
-}
+.Opensans {}
 
 .banner {
     background-repeat: no-repeat;
@@ -24,14 +22,24 @@
             #fff 100%);
     /* min-height: 1000em; */
 }
-.blog-image{
+
+.blog-image {
     aspect-ratio: 2/1;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
-.btn-create-blog{
+
+.btn-create-blog {
     background-color: rgba(60, 117, 166, 1);
     color: white;
     border-radius: 15px;
 }
+
+.details-blog-content>p>img {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+  

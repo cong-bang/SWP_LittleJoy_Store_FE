@@ -46,3 +46,8 @@
     margin: 0;
     font-size: 18px;
 }
+.ql-editor img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+  }
