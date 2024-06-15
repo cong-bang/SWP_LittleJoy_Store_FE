@@ -385,7 +385,7 @@ const ManageBlog = () => {
                       </div>
                     </div>
                     <div className="body-center">
-                      <div className="container-fluid">
+                      <div className="container-fluid ">
                         <div className="row">
                           <div className="col-md-12 d-flex justify-content">
                             <div className="search-user float-start p-3">
@@ -416,6 +416,7 @@ const ManageBlog = () => {
                                   borderRadius: "5px",
                                   background: "#151C2C",
                                   color: "#888888",
+                                  border: 'none'
                                 }}
                                 value={sortDate}
                                 onChange={(e) => setSortDate(e.target.value)}
@@ -423,8 +424,8 @@ const ManageBlog = () => {
                                 <option disabled value="" selected>
                                   Ngày
                                 </option>
-                                <option value="1">thấp - cao</option>
-                                <option value="0">cao - thấp</option>
+                                <option value="1">Tăng Dần</option>
+                                <option value="0">Giảm Dần</option>
                               </select>
                             </div>
                           </div>
@@ -523,7 +524,7 @@ const ManageBlog = () => {
                                       </Link>
 
                                       <div className="delete-user p-2">
-                                        <span onClick={() => handleDeleteBlog(blog.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></span>
+                                        <span style={{cursor: 'pointer'}} onClick={() => handleDeleteBlog(blog.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></span>
                                       </div>
                                     </td>
                                   </tr>
