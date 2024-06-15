@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSquareCaretLeft,
@@ -11,25 +11,6 @@ import no_found from "../../assets/img/404.jpg";
 import { apiFetch } from "../../services/api";
 import ContentLoader from 'react-content-loader';
 
-const BlogContentLoader = () => (
-  <ContentLoader
-    speed={2}
-    width={400}
-    height={160}
-    viewBox="0 0 400 160"
-    backgroundColor="#f3f3f3"
-    foregroundColor="#ecebeb"
-  >
-    <rect x="0" y="0" rx="5" ry="5" width="100%" height="10" />
-    <rect x="0" y="20" rx="5" ry="5" width="100%" height="10" />
-    <rect x="0" y="40" rx="5" ry="5" width="100%" height="10" />
-    <rect x="0" y="60" rx="5" ry="5" width="100%" height="10" />
-    <rect x="0" y="80" rx="5" ry="5" width="100%" height="10" />
-    <rect x="0" y="100" rx="5" ry="5" width="100%" height="10" />
-    <rect x="0" y="120" rx="5" ry="5" width="100%" height="10" />
-    <rect x="0" y="140" rx="5" ry="5" width="100%" height="10" />
-  </ContentLoader>
-);
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -42,6 +23,31 @@ const Blog = () => {
   });
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  const BlogContentLoader = () => (
+    <ContentLoader
+      speed={2}
+      width={400}
+      height={160}
+      viewBox="0 0 400 160"
+      backgroundColor="#f3f3f3"
+      foregroundColor="#ecebeb"
+    >
+      <rect x="0" y="0" rx="5" ry="5" width="100%" height="10" />
+      <rect x="0" y="20" rx="5" ry="5" width="100%" height="10" />
+      <rect x="0" y="40" rx="5" ry="5" width="100%" height="10" />
+      <rect x="0" y="60" rx="5" ry="5" width="100%" height="10" />
+      <rect x="0" y="80" rx="5" ry="5" width="100%" height="10" />
+      <rect x="0" y="100" rx="5" ry="5" width="100%" height="10" />
+      <rect x="0" y="120" rx="5" ry="5" width="100%" height="10" />
+      <rect x="0" y="140" rx="5" ry="5" width="100%" height="10" />
+    </ContentLoader>
+  );
 
   const fetchBlogs = async (pageIndex, pageSize) => {
     setLoading(true);
@@ -144,7 +150,6 @@ const Blog = () => {
       if (title.length <= maxLength) return title;
       return title.substring(0, maxLength) + "...";
     };
-
     return (
       <>
         <span className="fs-5 fw-bold">{truncateTitle(title, maxLength)}</span>

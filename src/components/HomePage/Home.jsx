@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import logoshop from "../../assets/img/logoshop.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -14,8 +14,56 @@ import avatar1 from "../../assets/img/avatar1.png";
 import blog1 from "../../assets/img/blog1.png";
 import blog2 from "../../assets/img/blog2.png";
 import blog3 from "../../assets/img/blog3.png";
+import { Link } from "react-router-dom";
 
-export default function Home() {
+const Home = () => {
+  const [relatedBlogs, setRelatedBlogs] = useState([]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        
+        const responseBlogRelated = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/blog/related`
+        );
+        const dataRelatedBlog = await responseBlogRelated.json();
+        if (dataRelatedBlog.httpCode != 404) {
+          const updatedData = dataRelatedBlog.map((blog) => {
+            const dateParts = blog.date.split("T")[0].split("-");
+            const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+    
+            return {
+              ...blog,
+              banner:
+                blog.banner == null || blog.banner === "" ? no_found : blog.banner,
+              date: formattedDate,
+            };
+          });
+          console.log(dataRelatedBlog);
+          setRelatedBlogs(updatedData);
+        }
+
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const BlogTitle = ({ title, maxLength }) => {
+    const truncateTitle = (title, maxLength) => {
+      if (title.length <= maxLength) return title;
+      return title.substring(0, maxLength) + "...";
+    };
+    return (
+      <>
+        {truncateTitle(title, maxLength)}
+      </>
+    );
+  };
+
+
   return (
     <>
       <div className="banner container-fluid py-5">
@@ -917,26 +965,28 @@ export default function Home() {
         </div>
       </div>
 
+      {/* BLOG */}
       <div className="container mt-5 mb-5">
         <div className="row pb-5">
           <div className="col-md-12">
             <div className="w-100 d-flex justify-content-between align-items-center">
-              <a href="#" style={{ textDecoration: "none", color: "#3C75A6" }}>
+              <Link to="/blog" style={{ textDecoration: "none", color: "#3C75A6" }}>
                 <span className="fs-3 fw-bold roboto">BLOG</span>
-              </a>
-              <a href="#" style={{ textDecoration: "none", color: "#3C75A6" }}>
+              </Link>
+              <Link to="/blog" style={{ textDecoration: "none", color: "#3C75A6" }}>
                 <span className="fw-bold roboto">
                   Xem thêm <FontAwesomeIcon icon="fa-solid fa-angles-right" />
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
-          <div className="col-md-4 mt-4">
-            <a href="">
+          {relatedBlogs.map((blog) => (
+          <div key={blog.id} className="col-md-4 mt-4">
+            <Link to={{ pathname: `/blogdetail/${blog.id}`}} >
               <div className="blog-content position-relative">
                 <div className="image-blog text-center">
                   <img
-                    src={blog1}
+                    src={blog.banner}
                     alt=""
                     className="w-100"
                     style={{ height: "18em" }}
@@ -944,13 +994,14 @@ export default function Home() {
                 </div>
                 <div className="position-absolute blog-title w-100">
                   <span className="blog-span fs-5 roboto">
-                    Cách cho bé ăn dặm đúng chuẩn và dễ dàng áp dụng
+                      <BlogTitle title={blog.title} maxLength={30} />
                   </span>
                 </div>
               </div>
-            </a>
+            </Link>
           </div>
-          <div className="col-md-4 mt-4">
+          ))}
+          {/* <div className="col-md-4 mt-4">
             <a href="">
               <div className="blog-content position-relative">
                 <div className="image-blog text-center">
@@ -987,9 +1038,11 @@ export default function Home() {
                 </div>
               </div>
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
+
     </>
   );
 }
+export default Home;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/css/styleblogdetail.css";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import no_found from "../../assets/img/404.jpg";
 import sorry from "../../assets/img/sorry.png";
 
@@ -9,6 +9,12 @@ const BlogDetail = () => {
   const { id } = useParams();
   const [blog, setBlog] = useState({});
   const [user, setUser] = useState({});
+  const [relatedBlogs, setRelatedBlogs] = useState([]);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,7 +22,11 @@ const BlogDetail = () => {
         const response = await fetch(
           `https://littlejoyapi.azurewebsites.net/api/blog/${id}`
         );
+        const responseBlogRelated = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/blog/related`
+        );
         const data = await response.json();
+        const dataRelatedBlog = await responseBlogRelated.json();
         if (data.httpCode != 404) {
           const dateParts = data.date.split("T")[0].split("-");
           const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
@@ -25,7 +35,23 @@ const BlogDetail = () => {
             data.banner == null || data.banner == "" ? no_found : data.banner;
           console.log(data);
         }
+        if (dataRelatedBlog.httpCode != 404) {
+          const updatedData = dataRelatedBlog.map((blog) => {
+            const dateParts = blog.date.split("T")[0].split("-");
+            const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+    
+            return {
+              ...blog,
+              banner:
+                blog.banner == null || blog.banner === "" ? no_found : blog.banner,
+              date: formattedDate,
+            };
+          });
+          console.log(dataRelatedBlog);
+          setRelatedBlogs(updatedData);
+        }
         setBlog(data);
+        
 
         const resUserId = await fetch(
           `https://littlejoyapi.azurewebsites.net/api/user/${data.userId}`
@@ -37,7 +63,19 @@ const BlogDetail = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
+
+  const BlogTitle = ({ title, maxLength }) => {
+    const truncateTitle = (title, maxLength) => {
+      if (title.length <= maxLength) return title;
+      return title.substring(0, maxLength) + "...";
+    };
+    return (
+      <>
+        <span className="fs-5 fw-bold">{truncateTitle(title, maxLength)}</span>
+      </>
+    );
+  };
 
   return (
     <>
@@ -180,6 +218,7 @@ const BlogDetail = () => {
             </div>
           </div>
 
+          {/* Blog có liên quan */}
           <div
             className="mt-5"
             style={{
@@ -196,7 +235,47 @@ const BlogDetail = () => {
           <div className="container-fluid">
             <div className="container">
               <div className="row">
-                <div className="col-md-4 p-3">
+              {relatedBlogs.map((blog) => (
+                <div key={blog.id} className="col-md-4 p-3">
+                  <Link
+                    to={{ pathname: `/blogdetail/${blog.id}`, state: { blog } }}
+                    className="w-100"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <div
+                      className="blog-content-main w-100 p-4"
+                      style={{
+                        backgroundColor: "rgba(155, 155, 155, 0.05)",
+                        borderRadius: "15px",
+                      }}
+                    >
+                      <div className="blog-image">
+                      <img
+                          src={blog.banner}
+                          alt=""
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                            borderRadius: "15px",
+                            aspectRatio: "2/1",
+                            backgroundPosition: "center",
+                            backgroundSize: "cover",
+                            backgroundRepeat: "no-repeat",
+                          }}
+                        />
+                      </div>
+                      <div className="mt-3">
+                        <BlogTitle title={blog.title} maxLength={30} />
+                      </div>
+                      <div className="blog-date mt-3 w-100 d-flex justify-content-end">
+                        <span style={{ color: "#97999D" }}>{blog.date}</span>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+                ))}
+
+                {/* <div className="col-md-4 p-3">
                   <a
                     href=""
                     className="w-100"
@@ -222,6 +301,7 @@ const BlogDetail = () => {
                     </div>
                   </a>
                 </div>
+
                 <div className="col-md-4 p-3">
                   <a
                     href=""
@@ -247,33 +327,8 @@ const BlogDetail = () => {
                       </div>
                     </div>
                   </a>
-                </div>
-                <div className="col-md-4 p-3">
-                  <a
-                    href=""
-                    className="w-100"
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    <div
-                      className="blog-content-main w-100 p-4"
-                      style={{
-                        backgroundColor: "rgba(155, 155, 155, 0.05)",
-                        borderRadius: "15px",
-                      }}
-                    >
-                      <div className="blog-image"></div>
-                      <div className="mt-3">
-                        <span className="fs-5 fw-bold">
-                          Top 5 sản phẩm canxi cho bà bầu được các bác sĩ khuyên
-                          dùng
-                        </span>
-                      </div>
-                      <div className="blog-date mt-3 w-100 d-flex justify-content-end">
-                        <span style={{ color: "#97999D" }}>07/12/2003</span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
+                </div> */}
+
               </div>
             </div>
           </div>

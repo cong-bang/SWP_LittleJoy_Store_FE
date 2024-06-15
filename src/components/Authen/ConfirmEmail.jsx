@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import Loader from "react-js-loader";
 
 const ConfirmEmail = () => {
   const { id } = useParams();
   const [mess, setMess] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,10 +22,14 @@ const ConfirmEmail = () => {
         console.log(id);
         if (response.ok) {
           setMess('Xác thực tài khoản thành công');
-        } 
+        } else {
+          setMess(data.message)
+        }
       } catch (error) {
         console.error("Fetch error:", error.message);
-        setMess(error.message);
+        setMess('Xác thực tài khoản thất bại: ' + error.message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -39,7 +45,11 @@ const ConfirmEmail = () => {
               minHeight: '80vh'
           }}
         >
-            {mess !== '' && (
+            {loading ? ( 
+          <div className="text-center pt-5 mt-5">
+            <Loader type="spinner-default" bgColor={"#000"} color={{ color: "#000" }} title={"Đang xác thực..."} size={100}  />
+          </div>
+        ) : (
           <div className="container">
             <div className="row">
               <div className="col-md-12 py-5 my-5 text-center">
@@ -52,7 +62,7 @@ const ConfirmEmail = () => {
                   }}
                 >
                   <div className="d-flex flex-column align-items-center p-3">
-                    
+                  
                     <span
                       className="text-center fs-4 pt-3"
                       style={{
@@ -60,8 +70,9 @@ const ConfirmEmail = () => {
                       }}
                     >
                       {mess}
-                    </span>
+                    </span>       
                     <Link to="/login">Quay lại trang Login</Link>
+                    
                   </div>
                 </div>
               </div>
