@@ -171,7 +171,7 @@ const ManageBlog = () => {
     const dateParts = datePart.split("-");
     const timeParts = (timePart || "").split(":");
     const secondParts = timeParts[2].split("."); // Tách phần thập phân của giây
-    const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]} - ${
+    const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]} ${
       timeParts[0] || "00"
     }:${timeParts[1] || "00"}:${secondParts[0]}`;
     return formattedDate;
