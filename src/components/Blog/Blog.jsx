@@ -9,6 +9,27 @@ import "../../assets/css/styleblog.css";
 import { useAuth } from "../../context/AuthContext";
 import no_found from "../../assets/img/404.jpg";
 import { apiFetch } from "../../services/api";
+import ContentLoader from 'react-content-loader';
+
+const BlogContentLoader = () => (
+  <ContentLoader
+    speed={2}
+    width={400}
+    height={160}
+    viewBox="0 0 400 160"
+    backgroundColor="#f3f3f3"
+    foregroundColor="#ecebeb"
+  >
+    <rect x="0" y="0" rx="5" ry="5" width="100%" height="10" />
+    <rect x="0" y="20" rx="5" ry="5" width="100%" height="10" />
+    <rect x="0" y="40" rx="5" ry="5" width="100%" height="10" />
+    <rect x="0" y="60" rx="5" ry="5" width="100%" height="10" />
+    <rect x="0" y="80" rx="5" ry="5" width="100%" height="10" />
+    <rect x="0" y="100" rx="5" ry="5" width="100%" height="10" />
+    <rect x="0" y="120" rx="5" ry="5" width="100%" height="10" />
+    <rect x="0" y="140" rx="5" ry="5" width="100%" height="10" />
+  </ContentLoader>
+);
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -20,11 +41,13 @@ const Blog = () => {
     TotalCount: 0,
   });
   const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchBlogs = async (pageIndex, pageSize) => {
+    setLoading(true);
     try {
       const response = await fetch(
-        `https://littlejoyapi.azurewebsites.net/api/blog?PageIndex=${pageIndex}&PageSize=${pageSize}`
+        `https://littlejoyapi.azurewebsites.net/api/blog?PageIndex=${pageIndex}&PageSize=9`
       );
 
       const paginationData = JSON.parse(response.headers.get("X-Pagination"));
@@ -59,6 +82,8 @@ const Blog = () => {
       setBlogs(updatedData);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu blog:", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,38 +102,16 @@ const Blog = () => {
           },
         }
       );
-
+  
       if (response.ok) {
-        const newBlogs = blogs.filter((b) => b.id !== id);
-        setBlogs(newBlogs);
-
-        if (newBlogs.length < paging.PageSize) {
+        await fetchBlogs(paging.CurrentPage, paging.PageSize);
+  
+        if (blogs.length < paging.PageSize) {
           const nextPage = paging.CurrentPage + 1;
           if (nextPage <= paging.TotalPages) {
-            const responseNextPage = await fetch(
-              `https://littlejoyapi.azurewebsites.net/api/blog?PageIndex=${nextPage}&PageSize=1`
-            );
-            const nextData = await responseNextPage.json();
-            if (nextData.length > 0) {
-              const updatedData = nextData.map((blog) => {
-                const dateParts = blog.date.split("T")[0].split("-");
-                const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
-
-                return {
-                  ...blog,
-                  banner:
-                    blog.banner == null || blog.banner === ""
-                      ? no_found
-                      : blog.banner,
-                  date: formattedDate,
-                };
-              });
-              setBlogs([...newBlogs, ...updatedData]);
-            }
+            await fetchBlogs(nextPage, paging.PageSize);
           }
         }
-
-        setRefresh((prevRefresh) => !prevRefresh);
       } else {
         console.error("Failed to delete the blog");
       }
@@ -116,6 +119,7 @@ const Blog = () => {
       console.error(error.message);
     }
   };
+  
 
   const handlePrevious = () => {
     if (paging.CurrentPage > 1) {
@@ -212,7 +216,14 @@ const Blog = () => {
                 </Link>
               )}
             </div>
-            {blogs.map((blog) => (
+            {loading ? (
+              <>
+                <div className="col-md-4 p-3"><BlogContentLoader /></div>
+                <div className="col-md-4 p-3"><BlogContentLoader /></div>
+                <div className="col-md-4 p-3"><BlogContentLoader /></div>
+              </>
+            ) : (
+            blogs.map((blog) => (
               <div key={blog.id} className="col-md-4 p-3">
                 <div className="w-100" style={{ position: "relative" }}>
                   <Link
@@ -279,7 +290,8 @@ const Blog = () => {
                   )}
                 </div>
               </div>
-            ))}
+            ))
+          )}
           </div>
         </div>
       </div>
