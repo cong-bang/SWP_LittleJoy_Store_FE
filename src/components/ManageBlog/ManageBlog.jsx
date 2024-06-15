@@ -580,7 +580,10 @@ const ManageBlog = () => {
                                           </div>
                                         </Link>
 
-                                        <div className="delete-user p-2" style={{cursor: 'pointer'}}>
+                                        <div
+                                          className="delete-user p-2"
+                                          style={{ cursor: "pointer" }}
+                                        >
                                           <span
                                             onClick={() =>
                                               handleDeleteBlog(blog.id)
@@ -596,22 +599,6 @@ const ManageBlog = () => {
                               </tbody>
                             </table>
                           </div>
-
-                          {/* <div className="col-md-12 d-flex justify-content-end paging p-2">
-                            <a href="" className="p-2 me-3 active-paging">
-                              1
-                            </a>
-                            <a href="" className="p-2 me-3">
-                              2
-                            </a>
-                            <a href="" className="p-2 me-3">
-                              3
-                            </a>
-                            <a href="" className="p-2 me-3">
-                              4
-                            </a>
-                          </div> */}
-
                           <div className="col-md-12 d-flex justify-content-end paging p-2">
                             {Array.from(
                               { length: paging.TotalPages },
@@ -644,10 +631,10 @@ const ManageBlog = () => {
           </div>
         </div>
         <ModalConfirmDelete
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onConfirm={handleConfirmDelete}
-      />
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onConfirm={handleConfirmDelete}
+        />
       </div>
     </>
   );
