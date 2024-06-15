@@ -14,6 +14,7 @@ import {
 import no_found from "../../assets/img/404.jpg";
 import ContentLoader from 'react-content-loader';
 import { apiFetch } from "../../services/api";
+import ModalConfirmDelete from './ModalConfirmDelete';
 
 const ManageBlog = () => {
   const navigate = useNavigate();
@@ -26,9 +27,17 @@ const ManageBlog = () => {
     TotalPages: 1,
     TotalCount: 0,
   });
+  const [pagingFilter, setPagingFilter] = useState({
+    CurrentPage: 1,
+    PageSize: 9,
+    TotalPages: 1,
+    TotalCount: 0,
+  });
   const [searchTitle, setSearchTitle] = useState('');
   const [sortDate, setSortDate] = useState();
   const [userId, setUserId] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [idToDelete, setIdToDelete] = useState(null);
 
   const TableLoading = () => (
     <ContentLoader
@@ -59,7 +68,7 @@ const ManageBlog = () => {
       const updatedData = data.map((blog) => ({
         ...blog,
         banner: blog.banner == null || blog.banner === "" ? no_found : blog.banner,
-        date: formatDateString(blog.date),
+       
       }));
 
       setBlogs(updatedData);
@@ -83,19 +92,19 @@ const ManageBlog = () => {
       searchParams.append("PageSize", pageSize);
 
       const response = await apiFetch(`https://littlejoyapi.azurewebsites.net/api/blog/filter?${searchParams.toString()}`);
-  
-      if (!response.ok) {
-        throw new Error('Failed to fetch filtered data');
-      }
-      
-      const paginationData = JSON.parse(response.headers.get("X-Pagination"));
+
+      const paginationFilter = await JSON.parse(response.headers.get("X-Pagination"));
+      setPagingFilter(paginationFilter);
+      console.log(pagingFilter)
+
+      const paginationData = await JSON.parse(response.headers.get("X-Pagination"));
       setPaging(paginationData);
   
       const data = await response.json();
       const updatedData = data.map((blog) => ({
         ...blog,
         banner: blog.banner == null || blog.banner === "" ? no_found : blog.banner,
-        date: formatDateString(blog.date),
+        
       }));
   
       setBlogs(updatedData);
@@ -107,19 +116,34 @@ const ManageBlog = () => {
   };
 
   useEffect(() => {
-    fetchFilter(paging.CurrentPage, paging.PageSize);
-  }, [paging.CurrentPage, refresh, searchTitle, sortDate, userId]);
+    if (sortDate !== undefined || searchTitle || userId) {
+      fetchFilter(pagingFilter.CurrentPage, pagingFilter.PageSize);
+    } else {
+      fetchBlogs(paging.CurrentPage, paging.PageSize);
+    }
+  }, [pagingFilter.CurrentPage, searchTitle, sortDate, userId, refresh]);
 
   useEffect(() => {
-    fetchBlogs(paging.CurrentPage, paging.PageSize);
+    if (!searchTitle && sortDate === undefined && !userId) {
+      fetchBlogs(paging.CurrentPage, paging.PageSize);
+    }
   }, [paging.CurrentPage, refresh]);
 
-  const formatDateString = (dateString) => {
-    const dateParts = dateString.split("T")[0].split("-");
-    return `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= (searchTitle || sortDate !== undefined || userId ? pagingFilter.TotalPages : paging.TotalPages)) {
+      if (searchTitle || sortDate !== undefined || userId) {
+        setPagingFilter((prev) => ({
+          ...prev,
+          CurrentPage: newPage,
+        }));
+      } else {
+        setPaging((prev) => ({
+          ...prev,
+          CurrentPage: newPage,
+        }));
+      }
+    }
   };
-
-
 
   const BlogTitle = ({ title, maxLength }) => {
     const truncateTitle = (title, maxLength) => {
@@ -129,36 +153,19 @@ const ManageBlog = () => {
     return <>{truncateTitle(title, maxLength)}</>;
   };
 
-  const BlogContent = ({ title, maxLength }) => {
-    const truncateTitle = (title, maxLength) => {
-      if (title.length <= maxLength) return title;
-      return title.substring(0, maxLength) + "...";
-    };
-    return (
-      <>
-        <span
-          dangerouslySetInnerHTML={{ __html: truncateTitle(title, maxLength) }}
-        />
-      </>
-    );
-  };
-
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= paging.TotalPages) {
-      setPaging((prev) => ({
-        ...prev,
-        CurrentPage: newPage,
-      }));
-    }
-  };
-
   const handleDeleteBlog = async (id) => {
-  const isConfirmed = window.confirm("Bạn có chắc chắn muốn xóa bài viết này không?");
-  
-  if (isConfirmed) {
+    setIdToDelete(id);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmDelete = async () => {
     try {
       const response = await apiFetch(
-        `https://littlejoyapi.azurewebsites.net/api/blog?id=${id}`,
+        `https://littlejoyapi.azurewebsites.net/api/blog?id=${idToDelete}`,
         {
           method: "DELETE",
           headers: {
@@ -180,9 +187,11 @@ const ManageBlog = () => {
       }
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setIsModalOpen(false);
     }
-  }
-};
+  };
+
 
   const handleLogout = () => {
     navigate("/");
@@ -385,7 +394,7 @@ const ManageBlog = () => {
                       </div>
                     </div>
                     <div className="body-center">
-                      <div className="container-fluid ">
+                      <div className="container-fluid">
                         <div className="row">
                           <div className="col-md-12 d-flex justify-content">
                             <div className="search-user float-start p-3">
@@ -416,7 +425,6 @@ const ManageBlog = () => {
                                   borderRadius: "5px",
                                   background: "#151C2C",
                                   color: "#888888",
-                                  border: 'none'
                                 }}
                                 value={sortDate}
                                 onChange={(e) => setSortDate(e.target.value)}
@@ -444,7 +452,7 @@ const ManageBlog = () => {
                                     <span className="float-start">Banner</span>
                                   </td>
                                   <td className="p-3 px-4 ">
-                                    <span className="float-start">Content</span>
+                                    <span className="float-start">UserID</span>
                                   </td>
                                   <td className="p-3 px-4 ">
                                     <span className="float-start">Date</span>
@@ -501,10 +509,7 @@ const ManageBlog = () => {
                                     </td>
                                     <td className="p-3 px-4 ">
                                       <span className="float-start">
-                                        <BlogContent
-                                          title={blog.content}
-                                          maxLength={15}
-                                        />
+                                        {blog.userId}
                                       </span>
                                     </td>
                                     <td className="p-3 px-4 ">
@@ -524,81 +529,22 @@ const ManageBlog = () => {
                                       </Link>
 
                                       <div className="delete-user p-2">
-                                        <span style={{cursor: 'pointer'}} onClick={() => handleDeleteBlog(blog.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></span>
+                                        <span onClick={() => handleDeleteBlog(blog.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></span>
                                       </div>
                                     </td>
                                   </tr>
                                 ))
                               )}
-                                {/* <tr className="table-content">
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">002</span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">Title here</span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">Imgae</span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">
-                                      Content here
-                                    </span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">
-                                      6/8/2024
-                                    </span>
-                                  </td>
-                                  <td className="p-3 px-4 d-flex justify-content-center">
-                                    <div
-                                      className="edit-user p-2"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#edit-user"
-                                    >
-                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
-                                    </div>
-                                    <div className="delete-user p-2">
-                                      <FontAwesomeIcon icon="fa-solid fa-trash" />
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr className="table-content">
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">003</span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">Title here</span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">Image</span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">
-                                      Content here
-                                    </span>
-                                  </td>
-                                  <td className="p-3 px-4 ">
-                                    <span className="float-start">
-                                      6/8/2024
-                                    </span>
-                                  </td>
-                                  <td className="p-3 px-4 d-flex justify-content-center">
-                                    <div
-                                      className="edit-user p-2"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#edit-user"
-                                    >
-                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
-                                    </div>
-                                    <div className="delete-user p-2">
-                                      <FontAwesomeIcon icon="fa-solid fa-trash" />
-                                    </div>
-                                  </td>
-                                </tr> */}
+                                
                               </tbody>
                             </table>
                           </div>
+                          <ModalConfirmDelete
+                            isOpen={isModalOpen}
+                            onClose={handleCloseModal}
+                            onConfirm={handleConfirmDelete}
+                          />
+                          
                           {/* <div className="col-md-12 d-flex justify-content-end paging p-2">
                             <a href="" className="p-2 me-3 active-paging">
                               1
