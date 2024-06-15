@@ -12,9 +12,9 @@ import {
   faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import no_found from "../../assets/img/404.jpg";
-import ContentLoader from 'react-content-loader';
+import ContentLoader from "react-content-loader";
 import { apiFetch } from "../../services/api";
-import ModalConfirmDelete from './ModalConfirmDelete';
+import ModalConfirmDelete from "./ModalConfirmDelete";
 
 const ManageBlog = () => {
   const navigate = useNavigate();
@@ -33,21 +33,21 @@ const ManageBlog = () => {
     TotalPages: 1,
     TotalCount: 0,
   });
-  const [searchTitle, setSearchTitle] = useState('');
+  const [searchTitle, setSearchTitle] = useState("");
   const [sortDate, setSortDate] = useState();
   const [userId, setUserId] = useState();
-  const [userName, setUserName] = useState('')
+  const [userName, setUserName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
 
   const TableLoading = () => (
     <ContentLoader
       speed={2}
-      width={'100%'}
+      width={"100%"}
       height={160}
       // viewBox="0 0 100% 160"
       backgroundColor="#C0C0C0"
-      foregroundColor="#d9d9d9" 
+      foregroundColor="#d9d9d9"
     >
       <rect x="0" y="20" rx="3" ry="3" width="100%" height="10" />
       <rect x="0" y="40" rx="3" ry="3" width="100%" height="10" />
@@ -58,7 +58,6 @@ const ManageBlog = () => {
   const fetchBlogs = async (pageIndex, pageSize) => {
     setLoading(true);
     try {
-      
       const response = await fetch(
         `https://littlejoyapi.azurewebsites.net/api/blog?PageIndex=${pageIndex}&PageSize=${pageSize}`
       );
@@ -69,14 +68,13 @@ const ManageBlog = () => {
       const data = await response.json();
       const updatedData = data.map((blog) => ({
         ...blog,
-        banner: blog.banner == null || blog.banner === "" ? no_found : blog.banner,
+        banner:
+          blog.banner == null || blog.banner === "" ? no_found : blog.banner,
         date: formatDateString(blog.date),
-       
       }));
 
       setBlogs(updatedData);
       console.log(blogs);
-
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu blog:", error.message);
     } finally {
@@ -94,28 +92,37 @@ const ManageBlog = () => {
       searchParams.append("PageIndex", pageIndex);
       searchParams.append("PageSize", pageSize);
 
-      const response = await apiFetch(`https://littlejoyapi.azurewebsites.net/api/blog/filter?${searchParams.toString()}`);
+      const response = await apiFetch(
+        `https://littlejoyapi.azurewebsites.net/api/blog/filter?${searchParams.toString()}`
+      );
 
-      const paginationFilter = await JSON.parse(response.headers.get("X-Pagination"));
+      const paginationFilter = await JSON.parse(
+        response.headers.get("X-Pagination")
+      );
       setPagingFilter(paginationFilter);
-      console.log(pagingFilter)
+      console.log(pagingFilter);
 
-      const paginationData = await JSON.parse(response.headers.get("X-Pagination"));
+      const paginationData = await JSON.parse(
+        response.headers.get("X-Pagination")
+      );
       setPaging(paginationData);
-  
-      const userResponse = await fetch(`https://littlejoyapi.azurewebsites.net/api/user/${userId}`);
-    const userData = await userResponse.json();
-    const userName = userData.name; // Giả sử userName được lấy từ trường "name" trong dữ liệu user
 
-    const data = await response.json();
-    const updatedData = data.map((blog) => ({
-      ...blog,
-      banner: blog.banner == null || blog.banner === "" ? no_found : blog.banner,
-      date: formatDateString(blog.date),
-      userName: userName, // Thêm userName vào dữ liệu blog
-    }));
+      const userResponse = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/user/${userId}`
+      );
+      const userData = await userResponse.json();
+      const userName = userData.name; // Giả sử userName được lấy từ trường "name" trong dữ liệu user
 
-    setBlogs(updatedData);
+      const data = await response.json();
+      const updatedData = data.map((blog) => ({
+        ...blog,
+        banner:
+          blog.banner == null || blog.banner === "" ? no_found : blog.banner,
+        date: formatDateString(blog.date),
+        userName: userName, // Thêm userName vào dữ liệu blog
+      }));
+
+      setBlogs(updatedData);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu blog:", error.message);
     } finally {
@@ -138,7 +145,13 @@ const ManageBlog = () => {
   }, [paging.CurrentPage, refresh]);
 
   const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= (searchTitle || sortDate !== undefined || userId ? pagingFilter.TotalPages : paging.TotalPages)) {
+    if (
+      newPage >= 1 &&
+      newPage <=
+        (searchTitle || sortDate !== undefined || userId
+          ? pagingFilter.TotalPages
+          : paging.TotalPages)
+    ) {
       if (searchTitle || sortDate !== undefined || userId) {
         setPagingFilter((prev) => ({
           ...prev,
@@ -158,7 +171,9 @@ const ManageBlog = () => {
     const dateParts = datePart.split("-");
     const timeParts = (timePart || "").split(":");
     const secondParts = timeParts[2].split("."); // Tách phần thập phân của giây
-    const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}-${timeParts[0] || '00'}:${timeParts[1] || '00'}:${secondParts[0]}`;
+    const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}-${
+      timeParts[0] || "00"
+    }:${timeParts[1] || "00"}:${secondParts[0]}`;
     return formattedDate;
   };
 
@@ -209,14 +224,13 @@ const ManageBlog = () => {
     }
   };
 
-
   const handleLogout = () => {
     navigate("/");
   };
 
   return (
     <>
-      <div style={{ background: "#151C2C" }}>
+      <div className="position-relative" style={{ background: "#151C2C" }}>
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-2 nav-admin-left">
@@ -408,8 +422,22 @@ const ManageBlog = () => {
                         >
                           Blog Management
                         </span>
-                        <div className="add-product px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-product">
-                          <Link to="/createblog"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Blog</p></Link>
+                        <div
+                          className="add-product px-3 py-1 me-3"
+                          data-bs-toggle="modal"
+                          data-bs-target="#add-product"
+                        >
+                          <Link to="/createblog">
+                            <p
+                              className="m-0 inter"
+                              style={{
+                                fontSize: "16px",
+                                fontFamily: "system-ui",
+                              }}
+                            >
+                              + Add Blog
+                            </p>
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -485,86 +513,90 @@ const ManageBlog = () => {
                                   <>
                                     <tr>
                                       <td colSpan="6" className="px-3">
-                                        <TableLoading /> 
+                                        <TableLoading />
                                       </td>
                                     </tr>
                                   </>
                                 ) : (
-                                blogs.map((blog) => (
-                                  <tr key={blog.id} className="table-content">
-                                    <td className="p-3 px-4 ">
-                                      <span className="float-start">
-                                        {blog.id}
-                                      </span>
-                                    </td>
-                                    <td className="p-3 px-4 ">
-                                      <Link
-                                        to={{
-                                          pathname: `/blogdetail/${blog.id}`,
-                                        }}
-                                        style={{
-                                          textDecoration: "none",
-                                          color: "inherit",
-                                        }}
-                                      >
+                                  blogs.map((blog) => (
+                                    <tr key={blog.id} className="table-content">
+                                      <td className="p-3 px-4 ">
                                         <span className="float-start">
-                                          <BlogTitle
-                                            title={blog.title}
-                                            maxLength={15}
+                                          {blog.id}
+                                        </span>
+                                      </td>
+                                      <td className="p-3 px-4 ">
+                                        <Link
+                                          to={{
+                                            pathname: `/blogdetail/${blog.id}`,
+                                          }}
+                                          style={{
+                                            textDecoration: "none",
+                                            color: "inherit",
+                                          }}
+                                        >
+                                          <span className="float-start">
+                                            <BlogTitle
+                                              title={blog.title}
+                                              maxLength={15}
+                                            />
+                                          </span>
+                                        </Link>
+                                      </td>
+                                      <td className="p-3 px-4 ">
+                                        <span className="float-start">
+                                          <img
+                                            src={blog.banner}
+                                            alt={""}
+                                            style={{
+                                              width: "100px",
+                                              height: "auto",
+                                            }}
                                           />
                                         </span>
-                                      </Link>
-                                    </td>
-                                    <td className="p-3 px-4 ">
-                                      <span className="float-start">
-                                        <img
-                                          src={blog.banner}
-                                          alt={""}
-                                          style={{
-                                            width: "100px",
-                                            height: "auto",
+                                      </td>
+                                      <td className="p-3 px-4 ">
+                                        <span className="float-start">
+                                          {blog.userId}
+                                        </span>
+                                      </td>
+                                      <td className="p-3 px-4 ">
+                                        <span className="float-start">
+                                          {blog.date}
+                                        </span>
+                                      </td>
+                                      <td className="p-3 px-4 d-flex justify-content-center">
+                                        <Link
+                                          to={{
+                                            pathname: `/updateblog/${blog.id}`,
                                           }}
-                                        />
-                                      </span>
-                                    </td>
-                                    <td className="p-3 px-4 ">
-                                      <span className="float-start">
-                                        {blog.userId}
-                                      </span>
-                                    </td>
-                                    <td className="p-3 px-4 ">
-                                      <span className="float-start">
-                                        {blog.date}
-                                      </span>
-                                    </td>
-                                    <td className="p-3 px-4 d-flex justify-content-center">
-                                      <Link to={{pathname: `/updateblog/${blog.id}`}}>
-                                      <div
-                                        className="edit-user p-2"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#edit-user"
-                                      >
-                                        <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
-                                      </div>
-                                      </Link>
+                                        >
+                                          <div
+                                            className="edit-user p-2"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#edit-user"
+                                          >
+                                            <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
+                                          </div>
+                                        </Link>
 
-                                      <div className="delete-user p-2">
-                                        <span onClick={() => handleDeleteBlog(blog.id)}><FontAwesomeIcon icon="fa-solid fa-trash" /></span>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                ))
-                              )}
-                                
+                                        <div className="delete-user p-2" style={{cursor: 'pointer'}}>
+                                          <span
+                                            onClick={() =>
+                                              handleDeleteBlog(blog.id)
+                                            }
+                                          >
+                                            <FontAwesomeIcon icon="fa-solid fa-trash" />
+                                          </span>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  ))
+                                )}
                               </tbody>
                             </table>
                           </div>
-                          <ModalConfirmDelete
-                            isOpen={isModalOpen}
-                            onClose={handleCloseModal}
-                            onConfirm={handleConfirmDelete}
-                          />
-                          
+
                           {/* <div className="col-md-12 d-flex justify-content-end paging p-2">
                             <a href="" className="p-2 me-3 active-paging">
                               1
@@ -581,13 +613,19 @@ const ManageBlog = () => {
                           </div> */}
 
                           <div className="col-md-12 d-flex justify-content-end paging p-2">
-                            {Array.from({ length: paging.TotalPages }, (_, index) => (
+                            {Array.from(
+                              { length: paging.TotalPages },
+                              (_, index) => (
                                 <a
                                   key={index + 1}
                                   href="#"
                                   className={`p-2 me-3 ${
-                                    paging.CurrentPage === index + 1 ? "active-paging" : "" }`}
-                                  onClick={(e) => { e.preventDefault();
+                                    paging.CurrentPage === index + 1
+                                      ? "active-paging"
+                                      : ""
+                                  }`}
+                                  onClick={(e) => {
+                                    e.preventDefault();
                                     handlePageChange(index + 1);
                                   }}
                                 >
@@ -596,7 +634,6 @@ const ManageBlog = () => {
                               )
                             )}
                           </div>
-
                         </div>
                       </div>
                     </div>
@@ -606,6 +643,11 @@ const ManageBlog = () => {
             </div>
           </div>
         </div>
+        <ModalConfirmDelete
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+      />
       </div>
     </>
   );
