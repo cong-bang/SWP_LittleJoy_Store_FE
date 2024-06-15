@@ -350,7 +350,7 @@ const ManageBlog = () => {
                   </div>
                 </div>
                 <div className="col-md-8 d-flex align-content-center">
-                  <div className="icon-admin-nav p-2 py-3">
+                  <div className="icon-admin-nav p-2 py-3 text-white">
                     <FontAwesomeIcon icon={faHouse} />
                   </div>
                   <div className="pos-admin-nav d-flex align-content-center p-2 py-3">
@@ -391,6 +391,9 @@ const ManageBlog = () => {
                         >
                           Blog Management
                         </span>
+                        <div className="add-product px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-product">
+                          <Link to="/createblog"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Blog</p></Link>
+                        </div>
                       </div>
                     </div>
                     <div className="body-center">
