@@ -45,7 +45,7 @@ const ManageBlog = () => {
       speed={2}
       width={"100%"}
       height={160}
-      // viewBox="0 0 100% 160"
+      
       backgroundColor="#C0C0C0"
       foregroundColor="#d9d9d9"
     >
@@ -107,19 +107,12 @@ const ManageBlog = () => {
       );
       setPaging(paginationData);
 
-      const userResponse = await fetch(
-        `https://littlejoyapi.azurewebsites.net/api/user/${userId}`
-      );
-      const userData = await userResponse.json();
-      const userName = userData.name; // Giả sử userName được lấy từ trường "name" trong dữ liệu user
-
       const data = await response.json();
       const updatedData = data.map((blog) => ({
         ...blog,
         banner:
           blog.banner == null || blog.banner === "" ? no_found : blog.banner,
         date: formatDateString(blog.date),
-        userName: userName, // Thêm userName vào dữ liệu blog
       }));
 
       setBlogs(updatedData);

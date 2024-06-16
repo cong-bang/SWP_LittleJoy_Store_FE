@@ -18,7 +18,9 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   const [relatedBlogs, setRelatedBlogs] = useState([]);
-
+  const [newProducts, setNewProducts] = useState([]);
+  const [cateId, setCateId] = useState(null);
+  const [originId, setOriginId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,12 +46,67 @@ const Home = () => {
           setRelatedBlogs(updatedData);
         }
 
+        const responseNewProductCate = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=8&sortOrder=1`
+        );
+        const dataNewProductsCate = await responseNewProductCate.json();
+        setNewProducts(dataNewProductsCate);
+        console.log(newProducts);
+        
       } catch (error) {
         console.error(error.message);
       }
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (cateId !== null) {
+      const fetchData = async () => {
+        try {
+          const responseNewProductCate = await fetch(
+            `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=8&sortOrder=1&cateId=${cateId}`
+          );
+          const dataNewProductsCate = await responseNewProductCate.json();
+          setNewProducts(dataNewProductsCate);
+          console.log(dataNewProductsCate);
+        } catch (error) {
+          console.error(error.message);
+        }
+      };
+      fetchData();
+    }
+  }, [cateId]);
+
+  useEffect(() => {
+    if (originId !== null) {
+      const fetchData = async () => {
+        try {
+          const responseNewProductCate = await fetch(
+            `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=8&sortOrder=1&originId=${originId}`
+          );
+          const dataNewProductsCate = await responseNewProductCate.json();
+          setNewProducts(dataNewProductsCate);
+          console.log(dataNewProductsCate);
+        } catch (error) {
+          console.error(error.message);
+        }
+      };
+      fetchData();
+    }
+  }, [originId]);
+
+  const handleClickCategory = (event, id) => {
+    event.preventDefault();
+    setOriginId(null)
+    setCateId(id);
+  };
+
+  const handleClickOrigin = (event, id) => {
+    event.preventDefault();
+    setCateId(null)
+    setOriginId(id);
+  };
 
   const BlogTitle = ({ title, maxLength }) => {
     const truncateTitle = (title, maxLength) => {
@@ -63,7 +120,19 @@ const Home = () => {
     );
   };
 
+  const ProductName = ({ title, maxLength }) => {
+    const truncateTitle = (title, maxLength) => {
+      if (title.length <= maxLength) return title;
+      return title.substring(0, maxLength) + "...";
+    };
+    return (
+      <>
+        {truncateTitle(title, maxLength)}
+      </>
+    );
+  };
 
+  
   return (
     <>
       <div className="banner container-fluid py-5">
@@ -131,8 +200,9 @@ const Home = () => {
                 href=""
                 className="w-18 d-inline-block"
                 style={{ textDecoration: "none", color: "black" }}
+                onClick={(e) => handleClickCategory(e, 4)}
               >
-                <div className="w-100 text-center px-2 py-3 arrival-item roboto">
+                <div className={`w-100 text-center px-2 py-3 arrival-item roboto ${cateId === 4 ? 'arrival-active' : ''}`}>
                   <span>Sữa cho mẹ bầu</span>
                 </div>
               </a>
@@ -140,8 +210,9 @@ const Home = () => {
                 href=""
                 className="w-18 d-inline-block"
                 style={{ textDecoration: "none", color: "black" }}
+                onClick={(e) => handleClickCategory(e, 1)}
               >
-                <div className="w-100 text-center px-2 py-3 arrival-item arrival-active roboto">
+                <div className={`w-100 text-center px-2 py-3 arrival-item roboto ${cateId === 1 ? 'arrival-active' : ''}`}>
                   <span>Sữa bột cao cấp</span>
                 </div>
               </a>
@@ -149,8 +220,9 @@ const Home = () => {
                 href=""
                 className="w-18 d-inline-block"
                 style={{ textDecoration: "none", color: "black" }}
+                onClick={(e) => handleClickOrigin(e, 1)}
               >
-                <div className="w-100 text-center px-2 py-3 arrival-item roboto">
+                <div className={`w-100 text-center px-2 py-3 arrival-item roboto ${originId === 1 ? 'arrival-active' : ''}`}>
                   <span>Sữa Mỹ</span>
                 </div>
               </a>
@@ -158,8 +230,9 @@ const Home = () => {
                 href=""
                 className="w-18 d-inline-block"
                 style={{ textDecoration: "none", color: "black" }}
+                onClick={(e) => handleClickOrigin(e, 5)}
               >
-                <div className="w-100 text-center px-2 py-3 arrival-item roboto">
+                <div className={`w-100 text-center px-2 py-3 arrival-item roboto ${originId === 5 ? 'arrival-active' : ''}`}>
                   <span>Sữa Nhật</span>
                 </div>
               </a>
@@ -167,19 +240,22 @@ const Home = () => {
                 href=""
                 className="w-18 d-inline-block"
                 style={{ textDecoration: "none", color: "black" }}
+                onClick={(e) => handleClickOrigin(e, 3)}
               >
-                <div className="w-100 text-center px-2 py-3 arrival-item roboto">
+                <div className={`w-100 text-center px-2 py-3 arrival-item roboto ${originId === 3 ? 'arrival-active' : ''}`}>
                   <span>Châu Âu</span>
                 </div>
               </a>
             </div>
+
             <div className="col-md-12">
               <div className="row">
+                {newProducts.map((newP) => (
                 <div className="col-md-3 p-3 mt-4">
                   <div className="product-image text-center px-3 py-2 position-relative">
                     <a href="#">
                       <img
-                        src={product}
+                        src={newP.image}
                         alt=""
                         className="w-75"
                         style={{ height: "15em" }}
@@ -195,7 +271,7 @@ const Home = () => {
                   <a href="" style={{ textDecoration: "none", color: "black" }}>
                     <div className="product-content mt-3 px-3 py-2">
                       <span className="roboto" style={{ fontSize: "1.2em" }}>
-                        Sữa bầu Friso Mum Gold 900g hương cam
+                      <ProductName title={newP.productName} maxLength={20} />
                       </span>
                       <div className="rank-product mt-2">
                         <FontAwesomeIcon icon="fa-solid fa-star" />
@@ -206,13 +282,14 @@ const Home = () => {
                       </div>
                       <div className="mt-2 fs-5">
                         <span className="roboto" style={{ fontWeight: 600 }}>
-                          VND 249.000
+                          VND {newP.price}
                         </span>
                       </div>
                     </div>
                   </a>
                 </div>
-                <div className="col-md-3 p-3 mt-4">
+                ))}
+                {/* <div className="col-md-3 p-3 mt-4">
                   <div className="product-image text-center px-3 py-2 position-relative">
                     <a href="#">
                       <img
@@ -470,9 +547,9 @@ const Home = () => {
                       </div>
                     </div>
                   </a>
-                </div>
+                </div> */}
                 <div className="col-md-12 d-flex justify-content-center mt-3">
-                  <a href="" style={{ textDecoration: "none", color: "white" }}>
+                  <Link to="/shop" style={{ textDecoration: "none", color: "white" }}>
                     <div
                       className="px-5 py-2 d-inline-block"
                       style={{
@@ -482,7 +559,7 @@ const Home = () => {
                     >
                       <span className="roboto">Xem thêm</span>
                     </div>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
