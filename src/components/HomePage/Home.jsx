@@ -15,14 +15,38 @@ import blog1 from "../../assets/img/blog1.png";
 import blog2 from "../../assets/img/blog2.png";
 import blog3 from "../../assets/img/blog3.png";
 import { Link } from "react-router-dom";
+import ContentLoader from 'react-content-loader';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const Home = () => {
   const [relatedBlogs, setRelatedBlogs] = useState([]);
   const [newProducts, setNewProducts] = useState([]);
   const [cateId, setCateId] = useState(null);
   const [originId, setOriginId] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const NewProductLoader = () => (
+    <ContentLoader
+      speed={2}
+      width={400}
+      height={160}
+      viewBox="0 0 400 160"
+      backgroundColor="#f3f3f3"
+      foregroundColor="#ecebeb"
+    >
+      <rect x="0" y="0" rx="5" ry="5" width="80%" height="10" />
+      <rect x="0" y="20" rx="5" ry="5" width="80%" height="10" />
+      <rect x="0" y="40" rx="5" ry="5" width="80%" height="10" />
+      <rect x="0" y="60" rx="5" ry="5" width="80%" height="10" />
+      <rect x="0" y="80" rx="5" ry="5" width="80%" height="10" />
+      <rect x="0" y="100" rx="5" ry="5" width="80%" height="10" />
+      <rect x="0" y="120" rx="5" ry="5" width="80%" height="10" />
+      <rect x="0" y="140" rx="5" ry="5" width="80%" height="10" />
+    </ContentLoader>
+  );
 
   useEffect(() => {
+    
     const fetchData = async () => {
       try {
         
@@ -59,6 +83,8 @@ const Home = () => {
         
       } catch (error) {
         console.error(error.message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -69,34 +95,36 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (cateId !== null) {
-      const fetchData = async () => {
-        try {
-          const responseNewProductCate = await fetch(
-            `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=8&sortOrder=1&cateId=${cateId}`
-          );
-          const dataNewProductsCate = await responseNewProductCate.json();
-          const formattedProducts = dataNewProductsCate.map(product => ({
-            ...product,
-            price: formatPrice(product.price)
-          }));
-          setNewProducts(formattedProducts);
-          console.log(dataNewProductsCate);
-        } catch (error) {
-          console.error(error.message);
-        }
-      };
-      fetchData();
-    }
-  }, [cateId]);
-
-  useEffect(() => {
+    setLoading(true);
     if (originId !== null) {
       const fetchData = async () => {
         try {
           const responseNewProductCate = await fetch(
             `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=8&sortOrder=1&originId=${originId}`
           );
+
+          if (!responseNewProductCate.ok) {
+            if (responseNewProductCate.status === 404) {
+              setNewProducts([]);
+              setPaging({
+                CurrentPage: 1,
+                PageSize: 8,
+                TotalPages: 1,
+                TotalCount: 0,
+              });
+            } else {
+              console.log('Lỗi fetch data...');
+              setNewProducts([]);
+              setPaging({
+                CurrentPage: 1,
+                PageSize: 8,
+                TotalPages: 1,
+                TotalCount: 0,
+              });
+            }
+            return;
+          }
+
           const dataNewProductsOrigin = await responseNewProductCate.json();
           const formattedProducts = dataNewProductsOrigin.map(product => ({
             ...product,
@@ -106,21 +134,16 @@ const Home = () => {
           console.log(dataNewProductsCate);
         } catch (error) {
           console.error(error.message);
+        } finally {
+          setLoading(false);
         }
       };
       fetchData();
     }
   }, [originId]);
 
-  const handleClickCategory = (event, id) => {
-    event.preventDefault();
-    setOriginId(null)
-    setCateId(id);
-  };
-
   const handleClickOrigin = (event, id) => {
     event.preventDefault();
-    setCateId(null)
     setOriginId(id);
   };
 
@@ -216,20 +239,20 @@ const Home = () => {
                 href=""
                 className="w-18 d-inline-block"
                 style={{ textDecoration: "none", color: "black" }}
-                onClick={(e) => handleClickCategory(e, 4)}
+                onClick={(e) => handleClickOrigin(e, 2)}
               >
-                <div className={`w-100 text-center px-2 py-3 arrival-item roboto ${cateId === 4 ? 'arrival-active' : ''}`}>
-                  <span>Sữa cho mẹ bầu</span>
+                <div className={`w-100 text-center px-2 py-3 arrival-item roboto ${originId === 2 ? 'arrival-active' : ''}`}>
+                  <span>Sữa Việt Nam</span>
                 </div>
               </a>
               <a
                 href=""
                 className="w-18 d-inline-block"
                 style={{ textDecoration: "none", color: "black" }}
-                onClick={(e) => handleClickCategory(e, 1)}
+                onClick={(e) => handleClickOrigin(e, 6)}
               >
-                <div className={`w-100 text-center px-2 py-3 arrival-item roboto ${cateId === 1 ? 'arrival-active' : ''}`}>
-                  <span>Sữa bột cao cấp</span>
+                <div className={`w-100 text-center px-2 py-3 arrival-item roboto ${originId === 6 ? 'arrival-active' : ''}`}>
+                  <span>Sữa Úc</span>
                 </div>
               </a>
               <a
@@ -259,15 +282,23 @@ const Home = () => {
                 onClick={(e) => handleClickOrigin(e, 3)}
               >
                 <div className={`w-100 text-center px-2 py-3 arrival-item roboto ${originId === 3 ? 'arrival-active' : ''}`}>
-                  <span>Châu Âu</span>
+                  <span>Sữa Châu Âu</span>
                 </div>
               </a>
             </div>
 
+            {loading ? (
+                <>
+                  <div className="col-md-3 p-3 mt-4"><NewProductLoader /></div>
+                  <div className="col-md-3 p-3 mt-4"><NewProductLoader /></div>
+                  <div className="col-md-3 p-3 mt-4"><NewProductLoader /></div>
+                  <div className="col-md-3 p-3 mt-4"><NewProductLoader /></div>
+                </>
+              ) : (
             <div className="col-md-12">
               <div className="row">
                 {newProducts.map((newP) => (
-                <div className="col-md-3 p-3 mt-4">
+                <div key={newP.id} className="col-md-3 p-3 mt-4">
                   <div className="product-image text-center px-3 py-2 position-relative">
                     <Link to={{pathname: `/product/${newP.id}`}}>
                       <img
@@ -290,11 +321,13 @@ const Home = () => {
                       <ProductName title={newP.productName} maxLength={20} />
                       </span>
                       <div className="rank-product mt-2">
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                      {[1, 2, 3, 4, 5].map((star) => (
+                          <FontAwesomeIcon
+                            key={star}
+                            icon={faStar}
+                            color={star <= newP.ratingAver ? 'gold' : 'lightgrey'}
+                          />
+                        ))}
                       </div>
                       <div className="mt-2 fs-5">
                         <span className="roboto" style={{ fontWeight: 600 }}>
@@ -579,6 +612,7 @@ const Home = () => {
                 </div>
               </div>
             </div>
+          )}
           </div>
         </div>
         <div className="container mt-5">

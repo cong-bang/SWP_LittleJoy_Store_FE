@@ -4,6 +4,7 @@ import "../../assets/css/styleshop.css";
 import product from "../../assets/img/product.png";
 import { Link, useLocation } from "react-router-dom";
 import sorry from "../../assets/img/sorry.png";
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
@@ -190,12 +191,12 @@ const Shop = () => {
             <div className="d-inline-block">
               <div className="d-flex align-content-between">
                 <p className="px-2">
-                  <a
-                    href="#"
+                  <Link
+                    to="/"
                     style={{ color: "#103A71", textDecoration: "none" }}
                   >
                     Home
-                  </a>
+                  </Link>
                 </p>
                 <p className="px-2">
                   <FontAwesomeIcon
@@ -204,12 +205,12 @@ const Shop = () => {
                   />
                 </p>
                 <p className="px-2">
-                  <a
-                    href="#"
+                  <Link
+                    to="/shop"
                     style={{ color: "#103A71", textDecoration: "none" }}
                   >
                     Shop
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>
@@ -512,7 +513,7 @@ const Shop = () => {
             <div className="col-md-10">
               <div className="row">
                 {products.map((p) => (
-                <div className="col-md-3 p-3 mt-3">
+                <div key={p.id} className="col-md-3 p-3 mt-3">
                   <div className="product-image text-center px-3 py-2 position-relative">
                     <Link to={{pathname: `/product/${p.id}`}}>
                       <img
@@ -538,11 +539,13 @@ const Shop = () => {
                         <ProductName title={p.productName} maxLength={20} />
                       </span>
                       <div className="rank-product mt-2">
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                      {[1, 2, 3, 4, 5].map((star) => (
+                          <FontAwesomeIcon
+                            key={star}
+                            icon={faStar}
+                            color={star <= p.ratingAver ? 'gold' : 'lightgrey'}
+                          />
+                        ))}
                       </div>
                       <div className="mt-2 fs-5">
                         <span

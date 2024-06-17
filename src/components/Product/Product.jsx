@@ -5,17 +5,19 @@ import productImg from "../../assets/img/product.png";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
-  const [rating, setRating] = useState(5);
+  const [ratingA, setRatingA] = useState(5);
   const { pathname } = useLocation();
   const [originName, setOriginName] = useState('');
   const [ageName, setAgeName] = useState('');
   const [cateName, setCateName] = useState('');
   const [brandName, setBrandName] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [similarP, setSimilarP] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -58,6 +60,17 @@ const Product = () => {
         );
         const dataAgeName = await resAgeId.json();
         setAgeName(dataAgeName);
+
+        const resSimilarProduct = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=4&cateId=${dataResponse.cateId}`
+        )
+        const dataSimilarP = await resSimilarProduct.json();
+        const formattedSimilarP = dataSimilarP.map(product => ({
+          ...product,
+          price: formatPrice(product.price)
+        }));
+        setSimilarP(formattedSimilarP);
+        console.log(similarP);
         
       } catch (error) {
         console.error(error.message);
@@ -82,6 +95,18 @@ const Product = () => {
     });
   };
 
+  const ProductName = ({ title, maxLength }) => {
+    const truncateTitle = (title, maxLength) => {
+      if (title.length <= maxLength) return title;
+      return title.substring(0, maxLength) + "...";
+    };
+    return (
+      <>
+        {truncateTitle(title, maxLength)}
+      </>
+    );
+  };
+
   //xử lý tăng giảm quantity của product
   const handleDecrease = () => {
     if (quantity > 1)
@@ -94,12 +119,22 @@ const Product = () => {
 
   const handleChange = (event) => {
     const value = event.target.value;
-    if (value === '') {
-      setQuantity('');
+    if (value == '') {
+      setQuantity(0);
     } else if (!isNaN(value) && parseInt(value) >= 1 && parseInt(value) <= 99) {
       setQuantity(parseInt(value));
+    } else {
+      setQuantity(1);
     }
   };
+
+  const stars = [1, 2, 3, 4, 5].map((star) => (
+    <FontAwesomeIcon
+      key={star}
+      icon={faStar}
+      color={star <= product.ratingAver ? 'gold' : 'lightgrey'}
+    />
+  ));
 
   return (
     <>
@@ -120,12 +155,12 @@ const Product = () => {
             <div className="d-inline-block">
               <div className="d-flex align-content-between">
                 <p className="px-2">
-                  <a
-                    href="#"
+                  <Link
+                    to="/"
                     style={{ color: "#103A71", textDecoration: "none" }}
                   >
                     Home
-                  </a>
+                  </Link>
                 </p>
                 <p className="px-2">
                   <FontAwesomeIcon
@@ -134,12 +169,12 @@ const Product = () => {
                   />
                 </p>
                 <p className="px-2">
-                  <a
-                    href="#"
+                  <Link
+                    to="/shop"
                     style={{ color: "#103A71", textDecoration: "none" }}
                   >
                     Shop
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>
@@ -180,14 +215,10 @@ const Product = () => {
                         className="fw-bold"
                         style={{ textDecoration: "underline" }}
                       >
-                        5.0
+                        {product.ratingAver}.0
                       </span>
                       <div className="rank-product d-inline-block ms-2">
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                        {stars}
                       </div>
                       <div className="vertical-line d-inline-block ms-2">
                         &nbsp;
@@ -315,7 +346,7 @@ const Product = () => {
                     Mô tả sản phẩm
                   </span>
                 </div>
-                <div className="description-product px-3 py-2">
+                <div className="px-3 py-2">
                   <span>
                     {product.description}
                   </span>
@@ -331,7 +362,45 @@ const Product = () => {
                 </div>
               </div>
               <div className="row">
-                <div className="col-md-3 p-3 mt-3">
+                {similarP.map((p) => (
+                <div key={p.id} className="col-md-3 p-3 mt-3">
+                  <div className="product-image text-center px-3 py-2 position-relative">
+                    <Link to={{pathname: `/product/${p.id}`}}>
+                      <img
+                        src={p.image}
+                        alt=""
+                        className="w-75"
+                        style={{ height: "15em" }}
+                      />
+                    </Link>
+                  </div>
+                  <Link to={{pathname: `/product/${p.id}`}} style={{ textDecoration: "none", color: "black" }}>
+                    <div className="product-content mt-3 px-3 py-2">
+                      <span className="Roboto" style={{ fontSize: "1.2em" }}>
+                        <ProductName title={p.productName} maxLength={20} />
+                      </span>
+                      <div className="rank-product mt-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <FontAwesomeIcon
+                            key={star}
+                            icon={faStar}
+                            color={star <= p.ratingAver ? 'gold' : 'lightgrey'}
+                          />
+                        ))}
+                      </div>
+                      <div className="mt-2 fs-5">
+                        <span
+                          className="Opensans"
+                          style={{ fontWeight: "600" }}
+                        >
+                          VND {p.price}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+                ))}
+                {/* <div className="col-md-3 p-3 mt-3">
                   <div className="product-image text-center px-3 py-2 position-relative">
                     <a href="#">
                       <img
@@ -432,41 +501,8 @@ const Product = () => {
                       </div>
                     </div>
                   </a>
-                </div>
-                <div className="col-md-3 p-3 mt-3">
-                  <div className="product-image text-center px-3 py-2 position-relative">
-                    <a href="#">
-                      <img
-                        src={productImg}
-                        alt=""
-                        className="w-75"
-                        style={{ height: "15em" }}
-                      />
-                    </a>
-                  </div>
-                  <a href="" style={{ textDecoration: "none", color: "black" }}>
-                    <div className="product-content mt-3 px-3 py-2">
-                      <span className="Roboto" style={{ fontSize: "1.2em" }}>
-                        Sữa bầu Friso Mum Gold 900g hương cam
-                      </span>
-                      <div className="rank-product mt-2">
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                      </div>
-                      <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: "600" }}
-                        >
-                          VND 249.000
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
+                </div> */}
+
               </div>
             </div>
 

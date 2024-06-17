@@ -138,13 +138,7 @@ const ManageBlog = () => {
   }, [paging.CurrentPage, refresh]);
 
   const handlePageChange = (newPage) => {
-    if (
-      newPage >= 1 &&
-      newPage <=
-        (searchTitle || sortDate !== undefined || userId
-          ? pagingFilter.TotalPages
-          : paging.TotalPages)
-    ) {
+    if ( newPage >= 1 && newPage <= (searchTitle || sortDate !== undefined || userId ? pagingFilter.TotalPages : paging.TotalPages)) {
       if (searchTitle || sortDate !== undefined || userId) {
         setPagingFilter((prev) => ({
           ...prev,

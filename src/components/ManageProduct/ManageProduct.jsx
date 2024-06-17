@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -11,12 +11,242 @@ import {
   faClipboardList,
   faUsers,
   faBan,
+  faX
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import '../../assets/css/styleadminproduct.css'
 import similac from "../../assets/img/similac.png";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ContentLoader from "react-content-loader";
+import UploadImage from "../UploadImage/UploadImage";
 
  const ManageProduct = () => {
+    const [products, setProducts] = useState([]);
+    const [keyword, setKeyword] = useState('');
+    const [paging, setPaging] = useState({
+        CurrentPage: 1,
+        PageSize: 9,
+        TotalPages: 1,
+        TotalCount: 0,
+      });
+      const { pathname } = useLocation();
+      const [categories, setCategories] = useState([]);
+      const [loading, setLoading] = useState(false);
+
+      const [productName, setProductName] = useState('');
+      const [type, setType] = useState('');
+      const [price, setPrice] = useState('');
+      const [weight, setWeight] = useState(null);
+      const [quantity, setQuantity] = useState(5);
+      const [description, setDescription] = useState('');
+      const [image, setImage] = useState('');
+      const [isActive, setIsActive] = useState(true);
+      const [ageId, setAgeId] = useState(1);
+      const [originId, setOriginId] = useState(1);
+      const [brandId, setBrandId] = useState(1);
+      const [cateId, setCateId] = useState(1);
+
+      const TableLoading = () => (
+        <ContentLoader
+          speed={2}
+          width={"100%"}
+          height={160}
+          
+          backgroundColor="#C0C0C0"
+          foregroundColor="#d9d9d9"
+        >
+          <rect x="0" y="20" rx="3" ry="3" width="100%" height="10" />
+          <rect x="0" y="40" rx="3" ry="3" width="100%" height="10" />
+          <rect x="0" y="60" rx="3" ry="3" width="100%" height="10" />
+        </ContentLoader>
+      );
+        
+      useEffect(() => {
+        window.scrollTo(0, 0);
+      }, [pathname]);
+
+      useEffect(() => {
+        setLoading(true);
+        const fetchCategories = async () => {
+          try {
+            const response = await fetch(
+              'https://littlejoyapi.azurewebsites.net/api/category?PageIndex=1&PageSize=9'
+            );
+            if (!response.ok) {
+              console.log('Lỗi fetch category data...');
+              return;
+            }
+            const categoryData = await response.json();
+            setCategories(categoryData);
+          } catch (error) {
+            console.error(error.message);
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        fetchCategories();
+      }, []);
+
+      const fetchData = async (pageIndex, pageSize) => {
+        setLoading(true);
+        try {
+          const searchParams = new URLSearchParams();
+          searchParams.append('PageIndex', pageIndex);
+          searchParams.append('PageSize', pageSize);
+          
+          if (keyword) searchParams.append('keyword', keyword);
+      
+          const response = await fetch(
+            `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=${pageIndex}&PageSize=9&${searchParams.toString()}`
+          );
+      
+          if (!response.ok) {
+            if (response.status === 404) {
+              setProducts([]);
+              setPaging({
+                CurrentPage: 1,
+                PageSize: 9,
+                TotalPages: 1,
+                TotalCount: 0,
+              });
+            } else {
+              console.log('Lỗi fetch data...');
+              setProducts([]);
+              setPaging({
+                CurrentPage: 1,
+                PageSize: 9,
+                TotalPages: 1,
+                TotalCount: 0,
+              });
+            }
+            return;
+          }
+      
+          const paginationData = await JSON.parse(response.headers.get("X-Pagination"));
+          setPaging(paginationData);
+
+          const dataProducts = await response.json();
+          const formattedProducts = await dataProducts.map(product => {
+            const category = categories.find(c => c.id == product.cateId);
+            return {
+              ...product,
+              price: formatPrice(product.price),
+              categoryName: category ? category.categoryName : 'Khác',
+            };
+          });
+          setProducts(formattedProducts);
+          console.log(products);
+          
+        } catch (error) {
+          console.error(error.message);
+        } finally {
+            setLoading(false);
+          }
+      };
+      
+      useEffect(() => {
+        fetchData(paging.CurrentPage, paging.PageSize);
+      }, [paging.CurrentPage, keyword]);
+
+      const formatPrice = (price) => {
+        return price.toLocaleString('de-DE');
+      };
+
+      const ProductName = ({ title, maxLength }) => {
+        const truncateTitle = (title, maxLength) => {
+          if (title.length <= maxLength) return title;
+          return title.substring(0, maxLength) + "...";
+        };
+        return (
+          <>
+            {truncateTitle(title, maxLength)}
+          </>
+        );
+      };
+
+      const handlePageChange = (newPage) => {      
+            setPaging((prev) => ({
+              ...prev,
+              CurrentPage: newPage,
+            }));
+      };
+
+      const notify = () =>
+        toast.error('Vui lòng nhập đủ thông tin', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+
+      const handleAddProduct = async () => {
+        if (
+            productName.trim() === "" ||
+            price.trim() === "" ||
+            description.trim() === "" ||
+            weight.trim() === "" ||
+            image.trim() === "" 
+          ) {
+            notify();
+            return;
+          }
+
+        const newProduct = {
+          productName: productName,
+          price: parseFloat(price),
+          description: description,
+          weight: parseInt(weight), 
+          quantity: quantity,
+          image: image,
+          isActive: isActive,
+          ageId: ageId,
+          originId: originId,
+          brandId: brandId,
+          cateId: cateId
+        };
+    
+        try {
+          const response = await fetch('https://littlejoyapi.azurewebsites.net/api/product', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newProduct),
+          });
+          console.log(newProduct)
+          if (response.ok) {
+            toast.success('Sản phẩm được tạo thành công!');
+            fetchData(paging.CurrentPage, paging.PageSize);
+            setProductName('');
+            setPrice('');
+            setDescription('');
+            setWeight('');
+            setQuantity(5);
+            setImage('');
+            setIsActive(true);
+            setAgeId(1);
+            setBrandId(1);
+            setCateId(1);
+            setOriginId(1);
+          } else {
+            console.log('Lỗi khi tạo sản phẩm');
+          }
+          const result = await response.json();
+        } catch (error) {
+          console.error('Lỗi:', error);
+        }
+      };
+
+      const handleUploadComplete = (url) => {
+        setImage(url);
+      };
+    
 
     const navigate = useNavigate();
     const handleLogout = () => {
@@ -25,6 +255,7 @@ import similac from "../../assets/img/similac.png";
 
   return (
     <>
+    <ToastContainer />
 <div style={{ background: "#151C2C" }}>
 <div className="container-fluid">
         <div className="row">
@@ -190,8 +421,12 @@ import similac from "../../assets/img/similac.png";
                                 <div className="container-fluid">
                                     <div className="row">
                                         <div className="col-md-12 d-flex justify-content-start">
-                                            <div className="search-user p-3"><input type="text" className="p-1 ps-3"
-                                                    placeholder="Search Product"/></div>
+                                            <div className="search-user p-3">
+                                                <input type="text" className="p-1 ps-3"
+                                                value={keyword}
+                                                onChange={(e) => setKeyword(e.target.value)}
+                                                    placeholder="Search Product"/>
+                                                    </div>
                                             <div className="filter-status p-3">
                                                 <select name="" id="" className="p-1" defaultValue="">
                                                     <option value="" selected disabled>Type</option>
@@ -215,19 +450,29 @@ import similac from "../../assets/img/similac.png";
                                                     <td className="p-3 px-4 description-product"><span>Description</span></td>
                                                     <td className="p-3 px-4 "><span>Action</span></td>
                                                 </tr>
-                                                <tr className="table-content">
-                                                    <td className="p-3 px-4 "><span className="float-start">B005</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Wild</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Box</span></td>
-                                                    <td className="p-3 px-4 "><span>10</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">250.000</span></td>
-                                                    <td className="p-3 px-4 "><span>4.5</span></td>
+                                                {loading ? (
+                                                    <>
+                                                        <tr>
+                                                        <td colSpan="8" className="px-3">
+                                                            <TableLoading />
+                                                        </td>
+                                                        </tr>
+                                                    </>
+                                                    ) : (
+                                                products.map((p) => (
+                                                <tr key={p.id} className="table-content">
+                                                    <td className="p-3 px-4 "><span className="float-start">{p.id}</span></td>
+                                                    <td className="p-3 px-4 "><span className="float-start"><ProductName title={p.productName} maxLength={20} /></span></td>
+                                                    <td className="p-3 px-4 "><span className="float-start">{p.categoryName}</span></td>
+                                                    <td className="p-3 px-4 "><span>{p.quantity}</span></td>
+                                                    <td className="p-3 px-4 "><span className="float-start">{p.price} VND</span></td>
+                                                    <td className="p-3 px-4 "><span>{p.ratingAver}.0</span></td>
                                                     <td className="w-10">
                                                         <div className="img-product">
-                                                            <img src={similac} alt=""/>
+                                                            <img src={p.image} alt=""/>
                                                         </div>
                                                     </td>
-                                                    <td className="p-3 px-4 description-product"><span>Một sự pha trộn độc đáo của hoa tulip trắng, tím và cam được tô điểm thêm bởi sự lựa chọn hấp dẫn của hương vani thơm ngon, quả chanh hồ trăn và bánh hạnh nhân sô cô la.</span></td>
+                                                    <td className="p-3 px-4 description-product"><span>{p.description}</span></td>
                                                     <td className="p-3 px-4 d-flex justify-content-center">
                                                         <div className="edit-product p-2" data-bs-toggle="modal" data-bs-target="#edit-product">
                                                             <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
@@ -235,7 +480,9 @@ import similac from "../../assets/img/similac.png";
                                                         <div className="delete-product p-2"><FontAwesomeIcon icon="fa-solid fa-trash" /></div>
                                                     </td>
                                                 </tr>
-                                                <tr className="table-content">
+                                                ))
+                                            )}
+                                                {/* <tr className="table-content">
                                                     <td className="p-3 px-4 "><span className="float-start">B005</span></td>
                                                     <td className="p-3 px-4 "><span className="float-start">Wild</span></td>
                                                     <td className="p-3 px-4 "><span className="float-start">Box</span></td>
@@ -374,15 +621,31 @@ import similac from "../../assets/img/similac.png";
                                                         </div>
                                                         <div className="delete-product p-2"><FontAwesomeIcon icon="fa-solid fa-trash" /></div>
                                                     </td>
-                                                </tr>
+                                                </tr> */}
                                                 </tbody>
                                             </table>
                                         </div>
                                         <div className="col-md-12 d-flex justify-content-end paging p-2">
-                                            <a href="" className="p-2 me-3 active-paging">1</a>
-                                            <a href="" className="p-2 me-3">2</a>
-                                            <a href="" className="p-2 me-3">3</a>
-                                            <a href="" className="p-2 me-3">4</a>
+                                        {Array.from(
+                                            { length: paging.TotalPages },
+                                            (_, index) => (
+                                                <Link
+                                                key={index + 1}
+                                                to="#"
+                                                className={`p-2 me-3 ${
+                                                    paging.CurrentPage === index + 1
+                                                    ? "active-paging"
+                                                    : ""
+                                                }`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handlePageChange(index + 1);
+                                                }}
+                                                >
+                                                {index + 1}
+                                                </Link>
+                                            )
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -403,67 +666,186 @@ import similac from "../../assets/img/similac.png";
                 {/* <!-- Modal Header --> */}
                 <div className="py-2 header-modal d-flex justify-content-between">
                     <h4 className="modal-title inter ms-3">Product Add</h4>
-                    <div className="btn-close-modal me-3" data-bs-dismiss="modal"><i className="fa-solid fa-x"></i></div>
+                    <div className="btn-close-modal me-3" data-bs-dismiss="modal"><FontAwesomeIcon icon={faX} /></div>
                 </div>
 
                 {/* <!-- Modal body --> */}
                 <div className="modal-body">
-                    <div className="p-2">
-                        <table className="w-100 table-modal">
-                            <tbody>
-                            <tr>
-                                <td className="w-20"><span className="py-2">Name:</span></td>
-                                <td className="py-2"><input type="text" className="ps-2 p-1 w-100"/></td>
-                            </tr>
-                            <tr>
-                                <td><span className="py-2">Type:</span></td>
-                                <td className="py-2"><select name="" id="" className="ps-2 p-1">
-                                    <option value="" selected disabled>Choose</option>
-                                    <option value="">Birthday</option>
-                                    <option value="">Weeding</option>
-                                    <option value="">Boxes</option>
-                                </select></td>
-                            </tr>
-                            <tr>
-                                <td><span className="py-2">Price:</span></td>
-                                <td className="py-2"><input type="text" className="ps-2 p-1 w-100"/></td>
-                            </tr>
-                            <tr>
-                                <td><span className="py-2">Quantity:</span></td>
-                                <td>
-                                    <div className="btn-quantity w-100 d-flex justify-content-start p-2">
-                                        <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                            id="quantity-down" onClick="sub('quantity1')">
-                                            <span>-</span>
-                                        </div>
-                                        <div className="button w-15">
-                                            <input type="number" className="text-center w-100 p-2" id="quantity1"
-                                                value="5"></input>
-                                        </div>
-                                        <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                            id="quantity-up" onClick="add('quantity1')">
-                                            <span>+</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="title-product-modal p-2 my-1">
-                        <span className="w-100">Description: </span>
-                    </div>
-                    <div className="p-2 description-text">
-                        <textarea id="myTextarea" name="myTextarea" rows="4" cols="50" className="w-100 p-2"></textarea>
-                    </div>
-                    <div className="title-product-modal p-2 my-1">
-                        <span className="w-100">URL image: </span>
-                    </div>
-                    <div className="p-2 description-text">
-                        <textarea id="myTextarea" name="myTextarea" rows="4" cols="50" className="w-100 p-2"></textarea>
-                    </div>
-                    
+                <div className="p-2">
+                    <table className="w-100 table-modal">
+                    <tbody>
+                        <tr>
+                        <td className="w-20"><span className="py-2">Name:</span></td>
+                        <td className="py-2">
+                            <input
+                            type="text"
+                            className="ps-2 p-1 w-100"
+                            value={productName}
+                            onChange={(e) => setProductName(e.target.value)}
+                            />
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Type:</span></td>
+                        <td className="py-2">
+                            <select
+                            className="ps-2 p-1 w-100"
+                            value={cateId}
+                            onChange={(e) => setCateId(parseInt(e.target.value))}
+                            >
+                            <option value="" disabled>Choose</option>
+                            <option value="1">Sữa bột cao cấp</option>
+                            <option value="2">Sữa bột</option>
+                            <option value="3">Sữa tươi</option>
+                            <option value="4">Sữa bầu</option>
+                            <option value="5">Sữa chua</option>
+                            <option value="6">Sữa hạt</option>
+                            <option value="7">Sữa lúa mạch</option>
+                            </select>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Price:</span></td>
+                        <td className="py-2">
+                            <input
+                            type="text"
+                            className="ps-2 p-1 w-100"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
+                            />
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Quantity:</span></td>
+                        <td>
+                            <div className="btn-quantity w-100 d-flex justify-content-start p-2">
+                            <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
+                                id="quantity-down" onClick={() => setQuantity(quantity > 0 ? quantity - 1 : 0)}>
+                                <span>-</span>
+                            </div>
+                            <div className="button w-15">
+                                <input
+                                type="number"
+                                className="text-center w-100 p-2"
+                                id="quantity1"
+                                value={quantity === '' ? 1 : quantity}
+                                onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                    setQuantity(value >= 0 ? value : 0);
+                                }}
+                                />
+                            </div>
+                            <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
+                                id="quantity-up" onClick={() => setQuantity(quantity + 1)}>
+                                <span>+</span>
+                            </div>
+                            </div>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Description:</span></td>
+                        <td className="py-2">
+                            <textarea
+                            style={{background: '#151C2C', color: 'white'}}
+                            rows="4"
+                            className="w-100 p-2"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            ></textarea>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Weight:</span></td>
+                        <td className="py-2">
+                            <input
+                            style={{background: '#151C2C', color: 'white'}}
+                            className="w-100 p-2"
+                            value={weight}
+                            onChange={(e) => setWeight(e.target.value)}
+                            />
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">URL image:</span></td>
+                        <td className="py-2">
+                        <UploadImage
+                            aspectRatio={4 / 3}
+                            onUploadComplete={handleUploadComplete}
+                            maxWidth={10000}
+                            maxHeight={10000}
+                            minWidth={126}
+                            minHeight={126}
+                            />
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Age:</span></td>
+                        <td className="py-2">
+                            <select
+                            className="ps-2 p-1 w-100"
+                            value={ageId}
+                            onChange={(e) => setAgeId(parseInt(e.target.value))}
+                            >
+                            <option value="" disabled>Choose</option>
+                            <option value="2">0-6 tháng</option>
+                            <option value="3">6-12 tháng</option>
+                            <option value="4">1-2 tuổi</option>
+                            <option value="5">Trên 6 tuổi</option>
+                            </select>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Origin:</span></td>
+                        <td className="py-2">
+                            <select
+                            className="ps-2 p-1 w-100"
+                            value={originId}
+                            onChange={(e) => setOriginId(parseInt(e.target.value))}
+                            >
+                            <option value="" disabled>Choose</option>
+                            <option value="1">Mỹ</option>
+                            <option value="2">Việt Nam</option>
+                            <option value="3">Châu Âu</option>
+                            <option value="5">Nhật Bản</option>
+                            <option value="6">Úc</option>
+                            <option value="7">Khác</option>
+                            </select>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Brand:</span></td>
+                        <td className="py-2">
+                            <select
+                            className="ps-2 p-1 w-100"
+                            value={brandId}
+                            onChange={(e) => setBrandId(parseInt(e.target.value))}
+                            >
+                            <option value="" disabled>Choose</option>
+                            <option value="1">Abbott Grow</option>
+                            <option value="2">meiji</option>
+                            <option value="3">Ensure</option>
+                            <option value="4">Kid Boost</option>
+                            <option value="6">Similac</option>
+                            </select>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">IsActive:</span></td>
+                        <td className="py-2">
+                            <select
+                            className="ps-2 p-1 w-50"
+                            value={isActive}
+                            onChange={(e) => setIsActive(parseInt(e.target.value))}
+                            >
+                            <option value="" disabled>Choose</option>
+                            <option value="true">true</option>
+                            <option value="flase">false</option>
+                            </select>
+                        </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
                 </div>
 
                 {/* <!-- Modal footer --> */}
@@ -472,7 +854,7 @@ import similac from "../../assets/img/similac.png";
                         <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal"><span>Close</span></div>
                     </div>
                     <div className="save-modal me-4">
-                        <input type="submit" value="Save" className="input-submit p-2 px-4 inter"/>
+                        <input onClick={handleAddProduct} type="submit" data-bs-dismiss="modal" value="Save" className="input-submit modal-btn-close p-2 px-4 inter"/>
                     </div>
                 </div>
 
@@ -488,7 +870,7 @@ import similac from "../../assets/img/similac.png";
                 {/* <!-- Modal Header --> */}
                 <div className="py-2 header-modal d-flex justify-content-between">
                     <h4 className="modal-title inter ms-3">Product Modify</h4>
-                    <div className="btn-close-modal me-3" data-bs-dismiss="modal"><i className="fa-solid fa-x"></i></div>
+                    <div className="btn-close-modal me-3" data-bs-dismiss="modal"><FontAwesomeIcon icon={faX} /></div>
                 </div>
 
                 {/* <!-- Modal body --> */}
