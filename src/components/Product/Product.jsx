@@ -1,11 +1,109 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/css/styleproduct.css";
-import product from "../../assets/img/product.png";
+import productImg from "../../assets/img/product.png";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export default function Product() {
+const Product = () => {
+  const { id } = useParams();
+  const [product, setProduct] = useState({});
+  const [rating, setRating] = useState(5);
+  const { pathname } = useLocation();
+  const [originName, setOriginName] = useState('');
+  const [ageName, setAgeName] = useState('');
+  const [cateName, setCateName] = useState('');
+  const [brandName, setBrandName] = useState('');
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/product/${id}`
+        );
+
+        const dataResponse = await response.json();
+        if (dataResponse.price) {
+          dataResponse.price = formatPrice(dataResponse.price);
+        }
+        setProduct(dataResponse);
+        console.log(dataResponse);
+
+        const resOriginId = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/origin/${dataResponse.originId}`
+        );
+        const dataOriginName = await resOriginId.json();
+        setOriginName(dataOriginName);
+
+        const resCateId = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/category/${dataResponse.cateId}`
+        );
+        const dataCateName = await resCateId.json();
+        setCateName(dataCateName);
+
+        const resBrandId = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/brand/${dataResponse.brandId}`
+        );
+        const dataBrandName = await resBrandId.json();
+        setBrandName(dataBrandName);
+
+        const resAgeId = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/age-group-product/${dataResponse.ageId}`
+        );
+        const dataAgeName = await resAgeId.json();
+        setAgeName(dataAgeName);
+        
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  const formatPrice = (price) => {
+    return price.toLocaleString('de-DE');
+  };
+
+  const handleCopyLink = (event) => {
+    event.preventDefault();
+    
+    const link = window.location.href;
+
+    navigator.clipboard.writeText(link).then(() => {
+      toast.success('Link đã được sao chép!');
+    }).catch(err => {
+      console.error('Không thể sao chép link: ', err);
+    });
+  };
+
+  //xử lý tăng giảm quantity của product
+  const handleDecrease = () => {
+    if (quantity > 1)
+      setQuantity(quantity - 1);
+  };
+
+  const handleIncrease = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+    if (value === '') {
+      setQuantity('');
+    } else if (!isNaN(value) && parseInt(value) >= 1 && parseInt(value) <= 99) {
+      setQuantity(parseInt(value));
+    }
+  };
+
   return (
     <>
+    <ToastContainer />
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-12 banner py-5 text-center">
@@ -52,6 +150,7 @@ export default function Product() {
       <div className="container-fluid body-content">
         <div className="container pt-5">
           <div className="row">
+            
             <div className="col-md-12">
               <div
                 className="w-100"
@@ -67,13 +166,13 @@ export default function Product() {
                     }}
                   >
                     <div className="w-75">
-                      <img src={product} alt="" className="w-100" />
+                      <img src={product.image} alt="" className="w-100" />
                     </div>
                   </div>
                   <div className="col-md-8 px-5 py-3">
                     <div className="title-product-info ms-3 fw-bold">
                       <span style={{ fontSize: "30px" }}>
-                        Sữa bầu Friso Mum Gold 900g hương cam
+                        {product.productName}
                       </span>
                     </div>
                     <div className="ms-3 mt-2">
@@ -110,7 +209,7 @@ export default function Product() {
                         }}
                       >
                         <div className="title-price-product fw-bold">
-                          <span style={{ fontSize: "26px" }}>249.000 VNĐ</span>
+                          <span style={{ fontSize: "26px" }}>{product.price} VNĐ</span>
                         </div>
                         <div className="info-cart-product w-75 mt-3">
                           <table className="w-100">
@@ -121,7 +220,7 @@ export default function Product() {
                                     <div
                                       className="btn btn-secondary rounded-0 w-25 text-center p-2"
                                       id="quantity-down"
-                                      onclick="sub()"
+                                      onClick={handleDecrease}
                                     >
                                       <span>-</span>
                                     </div>
@@ -132,13 +231,14 @@ export default function Product() {
                                         id="quantity"
                                         min="1"
                                         max="5"
-                                        value="1"
+                                        value={quantity}
+                                        onChange={handleChange}
                                       ></input>
                                     </div>
                                     <div
                                       className="btn btn-secondary rounded-0 w-25 text-center p-2"
                                       id="quantity-up"
-                                      onclick="add()"
+                                      onClick={handleIncrease}
                                     >
                                       <span>+</span>
                                     </div>
@@ -152,9 +252,9 @@ export default function Product() {
                                   </a>
                                 </td>
                                 <td className="w-30 text-center">
-                                  <a href="" className="btn-share py-1 px-3">
+                                  <Link to="" className="btn-share py-1 px-3" onClick={handleCopyLink}>
                                     <FontAwesomeIcon icon="fa-solid fa-share-nodes" />
-                                  </a>
+                                  </Link>
                                 </td>
                               </tr>
                             </tbody>
@@ -166,6 +266,7 @@ export default function Product() {
                 </div>
               </div>
             </div>
+
             <div className="col-md-12 mt-5 mb-5">
               <div
                 className="w-100 p-3"
@@ -187,24 +288,24 @@ export default function Product() {
                           Tên sản phẩm:
                         </td>
                         <td className="w-75 px-4">
-                          Sữa bầu Friso Mum Gold 900g hương cam
+                          {product.productName}
                         </td>
                       </tr>
                       <tr>
                         <td className="px-4 py-3 fw-bold">Loại sữa:</td>
-                        <td className="px-4">Sữa bầu</td>
+                        <td className="px-4">{cateName.categoryName}</td>
                       </tr>
                       <tr>
                         <td className="px-4 py-3 fw-bold">Thương hiệu:</td>
-                        <td className="px-4">Friso</td>
+                        <td className="px-4">{brandName.brandName}</td>
                       </tr>
                       <tr>
                         <td className="px-4 py-3 fw-bold">Xuất xứ:</td>
-                        <td className="px-4">Mỹ</td>
+                        <td className="px-4">{originName.originName}</td>
                       </tr>
                       <tr>
                         <td className="px-4 py-3 fw-bold">Đối tượng:</td>
-                        <td className="px-4">Bà bầu</td>
+                        <td className="px-4">{ageName.ageRange}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -216,14 +317,7 @@ export default function Product() {
                 </div>
                 <div className="description-product px-3 py-2">
                   <span>
-                    Sữa Enfamil Enspire Infant Formula có phù hợp với trẻ từ
-                    0-12 tháng tuổi không? Trẻ nhỏ trong giai đoạn từ 0-12 tháng
-                    tuổi cần được bổ sung đầy đủ dưỡng chất (chất xơ, khoáng
-                    chất, vitamin, chất béo,...) để có nền tảng phát triển tốt
-                    nhất. Kể từ tháng thứ 6 trở đi, sữa mẹ mất dần các dưỡng
-                    chất cần thiết, chúng ta có thể dùng sữa mẹ kết hợp với Sữa
-                    Enfamil Enspire Infant Formula để đạt được hiệu quả dinh
-                    dưỡng tốt nhất.
+                    {product.description}
                   </span>
                 </div>
               </div>
@@ -241,7 +335,7 @@ export default function Product() {
                   <div className="product-image text-center px-3 py-2 position-relative">
                     <a href="#">
                       <img
-                        src={product}
+                        src={productImg}
                         alt=""
                         className="w-75"
                         style={{ height: "15em" }}
@@ -275,7 +369,7 @@ export default function Product() {
                   <div className="product-image text-center px-3 py-2 position-relative">
                     <a href="#">
                       <img
-                        src={product}
+                        src={productImg}
                         alt=""
                         className="w-75"
                         style={{ height: "15em" }}
@@ -309,7 +403,7 @@ export default function Product() {
                   <div className="product-image text-center px-3 py-2 position-relative">
                     <a href="#">
                       <img
-                        src={product}
+                        src={productImg}
                         alt=""
                         className="w-75"
                         style={{ height: "15em" }}
@@ -343,7 +437,7 @@ export default function Product() {
                   <div className="product-image text-center px-3 py-2 position-relative">
                     <a href="#">
                       <img
-                        src={product}
+                        src={productImg}
                         alt=""
                         className="w-75"
                         style={{ height: "15em" }}
@@ -572,3 +666,4 @@ export default function Product() {
     </>
   );
 }
+export default Product;

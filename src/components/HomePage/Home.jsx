@@ -49,8 +49,12 @@ const Home = () => {
         const responseNewProductCate = await fetch(
           `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=8&sortOrder=1`
         );
-        const dataNewProductsCate = await responseNewProductCate.json();
-        setNewProducts(dataNewProductsCate);
+        const dataNewProducts = await responseNewProductCate.json();
+        const formattedProducts = dataNewProducts.map(product => ({
+          ...product,
+          price: formatPrice(product.price)
+        }));
+        setNewProducts(formattedProducts);
         console.log(newProducts);
         
       } catch (error) {
@@ -60,6 +64,10 @@ const Home = () => {
     fetchData();
   }, []);
 
+  const formatPrice = (price) => {
+    return price.toLocaleString('de-DE');
+  };
+
   useEffect(() => {
     if (cateId !== null) {
       const fetchData = async () => {
@@ -68,7 +76,11 @@ const Home = () => {
             `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=8&sortOrder=1&cateId=${cateId}`
           );
           const dataNewProductsCate = await responseNewProductCate.json();
-          setNewProducts(dataNewProductsCate);
+          const formattedProducts = dataNewProductsCate.map(product => ({
+            ...product,
+            price: formatPrice(product.price)
+          }));
+          setNewProducts(formattedProducts);
           console.log(dataNewProductsCate);
         } catch (error) {
           console.error(error.message);
@@ -85,8 +97,12 @@ const Home = () => {
           const responseNewProductCate = await fetch(
             `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=8&sortOrder=1&originId=${originId}`
           );
-          const dataNewProductsCate = await responseNewProductCate.json();
-          setNewProducts(dataNewProductsCate);
+          const dataNewProductsOrigin = await responseNewProductCate.json();
+          const formattedProducts = dataNewProductsOrigin.map(product => ({
+            ...product,
+            price: formatPrice(product.price)
+          }));
+          setNewProducts(formattedProducts);
           console.log(dataNewProductsCate);
         } catch (error) {
           console.error(error.message);
@@ -253,14 +269,14 @@ const Home = () => {
                 {newProducts.map((newP) => (
                 <div className="col-md-3 p-3 mt-4">
                   <div className="product-image text-center px-3 py-2 position-relative">
-                    <a href="#">
+                    <Link to={{pathname: `/product/${newP.id}`}}>
                       <img
                         src={newP.image}
                         alt=""
                         className="w-75"
                         style={{ height: "15em" }}
                       />
-                    </a>
+                    </Link>
                     <a
                       href="#"
                       className="addcart-item position-absolute start-50 translate-middle roboto"

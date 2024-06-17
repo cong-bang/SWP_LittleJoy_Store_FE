@@ -33,10 +33,10 @@ const Shop = () => {
       searchParams.append('sortOrder', sortOrder);
       
       if (keyword) searchParams.append('keyword', keyword);
-      if (cateIds.length) searchParams.append('cateId', cateIds.join(','));
-      if (ageIds.length) searchParams.append('ageId', ageIds.join(','));
-      if (originIds.length) searchParams.append('originId', originIds.join(','));
-      if (brandIds.length) searchParams.append('brandId', brandIds.join(','));
+      if (cateIds.length) searchParams.append('cateId', cateIds);
+      if (ageIds.length) searchParams.append('ageId', ageIds);
+      if (originIds.length) searchParams.append('originId', originIds);
+      if (brandIds.length) searchParams.append('brandId', brandIds);
   
       const response = await fetch(
         `https://littlejoyapi.azurewebsites.net/api/product/filter?${searchParams.toString()}`
@@ -53,6 +53,13 @@ const Shop = () => {
           });
         } else {
           console.log('Lỗi fetch data...');
+          setProducts([]);
+          setPaging({
+            CurrentPage: 1,
+            PageSize: 12,
+            TotalPages: 1,
+            TotalCount: 0,
+          });
         }
         return;
       }
@@ -75,8 +82,11 @@ const Shop = () => {
       }
   
       const dataProducts = await response.json();
-      setProducts(dataProducts);
-      console.log(dataProducts);
+      const formattedProducts = dataProducts.map(product => ({
+        ...product,
+        price: formatPrice(product.price)
+      }));
+      setProducts(formattedProducts);
       
     } catch (error) {
       console.error(error.message);
@@ -155,6 +165,10 @@ const Shop = () => {
   const handleClickSortOrder = (event, id) => {
     event.preventDefault();
     setSortOrder(id);
+  };
+
+  const formatPrice = (price) => {
+    return price.toLocaleString('de-DE');
   };
 
 
@@ -500,14 +514,14 @@ const Shop = () => {
                 {products.map((p) => (
                 <div className="col-md-3 p-3 mt-3">
                   <div className="product-image text-center px-3 py-2 position-relative">
-                    <a href="#">
+                    <Link to={{pathname: `/product/${p.id}`}}>
                       <img
                         src={p.image}
                         alt=""
                         className="w-75"
                         style={{ height: "13em" }}
                       />
-                    </a>
+                    </Link>
                     <a
                       href="#"
                       className="addcart-item position-absolute start-50 translate-middle"
