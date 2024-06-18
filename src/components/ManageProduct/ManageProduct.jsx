@@ -20,6 +20,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ContentLoader from "react-content-loader";
 import UploadImage from "../UploadImage/UploadImage";
+import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
 
  const ManageProduct = () => {
     const [products, setProducts] = useState([]);
@@ -42,10 +43,15 @@ import UploadImage from "../UploadImage/UploadImage";
       const [description, setDescription] = useState('');
       const [image, setImage] = useState('');
       const [isActive, setIsActive] = useState(true);
-      const [ageId, setAgeId] = useState(1);
+      const [ageId, setAgeId] = useState(2);
       const [originId, setOriginId] = useState(1);
       const [brandId, setBrandId] = useState(1);
       const [cateId, setCateId] = useState(1);
+
+      const [selectedProduct, setSelectedProduct] = useState({});
+      const [isModalOpen, setIsModalOpen] = useState(false);
+      const [idToDelete, setIdToDelete] = useState(null);
+      const [username, setUsername] = useState("");
 
       const TableLoading = () => (
         <ContentLoader
@@ -64,6 +70,11 @@ import UploadImage from "../UploadImage/UploadImage";
         
       useEffect(() => {
         window.scrollTo(0, 0);
+        const roleFromLocalStorage = localStorage.getItem("userRole");
+        const usernameFromLocalStorage = localStorage.getItem("userName");
+        if (roleFromLocalStorage === "ADMIN" || roleFromLocalStorage === "STAFF" || roleFromLocalStorage === "USER" && usernameFromLocalStorage) {
+          setUsername(usernameFromLocalStorage);
+        }
       }, [pathname]);
 
       useEffect(() => {
@@ -230,7 +241,7 @@ import UploadImage from "../UploadImage/UploadImage";
             setQuantity(5);
             setImage('');
             setIsActive(true);
-            setAgeId(1);
+            setAgeId(2);
             setBrandId(1);
             setCateId(1);
             setOriginId(1);
@@ -247,6 +258,115 @@ import UploadImage from "../UploadImage/UploadImage";
         setImage(url);
       };
     
+      const handleEditProduct = (productId) => {
+        fetchProductDetails(productId);
+    };
+
+    const fetchProductDetails = async (productId) => {
+      try {
+          const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/product/${productId}`);
+          const data = await response.json();
+          setSelectedProduct(data);
+          setProductName(data.productName);
+          setType(data.type);
+          setPrice(data.price);
+          setWeight(data.weight);
+          setQuantity(data.quantity);
+          setDescription(data.description);
+          setImage(data.image);
+          setIsActive(data.isActive);
+          setAgeId(data.ageId);
+          setOriginId(data.originId);
+          setBrandId(data.brandId);
+          setCateId(data.cateId);
+      } catch (error) {
+          console.error("Lỗi fetch product details", error);
+      } finally {
+          
+      }
+  };
+
+  const handleSaveUpdateProduct = async () => {
+    if (
+      productName === "" ||
+      price === "" ||
+      description === "" ||
+      weight === "" ||
+      image === "" 
+    ) {
+      notify();
+      return;
+    }
+    const updatedProduct = {
+      id: selectedProduct.id,
+      productName,
+      type,
+      price,
+      weight,
+      quantity,
+      description,
+      image,
+      isActive,
+      ageId,
+      originId,
+      brandId,
+      cateId
+  };
+
+  try {
+      const response = await fetch('https://littlejoyapi.azurewebsites.net/api/product', {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedProduct)
+      });
+
+      if (response.ok) {
+        toast.success('Sản phẩm được sửa thành công!');
+        fetchData(paging.CurrentPage, paging.PageSize);
+      } else {
+          const errorData = await response.json();
+          toast.error('Sản phẩm được sửa thất bại!');
+      }
+  } catch (error) {
+      console.error('Error updating product:', error);
+  }}
+
+
+  const handleDeleteProduct = async (id) => {
+    setIdToDelete(id);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/product?Id=${idToDelete}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        await fetchData(paging.CurrentPage, paging.PageSize);
+        toast.success('Sản phẩm được xóa thành công!')
+      } else {
+        toast.error("Xóa sản phẩm thất bại!");
+      }
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      setIsModalOpen(false);
+    }
+  };
 
     const navigate = useNavigate();
     const handleLogout = () => {
@@ -261,7 +381,7 @@ import UploadImage from "../UploadImage/UploadImage";
         <div className="row">
         <div className="col-md-2 nav-admin-left">
             <div className="logo-admin d-flex justify-content-center w-100 mt-3">
-              <a href="">
+              <Link to="/">
                 <p
                   className="logo-admin-left d-inline-block p-1 m-0"
                   style={{ fontFamily: "sans-serif" }}
@@ -274,7 +394,7 @@ import UploadImage from "../UploadImage/UploadImage";
                 >
                   ADMIN
                 </p>
-              </a>
+              </Link>
             </div>
             <div className="nav-admin mt-5 w-100">
               <table className="w-100">
@@ -401,7 +521,7 @@ import UploadImage from "../UploadImage/UploadImage";
                     </div>
                     <div className="col-md-2 d-flex align-content-center justify-content-center">
                         <div className="pos-nav d-flex align-content-center p-2 py-3">
-                            <p className="m-0" style={{ fontFamily: "sans-serif", fontSize: '16px' }}>phamhieu</p>
+                            <p className="m-0" style={{ fontFamily: "sans-serif", fontSize: '16px' }}>{username}</p>
                         </div>
                         <div className="icon-nav-log p-2 py-3 text-white">
                             <FontAwesomeIcon icon={faPowerOff} />
@@ -474,10 +594,10 @@ import UploadImage from "../UploadImage/UploadImage";
                                                     </td>
                                                     <td className="p-3 px-4 description-product"><span>{p.description}</span></td>
                                                     <td className="p-3 px-4 d-flex justify-content-center">
-                                                        <div className="edit-product p-2" data-bs-toggle="modal" data-bs-target="#edit-product">
+                                                        <div className="edit-product p-2" data-bs-toggle="modal" data-bs-target="#edit-product" onClick={() => handleEditProduct(p.id)}>
                                                             <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
                                                         </div>
-                                                        <div className="delete-product p-2"><FontAwesomeIcon icon="fa-solid fa-trash" /></div>
+                                                        <div className="delete-product p-2"><FontAwesomeIcon icon="fa-solid fa-trash" onClick={() => handleDeleteProduct(p.id)}/></div>
                                                     </td>
                                                 </tr>
                                                 ))
@@ -769,13 +889,15 @@ import UploadImage from "../UploadImage/UploadImage";
                         <td><span className="py-2">URL image:</span></td>
                         <td className="py-2">
                         <UploadImage
-                            aspectRatio={4 / 3}
+                            aspectRatio={12 / 18}
                             onUploadComplete={handleUploadComplete}
                             maxWidth={10000}
                             maxHeight={10000}
                             minWidth={126}
                             minHeight={126}
                             />
+                            <div>
+                            <img src={selectedProduct.image} alt='' style={{weight: '70px', height: '105px'}}></img></div>
                         </td>
                         </tr>
                         <tr>
@@ -835,11 +957,11 @@ import UploadImage from "../UploadImage/UploadImage";
                             <select
                             className="ps-2 p-1 w-50"
                             value={isActive}
-                            onChange={(e) => setIsActive(parseInt(e.target.value))}
+                            onChange={(e) => setIsActive(e.target.value === 'true')}
                             >
                             <option value="" disabled>Choose</option>
                             <option value="true">true</option>
-                            <option value="flase">false</option>
+                            <option value="false">false</option>
                             </select>
                         </td>
                         </tr>
@@ -875,62 +997,184 @@ import UploadImage from "../UploadImage/UploadImage";
 
                 {/* <!-- Modal body --> */}
                 <div className="modal-body">
-                    <div className="p-2">
-                        <table className="w-100 table-modal">
-                            <tbody>
-                            <tr>
-                                <td className="w-20"><span className="py-2">Name:</span></td>
-                                <td className="py-2"><input type="text" className="ps-2 p-1 w-100"/></td>
-                            </tr>
-                            <tr>
-                                <td><span className="py-2">Type:</span></td>
-                                <td className="py-2"><select name="" id="" className="ps-2 p-1" defaultValue="">
-                                    <option value="" disabled>Choose</option>
-                                    <option value="">Birthday</option>
-                                    <option value="">Weeding</option>
-                                    <option value="">Boxes</option>
-                                </select></td>
-                            </tr>
-                            <tr>
-                                <td><span className="py-2">Price:</span></td>
-                                <td className="py-2"><input type="text" className="ps-2 p-1 w-100"/></td>
-                            </tr>
-                            <tr>
-                                <td><span className="py-2">Quantity:</span></td>
-                                <td>
-                                    <div className="btn-quantity w-100 d-flex justify-content-start p-2">
-                                        <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                            id="quantity-down" onClick="sub('quantity2')">
-                                            <span>-</span>
-                                        </div>
-                                        <div className="button w-15">
-                                            <input type="number" className="text-center w-100 p-2" id="quantity2"
-                                                value="5"></input>
-                                        </div>
-                                        <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                            id="quantity-up" onClick="add('quantity2')">
-                                            <span>+</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="title-product-modal p-2 my-1">
-                        <span className="w-100">Description: </span>
-                    </div>
-                    <div className="p-2 description-text">
-                        <textarea id="myTextarea" name="myTextarea" rows="4" cols="50" className="w-100 p-2"></textarea>
-                    </div>
-                    <div className="title-product-modal p-2 my-1">
-                        <span className="w-100">URL image: </span>
-                    </div>
-                    <div className="p-2 description-text">
-                        <textarea id="myTextarea" name="myTextarea" rows="4" cols="50" className="w-100 p-2"></textarea>
-                    </div>
-                    
+                <div className="p-2">
+                    <table className="w-100 table-modal">
+                    <tbody>
+                        <tr>
+                        <td className="w-20"><span className="py-2">Name:</span></td>
+                        <td className="py-2">
+                            <input
+                            type="text"
+                            className="ps-2 p-1 w-100"
+                            value={productName}
+                            onChange={(e) => setProductName(e.target.value)}
+                            />
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Type:</span></td>
+                        <td className="py-2">
+                            <select
+                            className="ps-2 p-1 w-100"
+                            value={cateId}
+                            onChange={(e) => setCateId(parseInt(e.target.value))}
+                            >
+                            <option value="" disabled>Choose</option>
+                            <option value="1">Sữa bột cao cấp</option>
+                            <option value="2">Sữa bột</option>
+                            <option value="3">Sữa tươi</option>
+                            <option value="4">Sữa bầu</option>
+                            <option value="5">Sữa chua</option>
+                            <option value="6">Sữa hạt</option>
+                            <option value="7">Sữa lúa mạch</option>
+                            </select>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Price:</span></td>
+                        <td className="py-2">
+                            <input
+                            type="text"
+                            className="ps-2 p-1 w-100"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
+                            />
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Quantity:</span></td>
+                        <td>
+                            <div className="btn-quantity w-100 d-flex justify-content-start p-2">
+                            <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
+                                id="quantity-down" onClick={() => setQuantity(quantity > 0 ? quantity - 1 : 0)}>
+                                <span>-</span>
+                            </div>
+                            <div className="button w-15">
+                                <input
+                                type="number"
+                                className="text-center w-100 p-2"
+                                id="quantity1"
+                                value={quantity === '' ? 1 : quantity}
+                                onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                    setQuantity(value >= 0 ? value : 0);
+                                }}
+                                />
+                            </div>
+                            <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
+                                id="quantity-up" onClick={() => setQuantity(quantity + 1)}>
+                                <span>+</span>
+                            </div>
+                            </div>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Description:</span></td>
+                        <td className="py-2">
+                            <textarea
+                            style={{background: '#151C2C', color: 'white'}}
+                            rows="4"
+                            className="w-100 p-2"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            ></textarea>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Weight:</span></td>
+                        <td className="py-2">
+                            <input
+                            style={{background: '#151C2C', color: 'white'}}
+                            className="w-100 p-2"
+                            value={weight}
+                            onChange={(e) => setWeight(e.target.value)}
+                            />
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">URL image:</span></td>
+                        <td className="py-2">
+                        <UploadImage
+                            aspectRatio={12 / 18}
+                            onUploadComplete={handleUploadComplete}
+                            maxWidth={10000}
+                            maxHeight={10000}
+                            minWidth={126}
+                            minHeight={126}
+                            value={image}
+                            />
+                            <div>
+                            <img src={image} alt='' style={{weight: '70px', height: '105px'}}></img></div>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Age:</span></td>
+                        <td className="py-2">
+                            <select
+                            className="ps-2 p-1 w-100"
+                            value={ageId}
+                            onChange={(e) => setAgeId(parseInt(e.target.value))}
+                            >
+                            <option value="" disabled>Choose</option>
+                            <option value="2">0-6 tháng</option>
+                            <option value="3">6-12 tháng</option>
+                            <option value="4">1-2 tuổi</option>
+                            <option value="5">Trên 6 tuổi</option>
+                            </select>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Origin:</span></td>
+                        <td className="py-2">
+                            <select
+                            className="ps-2 p-1 w-100"
+                            value={originId}
+                            onChange={(e) => setOriginId(parseInt(e.target.value))}
+                            >
+                            <option value="" disabled>Choose</option>
+                            <option value="1">Mỹ</option>
+                            <option value="2">Việt Nam</option>
+                            <option value="3">Châu Âu</option>
+                            <option value="5">Nhật Bản</option>
+                            <option value="6">Úc</option>
+                            <option value="7">Khác</option>
+                            </select>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">Brand:</span></td>
+                        <td className="py-2">
+                            <select
+                            className="ps-2 p-1 w-100"
+                            value={brandId}
+                            onChange={(e) => setBrandId(parseInt(e.target.value))}
+                            >
+                            <option value="" disabled>Choose</option>
+                            <option value="1">Abbott Grow</option>
+                            <option value="2">meiji</option>
+                            <option value="3">Ensure</option>
+                            <option value="4">Kid Boost</option>
+                            <option value="6">Similac</option>
+                            </select>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><span className="py-2">IsActive:</span></td>
+                        <td className="py-2">
+                            <select
+                            className="ps-2 p-1 w-50"
+                            value={isActive}
+                            onChange={(e) => setIsActive(e.target.value === 'true')}
+                            >
+                            <option value="" disabled>Choose</option>
+                            <option value="true">true</option>
+                            <option value="false">false</option>
+                            </select>
+                        </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
                 </div>
 
                 {/* <!-- Modal footer --> */}
@@ -939,13 +1183,18 @@ import UploadImage from "../UploadImage/UploadImage";
                         <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal"><span>Close</span></div>
                     </div>
                     <div className="save-modal me-4">
-                        <input type="submit" value="Save" className="input-submit p-2 px-4 inter"/>
+                        <input onClick={handleSaveUpdateProduct} type="submit" value="Save"  data-bs-dismiss="modal" className="input-submit modal-btn-close p-2 px-4 inter"/>
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
+    <ModalConfirmDelete
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onConfirm={handleConfirmDelete}
+        />
     </div>
     </>
   )

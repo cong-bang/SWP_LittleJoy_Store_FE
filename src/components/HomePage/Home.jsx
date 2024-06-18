@@ -74,7 +74,8 @@ const Home = () => {
           `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=8&sortOrder=1`
         );
         const dataNewProducts = await responseNewProductCate.json();
-        const formattedProducts = dataNewProducts.map(product => ({
+        const activeProducts = dataNewProducts.filter(product => product.isActive);
+        const formattedProducts = activeProducts.map(product => ({
           ...product,
           price: formatPrice(product.price)
         }));
@@ -126,7 +127,8 @@ const Home = () => {
           }
 
           const dataNewProductsOrigin = await responseNewProductCate.json();
-          const formattedProducts = dataNewProductsOrigin.map(product => ({
+          const activeProducts = dataNewProductsOrigin.filter(product => product.isActive);
+          const formattedProducts = activeProducts.map(product => ({
             ...product,
             price: formatPrice(product.price)
           }));

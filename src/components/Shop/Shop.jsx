@@ -83,7 +83,8 @@ const Shop = () => {
       }
   
       const dataProducts = await response.json();
-      const formattedProducts = dataProducts.map(product => ({
+      const activeProducts = dataProducts.filter(product => product.isActive);
+      const formattedProducts = activeProducts.map(product => ({
         ...product,
         price: formatPrice(product.price)
       }));

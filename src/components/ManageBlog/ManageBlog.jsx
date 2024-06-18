@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -39,6 +39,17 @@ const ManageBlog = () => {
   const [userName, setUserName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
+  const { pathname } = useLocation();
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const roleFromLocalStorage = localStorage.getItem("userRole");
+    const usernameFromLocalStorage = localStorage.getItem("userName");
+    if (roleFromLocalStorage === "ADMIN" || roleFromLocalStorage === "STAFF" || roleFromLocalStorage === "USER" && usernameFromLocalStorage) {
+      setUsername(usernameFromLocalStorage);
+    }
+  }, [pathname]);
 
   const TableLoading = () => (
     <ContentLoader
@@ -387,7 +398,7 @@ const ManageBlog = () => {
                       className="m-0"
                       style={{ fontFamily: "sans-serif", fontSize: "16px" }}
                     >
-                      phamhieu
+                      {username}
                     </p>
                   </div>
                   <div className="icon-admin-nav-log p-2 py-3 text-white">
