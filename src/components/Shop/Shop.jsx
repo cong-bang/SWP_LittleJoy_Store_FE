@@ -89,7 +89,7 @@ const Shop = () => {
         price: formatPrice(product.price)
       }));
       setProducts(formattedProducts);
-      
+      console.log(products);
     } catch (error) {
       console.error(error.message);
     }

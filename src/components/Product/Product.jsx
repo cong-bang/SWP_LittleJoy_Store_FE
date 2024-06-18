@@ -18,6 +18,21 @@ const Product = () => {
   const [brandName, setBrandName] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [similarP, setSimilarP] = useState([]);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [selectedRating, setSelectedRating] = useState(null);
+  const [comment, setComment] = useState('');
+  const [loading, setLoading] = useState(false);
+  const notify = () =>
+    toast.error('Vui lòng nhập đủ thông tin', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -70,14 +85,39 @@ const Product = () => {
           price: formatPrice(product.price)
         }));
         setSimilarP(formattedSimilarP);
-        console.log(similarP);
+        
+        const resFeedbacks = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/feedback/feed-back-by-product/${id}?PageIndex=1&PageSize=9`
+        );
+        const dataFeedbacks = await resFeedbacks.json();
+        const userIds = [...new Set(dataFeedbacks.map(feedback => feedback.userId))];
+        
+        const userInfo = {};
+        await Promise.all(userIds.map(async (userId) => {
+          const userResponse = await fetch(`https://littlejoyapi.azurewebsites.net/api/user/${userId}`);
+          const userData = await userResponse.json();
+          userInfo[userId] = userData;
+        }));
+
+        const feedbacksWithUserNames = dataFeedbacks.map(feedback => {
+          const dateParts = feedback.date.split("T")[0].split("-");
+          const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+          return {
+            ...feedback,
+            userName: userInfo[feedback.userId]?.userName || 'Unknown User',
+            date: formattedDate
+          };
+        });
+
+        setFeedbacks(feedbacksWithUserNames);
         
       } catch (error) {
         console.error(error.message);
       }
     };
     fetchData();
-  }, [id]);
+  }, [id, feedbacks.length]);
 
   const formatPrice = (price) => {
     return price.toLocaleString('de-DE');
@@ -135,6 +175,54 @@ const Product = () => {
       color={star <= product.ratingAver ? 'gold' : 'lightgrey'}
     />
   ));
+
+  const handleRatingClick = (rating) => {
+    setSelectedRating(rating);
+  };
+
+  const handleSendFeedback = async () => {
+    if (
+      comment.trim() === "" ||
+      selectedRating === null
+    ) {
+      notify();
+      return;
+    }
+    const newFeedback = {
+      userId: localStorage.getItem("userId"),
+      productId: id,
+      comment: comment,
+      rating: selectedRating
+    };
+    console.log(newFeedback);
+    const sendFeedback = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/feedback`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newFeedback),
+          }
+        );
+        const data = await response.json();
+        if (data.ok) {
+          setSelectedRating(null);
+          setComment('');
+          
+        }
+      } catch (error) {
+        console.error("Lỗi tạo blog:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    sendFeedback();
+  };
+
 
   return (
     <>
@@ -514,60 +602,63 @@ const Product = () => {
                             <span className="fw-bold fs-4" style={{color: '#091E3E'}}>Đánh giá</span>
                         </div>
                         <div className="feedback-sao w-40 ps-4 d-flex justify-content-between">
-                            <div data-value="5" className="voting-feedback d-inline-block px-4 py-2"
-                                style={{border: '1px solid black', borderRadius: '10px'}}><span style={{color: '#212529', fontFamily:'system-ui'}}>5 </span> <FontAwesomeIcon icon="fa-solid fa-star" />
+                        {[5, 4, 3, 2, 1].map(rating => (
+                            <div
+                              key={rating}
+                              data-value={rating}
+                              className={`voting-feedback d-inline-block px-4 py-2 ${selectedRating === rating ? 'voting-feedback-active' : ''}`}
+                              style={{ border: '1px solid black', borderRadius: '10px', cursor: 'pointer' }}
+                              onClick={() => handleRatingClick(rating)}
+                            >
+                              {rating} <FontAwesomeIcon icon="fa-solid fa-star"></FontAwesomeIcon>
                             </div>
-                            <div data-value="4" className="voting-feedback d-inline-block px-4 py-2"
-                                style={{border: '1px solid black', borderRadius: '10px'}}><span style={{color: '#212529', fontFamily:'system-ui'}}>4 </span> <FontAwesomeIcon icon="fa-solid fa-star" />
-                            </div>
-                            <div data-value="3" className="voting-feedback d-inline-block px-4 py-2"
-                                style={{border: '1px solid black', borderRadius: '10px'}}><span style={{color: '#212529', fontFamily:'system-ui'}}>3 </span> <FontAwesomeIcon icon="fa-solid fa-star" />
-                            </div>
-                            <div data-value="2" className="voting-feedback d-inline-block px-4 py-2"
-                                style={{border: '1px solid black', borderRadius: '10px'}}><span style={{color: '#212529', fontFamily:'system-ui'}}>2 </span> <FontAwesomeIcon icon="fa-solid fa-star" />
-                            </div>
-                            <div data-value="1" className="voting-feedback d-inline-block px-4 py-2"
-                                style={{border: '1px solid black', borderRadius: '10px'}}><span style={{color: '#212529', fontFamily:'system-ui'}}>1 </span> <FontAwesomeIcon icon="fa-solid fa-star" />
-                            </div>
-                            <input type="hidden" id="star-rating" name="rating" value=""/>
+                          ))}
+                          <input type="hidden" id="star-rating" name="rating" value={selectedRating || ''} />
                         </div>
                         <div className="w-75 p-4">
-                            <textarea name="" id="" className="w-100 p-2" rows="5" style={{resize: 'none' }}></textarea>
+                            <textarea value={comment} onChange={(e) => setComment(e.target.value)} name="" id="" className="w-100 p-2" rows="5" style={{resize: 'none' }}></textarea>
                         </div>
                         <div className="ps-4">
                             <div className="text-center px-3 py-2 d-inline-block"
                                 style={{backgroundColor: '#005B96', borderRadius: '10px'}}>
-                                <span className="fw-bold" style={{color: 'white'}}>Gửi đánh giá</span>
+                                <span className="fw-bold" style={{color: 'white'}} onClick={handleSendFeedback}>Gửi đánh giá</span>
                             </div>
                         </div>
                         <div className="mt-3" style={{borderTop: '1px solid black'}}>
                             &nbsp;
                         </div>
                         <div className="w-100 ps-5 pe-5">
-                            <div className="item-feedback p-3" style={{borderBottom: '1px solid black'}}>
+                            {feedbacks.map((fb) => (
+                            <div key={fb.id} className="item-feedback p-3" style={{borderBottom: '1px solid black'}}>
                                 <table className="w-75">
                                   <tbody>
                                     <tr>
-                                        <td className="w-15"><span className="fw-bold">phamhieu2k3</span></td>
-                                        <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>22-01-2024</span></td>
+                                        <td className="w-15"><span className="fw-bold">{fb.userName}</span></td>
+                                        <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>{fb.date}</span></td>
                                         <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
                                     </tr>
                                     <tr>
                                         <td colSpan="2"><span className="fw-bold py-1"
-                                                style={{textDecoration: 'underline'}}>5.0</span>
+                                                style={{textDecoration: 'underline'}}>{fb.rating}.0</span>
                                             <div className="d-inline-block py-1" style={{color: '#FFC626'}}>
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /><FontAwesomeIcon icon="fa-solid fa-star" />
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /><FontAwesomeIcon icon="fa-solid fa-star" />
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /></div>
+                                            {[1, 2, 3, 4, 5].map((star) => (
+                                              <FontAwesomeIcon
+                                                key={star}
+                                                icon={faStar}
+                                                color={star <= fb.rating ? 'gold' : 'lightgrey'}
+                                              />
+                                            ))}
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colSpan="3"><span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nisi eius voluptate quas perspiciatis aliquid molestiae animi quam, inventore est asperiores, accusantium voluptatem, minima eaque explicabo saepe. Facilis, eius accusamus.</span></td>
+                                        <td colSpan="3"><span>{fb.comment}</span></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="item-feedback p-3" style={{borderBottom: '1px solid black'}}>
+                            ))}
+                            {/* <div className="item-feedback p-3" style={{borderBottom: '1px solid black'}}>
                                 <table className="w-75">
                                   <tbody>
                                     <tr>
@@ -681,7 +772,7 @@ const Product = () => {
                                     </tr>
                                     </tbody>
                                 </table>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="w-100 p-3">
                             <div className="fs-5 d-flex justify-content-end">
