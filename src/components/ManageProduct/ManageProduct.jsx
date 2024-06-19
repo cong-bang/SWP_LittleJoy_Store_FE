@@ -577,7 +577,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                                                     <option value="4">Sữa bầu</option>
                                                     <option value="5">Sữa chua</option>
                                                     <option value="6">Sữa hạt</option>
-                                                    <option value="7">Sữa lúa mạch</option>
+                                                    <option value="11">Sữa lúa mạch</option>
                                                 </select>
                                             </div>
                                             <div className="filter-status p-3">
@@ -738,7 +738,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                             <option value="4">Sữa bầu</option>
                             <option value="5">Sữa chua</option>
                             <option value="6">Sữa hạt</option>
-                            <option value="7">Sữa lúa mạch</option>
+                            <option value="11">Sữa lúa mạch</option>
                             </select>
                         </td>
                         </tr>
@@ -944,7 +944,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                             <option value="4">Sữa bầu</option>
                             <option value="5">Sữa chua</option>
                             <option value="6">Sữa hạt</option>
-                            <option value="7">Sữa lúa mạch</option>
+                            <option value="11">Sữa lúa mạch</option>
                             </select>
                         </td>
                         </tr>
