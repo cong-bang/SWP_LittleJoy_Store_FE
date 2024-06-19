@@ -76,6 +76,17 @@ const ManageUser = () => {
                     <tr>
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
+                        <Link to="/managecategory">
+                          <FontAwesomeIcon icon={faBoxOpen} />{" "}
+                          <span style={{ fontFamily: "sans-serif" }}>
+                            Quản lý danh mục
+                          </span>
+                        </Link>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td className="py-1 ps-3 hover-dashboard">
                         <Link to="/manageblog">
                         <FontAwesomeIcon icon="fa-solid fa-paste" />{" "}
                           <span style={{ fontFamily: "sans-serif" }}>

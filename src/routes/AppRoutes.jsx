@@ -29,6 +29,7 @@ import CreateBlog from "../components/Blog/CreateBlog";
 import RequestRefund from "../components/Refund/RequestRefund";
 import UpdateBlog from "../components/Blog/UpdateBlog";
 import ConfirmEmail from "../components/Authen/ConfirmEmail";
+import ManageCategory from "../components/ManageCategory/ManageCategory";
 
 
 const UserRoute = () => {
@@ -66,7 +67,13 @@ const AppRoutes = () => {
 
   // Ẩn Header và Footer khi vào Dashboard
   useEffect(() => {
-    if (location.pathname === "/dashboard" || location.pathname === "/manageuser" || location.pathname === "/manageorder" || location.pathname === "/manageproduct" || location.pathname === "/manageblog" || location.pathname === "/requestrefund"  && isAdminOrStaff) {
+    if (location.pathname === "/dashboard" || 
+      location.pathname === "/manageuser" || 
+      location.pathname === "/manageorder" || 
+      location.pathname === "/manageproduct" || 
+      location.pathname === "/manageblog" || 
+      location.pathname === "/requestrefund" ||
+      location.pathname === "/managecategory"  && isAdminOrStaff) {
       setShowHeaderFooter(false);
     } else {
       setShowHeaderFooter(true);
@@ -88,6 +95,7 @@ const AppRoutes = () => {
             <Route path="/manageorder" element={<ManageOrder />} />
             <Route path="/manageproduct" element={<ManageProduct />} />
             <Route path="/manageblog" element={<ManageBlog />} />
+            <Route path="/managecategory" element={<ManageCategory />} />
             <Route path="/requestrefund" element={<RequestRefund />} />
           </>
         )}
@@ -131,41 +139,6 @@ const AppRoutes = () => {
 
 export default AppRoutes;
 
-
-
-
-
-
-// const AppRoutes = () => {
-//   return (
-//     <>
-//       <Routes>
-//       <Route path="/" element={<UserLayout><Home /></UserLayout>} />
-//       <Route path="/login" element={<UserLayout><Login /></UserLayout>} />
-//       <Route path="/shop" element={<UserLayout><Shop /></UserLayout>} />
-//       <Route path="/about" element={<UserLayout><About /></UserLayout>} />
-//       <Route path="/forgotpass" element={<UserLayout><Forgotpass1 /></UserLayout>} />
-//       <Route path="/register" element={<UserLayout><Register /></UserLayout>} />
-//       <Route path="/blog" element={<UserLayout><Blog /></UserLayout>} />
-//       <Route path="/blog/:id" element={<UserLayout><BlogDetail /></UserLayout>} />
-//       <Route path="/cart" element={<UserLayout><Cart /></UserLayout>} />
-//       <Route path="/checkout" element={<UserLayout><Checkout /></UserLayout>} />
-//       <Route path="/product/:id" element={<UserLayout><Product /></UserLayout>} />
-//       <Route path="/userprofile" element={<UserLayout><UserProfile /></UserLayout>} />
-//       <Route path="/useraddress" element={<UserLayout><UserAddress /></UserLayout>} />
-//       <Route path="/userchangepassword" element={<UserLayout><UserChangePassword /></UserLayout>} />
-//       <Route path="/userorderdetail" element={<UserLayout><UserOrderDetail /></UserLayout>} />
-//       <Route path="/userordermanagement" element={<UserLayout><UserOrderManagement /></UserLayout>} />
-//       <Route path="/dashboard" element={<ProtectedRoute roles={['ADMIN']} layout={AdminLayout} element={Dashboard} />} />
-//       <Route path="/manage-users" element={<ProtectedRoute roles={['ADMIN']} layout={AdminLayout} element={ManageUser} />} />
-//       <Route path="/manage-orders" element={<ProtectedRoute roles={['ADMIN']} layout={AdminLayout} element={ManageOrder} />} />
-//       <Route path="/manage-products" element={<ProtectedRoute roles={['ADMIN']} layout={AdminLayout} element={ManageProduct} />} />
-//     </Routes>
-//     </>
-//   );
-// };
-
-// export default AppRoutes;
 
 
 

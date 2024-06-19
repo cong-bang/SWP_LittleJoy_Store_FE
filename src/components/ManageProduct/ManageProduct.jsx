@@ -52,6 +52,11 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
       const [isModalOpen, setIsModalOpen] = useState(false);
       const [idToDelete, setIdToDelete] = useState(null);
       const [username, setUsername] = useState("");
+      const [searchCate, setSearchCate] = useState(null);
+      const [searchOrigin, setSearchOrigin] = useState(null);
+      const [searchIsActive, setSearchIsActive] = useState(null);
+      const [searchBrand, setSearchBrand] = useState(null);
+      const [searchAge, setSearchAge] = useState(null);
 
       const TableLoading = () => (
         <ContentLoader
@@ -104,8 +109,13 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
         setLoading(true);
         try {
           const searchParams = new URLSearchParams();
+          if (searchCate != null) searchParams.append("cateId", searchCate);
+          if (searchOrigin != null) searchParams.append("originId", searchOrigin);
+          if (searchAge != null) searchParams.append("ageId", searchAge);
+          if (searchBrand != null) searchParams.append("brandId", searchBrand);
           searchParams.append('PageIndex', pageIndex);
           searchParams.append('PageSize', pageSize);
+          
           
           if (keyword) searchParams.append('keyword', keyword);
       
@@ -148,7 +158,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
             };
           });
           setProducts(formattedProducts);
-          console.log(products);
+          
           
         } catch (error) {
           console.error(error.message);
@@ -159,7 +169,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
       
       useEffect(() => {
         fetchData(paging.CurrentPage, paging.PageSize);
-      }, [paging.CurrentPage, keyword]);
+      }, [paging.CurrentPage, keyword, searchCate, searchAge, searchBrand, searchOrigin]);
 
       const formatPrice = (price) => {
         return price.toLocaleString('de-DE');
@@ -230,7 +240,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
             },
             body: JSON.stringify(newProduct),
           });
-          console.log(newProduct)
+          
           if (response.ok) {
             toast.success('Sản phẩm được tạo thành công!');
             fetchData(paging.CurrentPage, paging.PageSize);
@@ -465,6 +475,17 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                   <tr>
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
+                        <Link to="/managecategory">
+                          <FontAwesomeIcon icon={faBoxOpen} />{" "}
+                          <span style={{ fontFamily: "sans-serif" }}>
+                            Quản lý danh mục
+                          </span>
+                        </Link>
+                      </td>
+                    </tr>
+                  <tr>
+                      <td></td>
+                      <td className="py-1 ps-3 hover-dashboard">
                         <Link to="/manageblog">
                         <FontAwesomeIcon icon="fa-solid fa-paste" />{" "}
                           <span style={{ fontFamily: "sans-serif" }}>
@@ -506,9 +527,9 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                 <div className="row top-nav">
                     <div className="col-md-2 text-center">
                         <div className="dashboard p-2 py-3">
-                            <a href="" className="">
+                            <Link to="/dashboard" className="">
                                 <p className="m-0"style={{ fontFamily: "sans-serif", fontSize: '16px' }}>Dashboard</p>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                     <div className="col-md-8 d-flex align-content-center">
@@ -548,14 +569,49 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                                                     placeholder="Search Product"/>
                                                     </div>
                                             <div className="filter-status p-3">
-                                                <select name="" id="" className="p-1" defaultValue="">
-                                                    <option value="" selected disabled>Type</option>
-                                                    <option value="">Cancelled</option>
-                                                    <option value="">Pending</option>
-                                                    <option value="">Completed</option>
+                                                <select name="" id="" className="p-1" defaultValue="" value={searchCate} onChange={(e) => setSearchCate(e.target.value)}>
+                                                    <option value="" selected disabled>Category</option>
+                                                    <option value="1">Sữa cao cấp</option>
+                                                    <option value="2">Sữa bột</option>
+                                                    <option value="3">Sữa tươi</option>
+                                                    <option value="4">Sữa bầu</option>
+                                                    <option value="5">Sữa chua</option>
+                                                    <option value="6">Sữa hạt</option>
+                                                    <option value="7">Sữa lúa mạch</option>
+                                                </select>
+                                            </div>
+                                            <div className="filter-status p-3">
+                                                <select name="" id="" className="p-1" defaultValue="" value={searchOrigin} onChange={(e) => setSearchOrigin(e.target.value)}>
+                                                    <option value="" selected disabled>Origin</option>
+                                                    <option value="1">Mỹ</option>
+                                                    <option value="2">Việt Nam</option>
+                                                    <option value="3">Châu Âu</option>
+                                                    <option value="5">Nhật Bản</option>
+                                                    <option value="6">Úc</option>
+                                                    <option value="7">Khác</option>
+                                                </select>
+                                            </div>
+                                            <div className="filter-status p-3">
+                                                <select name="" id="" className="p-1" defaultValue="" value={searchBrand} onChange={(e) => setSearchBrand(e.target.value)}>
+                                                    <option value="" selected disabled>Brand</option>
+                                                    <option value="1">Abbott Grow</option>
+                                                    <option value="2">meiji</option>
+                                                    <option value="3">Ensure</option>
+                                                    <option value="4">Kid Boost</option>
+                                                    <option value="6">Similac</option>
+                                                </select>
+                                            </div>
+                                            <div className="filter-status p-3">
+                                                <select name="" id="" className="p-1" defaultValue="" value={searchAge} onChange={(e) => setSearchAge(e.target.value)}>
+                                                    <option value="" selected disabled>Age Group</option>
+                                                    <option value="2">0-6 tháng</option>
+                                                    <option value="3">6-12 tháng</option>
+                                                    <option value="4">1-2 tuổi</option>
+                                                    <option value="5">Trên 6 tuổi</option>
                                                 </select>
                                             </div>
                                         </div>
+                                        
                                         <div className="col-md-12 p-0">
                                             <table className="w-100 table-body">
                                                 <tbody>
@@ -602,149 +658,11 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                                                 </tr>
                                                 ))
                                             )}
-                                                {/* <tr className="table-content">
-                                                    <td className="p-3 px-4 "><span className="float-start">B005</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Wild</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Box</span></td>
-                                                    <td className="p-3 px-4 "><span>10</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">250.000</span></td>
-                                                    <td className="p-3 px-4 "><span>4.5</span></td>
-                                                    <td className="w-10">
-                                                        <div className="img-product">
-                                                            <img src={similac} alt=""/>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 px-4 description-product"><span>Một sự pha trộn độc đáo của hoa tulip trắng, tím và cam được tô điểm thêm bởi sự lựa chọn hấp dẫn của hương vani thơm ngon, quả chanh hồ trăn và bánh hạnh nhân sô cô la.</span></td>
-                                                    <td className="p-3 px-4 d-flex justify-content-center">
-                                                        <div className="edit-product p-2" data-bs-toggle="modal" data-bs-target="#edit-product">
-                                                            <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
-                                                        </div>
-                                                        <div className="delete-product p-2"><FontAwesomeIcon icon="fa-solid fa-trash" /></div>
-                                                    </td>
-                                                </tr>
-                                                <tr className="table-content">
-                                                    <td className="p-3 px-4 "><span className="float-start">B005</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Wild</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Box</span></td>
-                                                    <td className="p-3 px-4 "><span>10</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">250.000</span></td>
-                                                    <td className="p-3 px-4 "><span>4.5</span></td>
-                                                    <td className="w-10">
-                                                        <div className="img-product">
-                                                            <img src={similac} alt=""/>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 px-4 description-product"><span>Một sự pha trộn độc đáo của hoa tulip trắng, tím và cam được tô điểm thêm bởi sự lựa chọn hấp dẫn của hương vani thơm ngon, quả chanh hồ trăn và bánh hạnh nhân sô cô la.</span></td>
-                                                    <td className="p-3 px-4 d-flex justify-content-center">
-                                                        <div className="edit-product p-2" data-bs-toggle="modal" data-bs-target="#edit-product">
-                                                            <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
-                                                        </div>
-                                                        <div className="delete-product p-2"><FontAwesomeIcon icon="fa-solid fa-trash" /></div>
-                                                    </td>
-                                                </tr>
-                                                <tr className="table-content">
-                                                    <td className="p-3 px-4 "><span className="float-start">B005</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Wild</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Box</span></td>
-                                                    <td className="p-3 px-4 "><span>10</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">250.000</span></td>
-                                                    <td className="p-3 px-4 "><span>4.5</span></td>
-                                                    <td className="w-10">
-                                                        <div className="img-product">
-                                                            <img src={similac} alt=""/>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 px-4 description-product"><span>Một sự pha trộn độc đáo của hoa tulip trắng, tím và cam được tô điểm thêm bởi sự lựa chọn hấp dẫn của hương vani thơm ngon, quả chanh hồ trăn và bánh hạnh nhân sô cô la.</span></td>
-                                                    <td className="p-3 px-4 d-flex justify-content-center">
-                                                        <div className="edit-product p-2" data-bs-toggle="modal" data-bs-target="#edit-product">
-                                                            <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
-                                                        </div>
-                                                        <div className="delete-product p-2"><FontAwesomeIcon icon="fa-solid fa-trash" /></div>
-                                                    </td>
-                                                </tr>
-                                                <tr className="table-content">
-                                                    <td className="p-3 px-4 "><span className="float-start">B005</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Wild</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Box</span></td>
-                                                    <td className="p-3 px-4 "><span>10</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">250.000</span></td>
-                                                    <td className="p-3 px-4 "><span>4.5</span></td>
-                                                    <td className="w-10">
-                                                        <div className="img-product">
-                                                            <img src={similac} alt=""/>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 px-4 description-product"><span>Một sự pha trộn độc đáo của hoa tulip trắng, tím và cam được tô điểm thêm bởi sự lựa chọn hấp dẫn của hương vani thơm ngon, quả chanh hồ trăn và bánh hạnh nhân sô cô la.</span></td>
-                                                    <td className="p-3 px-4 d-flex justify-content-center">
-                                                        <div className="edit-product p-2" data-bs-toggle="modal" data-bs-target="#edit-product">
-                                                            <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
-                                                        </div>
-                                                        <div className="delete-product p-2"><FontAwesomeIcon icon="fa-solid fa-trash" /></div>
-                                                    </td>
-                                                </tr>
-                                                <tr className="table-content">
-                                                    <td className="p-3 px-4 "><span className="float-start">B005</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Wild</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Box</span></td>
-                                                    <td className="p-3 px-4 "><span>10</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">250.000</span></td>
-                                                    <td className="p-3 px-4 "><span>4.5</span></td>
-                                                    <td className="w-10">
-                                                        <div className="img-product">
-                                                            <img src={similac} alt=""/>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 px-4 description-product"><span>Một sự pha trộn độc đáo của hoa tulip trắng, tím và cam được tô điểm thêm bởi sự lựa chọn hấp dẫn của hương vani thơm ngon, quả chanh hồ trăn và bánh hạnh nhân sô cô la.</span></td>
-                                                    <td className="p-3 px-4 d-flex justify-content-center">
-                                                        <div className="edit-product p-2" data-bs-toggle="modal" data-bs-target="#edit-product">
-                                                            <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
-                                                        </div>
-                                                        <div className="delete-product p-2"><FontAwesomeIcon icon="fa-solid fa-trash" /></div>
-                                                    </td>
-                                                </tr>
-                                                <tr className="table-content">
-                                                    <td className="p-3 px-4 "><span className="float-start">B005</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Wild</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Box</span></td>
-                                                    <td className="p-3 px-4 "><span>10</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">250.000</span></td>
-                                                    <td className="p-3 px-4 "><span>4.5</span></td>
-                                                    <td className="w-10">
-                                                        <div className="img-product">
-                                                            <img src={similac} alt=""/>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 px-4 description-product"><span>Một sự pha trộn độc đáo của hoa tulip trắng, tím và cam được tô điểm thêm bởi sự lựa chọn hấp dẫn của hương vani thơm ngon, quả chanh hồ trăn và bánh hạnh nhân sô cô la.</span></td>
-                                                    <td className="p-3 px-4 d-flex justify-content-center">
-                                                        <div className="edit-product p-2" data-bs-toggle="modal" data-bs-target="#edit-product">
-                                                            <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
-                                                        </div>
-                                                        <div className="delete-product p-2"><FontAwesomeIcon icon="fa-solid fa-trash" /></div>
-                                                    </td>
-                                                </tr>
-                                                <tr className="table-content">
-                                                    <td className="p-3 px-4 "><span className="float-start">B005</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Wild</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Box</span></td>
-                                                    <td className="p-3 px-4 "><span>10</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">250.000</span></td>
-                                                    <td className="p-3 px-4 "><span>4.5</span></td>
-                                                    <td className="w-5">
-                                                        <div className="img-product">
-                                                            <img src={similac} alt=""/>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 px-4 description-product"><span>Một sự pha trộn độc đáo của hoa tulip trắng, tím và cam được tô điểm thêm bởi sự lựa chọn hấp dẫn của hương vani thơm ngon, quả chanh hồ trăn và bánh hạnh nhân sô cô la.</span></td>
-                                                    <td className="p-3 px-4 d-flex justify-content-center">
-                                                        <div className="edit-product p-2" data-bs-toggle="modal" data-bs-target="#edit-product">
-                                                            <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
-                                                        </div>
-                                                        <div className="delete-product p-2"><FontAwesomeIcon icon="fa-solid fa-trash" /></div>
-                                                    </td>
-                                                </tr> */}
+                                                
                                                 </tbody>
                                             </table>
                                         </div>
+                                        
                                         <div className="col-md-12 d-flex justify-content-end paging p-2">
                                         {Array.from(
                                             { length: paging.TotalPages },
@@ -1097,8 +1015,8 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                         <UploadImage
                             aspectRatio={12 / 18}
                             onUploadComplete={handleUploadComplete}
-                            maxWidth={10000}
-                            maxHeight={10000}
+                            maxWidth={2048}
+                            maxHeight={2048}
                             minWidth={126}
                             minHeight={126}
                             value={image}

@@ -314,7 +314,17 @@ const ManageBlog = () => {
                         </Link>
                       </td>
                     </tr>
-
+                    <tr>
+                      <td></td>
+                      <td className="py-1 ps-3 hover-dashboard">
+                        <Link to="/managecategory">
+                          <FontAwesomeIcon icon={faBoxOpen} />{" "}
+                          <span style={{ fontFamily: "sans-serif" }}>
+                            Quản lý danh mục
+                          </span>
+                        </Link>
+                      </td>
+                    </tr>
                     <tr>
                       <td></td>
                       <td className="py-1 ps-3 active-admin">
@@ -368,14 +378,14 @@ const ManageBlog = () => {
               <div className="row top-admin-nav">
                 <div className="col-md-2 text-center">
                   <div className="dashboard p-2 py-3">
-                    <a href="">
+                    <Link to="/dashboard">
                       <p
                         className="m-0"
                         style={{ fontFamily: "sans-serif", fontSize: "16px" }}
                       >
                         Dashboard
                       </p>
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="col-md-8 d-flex align-content-center">
@@ -389,7 +399,7 @@ const ManageBlog = () => {
                     >
                       Home
                     </p>
-                    <span style={{ fontFamily: "sans-serif" }}>/Dashboard</span>
+                    <span style={{ fontFamily: "sans-serif" }}>/Blog Management</span>
                   </div>
                 </div>
                 <div className="col-md-2 d-flex align-content-center justify-content-center">

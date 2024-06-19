@@ -338,6 +338,17 @@ const Dashboard = () => {
                     <tr>
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
+                        <Link to="/managecategory">
+                          <FontAwesomeIcon icon={faBoxOpen} />{" "}
+                          <span style={{ fontFamily: "sans-serif" }}>
+                            Quản lý danh mục
+                          </span>
+                        </Link>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td className="py-1 ps-3 hover-dashboard">
                         <Link to="/manageblog">
                           <FontAwesomeIcon icon="fa-solid fa-paste" />{" "}
                           <span style={{ fontFamily: "sans-serif" }}>
@@ -425,6 +436,7 @@ const Dashboard = () => {
                     <FontAwesomeIcon icon={faPowerOff} />
                   </div>
                 </div>
+                
                 <div className="col-md-12 p-0">
                   <div className="flex-admin-content text-center w-100">
                     <div className="body-admin-top w-100">
