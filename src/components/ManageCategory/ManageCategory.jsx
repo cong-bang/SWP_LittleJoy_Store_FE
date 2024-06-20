@@ -18,6 +18,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ModalConfirmDelete from "./ModalConfirmDeleteCate";
 import UploadImage from "../UploadImage/UploadImage";
+import ContentLoader from "react-content-loader";
 
 const ManageCategory = () => {
   const navigate = useNavigate();
@@ -52,7 +53,10 @@ const ManageCategory = () => {
     TotalPages: 1,
     TotalCount: 0,
   });
-  const [loading, setLoading] = useState(false);
+  const [loadingCate, setLoadingCate] = useState(false);
+  const [loadingOrigin, setLoadingOrigin] = useState(false);
+  const [loadingAge, setLoadingAge] = useState(false);
+  const [loadingBrand, setLoadingBrand] = useState(false);
   const totalRows = 5;
   const placeholdersCate = totalRows - categories.length;
   const placeholdersOrigin = totalRows - origins.length;
@@ -78,6 +82,20 @@ const ManageCategory = () => {
   const [isModalOpenBrand, setIsModalOpenBrand] = useState(false);
   const [idBrandToDelete, setIdBrandToDelete] = useState(null);
 
+  const TableLoading = () => (
+    <ContentLoader
+      speed={2}
+      width={"100%"}
+      height={160}
+      
+      backgroundColor="#C0C0C0"
+      foregroundColor="#d9d9d9"
+    >
+      <rect x="0" y="20" rx="3" ry="3" width="100%" height="10" />
+      <rect x="0" y="40" rx="3" ry="3" width="100%" height="10" />
+      <rect x="0" y="60" rx="3" ry="3" width="100%" height="10" />
+    </ContentLoader>
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -93,7 +111,7 @@ const ManageCategory = () => {
   }, [pathname]);
 
   const fetchCategories = async (pageIndex) => {
-    setLoading(true);
+    setLoadingCate(true);
     try {
       const responseCate = await fetch(
         `https://littlejoyapi.azurewebsites.net/api/category?PageIndex=${pageIndex}&PageSize=5`
@@ -141,16 +159,16 @@ const ManageCategory = () => {
 
       const dataCategories = await responseCate.json();
       setCategories(dataCategories);
-      console.log(categories);
+      
     } catch (error) {
       console.error(error.message);
     } finally {
-      setLoading(false);
+      setLoadingCate(false);
     }
   };
 
   const fetchOrigins = async (pageIndex) => {
-    setLoading(true);
+    setLoadingOrigin(true);
     try {
       const responseOrigin = await fetch(
         `https://littlejoyapi.azurewebsites.net/api/origin?PageIndex=${pageIndex}&PageSize=5`
@@ -198,16 +216,16 @@ const ManageCategory = () => {
 
       const dataOrigins = await responseOrigin.json();
       setOrigins(dataOrigins);
-      console.log(origins)
+      
     } catch (error) {
       console.error(error.message);
     } finally {
-      setLoading(false);
+      setLoadingOrigin(false);
     }
   };
 
   const fetchAgeGroups = async (pageIndex) => {
-    setLoading(true);
+    setLoadingAge(true);
     try {
       const responseAge = await fetch(
         `https://littlejoyapi.azurewebsites.net/api/age-group-product?PageIndex=${pageIndex}&PageSize=5`
@@ -258,12 +276,12 @@ const ManageCategory = () => {
     } catch (error) {
       console.error(error.message);
     } finally {
-      setLoading(false);
+      setLoadingAge(false);
     }
   };
 
   const fetchBrands = async (pageIndex) => {
-    setLoading(true);
+    setLoadingBrand(true);
     try {
       const responseBrand = await fetch(
         `https://littlejoyapi.azurewebsites.net/api/brand?PageIndex=${pageIndex}&PageSize=5`
@@ -314,7 +332,7 @@ const ManageCategory = () => {
     } catch (error) {
       console.error(error.message);
     } finally {
-      setLoading(false);
+      setLoadingBrand(false);
     }
   };
 
@@ -1118,7 +1136,7 @@ const fetchBrandId = async (brandId) => {
                                 <div className="body-title d-flex justify-content-between align-items-center w-100">
                                     <span className="ms-3" style={{ color: '#F8B940', fontSize: '16px', fontFamily: 'sans-serif' }}>Category</span>
                                     <div className="add-user px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-category">
-                                        <a href="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Category</p></a>
+                                        <Link to="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Category</p></Link>
                                     </div>
                                 </div>
                             </div>
@@ -1154,7 +1172,16 @@ const fetchBrandId = async (brandId) => {
                                                     <td className="p-3 px-4 "><span className="float-start">Category Name</span></td>
                                                     <td className="p-3 px-4 "><span>Action</span></td>
                                                 </tr>
-                                                {categories.map((category) => (
+                                                {loadingCate ? (
+                                                    <>
+                                                        <tr>
+                                                        <td colSpan="3" className="p-3 px-4">
+                                                            <TableLoading />
+                                                        </td>
+                                                        </tr>
+                                                    </>
+                                                    ) : (
+                                                categories.map((category) => (
                                                 <tr key={category.id} className="table-content">
                                                   <td className="p-3 px-4 ">
                                                     <span className="float-start">{category.id}</span>
@@ -1164,14 +1191,15 @@ const fetchBrandId = async (brandId) => {
                                                   </td>
                                                   <td className="p-3 px-4 d-flex justify-content-center">
                                                     <div className="edit-user p-2" data-bs-toggle="modal" data-bs-target="#edit-category" onClick={() => handleEditCate(category.id)}>
-                                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
+                                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" style={{ cursor: "pointer" }} />
                                                     </div>
                                                     <div className="delete-user p-2">
-                                                      <FontAwesomeIcon icon="fa-solid fa-trash" onClick={() => handleDeleteCate(category.id)} />
+                                                      <FontAwesomeIcon icon="fa-solid fa-trash" style={{ cursor: "pointer" }} onClick={() => handleDeleteCate(category.id)} />
                                                     </div>
                                                   </td>
                                                 </tr>
-                                              ))}
+                                              ))
+                                            )}
                                               {placeholdersCate > 0 && Array.from({ length: placeholdersCate }).map((_, index) => (
                                                 <tr key={`placeholder-${index}`} className="table-content" style={{height: '72px'}}>
                                                   <td className="p-3 px-4 ">&nbsp;</td>
@@ -1179,6 +1207,8 @@ const fetchBrandId = async (brandId) => {
                                                   <td className="p-3 px-4 d-flex justify-content-center">&nbsp;</td>
                                                 </tr>
                                               ))}
+                                              
+                                            
                                                 </tbody>
                                             </table>
                                         </div>
@@ -1197,7 +1227,7 @@ const fetchBrandId = async (brandId) => {
                                 <div className="body-title d-flex justify-content-between align-items-center w-100">
                                     <span className="ms-3" style={{ color: '#F8B940', fontSize: '16px', fontFamily: 'sans-serif' }}>Origin</span>
                                     <div className="add-user px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-origin">
-                                        <a href="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Origin</p></a>
+                                        <Link to="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Origin</p></Link>
                                     </div>
                                     
                                 </div>
@@ -1234,7 +1264,16 @@ const fetchBrandId = async (brandId) => {
                                                     <td className="p-3 px-4 "><span className="float-start">Origin Name</span></td>
                                                     <td className="p-3 px-4 "><span>Action</span></td>
                                                 </tr>
-                                                {origins.map((o) => (
+                                                {loadingOrigin ? (
+                                                    <>
+                                                        <tr>
+                                                        <td colSpan="3" className="p-3 px-4">
+                                                            <TableLoading />
+                                                        </td>
+                                                        </tr>
+                                                    </>
+                                                    ) : (
+                                                origins.map((o) => (
                                                 <tr key={o.id} className="table-content">
                                                   <td className="p-3 px-4 ">
                                                     <span className="float-start">{o.id}</span>
@@ -1244,14 +1283,15 @@ const fetchBrandId = async (brandId) => {
                                                   </td>
                                                   <td className="p-3 px-4 d-flex justify-content-center">
                                                     <div className="edit-user p-2" data-bs-toggle="modal" data-bs-target="#edit-origin">
-                                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" onClick={() => handleEditOrigin(o.id)} />
+                                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" style={{ cursor: "pointer" }} onClick={() => handleEditOrigin(o.id)} />
                                                     </div>
                                                     <div className="delete-user p-2">
-                                                      <FontAwesomeIcon icon="fa-solid fa-trash" onClick={() => handleDeleteOrigin(o.id)} />
+                                                      <FontAwesomeIcon icon="fa-solid fa-trash" style={{ cursor: "pointer" }} onClick={() => handleDeleteOrigin(o.id)} />
                                                     </div>
                                                   </td>
                                                 </tr>
-                                              ))}
+                                              ))
+                                            )}
                                               {placeholdersOrigin > 0 && Array.from({ length: placeholdersOrigin }).map((_, index) => (
                                                 <tr key={`placeholder-${index}`} className="table-content" style={{height: '72px'}}>
                                                   <td className="p-3 px-4 ">&nbsp;</td>
@@ -1279,7 +1319,7 @@ const fetchBrandId = async (brandId) => {
                                 <div className="body-title d-flex justify-content-between align-items-center w-100">
                                     <span className="ms-3" style={{ color: '#F8B940', fontSize: '16px', fontFamily: 'sans-serif' }}>Age Group</span>
                                     <div className="add-user px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-age">
-                                        <a href="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Age Group</p></a>
+                                        <Link to="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Age Group</p></Link>
                                     </div>
                                 </div>
                             </div>
@@ -1315,7 +1355,16 @@ const fetchBrandId = async (brandId) => {
                                                     <td className="p-3 px-4 "><span className="float-start">Age Range</span></td>
                                                     <td className="p-3 px-4 "><span>Action</span></td>
                                                 </tr>
-                                                {ageGroups.map((ag) => (
+                                                {loadingAge ? (
+                                                    <>
+                                                        <tr>
+                                                        <td colSpan="3" className="p-3 px-4">
+                                                            <TableLoading />
+                                                        </td>
+                                                        </tr>
+                                                    </>
+                                                    ) : (
+                                                ageGroups.map((ag) => (
                                                 <tr key={ag.id} className="table-content">
                                                   <td className="p-3 px-4 ">
                                                     <span className="float-start">{ag.id}</span>
@@ -1325,14 +1374,15 @@ const fetchBrandId = async (brandId) => {
                                                   </td>
                                                   <td className="p-3 px-4 d-flex justify-content-center">
                                                     <div className="edit-user p-2" data-bs-toggle="modal" data-bs-target="#edit-age">
-                                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" onClick={() => handleEditAge(ag.id)} />
+                                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" style={{ cursor: "pointer" }} onClick={() => handleEditAge(ag.id)} />
                                                     </div>
                                                     <div className="delete-user p-2">
-                                                      <FontAwesomeIcon icon="fa-solid fa-trash" onClick={() => handleDeleteAge(ag.id)} />
+                                                      <FontAwesomeIcon icon="fa-solid fa-trash" style={{ cursor: "pointer" }} onClick={() => handleDeleteAge(ag.id)} />
                                                     </div>
                                                   </td>
                                                 </tr>
-                                              ))}
+                                              ))
+                                            )}
                                               {placeholdersAge > 0 && Array.from({ length: placeholdersAge }).map((_, index) => (
                                                 <tr key={`placeholder-${index}`} className="table-content" style={{height: '72px'}}>
                                                   <td className="p-3 px-4 ">&nbsp;</td>
@@ -1358,7 +1408,7 @@ const fetchBrandId = async (brandId) => {
                                 <div className="body-title d-flex justify-content-between align-items-center w-100">
                                     <span className="ms-3" style={{ color: '#F8B940', fontSize: '16px', fontFamily: 'sans-serif' }}>Brand</span>
                                     <div className="add-user px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-brand">
-                                        <a href="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Brand</p></a>
+                                        <Link to="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Brand</p></Link>
                                     </div>
                                 </div>
                             </div>
@@ -1396,7 +1446,16 @@ const fetchBrandId = async (brandId) => {
                                                     <td className="p-3 px-4 "><span className="float-start">Decription</span></td>
                                                     <td className="p-3 px-4 "><span>Action</span></td>
                                                 </tr>
-                                                {brands.map((b) => (
+                                                {loadingBrand ? (
+                                                    <>
+                                                        <tr>
+                                                        <td colSpan="5" className="p-3 px-4">
+                                                            <TableLoading />
+                                                        </td>
+                                                        </tr>
+                                                    </>
+                                                    ) : (
+                                                brands.map((b) => (
                                                 <tr key={b.id} className="table-content">
                                                   <td className="p-3 px-4 ">
                                                     <span className="float-start">{b.id}</span>
@@ -1412,14 +1471,15 @@ const fetchBrandId = async (brandId) => {
                                                   </td>
                                                   <td className="p-3 px-4 d-flex justify-content-center">
                                                     <div className="edit-user p-2" data-bs-toggle="modal" data-bs-target="#edit-brand">
-                                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" onClick={() => handleEditBrand(b.id)} />
+                                                      <FontAwesomeIcon icon="fa-solid fa-pen-to-square" style={{ cursor: "pointer" }} onClick={() => handleEditBrand(b.id)} />
                                                     </div>
                                                     <div className="delete-user p-2">
-                                                      <FontAwesomeIcon icon="fa-solid fa-trash" onClick={() => handleDeleteBrand(b.id)} />
+                                                      <FontAwesomeIcon icon="fa-solid fa-trash" style={{ cursor: "pointer" }} onClick={() => handleDeleteBrand(b.id)} />
                                                     </div>
                                                   </td>
                                                 </tr>
-                                              ))}
+                                              ))
+                                            )}
                                               {placeholdersBrand > 0 && Array.from({ length: placeholdersBrand }).map((_, index) => (
                                                 <tr key={`placeholder-${index}`} className="table-content" style={{height: '72px'}}>
                                                   <td className="p-3 px-4 ">&nbsp;</td>
@@ -1441,7 +1501,6 @@ const fetchBrandId = async (brandId) => {
                       </div>
                     </div>  
                     {/*end: body-quản lý danh mục */}
-
                   </div>
                 </div>
               </div>
@@ -1782,7 +1841,7 @@ const fetchBrandId = async (brandId) => {
                         <td><span className="py-2">Logo:</span></td>
                         <td className="py-2">
                         <UploadImage
-                            aspectRatio={12 / 18}
+                            aspectRatio={2 / 1}
                             onUploadComplete={handleUploadComplete}
                             maxWidth={2048}
                             maxHeight={2048}
@@ -1856,7 +1915,7 @@ const fetchBrandId = async (brandId) => {
                         <td><span className="py-2">Logo:</span></td>
                         <td className="py-2">
                         <UploadImage
-                            aspectRatio={12 / 18}
+                            aspectRatio={2 / 1}
                             onUploadComplete={handleUploadComplete}
                             maxWidth={2048}
                             maxHeight={2048}

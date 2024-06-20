@@ -14,6 +14,7 @@ export default function UserProfile() {
     localStorage.removeItem('userName');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('cart');
     
     navigate("/");
     window.location.reload();

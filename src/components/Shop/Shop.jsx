@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/css/styleshop.css";
 import product from "../../assets/img/product.png";
 import { Link, useLocation } from "react-router-dom";
 import sorry from "../../assets/img/sorry.png";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
@@ -89,7 +91,6 @@ const Shop = () => {
         price: formatPrice(product.price)
       }));
       setProducts(formattedProducts);
-      console.log(products);
     } catch (error) {
       console.error(error.message);
     }
@@ -173,9 +174,28 @@ const Shop = () => {
     return price.toLocaleString('de-DE');
   };
 
+  //ADD TO CART
+  const addToCart = (product) => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingProductIndex = cart.findIndex(p => p.id === product.id);
+
+    const convertPrice = parseInt(product.price.replace(/\./g, ''), 10);
+
+    if (existingProductIndex > -1) {
+      cart[existingProductIndex].quantity += 1;
+    } else {
+      cart.push({ ...product, price: convertPrice, quantity: 1 });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    toast.success('Sản phẩm đã được thêm vào giỏ hàng');
+  };
+ 
+
 
   return (
     <>
+    <ToastContainer />
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-12 banner py-5 text-center">
@@ -524,12 +544,13 @@ const Shop = () => {
                         
                       />
                     </Link>
-                    <a
-                      href="#"
+                    <Link
+                      to="#"
                       className="addcart-item position-absolute start-50 translate-middle"
+                      onClick={() => addToCart(p)}
                     >
                       THÊM VÀO GIỎ HÀNG
-                    </a>
+                    </Link>
                   </div>
                   <Link
                     to="#"

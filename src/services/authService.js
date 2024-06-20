@@ -14,7 +14,6 @@ export const refreshAccessToken = async () => {
   });
 
   const data = await response.json();
-  console.log(data);
   if (response.ok) {
     localStorage.setItem('accessToken', data.accessToken);
     return data.accessToken;

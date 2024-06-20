@@ -17,6 +17,8 @@ import blog3 from "../../assets/img/blog3.png";
 import { Link } from "react-router-dom";
 import ContentLoader from 'react-content-loader';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
   const [relatedBlogs, setRelatedBlogs] = useState([]);
@@ -66,7 +68,7 @@ const Home = () => {
               date: formattedDate,
             };
           });
-          console.log(dataRelatedBlog);
+          
           setRelatedBlogs(updatedData);
         }
 
@@ -80,8 +82,7 @@ const Home = () => {
           price: formatPrice(product.price)
         }));
         setNewProducts(formattedProducts);
-        console.log(newProducts);
-        
+
       } catch (error) {
         console.error(error.message);
       } finally {
@@ -133,7 +134,7 @@ const Home = () => {
             price: formatPrice(product.price)
           }));
           setNewProducts(formattedProducts);
-          console.log(dataNewProductsCate);
+          
         } catch (error) {
           console.error(error.message);
         } finally {
@@ -173,9 +174,27 @@ const Home = () => {
     );
   };
 
+  //ADD TO CART
+  const addToCart = (product) => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingProductIndex = cart.findIndex(p => p.id === product.id);
+
+    const convertPrice = parseInt(product.price.replace(/\./g, ''), 10);
+
+    if (existingProductIndex > -1) {
+      cart[existingProductIndex].quantity += 1;
+    } else {
+      cart.push({ ...product, price: convertPrice, quantity: 1 });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    toast.success('Sản phẩm đã được thêm vào giỏ hàng');
+  };
+
   
   return (
     <>
+    <ToastContainer />
       <div className="banner container-fluid py-5">
         <div className="row">
           <div className="col-md-12 d-flex justify-content-center">
@@ -309,12 +328,13 @@ const Home = () => {
                         className="w-75"
                       />
                     </Link>
-                    <a
-                      href="#"
+                    <Link
+                      to="#"
                       className="addcart-item position-absolute start-50 translate-middle roboto"
+                      onClick={() => addToCart(newP)}
                     >
                       THÊM VÀO GIỎ HÀNG
-                    </a>
+                    </Link>
                   </div>
                   <a href="" style={{ textDecoration: "none", color: "black" }}>
                     <div className="product-content mt-3 px-3 py-2">

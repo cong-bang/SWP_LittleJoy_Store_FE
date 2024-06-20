@@ -223,6 +223,23 @@ const Product = () => {
     sendFeedback();
   };
 
+  //ADD TO CART
+  const addToCart = (product, quantity) => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingProductIndex = cart.findIndex(p => p.id === product.id);
+
+    const convertPrice = parseInt(product.price.replace(/\./g, ''), 10);
+
+    if (existingProductIndex > -1) {
+      cart[existingProductIndex].quantity += quantity;
+    } else {
+      cart.push({ ...product, price: convertPrice, quantity });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    toast.success('Sản phẩm đã được thêm vào giỏ hàng');
+  };
+
 
   return (
     <>
@@ -364,11 +381,11 @@ const Product = () => {
                                   </div>
                                 </td>
                                 <td className="w-50 text-center">
-                                  <a href="" className="">
-                                    <p className=" p-2 m-0 add-cart" style={{fontSize: '16px', fontFamily: 'system-ui'}}>
+                                  <Link to="#" className="">
+                                    <p className=" p-2 m-0 add-cart" style={{fontSize: '16px', fontFamily: 'system-ui'}} onClick={() => addToCart(product, quantity)}>
                                       Thêm Giỏ Hàng
                                     </p>
-                                  </a>
+                                  </Link>
                                 </td>
                                 <td className="w-30 text-center">
                                   <Link to="" className="btn-share py-1 px-3" onClick={handleCopyLink}>
@@ -621,7 +638,7 @@ const Product = () => {
                         <div className="ps-4">
                             <div className="text-center px-3 py-2 d-inline-block"
                                 style={{backgroundColor: '#005B96', borderRadius: '10px'}}>
-                                <span className="fw-bold" style={{color: 'white'}} onClick={handleSendFeedback}>Gửi đánh giá</span>
+                                <span className="fw-bold" style={{color: 'white', cursor: 'pointer'}} onClick={handleSendFeedback}>Gửi đánh giá</span>
                             </div>
                         </div>
                         <div className="mt-3" style={{borderTop: '1px solid black'}}>

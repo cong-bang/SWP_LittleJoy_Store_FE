@@ -85,7 +85,7 @@ const ManageBlog = () => {
       }));
 
       setBlogs(updatedData);
-      console.log(blogs);
+      
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu blog:", error.message);
     } finally {
@@ -111,7 +111,6 @@ const ManageBlog = () => {
         response.headers.get("X-Pagination")
       );
       setPagingFilter(paginationFilter);
-      console.log(pagingFilter);
 
       const paginationData = await JSON.parse(
         response.headers.get("X-Pagination")

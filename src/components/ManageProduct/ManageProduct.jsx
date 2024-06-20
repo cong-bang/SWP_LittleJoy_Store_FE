@@ -33,6 +33,9 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
       });
       const { pathname } = useLocation();
       const [categories, setCategories] = useState([]);
+      const [origins, setOrigins] = useState([]);
+      const [ageGroups, setAgeGroups] = useState([]);
+      const [brands, setBrands] = useState([]);
       const [loading, setLoading] = useState(false);
 
       const [productName, setProductName] = useState('');
@@ -57,6 +60,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
       const [searchIsActive, setSearchIsActive] = useState(null);
       const [searchBrand, setSearchBrand] = useState(null);
       const [searchAge, setSearchAge] = useState(null);
+      const [categoriesLoaded, setCategoriesLoaded] = useState(false); 
 
       const TableLoading = () => (
         <ContentLoader
@@ -86,15 +90,47 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
         setLoading(true);
         const fetchCategories = async () => {
           try {
-            const response = await fetch(
+            const responseCate = await fetch(
               'https://littlejoyapi.azurewebsites.net/api/category?PageIndex=1&PageSize=9'
             );
-            if (!response.ok) {
+            if (!responseCate.ok) {
               console.log('Lỗi fetch category data...');
               return;
             }
-            const categoryData = await response.json();
+            const categoryData = await responseCate.json();
             setCategories(categoryData);
+            setCategoriesLoaded(true);
+
+            const responseOrigin = await fetch(
+              'https://littlejoyapi.azurewebsites.net/api/origin?PageIndex=1&PageSize=9'
+            );
+            if (!responseOrigin.ok) {
+              console.log('Lỗi fetch category data...');
+              return;
+            }
+            const originData = await responseOrigin.json();
+            setOrigins(originData);
+
+            const responseAge = await fetch(
+              'https://littlejoyapi.azurewebsites.net/api/age-group-product?PageIndex=1&PageSize=9'
+            );
+            if (!responseAge.ok) {
+              console.log('Lỗi fetch category data...');
+              return;
+            }
+            const ageData = await responseAge.json();
+            setAgeGroups(ageData);
+
+            const responseBrand = await fetch(
+              'https://littlejoyapi.azurewebsites.net/api/brand?PageIndex=1&PageSize=9'
+            );
+            if (!responseBrand.ok) {
+              console.log('Lỗi fetch category data...');
+              return;
+            }
+            const brandData = await responseBrand.json();
+            setBrands(brandData);
+
           } catch (error) {
             console.error(error.message);
           } finally {
@@ -168,8 +204,11 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
       };
       
       useEffect(() => {
-        fetchData(paging.CurrentPage, paging.PageSize);
-      }, [paging.CurrentPage, keyword, searchCate, searchAge, searchBrand, searchOrigin]);
+        if (categoriesLoaded) { 
+          fetchData(paging.CurrentPage, paging.PageSize);
+        }
+      }, [categoriesLoaded, paging.CurrentPage, keyword, searchCate, searchAge, searchBrand, searchOrigin]);
+    
 
       const formatPrice = (price) => {
         return price.toLocaleString('de-DE');
@@ -205,6 +244,20 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
           progress: undefined,
           theme: "light",
           });
+
+      const refreshFieldAddProduct = () => {
+        setProductName('');
+        setPrice('');
+        setDescription('');
+        setWeight('');
+        setQuantity(5);
+        setImage('');
+        setIsActive(true);
+        setAgeId(2);
+        setBrandId(1);
+        setCateId(1);
+        setOriginId(1);
+      }
 
       const handleAddProduct = async () => {
         if (
@@ -554,7 +607,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                                 <div className="body-title d-flex justify-content-between align-items-center w-100">
                                     <span className="ms-3" style={{ color: '#F8B940', fontSize: '16px', fontFamily: 'sans-serif' }}>Product Management</span>
                                     <div className="add-product px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-product">
-                                        <a href="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Product</p></a>
+                                        <Link to="#"><p className="m-0 inter" onClick={refreshFieldAddProduct} style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Product</p></Link>
                                     </div>
                                 </div>
                             </div>
@@ -571,43 +624,44 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                                             <div className="filter-status p-3">
                                                 <select name="" id="" className="p-1" defaultValue="" value={searchCate} onChange={(e) => setSearchCate(e.target.value)}>
                                                     <option value="" selected disabled>Category</option>
-                                                    <option value="1">Sữa cao cấp</option>
-                                                    <option value="2">Sữa bột</option>
-                                                    <option value="3">Sữa tươi</option>
-                                                    <option value="4">Sữa bầu</option>
-                                                    <option value="5">Sữa chua</option>
-                                                    <option value="6">Sữa hạt</option>
-                                                    <option value="11">Sữa lúa mạch</option>
+                                                    {categories.map(category => (
+                                                      <option key={category.id} value={category.id}>
+                                                        {category.categoryName}
+                                                      </option>
+                                                    ))}
                                                 </select>
                                             </div>
                                             <div className="filter-status p-3">
                                                 <select name="" id="" className="p-1" defaultValue="" value={searchOrigin} onChange={(e) => setSearchOrigin(e.target.value)}>
                                                     <option value="" selected disabled>Origin</option>
-                                                    <option value="1">Mỹ</option>
-                                                    <option value="2">Việt Nam</option>
-                                                    <option value="3">Châu Âu</option>
-                                                    <option value="5">Nhật Bản</option>
-                                                    <option value="6">Úc</option>
-                                                    <option value="7">Khác</option>
+                                                    {origins.map(o => (
+                                                      <option key={o.id} value={o.id}>
+                                                        {o.originName}
+                                                      </option>
+                                                    ))}
+                                                    
                                                 </select>
                                             </div>
                                             <div className="filter-status p-3">
                                                 <select name="" id="" className="p-1" defaultValue="" value={searchBrand} onChange={(e) => setSearchBrand(e.target.value)}>
                                                     <option value="" selected disabled>Brand</option>
-                                                    <option value="1">Abbott Grow</option>
-                                                    <option value="2">meiji</option>
-                                                    <option value="3">Ensure</option>
-                                                    <option value="4">Kid Boost</option>
-                                                    <option value="6">Similac</option>
+                                                    {brands.map(b => (
+                                                      <option key={b.id} value={b.id}>
+                                                        {b.brandName}
+                                                      </option>
+                                                    ))}
+                                                    
                                                 </select>
                                             </div>
                                             <div className="filter-status p-3">
                                                 <select name="" id="" className="p-1" defaultValue="" value={searchAge} onChange={(e) => setSearchAge(e.target.value)}>
                                                     <option value="" selected disabled>Age Group</option>
-                                                    <option value="2">0-6 tháng</option>
-                                                    <option value="3">6-12 tháng</option>
-                                                    <option value="4">1-2 tuổi</option>
-                                                    <option value="5">Trên 6 tuổi</option>
+                                                    {ageGroups.map(ag => (
+                                                      <option key={ag.id} value={ag.id}>
+                                                        {ag.ageRange}
+                                                      </option>
+                                                    ))}
+                                                    
                                                 </select>
                                             </div>
                                         </div>
@@ -638,7 +692,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                                                 products.map((p) => (
                                                 <tr key={p.id} className="table-content">
                                                     <td className="p-3 px-4 "><span className="float-start">{p.id}</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start"><ProductName title={p.productName} maxLength={20} /></span></td>
+                                                    <td className="p-3 px-4 "><span className="float-start"><Link to={{pathname: `/product/${p.id}`}} style={{textDecoration: 'none', color: "inherit"}} ><ProductName title={p.productName} maxLength={20} /></Link></span></td>
                                                     <td className="p-3 px-4 "><span className="float-start">{p.categoryName}</span></td>
                                                     <td className="p-3 px-4 "><span>{p.quantity}</span></td>
                                                     <td className="p-3 px-4 "><span className="float-start">{p.price} VND</span></td>
@@ -732,13 +786,11 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                             onChange={(e) => setCateId(parseInt(e.target.value))}
                             >
                             <option value="" disabled>Choose</option>
-                            <option value="1">Sữa bột cao cấp</option>
-                            <option value="2">Sữa bột</option>
-                            <option value="3">Sữa tươi</option>
-                            <option value="4">Sữa bầu</option>
-                            <option value="5">Sữa chua</option>
-                            <option value="6">Sữa hạt</option>
-                            <option value="11">Sữa lúa mạch</option>
+                              {categories.map(category => (
+                              <option key={category.id} value={category.id}>
+                              {category.categoryName}
+                            </option>
+                            ))}
                             </select>
                         </td>
                         </tr>
@@ -827,10 +879,11 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                             onChange={(e) => setAgeId(parseInt(e.target.value))}
                             >
                             <option value="" disabled>Choose</option>
-                            <option value="2">0-6 tháng</option>
-                            <option value="3">6-12 tháng</option>
-                            <option value="4">1-2 tuổi</option>
-                            <option value="5">Trên 6 tuổi</option>
+                            {ageGroups.map(ag => (
+                              <option key={ag.id} value={ag.id}>
+                                {ag.ageRange}
+                              </option>
+                              ))}
                             </select>
                         </td>
                         </tr>
@@ -843,12 +896,11 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                             onChange={(e) => setOriginId(parseInt(e.target.value))}
                             >
                             <option value="" disabled>Choose</option>
-                            <option value="1">Mỹ</option>
-                            <option value="2">Việt Nam</option>
-                            <option value="3">Châu Âu</option>
-                            <option value="5">Nhật Bản</option>
-                            <option value="6">Úc</option>
-                            <option value="7">Khác</option>
+                            {origins.map(o => (
+                              <option key={o.id} value={o.id}>
+                                {o.originName}
+                              </option>
+                              ))}
                             </select>
                         </td>
                         </tr>
@@ -861,11 +913,11 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                             onChange={(e) => setBrandId(parseInt(e.target.value))}
                             >
                             <option value="" disabled>Choose</option>
-                            <option value="1">Abbott Grow</option>
-                            <option value="2">meiji</option>
-                            <option value="3">Ensure</option>
-                            <option value="4">Kid Boost</option>
-                            <option value="6">Similac</option>
+                            {brands.map(b => (
+                              <option key={b.id} value={b.id}>
+                                {b.brandName}
+                              </option>
+                              ))}
                             </select>
                         </td>
                         </tr>
@@ -938,13 +990,11 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                             onChange={(e) => setCateId(parseInt(e.target.value))}
                             >
                             <option value="" disabled>Choose</option>
-                            <option value="1">Sữa bột cao cấp</option>
-                            <option value="2">Sữa bột</option>
-                            <option value="3">Sữa tươi</option>
-                            <option value="4">Sữa bầu</option>
-                            <option value="5">Sữa chua</option>
-                            <option value="6">Sữa hạt</option>
-                            <option value="11">Sữa lúa mạch</option>
+                            {categories.map(category => (
+                              <option key={category.id} value={category.id}>
+                              {category.categoryName}
+                            </option>
+                            ))}
                             </select>
                         </td>
                         </tr>
@@ -1013,7 +1063,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                         <td><span className="py-2">URL image:</span></td>
                         <td className="py-2">
                         <UploadImage
-                            aspectRatio={12 / 18}
+                            aspectRatio={4 / 5}
                             onUploadComplete={handleUploadComplete}
                             maxWidth={2048}
                             maxHeight={2048}
@@ -1034,10 +1084,11 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                             onChange={(e) => setAgeId(parseInt(e.target.value))}
                             >
                             <option value="" disabled>Choose</option>
-                            <option value="2">0-6 tháng</option>
-                            <option value="3">6-12 tháng</option>
-                            <option value="4">1-2 tuổi</option>
-                            <option value="5">Trên 6 tuổi</option>
+                            {ageGroups.map(ag => (
+                            <option key={ag.id} value={ag.id}>
+                              {ag.ageRange}
+                            </option>
+                            ))}
                             </select>
                         </td>
                         </tr>
@@ -1050,12 +1101,11 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                             onChange={(e) => setOriginId(parseInt(e.target.value))}
                             >
                             <option value="" disabled>Choose</option>
-                            <option value="1">Mỹ</option>
-                            <option value="2">Việt Nam</option>
-                            <option value="3">Châu Âu</option>
-                            <option value="5">Nhật Bản</option>
-                            <option value="6">Úc</option>
-                            <option value="7">Khác</option>
+                            {origins.map(o => (
+                              <option key={o.id} value={o.id}>
+                                {o.originName}
+                              </option>
+                              ))}
                             </select>
                         </td>
                         </tr>
@@ -1068,11 +1118,11 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                             onChange={(e) => setBrandId(parseInt(e.target.value))}
                             >
                             <option value="" disabled>Choose</option>
-                            <option value="1">Abbott Grow</option>
-                            <option value="2">meiji</option>
-                            <option value="3">Ensure</option>
-                            <option value="4">Kid Boost</option>
-                            <option value="6">Similac</option>
+                            {brands.map(b => (
+                              <option key={b.id} value={b.id}>
+                              {b.brandName}
+                              </option>
+                              ))}
                             </select>
                         </td>
                         </tr>
