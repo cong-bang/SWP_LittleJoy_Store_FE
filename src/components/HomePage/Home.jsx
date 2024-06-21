@@ -175,20 +175,46 @@ const Home = () => {
   };
 
   //ADD TO CART
-  const addToCart = (product) => {
+  const addToCart = async  (product) => {
+    const productData = await fetchProductById(product.id);
+    if (!productData) {
+      toast.error('Thêm vào giỏ hàng thất bại');
+      return;
+    }
+
+    const maxQuantity = productData.quantity - 1;
+
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const existingProductIndex = cart.findIndex(p => p.id === product.id);
 
     const convertPrice = parseInt(product.price.replace(/\./g, ''), 10);
 
     if (existingProductIndex > -1) {
+      if (cart[existingProductIndex].quantity + 1 > maxQuantity) {
+        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn`);
+        return;
+      }
       cart[existingProductIndex].quantity += 1;
     } else {
       cart.push({ ...product, price: convertPrice, quantity: 1 });
     }
-
+  
     localStorage.setItem('cart', JSON.stringify(cart));
     toast.success('Sản phẩm đã được thêm vào giỏ hàng');
+  };
+
+  const fetchProductById = async (productId) => {
+    try {
+      const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/product/${productId}`);
+      if (!response.ok) {
+        console.log('Lỗi fetch dữ liệu...');
+      }
+      const productData = await response.json();
+      return productData;
+    } catch (error) {
+      console.error(error.message);
+      return null;
+    }
   };
 
   

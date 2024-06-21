@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import similac from "../../assets/img/similac.png";
 import "../../assets/css/stylecart.css";
 import cartImg from "../../assets/img/cart.jpg";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -32,33 +34,77 @@ const Cart = () => {
   };
 
   const removeFromCart = (productId) => {
-    const updatedCart = cart.filter(product => product.id !== productId);
+    const updatedCart = cart.filter(p => p.id !== productId);
     setCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
   
-  const handleDecrease = (productId) => {
-    const product = cart.find(product => product.id === productId);
+  const handleDecrease = async (productId) => {
+    const product = cart.find(p => p.id === productId);
     if (product.quantity > 1) {
       updateQuantity(productId, product.quantity - 1);
+    } else {
+      removeFromCart(productId);
     }
   };
 
-  const handleIncrease = (productId) => {
-    const product = cart.find(product => product.id === productId);
-    updateQuantity(productId, product.quantity + 1);
+  const handleIncrease = async (productId) => {
+    const product = cart.find(p => p.id === productId);
+    const productData = await fetchProductById(productId);
+
+    if (productData) {
+      const maxQuantity = productData.quantity - 1;
+      const totalQuantityInCart = getCartTotalQuantity(productId);
+
+      if (totalQuantityInCart < maxQuantity) {
+        updateQuantity(productId, product.quantity + 1);
+      } else {
+        toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho`);
+      }
+    }
   };
 
-  const updateQuantity = (productId, newQuantity) => {
-    const updatedCart = cart.map(product => 
-      product.id === productId ? { ...product, quantity: newQuantity } : product
-    );
-    setCart(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
+  const updateQuantity = async (productId, newQuantity) => {
+    const productData = await fetchProductById(productId);
+
+    if (productData) {
+      const maxQuantity = productData.quantity - 1;
+      //const totalQuantityInCart = getCartTotalQuantity(productId);
+
+      if (newQuantity <= maxQuantity) {
+        const updatedCart = cart.map(product =>
+          product.id === productId ? { ...product, quantity: newQuantity } : product
+        );
+        setCart(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+      } else {
+        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn tồn kho`);
+      }
+    }
+  };
+
+  const fetchProductById = async (productId) => {
+    try {
+      const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/product/${productId}`);
+      if (!response.ok) {
+        console.log('Lỗi fetch dữ liệu...');
+      }
+      const productData = await response.json();
+      return productData;
+    } catch (error) {
+      console.error(error.message);
+      return null;
+    }
+  };
+
+  const getCartTotalQuantity = (productId) => {
+    const productInCart = cart.find(p => p.id === productId);
+    return productInCart ? productInCart.quantity : 0;
   };
 
   return (
     <>
+    <ToastContainer />
       <section>
         <div>
           <div className="banner container-fluid pb-5 mb-5">

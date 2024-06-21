@@ -33,6 +33,7 @@ const Product = () => {
       progress: undefined,
       theme: "light",
       });
+  
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -147,27 +148,6 @@ const Product = () => {
     );
   };
 
-  //xử lý tăng giảm quantity của product
-  const handleDecrease = () => {
-    if (quantity > 1)
-      setQuantity(quantity - 1);
-  };
-
-  const handleIncrease = () => {
-    setQuantity(quantity + 1);
-  };
-
-  const handleChange = (event) => {
-    const value = event.target.value;
-    if (value == '') {
-      setQuantity(0);
-    } else if (!isNaN(value) && parseInt(value) >= 1 && parseInt(value) <= 99) {
-      setQuantity(parseInt(value));
-    } else {
-      setQuantity(1);
-    }
-  };
-
   const stars = [1, 2, 3, 4, 5].map((star) => (
     <FontAwesomeIcon
       key={star}
@@ -223,23 +203,75 @@ const Product = () => {
     sendFeedback();
   };
 
+  //xử lý tăng giảm quantity của product
+  const handleDecrease = () => {
+    if (quantity > 1)
+      setQuantity(quantity - 1);
+  };
+
+  const handleIncrease = () => {
+    const totalQuantityInCart = getCartTotalQuantity(product.id);
+    if (totalQuantityInCart + quantity < (product.quantity - 1)) {
+      setQuantity(quantity + 1);
+    } else {
+      toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho`);
+    }
+  };
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+    if (value === '') {
+      setQuantity(1);
+    } else if (!isNaN(value) && parseInt(value) >= 1 && parseInt(value) <= (product.quantity - 1)) {
+      const totalQuantityInCart = getCartTotalQuantity(product.id);
+      if (totalQuantityInCart + parseInt(value) <= (product.quantity - 1)) {
+        setQuantity(parseInt(value));
+      } else {
+        toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho`);
+      }
+    } else {
+      toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho`);
+      setQuantity(1);
+    }
+  };
+
+  const getCartTotalQuantity = (productId) => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const productInCart = cart.find(p => p.id === productId);
+    return productInCart ? productInCart.quantity : 0;
+  };
+
   //ADD TO CART
-  const addToCart = (product, quantity) => {
+  const addToCart = async (product, quantity) => {
+    const maxQuantity = product.quantity - 1;
+
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const existingProductIndex = cart.findIndex(p => p.id === product.id);
 
     const convertPrice = parseInt(product.price.replace(/\./g, ''), 10);
 
+    let newQuantity;
     if (existingProductIndex > -1) {
-      cart[existingProductIndex].quantity += quantity;
+      newQuantity = cart[existingProductIndex].quantity + quantity;
+    } else {
+      newQuantity = quantity;
+    }
+
+    if (newQuantity > maxQuantity) {
+      toast.error(`Số lượng ${product.productName} đã đạt giới hạn`);
+      return;
+    }
+
+    if (existingProductIndex > -1) {
+      cart[existingProductIndex].quantity = newQuantity;
     } else {
       cart.push({ ...product, price: convertPrice, quantity });
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
+    setQuantity(1);
     toast.success('Sản phẩm đã được thêm vào giỏ hàng');
   };
-
 
   return (
     <>

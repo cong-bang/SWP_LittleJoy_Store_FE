@@ -1578,7 +1578,7 @@ const fetchBrandId = async (brandId) => {
                             <input
                             type="text"
                             className="ps-2 p-1 w-100"
-                            value={originName}
+                            value={categoryName}
                             onChange={(e) => setOriginName(e.target.value)}
                             />
                         </td>
