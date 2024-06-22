@@ -185,7 +185,9 @@ const Home = () => {
 
     if (existingProductIndex > -1) {
       if (cart[existingProductIndex].quantity + 1 > maxQuantity) {
-        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn tồn kho`);
+        toast.error(
+          `Số lượng ${productData.productName} đã đạt giới hạn tồn kho`
+        );
         return;
       }
       cart[existingProductIndex].quantity += 1;
@@ -370,67 +372,83 @@ const Home = () => {
                   </div>
                 </>
               ) : (
-            <div className="col-md-12">
-              <div className="row">
-                {newProducts.map((newP) => (
-                <div key={newP.id} className="col-md-3 p-3 mt-4">
-                  <div className="product-image text-center px-3 py-2 position-relative">
-                    <Link to={{pathname: `/product/${newP.id}`}}>
-                      <img
-                        src={newP.image}
-                        alt=""
-                        className="w-75"
-                      />
-                    </Link>
-                    <Link
-                      to="#"
-                      className="addcart-item position-absolute start-50 translate-middle roboto"
-                      onClick={() => addToCart(newP)}
-                    >
-                      THÊM VÀO GIỎ HÀNG
-                    </Link>
+                <div className="col-md-12">
+                  <div className="row">
+                    {newProducts.map((newP) => (
+                      <div key={newP.id} className="col-md-3 p-3 mt-4">
+                        <div className="product-image text-center px-3 py-2 position-relative">
+                          <Link to={{ pathname: `/product/${newP.id}` }}>
+                            <img src={newP.image} alt="" className="w-75" />
+                          </Link>
+                          <Link
+                            to="#"
+                            className="addcart-item position-absolute start-50 translate-middle roboto"
+                            onClick={() => addToCart(newP)}
+                          >
+                            THÊM VÀO GIỎ HÀNG
+                          </Link>
+                        </div>
+                        <Link
+                          to={{ pathname: `/product/${newP.id}` }}
+                          style={{ textDecoration: "none", color: "black" }}
+                        >
+                          <div className="product-content mt-3 px-3 py-2">
+                            <span
+                              className="roboto"
+                              style={{ fontSize: "1.2em" }}
+                            >
+                              <ProductName
+                                title={newP.productName}
+                                maxLength={20}
+                              />
+                            </span>
+                            <div className="rank-product mt-2">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <FontAwesomeIcon
+                                  key={star}
+                                  icon={faStar}
+                                  color={
+                                    star <= newP.ratingAver
+                                      ? "gold"
+                                      : "lightgrey"
+                                  }
+                                />
+                              ))}
+                            </div>
+                            <div className="mt-2 fs-5">
+                              <span
+                                className="roboto"
+                                style={{ fontWeight: 600 }}
+                              >
+                                VND {newP.price}
+                              </span>
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                    ))}
+                    <div className="col-md-12 d-flex justify-content-center mt-3">
+                      <Link
+                        to="/shop"
+                        style={{ textDecoration: "none", color: "white" }}
+                      >
+                        <div
+                          className="px-5 py-2 d-inline-block"
+                          style={{
+                            backgroundColor: "#016AAD",
+                            borderRadius: "15px",
+                          }}
+                        >
+                          <span className="roboto">Xem thêm</span>
+                        </div>
+                      </Link>
+                    </div>
                   </div>
-                  <Link to={{pathname: `/product/${newP.id}`}} style={{ textDecoration: "none", color: "black" }}>
-                    <div className="product-content mt-3 px-3 py-2">
-                      <span className="roboto" style={{ fontSize: "1.2em" }}>
-                      <ProductName title={newP.productName} maxLength={20} />
-                      </span>
-                      <div className="rank-product mt-2">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                          <FontAwesomeIcon
-                            key={star}
-                            icon={faStar}
-                            color={star <= newP.ratingAver ? 'gold' : 'lightgrey'}
-                          />
-                        ))}
-                      </div>
-                      <div className="mt-2 fs-5">
-                        <span className="roboto" style={{ fontWeight: 600 }}>
-                          VND {newP.price}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
                 </div>
-                ))}
-                <div className="col-md-12 d-flex justify-content-center mt-3">
-                  <Link to="/shop" style={{ textDecoration: "none", color: "white" }}>
-                    <div
-                      className="px-5 py-2 d-inline-block"
-                      style={{
-                        backgroundColor: "#016AAD",
-                        borderRadius: "15px",
-                      }}
-                    >
-                      <span className="roboto">Xem thêm</span>
-                    </div>
-                  </Link>
-                </div>
-              </div>
+              )}
             </div>
-          )}
           </div>
-        </div>
+        </section>
         <div className="container mt-5">
           <div className="row">
             <div className="col-md-12 text-center pt-5">
@@ -558,346 +576,345 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* <!-- Carousel --> */}
-      <div className="container mt-3">
-        <div className="row">
-          <div className="col-md-12">
-            <div
-              id="carouselExampleControls"
-              className="carousel slide"
-              data-bs-ride="carousel"
-            >
-              <div className="carousel-indicators">
-                <button
-                  type="button"
-                  data-bs-target="#carouselExampleControls"
-                  data-bs-slide-to="0"
-                  className="active"
-                  aria-current="true"
-                  aria-label="Slide 1"
-                ></button>
-                <button
-                  type="button"
-                  data-bs-target="#carouselExampleControls"
-                  data-bs-slide-to="1"
-                  aria-label="Slide 2"
-                ></button>
-              </div>
-              <div className="carousel-inner">
-                <div className="carousel-item active">
-                  <div className="container">
-                    <div className="row">
-                      <div className="col-md-4 p-3">
-                        <div
-                          className="content-feedback-main"
-                          style={{
-                            backgroundColor: "rgba(155, 155, 155, 0.05)",
-                            height: "14em",
-                          }}
-                        >
-                          <div className="info-user-feedback py-3 px-2">
-                            <table className="w-100">
-                              <tbody>
-                                <tr>
-                                  <td rowSpan="2">
-                                    <div className="d-flex justify-content-center align-content-center w-100">
-                                      <div className="avatar-user-feedback w-75">
-                                        <img
-                                          src={avatar1}
-                                          alt=""
-                                          className="w-100 avatar-user-feedback-img"
-                                        />
+        {/* <!-- Carousel --> */}
+        <div className="container mt-3">
+          <div className="row">
+            <div className="col-md-12">
+              <div
+                id="carouselExampleControls"
+                className="carousel slide"
+                data-bs-ride="carousel"
+              >
+                <div className="carousel-indicators">
+                  <button
+                    type="button"
+                    data-bs-target="#carouselExampleControls"
+                    data-bs-slide-to="0"
+                    className="active"
+                    aria-current="true"
+                    aria-label="Slide 1"
+                  ></button>
+                  <button
+                    type="button"
+                    data-bs-target="#carouselExampleControls"
+                    data-bs-slide-to="1"
+                    aria-label="Slide 2"
+                  ></button>
+                </div>
+                <div className="carousel-inner">
+                  <div className="carousel-item active">
+                    <div className="container">
+                      <div className="row">
+                        <div className="col-md-4 p-3">
+                          <div
+                            className="content-feedback-main"
+                            style={{
+                              backgroundColor: "rgba(155, 155, 155, 0.05)",
+                              height: "14em",
+                            }}
+                          >
+                            <div className="info-user-feedback py-3 px-2">
+                              <table className="w-100">
+                                <tbody>
+                                  <tr>
+                                    <td rowSpan="2">
+                                      <div className="d-flex justify-content-center align-content-center w-100">
+                                        <div className="avatar-user-feedback w-75">
+                                          <img
+                                            src={avatar1}
+                                            alt=""
+                                            className="w-100 avatar-user-feedback-img"
+                                          />
+                                        </div>
                                       </div>
-                                    </div>
-                                  </td>
-                                  <td className="w-80 fw-bold roboto">
-                                    Nguyễn Thanh Hùng
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div className="voting-feedback roboto">
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div className="content-feedback p-3">
-                            <span className="roboto">
-                              Tôi rất ấn tượng với sự đa dạng của các loại sữa
-                              tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
-                              hàng đều có đủ. Dịch vụ giao hàng cũng rất nhanh
-                              chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
-                            </span>
+                                    </td>
+                                    <td className="w-80 fw-bold roboto">
+                                      Nguyễn Thanh Hùng
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <div className="voting-feedback roboto">
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div className="content-feedback p-3">
+                              <span className="roboto">
+                                Tôi rất ấn tượng với sự đa dạng của các loại sữa
+                                tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu,
+                                cửa hàng đều có đủ. Dịch vụ giao hàng cũng rất
+                                nhanh chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="col-md-4 p-3">
-                        <div
-                          className="content-feedback-main"
-                          style={{
-                            backgroundColor: "rgba(155, 155, 155, 0.05)",
-                            height: "14em",
-                          }}
-                        >
-                          <div className="info-user-feedback py-3 px-2">
-                            <table className="w-100">
-                              <tbody>
-                                <tr>
-                                  <td rowSpan="2">
-                                    <div className="d-flex justify-content-center align-content-center w-100">
-                                      <div className="avatar-user-feedback w-75">
-                                        <img
-                                          src={avatar1}
-                                          alt=""
-                                          className="w-100 avatar-user-feedback-img"
-                                        />
+                        <div className="col-md-4 p-3">
+                          <div
+                            className="content-feedback-main"
+                            style={{
+                              backgroundColor: "rgba(155, 155, 155, 0.05)",
+                              height: "14em",
+                            }}
+                          >
+                            <div className="info-user-feedback py-3 px-2">
+                              <table className="w-100">
+                                <tbody>
+                                  <tr>
+                                    <td rowSpan="2">
+                                      <div className="d-flex justify-content-center align-content-center w-100">
+                                        <div className="avatar-user-feedback w-75">
+                                          <img
+                                            src={avatar1}
+                                            alt=""
+                                            className="w-100 avatar-user-feedback-img"
+                                          />
+                                        </div>
                                       </div>
-                                    </div>
-                                  </td>
-                                  <td className="w-80 fw-bold roboto">
-                                    Nguyễn Thanh Hùng
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div className="voting-feedback roboto">
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div className="content-feedback p-3 roboto">
-                            <span>
-                              Tôi rất ấn tượng với sự đa dạng của các loại sữa
-                              tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
-                              hàng đều có đủ. Dịch vụ giao hàng cũng rất nhanh
-                              chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
-                            </span>
+                                    </td>
+                                    <td className="w-80 fw-bold roboto">
+                                      Nguyễn Thanh Hùng
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <div className="voting-feedback roboto">
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div className="content-feedback p-3 roboto">
+                              <span>
+                                Tôi rất ấn tượng với sự đa dạng của các loại sữa
+                                tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu,
+                                cửa hàng đều có đủ. Dịch vụ giao hàng cũng rất
+                                nhanh chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="col-md-4 p-3">
-                        <div
-                          className="content-feedback-main"
-                          style={{
-                            backgroundColor: "rgba(155, 155, 155, 0.05)",
-                            height: "14em",
-                          }}
-                        >
-                          <div className="info-user-feedback py-3 px-2">
-                            <table className="w-100">
-                              <tbody>
-                                <tr>
-                                  <td rowSpan="2">
-                                    <div className="d-flex justify-content-center align-content-center w-100">
-                                      <div className="avatar-user-feedback w-75">
-                                        <img
-                                          src={avatar1}
-                                          alt=""
-                                          className="w-100 avatar-user-feedback-img"
-                                        />
+                        <div className="col-md-4 p-3">
+                          <div
+                            className="content-feedback-main"
+                            style={{
+                              backgroundColor: "rgba(155, 155, 155, 0.05)",
+                              height: "14em",
+                            }}
+                          >
+                            <div className="info-user-feedback py-3 px-2">
+                              <table className="w-100">
+                                <tbody>
+                                  <tr>
+                                    <td rowSpan="2">
+                                      <div className="d-flex justify-content-center align-content-center w-100">
+                                        <div className="avatar-user-feedback w-75">
+                                          <img
+                                            src={avatar1}
+                                            alt=""
+                                            className="w-100 avatar-user-feedback-img"
+                                          />
+                                        </div>
                                       </div>
-                                    </div>
-                                  </td>
-                                  <td className="w-80 fw-bold roboto">
-                                    Nguyễn Thanh Hùng
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div className="voting-feedback roboto">
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div className="content-feedback p-3 roboto">
-                            <span>
-                              Tôi rất ấn tượng với sự đa dạng của các loại sữa
-                              tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
-                              hàng đều có đủ. Dịch vụ giao hàng cũng rất nhanh
-                              chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
-                            </span>
+                                    </td>
+                                    <td className="w-80 fw-bold roboto">
+                                      Nguyễn Thanh Hùng
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <div className="voting-feedback roboto">
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div className="content-feedback p-3 roboto">
+                              <span>
+                                Tôi rất ấn tượng với sự đa dạng của các loại sữa
+                                tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu,
+                                cửa hàng đều có đủ. Dịch vụ giao hàng cũng rất
+                                nhanh chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="carousel-item">
-                  <div className="container">
-                    <div className="row">
-                      <div className="col-md-4 p-3">
-                        <div
-                          className="content-feedback-main"
-                          style={{
-                            backgroundColor: "rgba(155, 155, 155, 0.05)",
-                            height: "14em",
-                          }}
-                        >
-                          <div className="info-user-feedback py-3 px-2">
-                            <table className="w-100">
-                              <tbody>
-                                <tr>
-                                  <td rowSpan="2">
-                                    <div className="d-flex justify-content-center align-content-center w-100">
-                                      <div className="avatar-user-feedback w-75">
-                                        <img
-                                          src={avatar1}
-                                          alt=""
-                                          className="w-100 avatar-user-feedback-img"
-                                        />
+                  <div className="carousel-item">
+                    <div className="container">
+                      <div className="row">
+                        <div className="col-md-4 p-3">
+                          <div
+                            className="content-feedback-main"
+                            style={{
+                              backgroundColor: "rgba(155, 155, 155, 0.05)",
+                              height: "14em",
+                            }}
+                          >
+                            <div className="info-user-feedback py-3 px-2">
+                              <table className="w-100">
+                                <tbody>
+                                  <tr>
+                                    <td rowSpan="2">
+                                      <div className="d-flex justify-content-center align-content-center w-100">
+                                        <div className="avatar-user-feedback w-75">
+                                          <img
+                                            src={avatar1}
+                                            alt=""
+                                            className="w-100 avatar-user-feedback-img"
+                                          />
+                                        </div>
                                       </div>
-                                    </div>
-                                  </td>
-                                  <td className="w-80 fw-bold roboto">
-                                    Nguyễn Thanh Hùng
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div className="voting-feedback roboto">
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div className="content-feedback p-3 roboto">
-                            <span>
-                              Tôi rất ấn tượng với sự đa dạng của các loại sữa
-                              tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
-                              hàng đều có đủ. Dịch vụ giao hàng cũng rất nhanh
-                              chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
-                            </span>
+                                    </td>
+                                    <td className="w-80 fw-bold roboto">
+                                      Nguyễn Thanh Hùng
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <div className="voting-feedback roboto">
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div className="content-feedback p-3 roboto">
+                              <span>
+                                Tôi rất ấn tượng với sự đa dạng của các loại sữa
+                                tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu,
+                                cửa hàng đều có đủ. Dịch vụ giao hàng cũng rất
+                                nhanh chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="col-md-4 p-3">
-                        <div
-                          className="content-feedback-main"
-                          style={{
-                            backgroundColor: "rgba(155, 155, 155, 0.05)",
-                            height: "14em",
-                          }}
-                        >
-                          <div className="info-user-feedback py-3 px-2">
-                            <table className="w-100">
-                              <tbody>
-                                <tr>
-                                  <td rowSpan="2">
-                                    <div className="d-flex justify-content-center align-content-center w-100">
-                                      <div className="avatar-user-feedback w-75">
-                                        <img
-                                          src={avatar1}
-                                          alt=""
-                                          className="w-100 avatar-user-feedback-img"
-                                        />
+                        <div className="col-md-4 p-3">
+                          <div
+                            className="content-feedback-main"
+                            style={{
+                              backgroundColor: "rgba(155, 155, 155, 0.05)",
+                              height: "14em",
+                            }}
+                          >
+                            <div className="info-user-feedback py-3 px-2">
+                              <table className="w-100">
+                                <tbody>
+                                  <tr>
+                                    <td rowSpan="2">
+                                      <div className="d-flex justify-content-center align-content-center w-100">
+                                        <div className="avatar-user-feedback w-75">
+                                          <img
+                                            src={avatar1}
+                                            alt=""
+                                            className="w-100 avatar-user-feedback-img"
+                                          />
+                                        </div>
                                       </div>
-                                    </div>
-                                  </td>
-                                  <td className="w-80 fw-bold roboto">
-                                    Nguyễn Thanh Hùng
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div className="voting-feedback roboto">
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div className="content-feedback p-3 roboto">
-                            <span>
-                              Tôi rất ấn tượng với sự đa dạng của các loại sữa
-                              tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
-                              hàng đều có đủ. Dịch vụ giao hàng cũng rất nhanh
-                              chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
-                            </span>
+                                    </td>
+                                    <td className="w-80 fw-bold roboto">
+                                      Nguyễn Thanh Hùng
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <div className="voting-feedback roboto">
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div className="content-feedback p-3 roboto">
+                              <span>
+                                Tôi rất ấn tượng với sự đa dạng của các loại sữa
+                                tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu,
+                                cửa hàng đều có đủ. Dịch vụ giao hàng cũng rất
+                                nhanh chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="col-md-4 p-3">
-                        <div
-                          className="content-feedback-main"
-                          style={{
-                            backgroundColor: "rgba(155, 155, 155, 0.05)",
-                            height: "14em",
-                          }}
-                        >
-                          <div className="info-user-feedback py-3 px-2">
-                            <table className="w-100">
-                              <tbody>
-                                <tr>
-                                  <td rowSpan="2">
-                                    <div className="d-flex justify-content-center align-content-center w-100">
-                                      <div className="avatar-user-feedback w-75">
-                                        <img
-                                          src={avatar1}
-                                          alt=""
-                                          className="w-100 avatar-user-feedback-img"
-                                        />
+                        <div className="col-md-4 p-3">
+                          <div
+                            className="content-feedback-main"
+                            style={{
+                              backgroundColor: "rgba(155, 155, 155, 0.05)",
+                              height: "14em",
+                            }}
+                          >
+                            <div className="info-user-feedback py-3 px-2">
+                              <table className="w-100">
+                                <tbody>
+                                  <tr>
+                                    <td rowSpan="2">
+                                      <div className="d-flex justify-content-center align-content-center w-100">
+                                        <div className="avatar-user-feedback w-75">
+                                          <img
+                                            src={avatar1}
+                                            alt=""
+                                            className="w-100 avatar-user-feedback-img"
+                                          />
+                                        </div>
                                       </div>
-                                    </div>
-                                  </td>
-                                  <td className="w-80 fw-bold roboto">
-                                    Nguyễn Thanh Hùng
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div className="voting-feedback roboto">
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                      <FontAwesomeIcon icon="fa-solid fa-star" />
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div className="content-feedback p-3 roboto">
-                            <span>
-                              Tôi rất ấn tượng với sự đa dạng của các loại sữa
-                              tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu, cửa
-                              hàng đều có đủ. Dịch vụ giao hàng cũng rất nhanh
-                              chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
-                            </span>
+                                    </td>
+                                    <td className="w-80 fw-bold roboto">
+                                      Nguyễn Thanh Hùng
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <div className="voting-feedback roboto">
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                        <FontAwesomeIcon icon="fa-solid fa-star" />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div className="content-feedback p-3 roboto">
+                              <span>
+                                Tôi rất ấn tượng với sự đa dạng của các loại sữa
+                                tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu,
+                                cửa hàng đều có đủ. Dịch vụ giao hàng cũng rất
+                                nhanh chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -908,88 +925,50 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* BLOG */}
-      <div className="container mt-5 mb-5">
-        <div className="row pb-5">
-          <div className="col-md-12">
-            <div className="w-100 d-flex justify-content-between align-items-center">
-              <Link
-                to="/blog"
-                style={{ textDecoration: "none", color: "#3C75A6" }}
-              >
-                <span className="fs-3 fw-bold roboto">BLOG</span>
-              </Link>
-              <Link
-                to="/blog"
-                style={{ textDecoration: "none", color: "#3C75A6" }}
-              >
-                <span className="fw-bold roboto">
-                  Xem thêm <FontAwesomeIcon icon="fa-solid fa-angles-right" />
-                </span>
-              </Link>
-            </div>
-          </div>
-          {relatedBlogs.map((blog) => (
-            <div key={blog.id} className="col-md-4 mt-4">
-              <Link to={{ pathname: `/blogdetail/${blog.id}` }}>
-                <div className="blog-content position-relative">
-                  <div className="image-blog text-center">
-                    <img
-                      src={blog.banner}
-                      alt=""
-                      className="w-100"
-                      style={{ height: "18em" }}
-                    />
-                  </div>
-                  <div className="position-absolute blog-title w-100">
-                    <span className="blog-span fs-5 roboto">
-                      <BlogTitle title={blog.title} maxLength={30} />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          ))}
-          {/* <div className="col-md-4 mt-4">
-            <a href="">
-              <div className="blog-content position-relative">
-                <div className="image-blog text-center">
-                  <img
-                    src={blog2}
-                    alt=""
-                    className="w-100"
-                    style={{ height: "18em" }}
-                  />
-                </div>
-                <div className="position-absolute blog-title w-100">
-                  <span className="blog-span fs-5 roboto">
-                    Cách cho bé ăn dặm đúng chuẩn và dễ dàng áp dụng
+        {/* BLOG */}
+        <div className="container mt-5 mb-5">
+          <div className="row pb-5">
+            <div className="col-md-12">
+              <div className="w-100 d-flex justify-content-between align-items-center">
+                <Link
+                  to="/blog"
+                  style={{ textDecoration: "none", color: "#3C75A6" }}
+                >
+                  <span className="fs-3 fw-bold roboto">BLOG</span>
+                </Link>
+                <Link
+                  to="/blog"
+                  style={{ textDecoration: "none", color: "#3C75A6" }}
+                >
+                  <span className="fw-bold roboto">
+                    Xem thêm <FontAwesomeIcon icon="fa-solid fa-angles-right" />
                   </span>
-                </div>
+                </Link>
               </div>
-            </a>
+            </div>
+            {relatedBlogs.map((blog) => (
+              <div key={blog.id} className="col-md-4 mt-4">
+                <Link to={{ pathname: `/blogdetail/${blog.id}` }}>
+                  <div className="blog-content position-relative">
+                    <div className="image-blog text-center">
+                      <img
+                        src={blog.banner}
+                        alt=""
+                        className="w-100"
+                        style={{ height: "18em" }}
+                      />
+                    </div>
+                    <div className="position-absolute blog-title w-100">
+                      <span className="blog-span fs-5 roboto">
+                        <BlogTitle title={blog.title} maxLength={30} />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
           </div>
-          <div className="col-md-4 mt-4">
-            <a href="">
-              <div className="blog-content position-relative">
-                <div className="image-blog text-center">
-                  <img
-                    src={blog3}
-                    alt=""
-                    className="w-100"
-                    style={{ height: "18em" }}
-                  />
-                </div>
-                <div className="position-absolute blog-title w-100">
-                  <span className="blog-span fs-5 roboto">
-                    Cách cho bé ăn dặm đúng chuẩn và dễ dàng áp dụng
-                  </span>
-                </div>
-              </div>
-            </a>
-          </div> */}
         </div>
       </div>
     </>
