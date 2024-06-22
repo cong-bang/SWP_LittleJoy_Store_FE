@@ -209,7 +209,7 @@ const Product = () => {
 
   const handleIncrease = () => {
     const totalQuantityInCart = getCartTotalQuantity(product.id);
-    if (totalQuantityInCart + quantity < product.quantity - 1) {
+    if (totalQuantityInCart + quantity < product.quantity) {
       setQuantity(quantity + 1);
     } else {
       toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho`);
@@ -223,10 +223,10 @@ const Product = () => {
     } else if (
       !isNaN(value) &&
       parseInt(value) >= 1 &&
-      parseInt(value) <= product.quantity - 1
+      parseInt(value) <= product.quantity
     ) {
       const totalQuantityInCart = getCartTotalQuantity(product.id);
-      if (totalQuantityInCart + parseInt(value) <= product.quantity - 1) {
+      if (totalQuantityInCart + parseInt(value) <= product.quantity) {
         setQuantity(parseInt(value));
       } else {
         toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho`);
@@ -245,7 +245,7 @@ const Product = () => {
 
   //ADD TO CART
   const addToCart = async (product, quantity) => {
-    const maxQuantity = product.quantity - 1;
+    const maxQuantity = product.quantity;
 
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const existingProductIndex = cart.findIndex((p) => p.id === product.id);
@@ -416,6 +416,7 @@ const Product = () => {
                                   </div>
                                 </td>
                                 <td className="w-50 text-center">
+                                  {product.quantity > 0 ? (
                                   <Link to="#" className="">
                                     <p
                                       className=" p-2 m-0 add-cart"
@@ -430,6 +431,19 @@ const Product = () => {
                                       Thêm Giỏ Hàng
                                     </p>
                                   </Link>
+                                  ) : (
+                                  <Link to="#" className="">
+                                    <p
+                                      className=" p-2 m-0 add-cart"
+                                      style={{
+                                        fontSize: "16px",
+                                        fontFamily: "system-ui",
+                                      }}
+                                    >
+                                      Hết hàng
+                                    </p>
+                                  </Link>
+                                  )}
                                 </td>
                                 <td className="w-30 text-center">
                                   <Link

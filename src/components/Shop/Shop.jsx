@@ -240,7 +240,7 @@ const Shop = () => {
       return;
     }
 
-    const maxQuantity = productData.quantity - 1;
+    const maxQuantity = productData.quantity;
 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const existingProductIndex = cart.findIndex(p => p.id === product.id);

@@ -26,6 +26,7 @@ const Home = () => {
   const [cateId, setCateId] = useState(null);
   const [originId, setOriginId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [origins, setOrigins] = useState([]);
 
   const NewProductLoader = () => (
     <ContentLoader
@@ -99,6 +100,29 @@ const Home = () => {
 
   useEffect(() => {
     setLoading(true);
+    const fetchOrigin = async () => {
+      try {
+        const responseOrigin = await fetch(
+          "https://littlejoyapi.azurewebsites.net/api/origin?PageIndex=1&PageSize=5"
+        );
+        if (!responseOrigin.ok) {
+          console.log("Lỗi fetch category data...");
+          return;
+        }
+        const originData = await responseOrigin.json();
+        setOrigins(originData);
+        console.log(origins);
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchOrigin();
+  }, [])
+
+  useEffect(() => {
+    setLoading(true);
     if (originId !== null) {
       const fetchData = async () => {
         try {
@@ -137,6 +161,7 @@ const Home = () => {
             price: formatPrice(product.price),
           }));
           setNewProducts(formattedProducts);
+
         } catch (error) {
           console.error(error.message);
         } finally {
@@ -176,7 +201,7 @@ const Home = () => {
       return;
     }
 
-    const maxQuantity = productData.quantity - 1;
+    const maxQuantity = productData.quantity;
 
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const existingProductIndex = cart.findIndex((p) => p.id === product.id);
@@ -284,21 +309,23 @@ const Home = () => {
                 </span>
               </div>
               <div className="col-md-12 d-flex justify-content-between mt-5">
-                <a
-                  href=""
+                {origins.map((o) => (
+                <Link
+                  to=""
                   className="w-18 d-inline-block"
                   style={{ textDecoration: "none", color: "black" }}
-                  onClick={(e) => handleClickOrigin(e, 2)}
+                  onClick={(e) => handleClickOrigin(e, o.id)}
                 >
                   <div
                     className={`w-100 text-center px-2 py-3 arrival-item roboto ${
-                      originId === 2 ? "arrival-active" : ""
+                      originId === o.id ? "arrival-active" : ""
                     }`}
                   >
-                    <span>Sữa Việt Nam</span>
+                    <span>{o.originName}</span>
                   </div>
-                </a>
-                <a
+                </Link>
+                ))}
+                {/* <a
                   href=""
                   className="w-18 d-inline-block"
                   style={{ textDecoration: "none", color: "black" }}
@@ -353,7 +380,7 @@ const Home = () => {
                   >
                     <span>Sữa Châu Âu</span>
                   </div>
-                </a>
+                </a> */}
               </div>
 
               {loading ? (
@@ -380,6 +407,7 @@ const Home = () => {
                           <Link to={{ pathname: `/product/${newP.id}` }}>
                             <img src={newP.image} alt="" className="w-75" />
                           </Link>
+                          {newP.quantity > 0 ? (
                           <Link
                             to="#"
                             className="addcart-item position-absolute start-50 translate-middle roboto"
@@ -387,6 +415,11 @@ const Home = () => {
                           >
                             THÊM VÀO GIỎ HÀNG
                           </Link>
+                          ) : (
+                          <div class="sold-out position-absolute top-50 start-50 translate-middle d-flex justify-content-center align-items-center">
+                            <p class="m-0">SOLD OUT</p>
+                            </div>
+                          )}
                         </div>
                         <Link
                           to={{ pathname: `/product/${newP.id}` }}

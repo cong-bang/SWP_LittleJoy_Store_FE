@@ -51,17 +51,17 @@ const ManageProduct = () => {
   const [brandId, setBrandId] = useState(1);
   const [cateId, setCateId] = useState(1);
 
-      const [selectedProduct, setSelectedProduct] = useState({});
-      const [isModalOpen, setIsModalOpen] = useState(false);
-      const [idToDelete, setIdToDelete] = useState(null);
-      const [username, setUsername] = useState("");
-      const [searchCate, setSearchCate] = useState(null);
-      const [searchOrigin, setSearchOrigin] = useState(null);
-      const [searchIsActive, setSearchIsActive] = useState(null);
-      const [searchBrand, setSearchBrand] = useState(null);
-      const [searchAge, setSearchAge] = useState(null);
-      const [categoriesLoaded, setCategoriesLoaded] = useState(false); 
-      const [statusProduct, setStatusProduct] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [idToDelete, setIdToDelete] = useState(null);
+  const [username, setUsername] = useState("");
+  const [searchCate, setSearchCate] = useState(null);
+  const [searchOrigin, setSearchOrigin] = useState(null);
+  const [searchIsActive, setSearchIsActive] = useState(null);
+  const [searchBrand, setSearchBrand] = useState(null);
+  const [searchAge, setSearchAge] = useState(null);
+  const [categoriesLoaded, setCategoriesLoaded] = useState(false);
+  const [statusProduct, setStatusProduct] = useState(true);
 
   const TableLoading = () => (
     <ContentLoader
@@ -93,72 +93,57 @@ const ManageProduct = () => {
   useEffect(() => {
     setLoading(true);
     const fetchCategories = async () => {
-      try {
-        const responseCate = await fetch(
-          "https://littlejoyapi.azurewebsites.net/api/category?PageIndex=1&PageSize=9"
-        );
-        if (!responseCate.ok) {
-          console.log("Lỗi fetch category data...");
-          return;
-        }
-        const categoryData = await responseCate.json();
-        setCategories(categoryData);
-        setCategoriesLoaded(true);
-      useEffect(() => {
-        setLoading(true);
-        const fetchCategories = async () => {
-          if(statusProduct) {
-          try {
-            const responseCate = await fetch(
-              'https://littlejoyapi.azurewebsites.net/api/category?PageIndex=1&PageSize=9'
-            );
-            if (!responseCate.ok) {
-              console.log('Lỗi fetch category data...');
-              return;
-            }
-            const categoryData = await responseCate.json();
-            setCategories(categoryData);
-            setCategoriesLoaded(true);
-
-        const responseOrigin = await fetch(
-          "https://littlejoyapi.azurewebsites.net/api/origin?PageIndex=1&PageSize=9"
-        );
-        if (!responseOrigin.ok) {
-          console.log("Lỗi fetch category data...");
-          return;
-        }
-        const originData = await responseOrigin.json();
-        setOrigins(originData);
-
-        const responseAge = await fetch(
-          "https://littlejoyapi.azurewebsites.net/api/age-group-product?PageIndex=1&PageSize=9"
-        );
-        if (!responseAge.ok) {
-          console.log("Lỗi fetch category data...");
-          return;
-        }
-        const ageData = await responseAge.json();
-        setAgeGroups(ageData);
-
-            const responseBrand = await fetch(
-              'https://littlejoyapi.azurewebsites.net/api/brand?PageIndex=1&PageSize=9'
-            );
-            if (!responseBrand.ok) {
-              console.log('Lỗi fetch category data...');
-              return;
-            }
-            const brandData = await responseBrand.json();
-            setBrands(brandData);
-
-          } catch (error) {
-            console.error(error.message);
-          } finally {
-            setLoading(false);
+        try {
+          const responseCate = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/category?PageIndex=1&PageSize=9"
+          );
+          if (!responseCate.ok) {
+            console.log("Lỗi fetch category data...");
+            return;
           }
-        };
-    
-        fetchCategories();
-      }, []);
+          const categoryData = await responseCate.json();
+          setCategories(categoryData);
+          setCategoriesLoaded(true);
+
+          const responseOrigin = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/origin?PageIndex=1&PageSize=9"
+          );
+          if (!responseOrigin.ok) {
+            console.log("Lỗi fetch category data...");
+            return;
+          }
+          const originData = await responseOrigin.json();
+          setOrigins(originData);
+
+          const responseAge = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/age-group-product?PageIndex=1&PageSize=9"
+          );
+          if (!responseAge.ok) {
+            console.log("Lỗi fetch category data...");
+            return;
+          }
+          const ageData = await responseAge.json();
+          setAgeGroups(ageData);
+
+          const responseBrand = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/brand?PageIndex=1&PageSize=9"
+          );
+          if (!responseBrand.ok) {
+            console.log("Lỗi fetch category data...");
+            return;
+          }
+          const brandData = await responseBrand.json();
+          setBrands(brandData);
+        } catch (error) {
+          console.error(error.message);
+        } finally {
+          setLoading(false);
+        }
+      
+    };
+
+    fetchCategories();
+  }, []);
 
   const fetchData = async (pageIndex, pageSize) => {
     setLoading(true);
@@ -720,7 +705,7 @@ const ManageProduct = () => {
                                     {category.categoryName}
                                   </option>
                                 ))}
-                            <option value="">Không</option>
+                                <option value="">Không</option>
                               </select>
                             </div>
                             <div className="filter-status p-3">
@@ -782,7 +767,27 @@ const ManageProduct = () => {
                                     {ag.ageRange}
                                   </option>
                                 ))}
-                                <option value="">Không</option> 
+                                <option value="">Không</option>
+                              </select>
+                            </div>
+                            <div className="filter-status p-3">
+                              <select
+                                name=""
+                                id=""
+                                className="p-1"
+                                defaultValue=""
+                                value={statusProduct}
+                                onChange={(e) => setStatusProduct(e.target.value) === "true"}
+                              >
+                                <option value="" selected disabled>
+                                  Tình trạng sản phẩm
+                                </option>
+                                  <option value="true">
+                                    Còn hàng
+                                  </option>
+                                  <option value="false">
+                                    Hết hàng
+                                  </option>
                               </select>
                             </div>
                           </div>
@@ -881,7 +886,7 @@ const ManageProduct = () => {
                                       <td className="p-3 px-4 d-flex justify-content-center">
                                         <div
                                           className="edit-product p-2"
-                                          style={{cursor: 'pointer'}}
+                                          style={{ cursor: "pointer" }}
                                           data-bs-toggle="modal"
                                           data-bs-target="#edit-product"
                                           onClick={() =>
@@ -890,7 +895,10 @@ const ManageProduct = () => {
                                         >
                                           <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
                                         </div>
-                                        <div className="delete-product p-2" style={{cursor: 'pointer'}}>
+                                        <div
+                                          className="delete-product p-2"
+                                          style={{ cursor: "pointer" }}
+                                        >
                                           <FontAwesomeIcon
                                             icon="fa-solid fa-trash"
                                             onClick={() =>
@@ -1083,11 +1091,7 @@ const ManageProduct = () => {
                             minHeight={126}
                           />
                           <div>
-                            <img
-                              src={image}
-                              alt=""
-                              className="w-50"
-                            ></img>
+                            <img src={image} alt="" className="w-50"></img>
                           </div>
                         </td>
                       </tr>

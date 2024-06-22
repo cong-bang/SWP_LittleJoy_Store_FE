@@ -53,7 +53,7 @@ const Cart = () => {
     const productData = await fetchProductById(productId);
 
     if (productData) {
-      const maxQuantity = productData.quantity - 1;
+      const maxQuantity = productData.quantity;
       const totalQuantityInCart = getCartTotalQuantity(productId);
 
       if (totalQuantityInCart < maxQuantity) {
@@ -68,7 +68,7 @@ const Cart = () => {
     const productData = await fetchProductById(productId);
 
     if (productData) {
-      const maxQuantity = productData.quantity - 1;
+      const maxQuantity = productData.quantity;
       //const totalQuantityInCart = getCartTotalQuantity(productId);
 
       if (newQuantity <= maxQuantity) {
