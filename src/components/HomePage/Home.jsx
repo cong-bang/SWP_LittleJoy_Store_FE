@@ -185,7 +185,7 @@ const Home = () => {
 
     if (existingProductIndex > -1) {
       if (cart[existingProductIndex].quantity + 1 > maxQuantity) {
-        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn`);
+        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn tồn kho`);
         return;
       }
       cart[existingProductIndex].quantity += 1;
@@ -370,83 +370,67 @@ const Home = () => {
                   </div>
                 </>
               ) : (
-                <div className="col-md-12">
-                  <div className="row">
-                    {newProducts.map((newP) => (
-                      <div key={newP.id} className="col-md-3 p-3 mt-4">
-                        <div className="product-image text-center px-3 py-2 position-relative">
-                          <Link to={{ pathname: `/product/${newP.id}` }}>
-                            <img src={newP.image} alt="" className="w-75" />
-                          </Link>
-                          <Link
-                            to="#"
-                            className="addcart-item position-absolute start-50 translate-middle roboto"
-                            onClick={() => addToCart(newP)}
-                          >
-                            THÊM VÀO GIỎ HÀNG
-                          </Link>
-                        </div>
-                        <a
-                          href=""
-                          style={{ textDecoration: "none", color: "black" }}
-                        >
-                          <div className="product-content mt-3 px-3 py-2">
-                            <span
-                              className="roboto"
-                              style={{ fontSize: "1.2em" }}
-                            >
-                              <ProductName
-                                title={newP.productName}
-                                maxLength={20}
-                              />
-                            </span>
-                            <div className="rank-product mt-2">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <FontAwesomeIcon
-                                  key={star}
-                                  icon={faStar}
-                                  color={
-                                    star <= newP.ratingAver
-                                      ? "gold"
-                                      : "lightgrey"
-                                  }
-                                />
-                              ))}
-                            </div>
-                            <div className="mt-2 fs-5">
-                              <span
-                                className="roboto"
-                                style={{ fontWeight: 600 }}
-                              >
-                                VND {newP.price}
-                              </span>
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                    ))}
-                    <div className="col-md-12 d-flex justify-content-center mt-3">
-                      <Link
-                        to="/shop"
-                        style={{ textDecoration: "none", color: "white" }}
-                      >
-                        <div
-                          className="px-5 py-2 d-inline-block"
-                          style={{
-                            backgroundColor: "#016AAD",
-                            borderRadius: "15px",
-                          }}
-                        >
-                          <span className="roboto">Xem thêm</span>
-                        </div>
-                      </Link>
-                    </div>
+            <div className="col-md-12">
+              <div className="row">
+                {newProducts.map((newP) => (
+                <div key={newP.id} className="col-md-3 p-3 mt-4">
+                  <div className="product-image text-center px-3 py-2 position-relative">
+                    <Link to={{pathname: `/product/${newP.id}`}}>
+                      <img
+                        src={newP.image}
+                        alt=""
+                        className="w-75"
+                      />
+                    </Link>
+                    <Link
+                      to="#"
+                      className="addcart-item position-absolute start-50 translate-middle roboto"
+                      onClick={() => addToCart(newP)}
+                    >
+                      THÊM VÀO GIỎ HÀNG
+                    </Link>
                   </div>
+                  <Link to={{pathname: `/product/${newP.id}`}} style={{ textDecoration: "none", color: "black" }}>
+                    <div className="product-content mt-3 px-3 py-2">
+                      <span className="roboto" style={{ fontSize: "1.2em" }}>
+                      <ProductName title={newP.productName} maxLength={20} />
+                      </span>
+                      <div className="rank-product mt-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                          <FontAwesomeIcon
+                            key={star}
+                            icon={faStar}
+                            color={star <= newP.ratingAver ? 'gold' : 'lightgrey'}
+                          />
+                        ))}
+                      </div>
+                      <div className="mt-2 fs-5">
+                        <span className="roboto" style={{ fontWeight: 600 }}>
+                          VND {newP.price}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
                 </div>
-              )}
+                ))}
+                <div className="col-md-12 d-flex justify-content-center mt-3">
+                  <Link to="/shop" style={{ textDecoration: "none", color: "white" }}>
+                    <div
+                      className="px-5 py-2 d-inline-block"
+                      style={{
+                        backgroundColor: "#016AAD",
+                        borderRadius: "15px",
+                      }}
+                    >
+                      <span className="roboto">Xem thêm</span>
+                    </div>
+                  </Link>
+                </div>
+              </div>
             </div>
+          )}
           </div>
-        </section>
+        </div>
         <div className="container mt-5">
           <div className="row">
             <div className="col-md-12 text-center pt-5">

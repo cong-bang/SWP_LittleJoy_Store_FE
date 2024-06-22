@@ -260,7 +260,7 @@ const Product = () => {
     }
 
     if (newQuantity > maxQuantity) {
-      toast.error(`Số lượng ${product.productName} đã đạt giới hạn`);
+      toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho`);
       return;
     }
 

@@ -23,6 +23,10 @@ const Shop = () => {
     TotalCount: 0,
   });
   const { pathname } = useLocation();
+  const [categories, setCategories] = useState([]);
+  const [origins, setOrigins] = useState([]);
+  const [ageGroups, setAgeGroups] = useState([]);
+  const [brands, setBrands] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -153,6 +157,60 @@ const Shop = () => {
     }));
   };
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const responseCate = await fetch(
+          'https://littlejoyapi.azurewebsites.net/api/category'
+        );
+        if (!responseCate.ok) {
+          console.log('Lỗi fetch category data...');
+          return;
+        }
+        const categoryData = await responseCate.json();
+        setCategories(categoryData);
+
+        const responseOrigin = await fetch(
+          'https://littlejoyapi.azurewebsites.net/api/origin'
+        );
+        if (!responseOrigin.ok) {
+          console.log('Lỗi fetch category data...');
+          return;
+        }
+        const originData = await responseOrigin.json();
+        setOrigins(originData);
+
+        const responseAge = await fetch(
+          'https://littlejoyapi.azurewebsites.net/api/age-group-product'
+        );
+        if (!responseAge.ok) {
+          console.log('Lỗi fetch category data...');
+          return;
+        }
+        const ageData = await responseAge.json();
+        setAgeGroups(ageData);
+
+        const responseBrand = await fetch(
+          'https://littlejoyapi.azurewebsites.net/api/brand'
+        );
+        if (!responseBrand.ok) {
+          console.log('Lỗi fetch category data...');
+          return;
+        }
+        const brandData = await responseBrand.json();
+        setBrands(brandData);
+        
+      } catch (error) {
+        console.error(error.message);
+      } finally {
+        
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+
   const ProductName = ({ title, maxLength }) => {
     const truncateTitle = (title, maxLength) => {
       if (title.length <= maxLength) return title;
@@ -191,7 +249,7 @@ const Shop = () => {
 
     if (existingProductIndex > -1) {
       if (cart[existingProductIndex].quantity + 1 > maxQuantity) {
-        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn`);
+        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn tồn kho`);
         return;
       }
       cart[existingProductIndex].quantity += 1;
@@ -351,207 +409,110 @@ const Shop = () => {
           </div>
           <div className="row mt-4">
             <div className="col-md-2">
+              {/* FILTER CATEGORY */}
               <div className="w-100 d-flex justify-content-center item-filter-left py-4 mb-4 scroll-filter-left">
-                <table className="w-75">
-                  <tbody>
+                <table className="w-75" style={{ display: 'block', maxHeight: '200px', overflowY: 'auto' }}>
+                  <tbody style={{ display: 'block' }}>
                     <tr>
-                      <td
-                        colSpan="2"
-                        className="pb-3 fs-5"
-                        style={{ color: "#67686C" }}
-                      >
+                      <td colSpan="2" className="pb-3 fs-5" style={{ color: "#67686C" }}>
                         <span>Loại sữa</span>
                       </td>
                     </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='suabot' onChange={() => handleFilterChange('cateId', 2)} />
-                      </td>
-                      <td className="w-85"><label htmlFor="suabot" >Sữa bột</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='suatuoi' onChange={() => handleFilterChange('cateId', 3)} />
-                      </td>
-                      <td><label htmlFor="suatuoi" >Sữa tươi</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='suabau' onChange={() => handleFilterChange('cateId', 4)} />
-                      </td>
-                      <td><label htmlFor="suabau">Sữa bầu</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='suachua' onChange={() => handleFilterChange('cateId', 5)} />
-                      </td>
-                      <td><label htmlFor="suachua">Sữa chua</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='suahat' onChange={() => handleFilterChange('cateId', 6)} />
-                      </td>
-                      <td><label htmlFor="suahat">Sữa hạt</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='sualuamach' onChange={() => handleFilterChange('cateId', 7)} />
-                      </td>
-                      <td><label htmlFor="sualuamach">Sữa lúa mạch</label></td>
-                    </tr>
+                    {categories.map(category => (
+                      <tr key={category.id} style={{ display: 'table', width: '100%', tableLayout: 'fixed' }}>
+                        <td className="w-15 py-1">
+                          <input
+                            type="checkbox"
+                            id={`category-${category.id}`}
+                            onChange={() => handleFilterChange('cateId', category.id)}
+                          />
+                        </td>
+                        <td className="w-85">
+                          <label htmlFor={`category-${category.id}`}>{category.categoryName}</label>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
+
+              {/* FILTER BRAND */}
               <div className="w-100 d-flex justify-content-center item-filter-left py-3 mb-5">
-                <table className="w-75">
-                  <tbody>
+                <table className="w-75" style={{ display: 'block', maxHeight: '200px', overflowY: 'auto' }}>
+                  <tbody style={{ display: 'block' }}>
                     <tr>
-                      <td
-                        colSpan="2"
-                        className="pb-3 fs-5"
-                        style={{ color: "#67686C" }}
-                      >
+                      <td colSpan="2" className="pb-3 fs-5" style={{ color: "#67686C" }}>
                         <span>Thương hiệu</span>
                       </td>
                     </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='meji' onChange={() => handleFilterChange('brandId', 2)} />
-                      </td>
-                      <td className="w-85"><label htmlFor="meji">Meji</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='ensure' onChange={() => handleFilterChange('brandId', 3)} />
-                      </td>
-                      <td><label htmlFor="ensure">Ensure</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='kidsboost' onChange={() => handleFilterChange('brandId', 4)} />
-                      </td>
-                      <td><label htmlFor="kidsboost">Kids Boost</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='abbottgrow' onChange={() => handleFilterChange('brandId', 1)} />
-                      </td>
-                      <td><label htmlFor="abbottgrow">Abbott Grow</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='vinamilk' onChange={() => handleFilterChange('brandId', 7)} />
-                      </td>
-                      <td><label htmlFor="vinamilk">Vinamilk</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='similac' onChange={() => handleFilterChange('brandId', 6)} />
-                      </td>
-                      <td><label htmlFor="similac">Similac</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='khac' />
-                      </td>
-                      <td><label htmlFor="khac">Khác</label></td>
-                    </tr>
+                    {brands.map(brand => (
+                      <tr key={brand.id} style={{ display: 'table', width: '100%', tableLayout: 'fixed' }}>
+                        <td className="w-15 py-1">
+                          <input
+                            type="checkbox"
+                            id={`brand-${brand.id}`}
+                            onChange={() => handleFilterChange('brandId', brand.id)}
+                          />
+                        </td>
+                        <td className="w-85">
+                          <label htmlFor={`brand-${brand.id}`}>{brand.brandName}</label>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
+              
+              {/* FILTER AGE */}
               <div className="w-100 d-flex justify-content-center item-filter-left py-3 mb-5">
-                <table className="w-75">
-                  <tbody>
+                <table className="w-75" style={{ display: 'block', maxHeight: '200px', overflowY: 'auto' }}>
+                  <tbody style={{ display: 'block' }}>
                     <tr>
-                      <td
-                        colSpan="2"
-                        className="pb-3 fs-5"
-                        style={{ color: "#67686C" }}
-                      >
+                      <td colSpan="2" className="pb-3 fs-5" style={{ color: "#67686C" }}>
                         <span>Theo tuổi</span>
                       </td>
                     </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='duoi6thang' onChange={() => handleFilterChange('ageId', 2)} />
-                      </td>
-                      <td className="w-85"><label htmlFor="duoi6thang">Dưới 6 tháng</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='6-12thang' onChange={() => handleFilterChange('ageId', 3)} />
-                      </td>
-                      <td><label htmlFor="6-12thang">6 - 12 tháng</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='1-2tuoi' onChange={() => handleFilterChange('ageId', 1)} />
-                      </td>
-                      <td><label htmlFor="1-2tuoi">1 - 2 tuổi</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1"> 
-                        <input type="checkbox" id="2-6tuoi" onChange={() => handleFilterChange('ageId', 6)} />
-                      </td>
-                      <td><label htmlFor="2-6tuoi">2 - 6 tuổi</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='tu6tuoi' onChange={() => handleFilterChange('ageId', 5)} />
-                      </td>
-                      <td><label htmlFor="tu6tuoi">Từ 6 tuổi</label></td>
-                    </tr>
+                    {ageGroups.map(ageGroup => (
+                      <tr key={ageGroup.id} style={{ display: 'table', width: '100%', tableLayout: 'fixed' }}>
+                        <td className="w-15 py-1">
+                          <input
+                            type="checkbox"
+                            id={`age-${ageGroup.id}`}
+                            onChange={() => handleFilterChange('ageId', ageGroup.id)}
+                          />
+                        </td>
+                        <td className="w-85">
+                          <label htmlFor={`age-${ageGroup.id}`}>{ageGroup.ageRange}</label>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
+
+              {/* FILTER ORIGIN */}
               <div className="w-100 d-flex justify-content-center item-filter-left py-3 mb-4">
-                <table className="w-75">
-                  <tbody>
+                <table className="w-75" style={{ display: 'block', maxHeight: '200px', overflowY: 'auto' }}>
+                  <tbody style={{ display: 'block' }}>
                     <tr>
-                      <td
-                        colSpan="2"
-                        className="pb-3 fs-5"
-                        style={{ color: "#67686C" }}
-                      >
+                      <td colSpan="2" className="pb-3 fs-5" style={{ color: "#67686C" }}>
                         <span>Xuất xứ</span>
                       </td>
                     </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='vietnam' onChange={() => handleFilterChange('originId', 2)} />
-                      </td>
-                      <td className="w-85"><label htmlFor="vietnam">Việt Nam</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='chauau' onChange={() => handleFilterChange('originId', 3)} />
-                      </td>
-                      <td><label htmlFor="chauau">Châu Âu</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='nuocmy' onChange={() => handleFilterChange('originId', 4)} />
-                      </td>
-                      <td><label htmlFor="nuocmy">Mỹ</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='nhat' onChange={() => handleFilterChange('originId', 5)} />
-                      </td>
-                      <td><label htmlFor="nhat">Nhật</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id="uc" onChange={() => handleFilterChange('originId', 6)} />
-                      </td>
-                      <td><label htmlFor="uc">Úc</label></td>
-                    </tr>
-                    <tr>
-                      <td className="w-15 py-1">
-                        <input type="checkbox" id='nuockhac' onChange={() => handleFilterChange('originId', 7)} />
-                      </td>
-                      <td><label htmlFor="nuockhac">Khác</label></td>
-                    </tr>
+                    {origins.map(origin => (
+                      <tr key={origin.id} style={{ display: 'table', width: '100%', tableLayout: 'fixed' }}>
+                        <td className="w-15 py-1">
+                          <input
+                            type="checkbox"
+                            id={`origin-${origin.id}`}
+                            onChange={() => handleFilterChange('originId', origin.id)}
+                          />
+                        </td>
+                        <td className="w-85">
+                          <label htmlFor={`origin-${origin.id}`}>{origin.originName}</label>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -579,7 +540,7 @@ const Shop = () => {
                     </Link>
                   </div>
                   <Link
-                    to="#"
+                    to={{pathname: `/product/${p.id}`}}
                     style={{ textDecoration: "none", color: "black" }}
                   >
                     <div className="product-content mt-3 px-3 py-2">
