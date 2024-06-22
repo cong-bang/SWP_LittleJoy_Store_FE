@@ -1,11 +1,98 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/css/styleUserProfile.css";
 import Ellipse2 from "../../assets/img/Ellipse2.png";
 import { apiFetch } from '../../services/api';
+import UploadImage from "../UploadImage/UploadImage";
+import avatarUnknown from "../../assets/img/avatarUnknown.jpg";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export default function UserProfile() {
+const UserProfile = () => {
+
+  const [user, setUser] = useState({});
+  const [avatar, setAvatar] = useState('');
+  const [fullname,setFullname] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  
+    const fetchDataUser = async () => {
+      try {
+        const userId = localStorage.getItem('userId');
+        const response = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/user/${userId}`
+        );
+        if (!response.ok) {
+          console.log('Lỗi fetch category data...');
+          return;
+        }
+        const userData = await response.json();
+        setUser(userData);
+        setFullname(userData.fullname);
+        setAvatar(userData.avatar);
+        setPhoneNumber(userData.phoneNumber);
+
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+
+    useEffect(() => {
+      fetchDataUser();
+    }, [])
+
+  const handleUploadComplete = (url) => {
+    setAvatar(url);
+  };
+
+  const notify = () =>
+    toast.error('Vui lòng nhập đủ thông tin', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+
+  const handleChangProfile = async () => {
+    if (
+      fullname.trim() === "" ||
+      phoneNumber.trim() === ""
+    ) {
+      notify();
+      return;
+    }
+
+  const newProfile = {
+    id: user.id,
+    fullname: fullname,
+    avatar: avatar,
+  };
+  console.log(newProfile);
+  try {
+    const response = await fetch('https://littlejoyapi.azurewebsites.net/api/user/user-role', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newProfile),
+    });
+    
+    if (response.ok) {
+      toast.success('Thông tin cá nhân của bạn được sửa thành công!');
+      fetchDataUser();
+    } else {
+      toast.error('Thông tin cá nhân của bạn sửa thất bại');
+    }
+    const result = await response.json();
+  } catch (error) {
+    console.error('Lỗi:', error);
+  }
+  }
 
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -22,6 +109,7 @@ export default function UserProfile() {
 
   return (
     <>
+    <ToastContainer />
       <section>
         <div>
           <div className="banner container-fluid pb-5 mb-5">
@@ -51,12 +139,12 @@ export default function UserProfile() {
                   <td className="w-25">
                     <div className="w-100 d-flex justify-content-center">
                       <div className="border-avatar w-75 text-center">
-                        <img src={Ellipse2} alt="" className="w-100" />
+                        <img src={user.avatar || avatarUnknown} alt="" className="w-100" style={{ borderRadius: '50%', width: '75%' }} />
                       </div>
                     </div>
                   </td>
                   <td className="w-75">
-                    <span className="fs-5 ps-2 fw-bold">phamhieu2k3</span>
+                    <span className="fs-5 ps-2 fw-bold">{user.userName}</span>
                   </td>
                 </tr>
 
@@ -192,7 +280,7 @@ export default function UserProfile() {
                           <span style={{ fontSize: "20px" }}>Username:</span>
                         </td>
                         <td className="w-70 ps-3">
-                          <span style={{ fontSize: "20px" }}>phamhieu</span>
+                          <span style={{ fontSize: "20px" }}>{user.userName}</span>
                         </td>
                       </tr>
                       <tr>
@@ -204,7 +292,8 @@ export default function UserProfile() {
                             type="text"
                             name=""
                             id=""
-                            value="Pham Van Tuan Hieu"
+                            value={fullname}
+                            onChange={(e) => setFullname(e.target.value)}
                             className="w-75 px-2 py-1"
                             style={{
                               border: "1px solid #CCCCCC",
@@ -218,7 +307,7 @@ export default function UserProfile() {
                           <span style={{ fontSize: "20px" }}>Points:</span>
                         </td>
                         <td className="pt-3 ps-3">
-                          <span style={{ fontSize: "20px" }}>1000</span>
+                          <span style={{ fontSize: "20px" }}>{user.points}</span>
                         </td>
                       </tr>
                       <tr>
@@ -232,7 +321,8 @@ export default function UserProfile() {
                             type="text"
                             name=""
                             id=""
-                            value="0987654321"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
                             className="w-75 px-2 py-1"
                             style={{
                               border: "1px solid #CCCCCC",
@@ -247,7 +337,7 @@ export default function UserProfile() {
                         </td>
                         <td className="pt-3 ps-3">
                           <span style={{ fontSize: "20px" }}>
-                            baoton1234@gmail.com
+                            {user.email}
                           </span>
                         </td>
                       </tr>
@@ -264,6 +354,7 @@ export default function UserProfile() {
                                 border: "none",
                                 borderRadius: "5px",
                               }}
+                              onClick={handleChangProfile}
                             />
                           </div>
                         </td>
@@ -273,7 +364,7 @@ export default function UserProfile() {
                 </div>
               </div>
               <div
-                className="col-md-4 py-5"
+                className="col-md-4 py-5 px-2"
                 style={{ boxSizing: "border-box" }}
               >
                 <div
@@ -290,21 +381,18 @@ export default function UserProfile() {
                           overflow: "hidden",
                         }}
                       >
-                        <img src={Ellipse2} alt="" className="w-75" />
+                        <img src={avatar || avatarUnknown} alt="" className="w-75" style={{ borderRadius: '50%', width: '75%' }} />
                       </div>
                     </div>
                     <div className="box-choose-image text-center pt-3">
-                      <input
-                        type="submit"
-                        name=""
-                        id=""
-                        value="Choose image"
-                        style={{
-                          backgroundColor: "white",
-                          border: "1px solid gray",
-                        }}
-                        className="p-1"
-                      />
+                    <UploadImage
+                      aspectRatio={3/2}
+                      onUploadComplete={handleUploadComplete}
+                      maxWidth={2048}
+                      maxHeight={2048}
+                      minWidth={300}
+                      minHeight={300}
+                    />
                     </div>
                     <div className="box-choose-image text-center pt-3">
                       <span style={{ color: "#757575" }}>
@@ -322,3 +410,4 @@ export default function UserProfile() {
     </>
   );
 }
+export default UserProfile;

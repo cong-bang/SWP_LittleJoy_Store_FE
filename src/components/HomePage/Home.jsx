@@ -191,7 +191,7 @@ const Home = () => {
 
     if (existingProductIndex > -1) {
       if (cart[existingProductIndex].quantity + 1 > maxQuantity) {
-        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn`);
+        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn tồn kho`);
         return;
       }
       cart[existingProductIndex].quantity += 1;
@@ -362,7 +362,7 @@ const Home = () => {
                       THÊM VÀO GIỎ HÀNG
                     </Link>
                   </div>
-                  <a href="" style={{ textDecoration: "none", color: "black" }}>
+                  <Link to={{pathname: `/product/${newP.id}`}} style={{ textDecoration: "none", color: "black" }}>
                     <div className="product-content mt-3 px-3 py-2">
                       <span className="roboto" style={{ fontSize: "1.2em" }}>
                       <ProductName title={newP.productName} maxLength={20} />
@@ -382,7 +382,7 @@ const Home = () => {
                         </span>
                       </div>
                     </div>
-                  </a>
+                  </Link>
                 </div>
                 ))}
                 <div className="col-md-12 d-flex justify-content-center mt-3">
