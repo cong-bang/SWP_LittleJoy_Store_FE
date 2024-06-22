@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import similac from "../../assets/img/similac.png";
 import "../../assets/css/stylecart.css";
-import cartImg from "../../assets/img/cart.jpg";
+import cartImg from "../../assets/img/cart.png";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -115,17 +115,17 @@ const Cart = () => {
                 fontWeight: "600",
               }}
             >
-              Shopping Cart
+              Giỏ Hàng
             </h1>
             <p className="myhome pt-2">
-              <Link to="/">Home</Link>
+              <Link to="/">Trang chủ</Link>
               <span>
                 <FontAwesomeIcon
                   icon="fa-solid fa-angles-right"
                   className="px-4"
                 />
               </span>
-              <Link to="/cart">Cart</Link>
+              <Link to="/cart">Giỏ hàng</Link>
             </p>
           </div>
         </div>
@@ -133,31 +133,31 @@ const Cart = () => {
 
       <section>
         <div className="container-fluid my-5 roboto">
-          <div className="container">
-            <div className="row">
+          <div className="container my-5 py-5">
+            <div className="row py-5">
               <div className="col-md-12">
                 <form action="#">
                   {cart.length > 0 ? (
                   <table className="w-100">
                     <tbody>
                       <tr className="a">
-                        <td className="text-center Dongle p-3">Product</td>
-                        <td className="text-center p-3"></td>
-                        <td className="text-center Dongle p-3">Price</td>
-                        <td className="text-center Dongle p-3">Quatity</td>
-                        <td className="text-center Dongle p-3">Total</td>
-                        <td className="text-center Dongle p-3">Remove</td>
+                        <td className="text-center Dongle p-3" style={{width: '15%'}}>Sản Phẩm</td>
+                        <td className="text-center p-3" style={{width: '20%'}}></td>
+                        <td className="text-center Dongle p-3" style={{width: '15%'}}>Đơn Giá</td>
+                        <td className="text-center Dongle p-3" style={{width: '20%'}}>Số Lượng</td>
+                        <td className="text-center Dongle p-3" style={{width: '15%'}}>Số Tiền</td>
+                        <td className="text-center Dongle p-3" style={{width: '15%'}}>Thao Tác</td>
                       </tr>
                       {cart.map((p) => (
                       <tr key={p.id} className="py-table">
                         <td className="text-center p-1">
-                          <img src={p.image} alt="" style={{height: '60px', width: '60px'}} />
+                          <img src={p.image} alt="" className="w-50" />
                         </td>
                         <td className="textbody">
-                          <p className="mb-0"><ProductName title={p.productName} maxLength={20} /></p>
+                          <span className="mb-0" style={{fontSize: '21px'}}><ProductName title={p.productName} maxLength={20} /></span>
                         </td>
                         <td className="text-center textbody ">
-                          <p className="mb-0">VND {p.price}</p>
+                          <p className="mb-0" style={{fontSize: '20px'}}>VND {(p.price).toLocaleString('de-DE')}</p>
                         </td>
                         <td className="">
                           <div className="btn-quantity w-100 d-flex justify-content-center">
@@ -198,10 +198,10 @@ const Cart = () => {
                           </div>
                         </td>
                         <td className="text-center textbody">
-                          <p className="mb-0">VND {(p.price * p.quantity).toLocaleString('de-DE')}</p>
+                          <p className="mb-0" style={{fontSize: '20px'}}>VND {(p.price * p.quantity).toLocaleString('de-DE')}</p>
                         </td>
                         <td className="text-center ">
-                          <div className="trash">
+                          <div className="trash" style={{color: 'red'}}>
                             <FontAwesomeIcon icon="fa-solid fa-trash-can" onClick={() => removeFromCart(p.id)}/>
                           </div>
                         </td>
@@ -310,11 +310,11 @@ const Cart = () => {
                         </td>
                       </tr> */}
                       <tr className="a">
-                        <td className="text-center Dongle">
-                          <span className="ps-3">Tổng tiền: </span>
+                        <td className="text-center">
+                          <span className="ps-3 fw-bold" style={{fontSize: '22px'}}>Tổng tiền: </span>
                         </td>
-                        <td className="Dongle p-3 ">
-                          <p className="mb-0">VND {calculateTotal()}</p>
+                        <td className="p-3 ">
+                          <p className="mb-0 fw-bold" style={{fontSize: '22px'}}>VND {calculateTotal()}</p>
                         </td>
                         <td></td>
                         <td></td>
@@ -326,7 +326,7 @@ const Cart = () => {
                               type="submit"
                               value=""
                             >
-                              <span>Thanh toán</span>
+                              <span style={{fontSize: '20px'}}>Thanh toán</span>
                             </div>
                           </div>
                         </td>
@@ -334,7 +334,7 @@ const Cart = () => {
                     </tbody>
                   </table>
                   ) : (
-                    <div className="col-md-12 text-center">
+                    <div className="col-md-12 text-center my-5 py-5">
           
                 <div
                   className="d-inline-block p-5"

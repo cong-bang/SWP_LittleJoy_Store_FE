@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -11,45 +11,45 @@ import {
   faClipboardList,
   faUsers,
   faBan,
-  faX
+  faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import '../../assets/css/styleadminproduct.css'
+import "../../assets/css/styleadminproduct.css";
 import similac from "../../assets/img/similac.png";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ContentLoader from "react-content-loader";
 import UploadImage from "../UploadImage/UploadImage";
 import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
 
- const ManageProduct = () => {
-    const [products, setProducts] = useState([]);
-    const [keyword, setKeyword] = useState('');
-    const [paging, setPaging] = useState({
-        CurrentPage: 1,
-        PageSize: 9,
-        TotalPages: 1,
-        TotalCount: 0,
-      });
-      const { pathname } = useLocation();
-      const [categories, setCategories] = useState([]);
-      const [origins, setOrigins] = useState([]);
-      const [ageGroups, setAgeGroups] = useState([]);
-      const [brands, setBrands] = useState([]);
-      const [loading, setLoading] = useState(false);
+const ManageProduct = () => {
+  const [products, setProducts] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const [paging, setPaging] = useState({
+    CurrentPage: 1,
+    PageSize: 9,
+    TotalPages: 1,
+    TotalCount: 0,
+  });
+  const { pathname } = useLocation();
+  const [categories, setCategories] = useState([]);
+  const [origins, setOrigins] = useState([]);
+  const [ageGroups, setAgeGroups] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-      const [productName, setProductName] = useState('');
-      const [type, setType] = useState('');
-      const [price, setPrice] = useState('');
-      const [weight, setWeight] = useState(null);
-      const [quantity, setQuantity] = useState(5);
-      const [description, setDescription] = useState('');
-      const [image, setImage] = useState('');
-      const [isActive, setIsActive] = useState(true);
-      const [ageId, setAgeId] = useState(2);
-      const [originId, setOriginId] = useState(1);
-      const [brandId, setBrandId] = useState(1);
-      const [cateId, setCateId] = useState(1);
+  const [productName, setProductName] = useState("");
+  const [type, setType] = useState("");
+  const [price, setPrice] = useState("");
+  const [weight, setWeight] = useState(null);
+  const [quantity, setQuantity] = useState(5);
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
+  const [isActive, setIsActive] = useState(true);
+  const [ageId, setAgeId] = useState(2);
+  const [originId, setOriginId] = useState(1);
+  const [brandId, setBrandId] = useState(1);
+  const [cateId, setCateId] = useState(1);
 
       const [selectedProduct, setSelectedProduct] = useState({});
       const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,30 +63,47 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
       const [categoriesLoaded, setCategoriesLoaded] = useState(false); 
       const [statusProduct, setStatusProduct] = useState(true);
 
-      const TableLoading = () => (
-        <ContentLoader
-          speed={2}
-          width={"100%"}
-          height={160}
-          
-          backgroundColor="#C0C0C0"
-          foregroundColor="#d9d9d9"
-        >
-          <rect x="0" y="20" rx="3" ry="3" width="100%" height="10" />
-          <rect x="0" y="40" rx="3" ry="3" width="100%" height="10" />
-          <rect x="0" y="60" rx="3" ry="3" width="100%" height="10" />
-        </ContentLoader>
-      );
-        
-      useEffect(() => {
-        window.scrollTo(0, 0);
-        const roleFromLocalStorage = localStorage.getItem("userRole");
-        const usernameFromLocalStorage = localStorage.getItem("userName");
-        if (roleFromLocalStorage === "ADMIN" || roleFromLocalStorage === "STAFF" || roleFromLocalStorage === "USER" && usernameFromLocalStorage) {
-          setUsername(usernameFromLocalStorage);
-        }
-      }, [pathname]);
+  const TableLoading = () => (
+    <ContentLoader
+      speed={2}
+      width={"100%"}
+      height={160}
+      backgroundColor="#C0C0C0"
+      foregroundColor="#d9d9d9"
+    >
+      <rect x="0" y="20" rx="3" ry="3" width="100%" height="10" />
+      <rect x="0" y="40" rx="3" ry="3" width="100%" height="10" />
+      <rect x="0" y="60" rx="3" ry="3" width="100%" height="10" />
+    </ContentLoader>
+  );
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const roleFromLocalStorage = localStorage.getItem("userRole");
+    const usernameFromLocalStorage = localStorage.getItem("userName");
+    if (
+      roleFromLocalStorage === "ADMIN" ||
+      roleFromLocalStorage === "STAFF" ||
+      (roleFromLocalStorage === "USER" && usernameFromLocalStorage)
+    ) {
+      setUsername(usernameFromLocalStorage);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    setLoading(true);
+    const fetchCategories = async () => {
+      try {
+        const responseCate = await fetch(
+          "https://littlejoyapi.azurewebsites.net/api/category?PageIndex=1&PageSize=9"
+        );
+        if (!responseCate.ok) {
+          console.log("Lỗi fetch category data...");
+          return;
+        }
+        const categoryData = await responseCate.json();
+        setCategories(categoryData);
+        setCategoriesLoaded(true);
       useEffect(() => {
         setLoading(true);
         const fetchCategories = async () => {
@@ -103,25 +120,25 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
             setCategories(categoryData);
             setCategoriesLoaded(true);
 
-            const responseOrigin = await fetch(
-              'https://littlejoyapi.azurewebsites.net/api/origin?PageIndex=1&PageSize=9'
-            );
-            if (!responseOrigin.ok) {
-              console.log('Lỗi fetch category data...');
-              return;
-            }
-            const originData = await responseOrigin.json();
-            setOrigins(originData);
+        const responseOrigin = await fetch(
+          "https://littlejoyapi.azurewebsites.net/api/origin?PageIndex=1&PageSize=9"
+        );
+        if (!responseOrigin.ok) {
+          console.log("Lỗi fetch category data...");
+          return;
+        }
+        const originData = await responseOrigin.json();
+        setOrigins(originData);
 
-            const responseAge = await fetch(
-              'https://littlejoyapi.azurewebsites.net/api/age-group-product?PageIndex=1&PageSize=9'
-            );
-            if (!responseAge.ok) {
-              console.log('Lỗi fetch category data...');
-              return;
-            }
-            const ageData = await responseAge.json();
-            setAgeGroups(ageData);
+        const responseAge = await fetch(
+          "https://littlejoyapi.azurewebsites.net/api/age-group-product?PageIndex=1&PageSize=9"
+        );
+        if (!responseAge.ok) {
+          console.log("Lỗi fetch category data...");
+          return;
+        }
+        const ageData = await responseAge.json();
+        setAgeGroups(ageData);
 
             const responseBrand = await fetch(
               'https://littlejoyapi.azurewebsites.net/api/brand?PageIndex=1&PageSize=9'
@@ -138,218 +155,223 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
           } finally {
             setLoading(false);
           }
-        }
         };
     
         fetchCategories();
       }, []);
 
-      const fetchData = async (pageIndex, pageSize) => {
-        setLoading(true);
-        try {
-          const searchParams = new URLSearchParams();
-          if (searchCate != null) searchParams.append("cateId", searchCate);
-          if (searchOrigin != null) searchParams.append("originId", searchOrigin);
-          if (searchAge != null) searchParams.append("ageId", searchAge);
-          if (searchBrand != null) searchParams.append("brandId", searchBrand);
-          searchParams.append('PageIndex', pageIndex);
-          searchParams.append('PageSize', pageSize);
-          
-          
-          if (keyword) searchParams.append('keyword', keyword);
-      
-          const response = await fetch(
-            `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=${pageIndex}&PageSize=9&${searchParams.toString()}`
-          );
-      
-          if (!response.ok) {
-            if (response.status === 404) {
-              setProducts([]);
-              setPaging({
-                CurrentPage: 1,
-                PageSize: 9,
-                TotalPages: 1,
-                TotalCount: 0,
-              });
-            } else {
-              console.log('Lỗi fetch data...');
-              setProducts([]);
-              setPaging({
-                CurrentPage: 1,
-                PageSize: 9,
-                TotalPages: 1,
-                TotalCount: 0,
-              });
-            }
-            return;
-          }
-      
-          const paginationData = await JSON.parse(response.headers.get("X-Pagination"));
-          setPaging(paginationData);
+  const fetchData = async (pageIndex, pageSize) => {
+    setLoading(true);
+    try {
+      const searchParams = new URLSearchParams();
+      if (searchCate != null) searchParams.append("cateId", searchCate);
+      if (searchOrigin != null) searchParams.append("originId", searchOrigin);
+      if (searchAge != null) searchParams.append("ageId", searchAge);
+      if (searchBrand != null) searchParams.append("brandId", searchBrand);
+      searchParams.append("PageIndex", pageIndex);
+      searchParams.append("PageSize", pageSize);
 
-          const dataProducts = await response.json();
-          const formattedProducts = await dataProducts.map(product => {
-            const category = categories.find(c => c.id == product.cateId);
-            return {
-              ...product,
-              price: formatPrice(product.price),
-              categoryName: category ? category.categoryName : 'Khác',
-            };
+      if (keyword) searchParams.append("keyword", keyword);
+
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=${pageIndex}&PageSize=9&${searchParams.toString()}`
+      );
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          setProducts([]);
+          setPaging({
+            CurrentPage: 1,
+            PageSize: 9,
+            TotalPages: 1,
+            TotalCount: 0,
           });
-          setProducts(formattedProducts);
-          
-          
-        } catch (error) {
-          console.error(error.message);
-        } finally {
-            setLoading(false);
-          }
-      };
-      
-      useEffect(() => {
-        if (categoriesLoaded) { 
-          fetchData(paging.CurrentPage, paging.PageSize);
+        } else {
+          console.log("Lỗi fetch data...");
+          setProducts([]);
+          setPaging({
+            CurrentPage: 1,
+            PageSize: 9,
+            TotalPages: 1,
+            TotalCount: 0,
+          });
         }
-      }, [categoriesLoaded, paging.CurrentPage, keyword, searchCate, searchAge, searchBrand, searchOrigin]);
-    
+        return;
+      }
 
-      const formatPrice = (price) => {
-        return price.toLocaleString('de-DE');
-      };
+      const paginationData = await JSON.parse(
+        response.headers.get("X-Pagination")
+      );
+      setPaging(paginationData);
 
-      const ProductName = ({ title, maxLength }) => {
-        const truncateTitle = (title, maxLength) => {
-          if (title.length <= maxLength) return title;
-          return title.substring(0, maxLength) + "...";
+      const dataProducts = await response.json();
+      const formattedProducts = await dataProducts.map((product) => {
+        const category = categories.find((c) => c.id == product.cateId);
+        return {
+          ...product,
+          price: formatPrice(product.price),
+          categoryName: category ? category.categoryName : "Khác",
         };
-        return (
-          <>
-            {truncateTitle(title, maxLength)}
-          </>
-        );
-      };
+      });
+      setProducts(formattedProducts);
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      const handlePageChange = (newPage) => {      
-            setPaging((prev) => ({
-              ...prev,
-              CurrentPage: newPage,
-            }));
-      };
+  useEffect(() => {
+    if (categoriesLoaded) {
+      fetchData(paging.CurrentPage, paging.PageSize);
+    }
+  }, [
+    categoriesLoaded,
+    paging.CurrentPage,
+    keyword,
+    searchCate,
+    searchAge,
+    searchBrand,
+    searchOrigin,
+  ]);
 
-      const notify = () =>
-        toast.error('Vui lòng nhập đủ thông tin', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          });
+  const formatPrice = (price) => {
+    return price.toLocaleString("de-DE");
+  };
 
-      const refreshFieldAddProduct = () => {
-        setProductName('');
-        setPrice('');
-        setDescription('');
-        setWeight('');
+  const ProductName = ({ title, maxLength }) => {
+    const truncateTitle = (title, maxLength) => {
+      if (title.length <= maxLength) return title;
+      return title.substring(0, maxLength) + "...";
+    };
+    return <>{truncateTitle(title, maxLength)}</>;
+  };
+
+  const handlePageChange = (newPage) => {
+    setPaging((prev) => ({
+      ...prev,
+      CurrentPage: newPage,
+    }));
+  };
+
+  const notify = () =>
+    toast.error("Vui lòng nhập đủ thông tin", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  const refreshFieldAddProduct = () => {
+    setProductName("");
+    setPrice("");
+    setDescription("");
+    setWeight("");
+    setQuantity(5);
+    setImage("");
+    setIsActive(true);
+    setAgeId(2);
+    setBrandId(1);
+    setCateId(1);
+    setOriginId(1);
+  };
+
+  const handleAddProduct = async () => {
+    if (
+      productName.trim() === "" ||
+      price.trim() === "" ||
+      description.trim() === "" ||
+      weight.trim() === "" ||
+      image.trim() === ""
+    ) {
+      notify();
+      return;
+    }
+
+    const newProduct = {
+      productName: productName,
+      price: parseFloat(price),
+      description: description,
+      weight: parseInt(weight),
+      quantity: quantity,
+      image: image,
+      isActive: isActive,
+      ageId: ageId,
+      originId: originId,
+      brandId: brandId,
+      cateId: cateId,
+    };
+
+    try {
+      const response = await fetch(
+        "https://littlejoyapi.azurewebsites.net/api/product",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newProduct),
+        }
+      );
+
+      if (response.ok) {
+        toast.success("Sản phẩm được tạo thành công!");
+        fetchData(paging.CurrentPage, paging.PageSize);
+        setProductName("");
+        setPrice("");
+        setDescription("");
+        setWeight("");
         setQuantity(5);
-        setImage('');
+        setImage("");
         setIsActive(true);
         setAgeId(2);
         setBrandId(1);
         setCateId(1);
         setOriginId(1);
+      } else {
+        console.log("Lỗi khi tạo sản phẩm");
       }
+      const result = await response.json();
+    } catch (error) {
+      console.error("Lỗi:", error);
+    }
+  };
 
-      const handleAddProduct = async () => {
-        if (
-            productName.trim() === "" ||
-            price.trim() === "" ||
-            description.trim() === "" ||
-            weight.trim() === "" ||
-            image.trim() === "" 
-          ) {
-            notify();
-            return;
-          }
+  const handleUploadComplete = (url) => {
+    setImage(url);
+  };
 
-        const newProduct = {
-          productName: productName,
-          price: parseFloat(price),
-          description: description,
-          weight: parseInt(weight), 
-          quantity: quantity,
-          image: image,
-          isActive: isActive,
-          ageId: ageId,
-          originId: originId,
-          brandId: brandId,
-          cateId: cateId
-        };
-    
-        try {
-          const response = await fetch('https://littlejoyapi.azurewebsites.net/api/product', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newProduct),
-          });
-          
-          if (response.ok) {
-            toast.success('Sản phẩm được tạo thành công!');
-            fetchData(paging.CurrentPage, paging.PageSize);
-            setProductName('');
-            setPrice('');
-            setDescription('');
-            setWeight('');
-            setQuantity(5);
-            setImage('');
-            setIsActive(true);
-            setAgeId(2);
-            setBrandId(1);
-            setCateId(1);
-            setOriginId(1);
-          } else {
-            console.log('Lỗi khi tạo sản phẩm');
-          }
-          const result = await response.json();
-        } catch (error) {
-          console.error('Lỗi:', error);
-        }
-      };
+  const handleEditProduct = (productId) => {
+    fetchProductDetails(productId);
+  };
 
-      const handleUploadComplete = (url) => {
-        setImage(url);
-      };
-    
-      const handleEditProduct = (productId) => {
-        fetchProductDetails(productId);
-    };
-
-    const fetchProductDetails = async (productId) => {
-      try {
-          const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/product/${productId}`);
-          const data = await response.json();
-          setSelectedProduct(data);
-          setProductName(data.productName);
-          setType(data.type);
-          setPrice(data.price);
-          setWeight(data.weight);
-          setQuantity(data.quantity);
-          setDescription(data.description);
-          setImage(data.image);
-          setIsActive(data.isActive);
-          setAgeId(data.ageId);
-          setOriginId(data.originId);
-          setBrandId(data.brandId);
-          setCateId(data.cateId);
-      } catch (error) {
-          console.error("Lỗi fetch product details", error);
-      } finally {
-          
-      }
+  const fetchProductDetails = async (productId) => {
+    try {
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/product/${productId}`
+      );
+      const data = await response.json();
+      setSelectedProduct(data);
+      setProductName(data.productName);
+      setType(data.type);
+      setPrice(data.price);
+      setWeight(data.weight);
+      setQuantity(data.quantity);
+      setDescription(data.description);
+      setImage(data.image);
+      setIsActive(data.isActive);
+      setAgeId(data.ageId);
+      setOriginId(data.originId);
+      setBrandId(data.brandId);
+      setCateId(data.cateId);
+    } catch (error) {
+      console.error("Lỗi fetch product details", error);
+    } finally {
+    }
   };
 
   const handleSaveUpdateProduct = async () => {
@@ -358,7 +380,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
       price === "" ||
       description === "" ||
       weight === "" ||
-      image === "" 
+      image === ""
     ) {
       notify();
       return;
@@ -376,29 +398,32 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
       ageId,
       originId,
       brandId,
-      cateId
-  };
+      cateId,
+    };
 
-  try {
-      const response = await fetch('https://littlejoyapi.azurewebsites.net/api/product', {
-          method: 'PUT',
+    try {
+      const response = await fetch(
+        "https://littlejoyapi.azurewebsites.net/api/product",
+        {
+          method: "PUT",
           headers: {
-              'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(updatedProduct)
-      });
+          body: JSON.stringify(updatedProduct),
+        }
+      );
 
       if (response.ok) {
-        toast.success('Sản phẩm được sửa thành công!');
+        toast.success("Sản phẩm được sửa thành công!");
         fetchData(paging.CurrentPage, paging.PageSize);
       } else {
-          const errorData = await response.json();
-          toast.error('Sản phẩm được sửa thất bại!');
+        const errorData = await response.json();
+        toast.error("Sản phẩm được sửa thất bại!");
       }
-  } catch (error) {
-      console.error('Error updating product:', error);
-  }}
-
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  };
 
   const handleDeleteProduct = async (id) => {
     setIdToDelete(id);
@@ -423,7 +448,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
 
       if (response.ok) {
         await fetchData(paging.CurrentPage, paging.PageSize);
-        toast.success('Sản phẩm được xóa thành công!')
+        toast.success("Sản phẩm được xóa thành công!");
       } else {
         toast.error("Xóa sản phẩm thất bại!");
       }
@@ -434,101 +459,101 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
     }
   };
 
-    const navigate = useNavigate();
-    const handleLogout = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
     navigate("/");
   };
 
   return (
     <>
-    <ToastContainer />
-<div style={{ background: "#151C2C" }}>
-<div className="container-fluid">
-        <div className="row">
-        <div className="col-md-2 nav-admin-left">
-            <div className="logo-admin d-flex justify-content-center w-100 mt-3">
-              <Link to="/">
-                <p
-                  className="logo-admin-left d-inline-block p-1 m-0"
-                  style={{ fontFamily: "sans-serif" }}
-                >
-                  LITTLE JOY
-                </p>
-                <p
-                  className="d-inline-block logo-admin-right ms-2"
-                  style={{ fontFamily: "sans-serif" }}
-                >
-                  ADMIN
-                </p>
-              </Link>
-            </div>
-            <div className="nav-admin mt-5 w-100">
-              <table className="w-100">
-                <tbody>
-                  <tr>
-                    <td colSpan="2" className="py-1">
-                      <span
-                        className="nav-admin-title"
-                        style={{ fontFamily: "sans-serif" }}
-                      >
-                        Main
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td className="py-1 hover-dashboard ps-3">
-                      <Link to="/dashboard">
-                        <span style={{ fontFamily: "sans-serif" }}>
-                          Dashboard
+      <ToastContainer />
+      <div style={{ background: "#151C2C" }}>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-md-2 nav-admin-left">
+              <div className="logo-admin d-flex justify-content-center w-100 mt-3">
+                <Link to="/">
+                  <p
+                    className="logo-admin-left d-inline-block p-1 m-0"
+                    style={{ fontFamily: "sans-serif" }}
+                  >
+                    LITTLE JOY
+                  </p>
+                  <p
+                    className="d-inline-block logo-admin-right ms-2"
+                    style={{ fontFamily: "sans-serif" }}
+                  >
+                    ADMIN
+                  </p>
+                </Link>
+              </div>
+              <div className="nav-admin mt-5 w-100">
+                <table className="w-100">
+                  <tbody>
+                    <tr>
+                      <td colSpan="2" className="py-1">
+                        <span
+                          className="nav-admin-title"
+                          style={{ fontFamily: "sans-serif" }}
+                        >
+                          Main
                         </span>
-                      </Link>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan="2" className="py-1">
-                      <span
-                        className="nav-admin-title"
-                        style={{ fontFamily: "sans-serif" }}
-                      >
-                        Shop
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td className="py-1 ps-3 hover-dashboard">
-                      <Link to="/manageuser">
-                        <FontAwesomeIcon icon={faUser} />{" "}
-                        <span style={{ fontFamily: "sans-serif" }}>
-                          Quản lý người dùng
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td className="py-1 hover-dashboard ps-3">
+                        <Link to="/dashboard">
+                          <span style={{ fontFamily: "sans-serif" }}>
+                            Dashboard
+                          </span>
+                        </Link>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan="2" className="py-1">
+                        <span
+                          className="nav-admin-title"
+                          style={{ fontFamily: "sans-serif" }}
+                        >
+                          Shop
                         </span>
-                      </Link>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td className="py-1 ps-3 hover-dashboard">
-                      <Link to="/manageorder">
-                        <FontAwesomeIcon icon={faCartShopping} />{" "}
-                        <span style={{ fontFamily: "sans-serif" }}>
-                          Quản lý đơn hàng
-                        </span>
-                      </Link>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td className="py-1 ps-3 active-admin ">
-                      <Link to="/manageproduct">
-                        <FontAwesomeIcon icon={faBoxOpen} />{" "}
-                        <span style={{ fontFamily: "sans-serif" }}>
-                          Quản lý sản phẩm
-                        </span>
-                      </Link>
-                    </td>
-                  </tr>
-                  <tr>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td className="py-1 ps-3 hover-dashboard">
+                        <Link to="/manageuser">
+                          <FontAwesomeIcon icon={faUser} />{" "}
+                          <span style={{ fontFamily: "sans-serif" }}>
+                            Quản lý người dùng
+                          </span>
+                        </Link>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td className="py-1 ps-3 hover-dashboard">
+                        <Link to="/manageorder">
+                          <FontAwesomeIcon icon={faCartShopping} />{" "}
+                          <span style={{ fontFamily: "sans-serif" }}>
+                            Quản lý đơn hàng
+                          </span>
+                        </Link>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td className="py-1 ps-3 active-admin ">
+                        <Link to="/manageproduct">
+                          <FontAwesomeIcon icon={faBoxOpen} />{" "}
+                          <span style={{ fontFamily: "sans-serif" }}>
+                            Quản lý sản phẩm
+                          </span>
+                        </Link>
+                      </td>
+                    </tr>
+                    <tr>
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
                         <Link to="/managecategory">
@@ -539,11 +564,11 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                         </Link>
                       </td>
                     </tr>
-                  <tr>
+                    <tr>
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
                         <Link to="/manageblog">
-                        <FontAwesomeIcon icon="fa-solid fa-paste" />{" "}
+                          <FontAwesomeIcon icon="fa-solid fa-paste" />{" "}
                           <span style={{ fontFamily: "sans-serif" }}>
                             Quản lý bài viết
                           </span>
@@ -554,533 +579,770 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
                         <Link to="/requestrefund">
-                        <FontAwesomeIcon icon="fa-solid fa-credit-card" />{" "}
+                          <FontAwesomeIcon icon="fa-solid fa-credit-card" />{" "}
                           <span style={{ fontFamily: "sans-serif" }}>
                             Yêu cầu hoàn tiền
                           </span>
                         </Link>
                       </td>
                     </tr>
-                  <tr>
-                  <td className="py-2">
-                      <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
-                        <FontAwesomeIcon icon={faRightFromBracket} />{" "}
+                    <tr>
+                      <td className="py-2">
+                        <Link
+                          to="/"
+                          style={{ textDecoration: "none" }}
+                          className="text-white"
+                          onClick={handleLogout}
+                        >
+                          <FontAwesomeIcon icon={faRightFromBracket} />{" "}
                         </Link>
                       </td>
                       <td>
-                      <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
-                        <span >Logout</span>
+                        <Link
+                          to="/"
+                          style={{ textDecoration: "none" }}
+                          className="text-white"
+                          onClick={handleLogout}
+                        >
+                          <span>Logout</span>
                         </Link>
                       </td>
-                  </tr>
-                </tbody>
-              </table>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-
 
             <div className="col-md-10">
-                <div className="row top-nav">
-                    <div className="col-md-2 text-center">
-                        <div className="dashboard p-2 py-3">
-                            <Link to="/dashboard" className="">
-                                <p className="m-0"style={{ fontFamily: "sans-serif", fontSize: '16px' }}>Dashboard</p>
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="col-md-8 d-flex align-content-center">
-                        <div className="icon-nav p-2 py-3">
-                            <i className="fa-solid fa-house"></i>
-                        </div>
-                        <div className="pos-nav d-flex align-content-center p-2 py-3">
-                            <p className="m-0" style={{ fontFamily: "sans-serif", fontSize: '16px' }}>Home</p><span style={{ fontFamily: "sans-serif" }}>/Product Management</span>
-                        </div>
-                    </div>
-                    <div className="col-md-2 d-flex align-content-center justify-content-center">
-                        <div className="pos-nav d-flex align-content-center p-2 py-3">
-                            <p className="m-0" style={{ fontFamily: "sans-serif", fontSize: '16px' }}>{username}</p>
-                        </div>
-                        <div className="icon-nav-log p-2 py-3 text-white">
-                            <FontAwesomeIcon icon={faPowerOff} />
-                        </div>
-                    </div>
-                    <div className="col-md-12 p-0">
-                        <div className="flex-content text-center w-100">
-                            <div className="body-top w-100">
-                                <div className="body-title d-flex justify-content-between align-items-center w-100">
-                                    <span className="ms-3" style={{ color: '#F8B940', fontSize: '16px', fontFamily: 'sans-serif' }}>Product Management</span>
-                                    <div className="add-product px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-product">
-                                        <Link to="#"><p className="m-0 inter" onClick={refreshFieldAddProduct} style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Product</p></Link>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="body-center">
-                                <div className="container-fluid">
-                                    <div className="row">
-                                        <div className="col-md-12 d-flex justify-content-start">
-                                            <div className="search-user p-3">
-                                                <input type="text" className="p-1 ps-3"
-                                                value={keyword}
-                                                onChange={(e) => setKeyword(e.target.value)}
-                                                    placeholder="Search Product"/>
-                                                    </div>
-                                            <div className="filter-status p-3">
-                                                <select name="" id="" className="p-1" defaultValue="" value={searchCate} onChange={(e) => setSearchCate(e.target.value)}>
-                                                    <option value="" selected disabled>Category</option>
-                                                    {categories.map(category => (
-                                                      <option key={category.id} value={category.id}>
-                                                        {category.categoryName}
-                                                      </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                            <div className="filter-status p-3">
-                                                <select name="" id="" className="p-1" defaultValue="" value={searchOrigin} onChange={(e) => setSearchOrigin(e.target.value)}>
-                                                    <option value="" selected disabled>Origin</option>
-                                                    {origins.map(o => (
-                                                      <option key={o.id} value={o.id}>
-                                                        {o.originName}
-                                                      </option>
-                                                    ))}
-                                                    
-                                                </select>
-                                            </div>
-                                            <div className="filter-status p-3">
-                                                <select name="" id="" className="p-1" defaultValue="" value={searchBrand} onChange={(e) => setSearchBrand(e.target.value)}>
-                                                    <option value="" selected disabled>Brand</option>
-                                                    {brands.map(b => (
-                                                      <option key={b.id} value={b.id}>
-                                                        {b.brandName}
-                                                      </option>
-                                                    ))}
-                                                    
-                                                </select>
-                                            </div>
-                                            <div className="filter-status p-3">
-                                                <select name="" id="" className="p-1" defaultValue="" value={searchAge} onChange={(e) => setSearchAge(e.target.value)}>
-                                                    <option value="" selected disabled>Age Group</option>
-                                                    {ageGroups.map(ag => (
-                                                      <option key={ag.id} value={ag.id}>
-                                                        {ag.ageRange}
-                                                      </option>
-                                                    ))}
-                                                    
-                                                </select>
-                                            </div>
-
-                                            <div className="filter-status p-3">
-                                                <select name="" id="" className="p-1" defaultValue="" value={statusProduct} onChange={(e) => setSearchAge(e.target.value)}>
-                                                    <option value="" selected disabled>Tình trạng sản phẩm</option>
-                                                   
-                                                      <option key={true} value="conhang">
-                                                        Còn hàng
-                                                      </option>
-                                                      <option key={false} value="hethang">
-                                                        Hết hàng
-                                                      </option>
-                                                    
-                                                    
-                                                </select>
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="col-md-12 p-0">
-                                            <table className="w-100 table-body">
-                                                <tbody>
-                                                <tr className="table-header">
-                                                    <td className="p-3 px-4"><span className="float-start">ProductID</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Name</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Type</span></td>
-                                                    <td className="p-3 px-4 "><span>Quantity</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Price</span></td>
-                                                    <td className="p-3 px-4 "><span>Rating</span></td>
-                                                    <td className="p-3 px-4 "><span>Image</span></td>
-                                                    <td className="p-3 px-4 description-product"><span>Description</span></td>
-                                                    <td className="p-3 px-4 "><span>Action</span></td>
-                                                </tr>
-                                                {loading ? (
-                                                    <>
-                                                        <tr>
-                                                        <td colSpan="8" className="px-3">
-                                                            <TableLoading />
-                                                        </td>
-                                                        </tr>
-                                                    </>
-                                                    ) : (
-                                                products.map((p) => (
-                                                <tr key={p.id} className="table-content">
-                                                    <td className="p-3 px-4 "><span className="float-start">{p.id}</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start"><Link to={{pathname: `/product/${p.id}`}} style={{textDecoration: 'none', color: "inherit"}} ><ProductName title={p.productName} maxLength={20} /></Link></span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">{p.categoryName}</span></td>
-                                                    <td className="p-3 px-4 "><span>{p.quantity}</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">{p.price} VND</span></td>
-                                                    <td className="p-3 px-4 "><span>{p.ratingAver}.0</span></td>
-                                                    <td className="w-10">
-                                                        <div className="img-product">
-                                                            <img src={p.image} alt=""/>
-                                                        </div>
-                                                    </td>
-                                                    <td className="p-3 px-4 description-product"><span>{p.description}</span></td>
-                                                    <td className="p-3 px-4 d-flex justify-content-center">
-                                                        <div className="edit-product p-2" data-bs-toggle="modal" data-bs-target="#edit-product" onClick={() => handleEditProduct(p.id)}>
-                                                            <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
-                                                        </div>
-                                                        <div className="delete-product p-2"><FontAwesomeIcon icon="fa-solid fa-trash" onClick={() => handleDeleteProduct(p.id)}/></div>
-                                                    </td>
-                                                </tr>
-                                                ))
-                                            )}
-                                                
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        
-                                        <div className="col-md-12 d-flex justify-content-end paging p-2">
-                                        {Array.from(
-                                            { length: paging.TotalPages },
-                                            (_, index) => (
-                                                <Link
-                                                key={index + 1}
-                                                to="#"
-                                                className={`p-2 me-3 ${
-                                                    paging.CurrentPage === index + 1
-                                                    ? "active-paging"
-                                                    : ""
-                                                }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handlePageChange(index + 1);
-                                                }}
-                                                >
-                                                {index + 1}
-                                                </Link>
-                                            )
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              <div className="row top-nav">
+                <div className="col-md-2 text-center">
+                  <div className="dashboard p-2 py-3">
+                    <Link to="/dashboard" className="">
+                      <p
+                        className="m-0"
+                        style={{ fontFamily: "sans-serif", fontSize: "16px" }}
+                      >
+                        Dashboard
+                      </p>
+                    </Link>
+                  </div>
                 </div>
+                <div className="col-md-8 d-flex align-content-center">
+                  <div className="icon-nav p-2 py-3">
+                    <i className="fa-solid fa-house"></i>
+                  </div>
+                  <div className="pos-nav d-flex align-content-center p-2 py-3">
+                    <p
+                      className="m-0"
+                      style={{ fontFamily: "sans-serif", fontSize: "16px" }}
+                    >
+                      Home
+                    </p>
+                    <span style={{ fontFamily: "sans-serif" }}>
+                      /Product Management
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-2 d-flex align-content-center justify-content-center">
+                  <div className="pos-nav d-flex align-content-center p-2 py-3">
+                    <p
+                      className="m-0"
+                      style={{ fontFamily: "sans-serif", fontSize: "16px" }}
+                    >
+                      {username}
+                    </p>
+                  </div>
+                  <div className="icon-nav-log p-2 py-3 text-white">
+                    <FontAwesomeIcon icon={faPowerOff} />
+                  </div>
+                </div>
+                <div className="col-md-12 p-0">
+                  <div className="flex-content text-center w-100">
+                    <div className="body-top w-100">
+                      <div className="body-title d-flex justify-content-between align-items-center w-100">
+                        <span
+                          className="ms-3"
+                          style={{
+                            color: "#F8B940",
+                            fontSize: "16px",
+                            fontFamily: "sans-serif",
+                          }}
+                        >
+                          Product Management
+                        </span>
+                        <div
+                          className="add-product px-3 py-1 me-3"
+                          data-bs-toggle="modal"
+                          data-bs-target="#add-product"
+                        >
+                          <Link to="#">
+                            <p
+                              className="m-0 inter"
+                              onClick={refreshFieldAddProduct}
+                              style={{
+                                fontSize: "16px",
+                                fontFamily: "system-ui",
+                              }}
+                            >
+                              + Add Product
+                            </p>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="body-center">
+                      <div className="container-fluid">
+                        <div className="row">
+                          <div className="col-md-12 d-flex justify-content-start">
+                            <div className="search-user p-3">
+                              <input
+                                type="text"
+                                className="p-1 ps-3"
+                                value={keyword}
+                                onChange={(e) => setKeyword(e.target.value)}
+                                placeholder="Search Product"
+                              />
+                            </div>
+                            <div className="filter-status p-3">
+                              <select
+                                name=""
+                                id=""
+                                className="p-1"
+                                defaultValue=""
+                                value={searchCate}
+                                onChange={(e) => setSearchCate(e.target.value)}
+                              >
+                                <option value="" selected disabled>
+                                  Category
+                                </option>
+                                {categories.map((category) => (
+                                  <option key={category.id} value={category.id}>
+                                    {category.categoryName}
+                                  </option>
+                                ))}
+                            <option value="">Không</option>
+                              </select>
+                            </div>
+                            <div className="filter-status p-3">
+                              <select
+                                name=""
+                                id=""
+                                className="p-1"
+                                defaultValue=""
+                                value={searchOrigin}
+                                onChange={(e) =>
+                                  setSearchOrigin(e.target.value)
+                                }
+                              >
+                                <option value="" selected disabled>
+                                  Origin
+                                </option>
+                                {origins.map((o) => (
+                                  <option key={o.id} value={o.id}>
+                                    {o.originName}
+                                  </option>
+                                ))}
+                                <option value="">Không</option>
+                              </select>
+                            </div>
+                            <div className="filter-status p-3">
+                              <select
+                                name=""
+                                id=""
+                                className="p-1"
+                                defaultValue=""
+                                value={searchBrand}
+                                onChange={(e) => setSearchBrand(e.target.value)}
+                              >
+                                <option value="" selected disabled>
+                                  Brand
+                                </option>
+                                {brands.map((b) => (
+                                  <option key={b.id} value={b.id}>
+                                    {b.brandName}
+                                  </option>
+                                ))}
+                                <option value="">Không</option>
+                              </select>
+                            </div>
+                            <div className="filter-status p-3">
+                              <select
+                                name=""
+                                id=""
+                                className="p-1"
+                                defaultValue=""
+                                value={searchAge}
+                                onChange={(e) => setSearchAge(e.target.value)}
+                              >
+                                <option value="" selected disabled>
+                                  Age Group
+                                </option>
+                                {ageGroups.map((ag) => (
+                                  <option key={ag.id} value={ag.id}>
+                                    {ag.ageRange}
+                                  </option>
+                                ))}
+                                <option value="">Không</option> 
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-md-12 p-0">
+                            <table className="w-100 table-body">
+                              <tbody>
+                                <tr className="table-header">
+                                  <td className="p-3 px-4">
+                                    <span className="float-start">
+                                      ProductID
+                                    </span>
+                                  </td>
+                                  <td className="p-3 px-4 ">
+                                    <span className="float-start">Name</span>
+                                  </td>
+                                  <td className="p-3 px-4 ">
+                                    <span className="float-start">Type</span>
+                                  </td>
+                                  <td className="p-3 px-4 ">
+                                    <span>Quantity</span>
+                                  </td>
+                                  <td className="p-3 px-4 ">
+                                    <span className="float-start">Price</span>
+                                  </td>
+                                  <td className="p-3 px-4 ">
+                                    <span>Rating</span>
+                                  </td>
+                                  <td className="p-3 px-4 ">
+                                    <span>Image</span>
+                                  </td>
+                                  <td className="p-3 px-4 description-product">
+                                    <span>Description</span>
+                                  </td>
+                                  <td className="p-3 px-4 ">
+                                    <span>Action</span>
+                                  </td>
+                                </tr>
+                                {loading ? (
+                                  <>
+                                    <tr>
+                                      <td colSpan="8" className="px-3">
+                                        <TableLoading />
+                                      </td>
+                                    </tr>
+                                  </>
+                                ) : (
+                                  products.map((p) => (
+                                    <tr key={p.id} className="table-content">
+                                      <td className="p-3 px-4 ">
+                                        <span className="float-start">
+                                          {p.id}
+                                        </span>
+                                      </td>
+                                      <td className="p-3 px-4 ">
+                                        <span className="float-start">
+                                          <Link
+                                            to={{
+                                              pathname: `/product/${p.id}`,
+                                            }}
+                                            style={{
+                                              textDecoration: "none",
+                                              color: "inherit",
+                                            }}
+                                          >
+                                            <ProductName
+                                              title={p.productName}
+                                              maxLength={20}
+                                            />
+                                          </Link>
+                                        </span>
+                                      </td>
+                                      <td className="p-3 px-4 ">
+                                        <span className="float-start">
+                                          {p.categoryName}
+                                        </span>
+                                      </td>
+                                      <td className="p-3 px-4 ">
+                                        <span>{p.quantity}</span>
+                                      </td>
+                                      <td className="p-3 px-4 ">
+                                        <span className="float-start">
+                                          {p.price} VND
+                                        </span>
+                                      </td>
+                                      <td className="p-3 px-4 ">
+                                        <span>{p.ratingAver}.0</span>
+                                      </td>
+                                      <td className="w-10">
+                                        <div className="img-product">
+                                          <img src={p.image} alt="" />
+                                        </div>
+                                      </td>
+                                      <td className="p-3 px-4 description-product">
+                                        <span>{p.description}</span>
+                                      </td>
+                                      <td className="p-3 px-4 d-flex justify-content-center">
+                                        <div
+                                          className="edit-product p-2"
+                                          style={{cursor: 'pointer'}}
+                                          data-bs-toggle="modal"
+                                          data-bs-target="#edit-product"
+                                          onClick={() =>
+                                            handleEditProduct(p.id)
+                                          }
+                                        >
+                                          <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
+                                        </div>
+                                        <div className="delete-product p-2" style={{cursor: 'pointer'}}>
+                                          <FontAwesomeIcon
+                                            icon="fa-solid fa-trash"
+                                            onClick={() =>
+                                              handleDeleteProduct(p.id)
+                                            }
+                                          />
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  ))
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
 
+                          <div className="col-md-12 d-flex justify-content-end paging p-2">
+                            {Array.from(
+                              { length: paging.TotalPages },
+                              (_, index) => (
+                                <Link
+                                  key={index + 1}
+                                  to="#"
+                                  className={`p-2 me-3 ${
+                                    paging.CurrentPage === index + 1
+                                      ? "active-paging"
+                                      : ""
+                                  }`}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handlePageChange(index + 1);
+                                  }}
+                                >
+                                  {index + 1}
+                                </Link>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
 
-    {/* <!-- Modal add product --> */}
-    <div className="modal" id="add-product">
-        <div className="modal-dialog modal-dialog-centered">
+        {/* <!-- Modal add product --> */}
+        <div className="modal" id="add-product">
+          <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
-
-                {/* <!-- Modal Header --> */}
-                <div className="py-2 header-modal d-flex justify-content-between">
-                    <h4 className="modal-title inter ms-3">Product Add</h4>
-                    <div className="btn-close-modal me-3" data-bs-dismiss="modal"><FontAwesomeIcon icon={faX} /></div>
+              {/* <!-- Modal Header --> */}
+              <div className="py-2 header-modal d-flex justify-content-between">
+                <h4 className="modal-title inter ms-3">Product Add</h4>
+                <div className="btn-close-modal me-3" data-bs-dismiss="modal">
+                  <FontAwesomeIcon icon={faX} />
                 </div>
+              </div>
 
-                {/* <!-- Modal body --> */}
-                <div className="modal-body">
+              {/* <!-- Modal body --> */}
+              <div className="modal-body">
                 <div className="p-2">
-                    <table className="w-100 table-modal">
+                  <table className="w-100 table-modal">
                     <tbody>
-                        <tr>
-                        <td className="w-20"><span className="py-2">Name:</span></td>
+                      <tr>
+                        <td className="w-20">
+                          <span className="py-2">Name:</span>
+                        </td>
                         <td className="py-2">
-                            <input
+                          <input
                             type="text"
                             className="ps-2 p-1 w-100"
                             value={productName}
                             onChange={(e) => setProductName(e.target.value)}
-                            />
+                          />
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Type:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Type:</span>
+                        </td>
                         <td className="py-2">
-                            <select
+                          <select
                             className="ps-2 p-1 w-100"
                             value={cateId}
-                            onChange={(e) => setCateId(parseInt(e.target.value))}
-                            >
-                            <option value="" disabled>Choose</option>
-                              {categories.map(category => (
-                              <option key={category.id} value={category.id}>
-                              {category.categoryName}
+                            onChange={(e) =>
+                              setCateId(parseInt(e.target.value))
+                            }
+                          >
+                            <option value="" disabled>
+                              Choose
                             </option>
+                            {categories.map((category) => (
+                              <option key={category.id} value={category.id}>
+                                {category.categoryName}
+                              </option>
                             ))}
-                            </select>
+                          </select>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Price:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Price:</span>
+                        </td>
                         <td className="py-2">
-                            <input
-                            type="text"
+                          <input
+                            type="number"
                             className="ps-2 p-1 w-100"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
-                            />
+                          />
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Quantity:</span></td>
+                      </tr>
+                      <tr>
                         <td>
-                            <div className="btn-quantity w-100 d-flex justify-content-start p-2">
-                            <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                id="quantity-down" onClick={() => setQuantity(quantity > 0 ? quantity - 1 : 0)}>
-                                <span>-</span>
+                          <span className="py-2">Quantity:</span>
+                        </td>
+                        <td>
+                          <div className="btn-quantity w-100 d-flex justify-content-start p-2">
+                            <div
+                              className="btn btn-secondary rounded-0 w-10 text-center p-2"
+                              id="quantity-down"
+                              onClick={() =>
+                                setQuantity(quantity > 0 ? quantity - 1 : 0)
+                              }
+                            >
+                              <span>-</span>
                             </div>
                             <div className="button w-15">
-                                <input
+                              <input
                                 type="number"
                                 className="text-center w-100 p-2"
                                 id="quantity1"
-                                value={quantity === '' ? 1 : quantity}
+                                value={quantity === "" ? 1 : quantity}
                                 onChange={(e) => {
-                                    const value = parseInt(e.target.value);
-                                    setQuantity(value >= 0 ? value : 0);
+                                  const value = parseInt(e.target.value);
+                                  setQuantity(value >= 0 ? value : 0);
                                 }}
-                                />
+                              />
                             </div>
-                            <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                id="quantity-up" onClick={() => setQuantity(quantity + 1)}>
-                                <span>+</span>
+                            <div
+                              className="btn btn-secondary rounded-0 w-10 text-center p-2"
+                              id="quantity-up"
+                              onClick={() => setQuantity(quantity + 1)}
+                            >
+                              <span>+</span>
                             </div>
-                            </div>
+                          </div>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Description:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Description:</span>
+                        </td>
                         <td className="py-2">
-                            <textarea
-                            style={{background: '#151C2C', color: 'white'}}
+                          <textarea
+                            style={{ background: "#151C2C", color: "white" }}
                             rows="4"
                             className="w-100 p-2"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            ></textarea>
+                          ></textarea>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Weight:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Weight:</span>
+                        </td>
                         <td className="py-2">
-                            <input
-                            style={{background: '#151C2C', color: 'white'}}
+                          <input
+                            type="number"
+                            style={{ background: "#151C2C", color: "white" }}
                             className="w-100 p-2"
                             value={weight}
                             onChange={(e) => setWeight(e.target.value)}
-                            />
+                          />
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">URL image:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">URL image:</span>
+                        </td>
                         <td className="py-2">
-                        <UploadImage
-                            aspectRatio={12 / 18}
+                          <UploadImage
+                            aspectRatio={4 / 5}
                             onUploadComplete={handleUploadComplete}
                             maxWidth={10000}
                             maxHeight={10000}
                             minWidth={126}
                             minHeight={126}
-                            />
-                            <div>
-                            <img src={selectedProduct.image} alt='' style={{weight: '70px', height: '105px'}}></img></div>
+                          />
+                          <div>
+                            <img
+                              src={image}
+                              alt=""
+                              className="w-50"
+                            ></img>
+                          </div>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Age:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Age:</span>
+                        </td>
                         <td className="py-2">
-                            <select
+                          <select
                             className="ps-2 p-1 w-100"
                             value={ageId}
                             onChange={(e) => setAgeId(parseInt(e.target.value))}
-                            >
-                            <option value="" disabled>Choose</option>
-                            {ageGroups.map(ag => (
+                          >
+                            <option value="" disabled>
+                              Choose
+                            </option>
+                            {ageGroups.map((ag) => (
                               <option key={ag.id} value={ag.id}>
                                 {ag.ageRange}
                               </option>
-                              ))}
-                            </select>
+                            ))}
+                          </select>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Origin:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Origin:</span>
+                        </td>
                         <td className="py-2">
-                            <select
+                          <select
                             className="ps-2 p-1 w-100"
                             value={originId}
-                            onChange={(e) => setOriginId(parseInt(e.target.value))}
-                            >
-                            <option value="" disabled>Choose</option>
-                            {origins.map(o => (
+                            onChange={(e) =>
+                              setOriginId(parseInt(e.target.value))
+                            }
+                          >
+                            <option value="" disabled>
+                              Choose
+                            </option>
+                            {origins.map((o) => (
                               <option key={o.id} value={o.id}>
                                 {o.originName}
                               </option>
-                              ))}
-                            </select>
+                            ))}
+                          </select>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Brand:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Brand:</span>
+                        </td>
                         <td className="py-2">
-                            <select
+                          <select
                             className="ps-2 p-1 w-100"
                             value={brandId}
-                            onChange={(e) => setBrandId(parseInt(e.target.value))}
-                            >
-                            <option value="" disabled>Choose</option>
-                            {brands.map(b => (
+                            onChange={(e) =>
+                              setBrandId(parseInt(e.target.value))
+                            }
+                          >
+                            <option value="" disabled>
+                              Choose
+                            </option>
+                            {brands.map((b) => (
                               <option key={b.id} value={b.id}>
                                 {b.brandName}
                               </option>
-                              ))}
-                            </select>
+                            ))}
+                          </select>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">IsActive:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">IsActive:</span>
+                        </td>
                         <td className="py-2">
-                            <select
+                          <select
                             className="ps-2 p-1 w-50"
                             value={isActive}
-                            onChange={(e) => setIsActive(e.target.value === 'true')}
-                            >
-                            <option value="" disabled>Choose</option>
+                            onChange={(e) =>
+                              setIsActive(e.target.value === "true")
+                            }
+                          >
+                            <option value="" disabled>
+                              Choose
+                            </option>
                             <option value="true">true</option>
                             <option value="false">false</option>
-                            </select>
+                          </select>
                         </td>
-                        </tr>
+                      </tr>
                     </tbody>
-                    </table>
+                  </table>
                 </div>
-                </div>
+              </div>
 
-                {/* <!-- Modal footer --> */}
-                <div className="footer-modal py-4 d-flex justify-content-end">
-                    <div className="close me-4">
-                        <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal"><span>Close</span></div>
-                    </div>
-                    <div className="save-modal me-4">
-                        <input onClick={handleAddProduct} type="submit" data-bs-dismiss="modal" value="Save" className="input-submit modal-btn-close p-2 px-4 inter"/>
-                    </div>
+              {/* <!-- Modal footer --> */}
+              <div className="footer-modal py-4 d-flex justify-content-end">
+                <div className="close me-4">
+                  <div
+                    className="modal-btn-close p-2 px-4"
+                    data-bs-dismiss="modal"
+                  >
+                    <span>Close</span>
+                  </div>
                 </div>
-
+                <div className="save-modal me-4">
+                  <input
+                    onClick={handleAddProduct}
+                    type="submit"
+                    data-bs-dismiss="modal"
+                    value="Save"
+                    className="input-submit modal-btn-close p-2 px-4 inter"
+                  />
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
 
-    {/* <!-- modal edit product --> */}
-    <div className="modal" id="edit-product">
-        <div className="modal-dialog modal-dialog-centered">
+        {/* <!-- modal edit product --> */}
+        <div className="modal" id="edit-product">
+          <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
-
-                {/* <!-- Modal Header --> */}
-                <div className="py-2 header-modal d-flex justify-content-between">
-                    <h4 className="modal-title inter ms-3">Product Modify</h4>
-                    <div className="btn-close-modal me-3" data-bs-dismiss="modal"><FontAwesomeIcon icon={faX} /></div>
+              {/* <!-- Modal Header --> */}
+              <div className="py-2 header-modal d-flex justify-content-between">
+                <h4 className="modal-title inter ms-3">Product Modify</h4>
+                <div className="btn-close-modal me-3" data-bs-dismiss="modal">
+                  <FontAwesomeIcon icon={faX} />
                 </div>
+              </div>
 
-                {/* <!-- Modal body --> */}
-                <div className="modal-body">
+              {/* <!-- Modal body --> */}
+              <div className="modal-body">
                 <div className="p-2">
-                    <table className="w-100 table-modal">
+                  <table className="w-100 table-modal">
                     <tbody>
-                        <tr>
-                        <td className="w-20"><span className="py-2">Name:</span></td>
+                      <tr>
+                        <td className="w-20">
+                          <span className="py-2">Name:</span>
+                        </td>
                         <td className="py-2">
-                            <input
+                          <input
                             type="text"
                             className="ps-2 p-1 w-100"
                             value={productName}
                             onChange={(e) => setProductName(e.target.value)}
-                            />
+                          />
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Type:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Type:</span>
+                        </td>
                         <td className="py-2">
-                            <select
+                          <select
                             className="ps-2 p-1 w-100"
                             value={cateId}
-                            onChange={(e) => setCateId(parseInt(e.target.value))}
-                            >
-                            <option value="" disabled>Choose</option>
-                            {categories.map(category => (
-                              <option key={category.id} value={category.id}>
-                              {category.categoryName}
+                            onChange={(e) =>
+                              setCateId(parseInt(e.target.value))
+                            }
+                          >
+                            <option value="" disabled>
+                              Choose
                             </option>
+                            {categories.map((category) => (
+                              <option key={category.id} value={category.id}>
+                                {category.categoryName}
+                              </option>
                             ))}
-                            </select>
+                          </select>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Price:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Price:</span>
+                        </td>
                         <td className="py-2">
-                            <input
+                          <input
                             type="text"
                             className="ps-2 p-1 w-100"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
-                            />
+                          />
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Quantity:</span></td>
+                      </tr>
+                      <tr>
                         <td>
-                            <div className="btn-quantity w-100 d-flex justify-content-start p-2">
-                            <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                id="quantity-down" onClick={() => setQuantity(quantity > 0 ? quantity - 1 : 0)}>
-                                <span>-</span>
+                          <span className="py-2">Quantity:</span>
+                        </td>
+                        <td>
+                          <div className="btn-quantity w-100 d-flex justify-content-start p-2">
+                            <div
+                              className="btn btn-secondary rounded-0 w-10 text-center p-2"
+                              id="quantity-down"
+                              onClick={() =>
+                                setQuantity(quantity > 0 ? quantity - 1 : 0)
+                              }
+                            >
+                              <span>-</span>
                             </div>
                             <div className="button w-15">
-                                <input
+                              <input
                                 type="number"
                                 className="text-center w-100 p-2"
                                 id="quantity1"
-                                value={quantity === '' ? 1 : quantity}
+                                value={quantity === "" ? 1 : quantity}
                                 onChange={(e) => {
-                                    const value = parseInt(e.target.value);
-                                    setQuantity(value >= 0 ? value : 0);
+                                  const value = parseInt(e.target.value);
+                                  setQuantity(value >= 0 ? value : 0);
                                 }}
-                                />
+                              />
                             </div>
-                            <div className="btn btn-secondary rounded-0 w-10 text-center p-2"
-                                id="quantity-up" onClick={() => setQuantity(quantity + 1)}>
-                                <span>+</span>
+                            <div
+                              className="btn btn-secondary rounded-0 w-10 text-center p-2"
+                              id="quantity-up"
+                              onClick={() => setQuantity(quantity + 1)}
+                            >
+                              <span>+</span>
                             </div>
-                            </div>
+                          </div>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Description:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Description:</span>
+                        </td>
                         <td className="py-2">
-                            <textarea
-                            style={{background: '#151C2C', color: 'white'}}
+                          <textarea
+                            style={{ background: "#151C2C", color: "white" }}
                             rows="4"
                             className="w-100 p-2"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            ></textarea>
+                          ></textarea>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Weight:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Weight:</span>
+                        </td>
                         <td className="py-2">
-                            <input
-                            style={{background: '#151C2C', color: 'white'}}
+                          <input
+                            style={{ background: "#151C2C", color: "white" }}
                             className="w-100 p-2"
                             value={weight}
                             onChange={(e) => setWeight(e.target.value)}
-                            />
+                          />
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">URL image:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">URL image:</span>
+                        </td>
                         <td className="py-2">
-                        <UploadImage
+                          <UploadImage
                             aspectRatio={4 / 5}
                             onUploadComplete={handleUploadComplete}
                             maxWidth={2048}
@@ -1088,101 +1350,138 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                             minWidth={126}
                             minHeight={126}
                             value={image}
-                            />
-                            <div>
-                            <img src={image} alt='' style={{weight: '70px', height: '105px'}}></img></div>
+                          />
+                          <div>
+                            <img
+                              src={image}
+                              alt=""
+                              style={{ weight: "70px", height: "105px" }}
+                            ></img>
+                          </div>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Age:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Age:</span>
+                        </td>
                         <td className="py-2">
-                            <select
+                          <select
                             className="ps-2 p-1 w-100"
                             value={ageId}
                             onChange={(e) => setAgeId(parseInt(e.target.value))}
-                            >
-                            <option value="" disabled>Choose</option>
-                            {ageGroups.map(ag => (
-                            <option key={ag.id} value={ag.id}>
-                              {ag.ageRange}
+                          >
+                            <option value="" disabled>
+                              Choose
                             </option>
+                            {ageGroups.map((ag) => (
+                              <option key={ag.id} value={ag.id}>
+                                {ag.ageRange}
+                              </option>
                             ))}
-                            </select>
+                          </select>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Origin:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Origin:</span>
+                        </td>
                         <td className="py-2">
-                            <select
+                          <select
                             className="ps-2 p-1 w-100"
                             value={originId}
-                            onChange={(e) => setOriginId(parseInt(e.target.value))}
-                            >
-                            <option value="" disabled>Choose</option>
-                            {origins.map(o => (
+                            onChange={(e) =>
+                              setOriginId(parseInt(e.target.value))
+                            }
+                          >
+                            <option value="" disabled>
+                              Choose
+                            </option>
+                            {origins.map((o) => (
                               <option key={o.id} value={o.id}>
                                 {o.originName}
                               </option>
-                              ))}
-                            </select>
+                            ))}
+                          </select>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">Brand:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">Brand:</span>
+                        </td>
                         <td className="py-2">
-                            <select
+                          <select
                             className="ps-2 p-1 w-100"
                             value={brandId}
-                            onChange={(e) => setBrandId(parseInt(e.target.value))}
-                            >
-                            <option value="" disabled>Choose</option>
-                            {brands.map(b => (
+                            onChange={(e) =>
+                              setBrandId(parseInt(e.target.value))
+                            }
+                          >
+                            <option value="" disabled>
+                              Choose
+                            </option>
+                            {brands.map((b) => (
                               <option key={b.id} value={b.id}>
-                              {b.brandName}
+                                {b.brandName}
                               </option>
-                              ))}
-                            </select>
+                            ))}
+                          </select>
                         </td>
-                        </tr>
-                        <tr>
-                        <td><span className="py-2">IsActive:</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span className="py-2">IsActive:</span>
+                        </td>
                         <td className="py-2">
-                            <select
+                          <select
                             className="ps-2 p-1 w-50"
                             value={isActive}
-                            onChange={(e) => setIsActive(e.target.value === 'true')}
-                            >
-                            <option value="" disabled>Choose</option>
+                            onChange={(e) =>
+                              setIsActive(e.target.value === "true")
+                            }
+                          >
+                            <option value="" disabled>
+                              Choose
+                            </option>
                             <option value="true">true</option>
                             <option value="false">false</option>
-                            </select>
+                          </select>
                         </td>
-                        </tr>
+                      </tr>
                     </tbody>
-                    </table>
+                  </table>
                 </div>
-                </div>
+              </div>
 
-                {/* <!-- Modal footer --> */}
-                <div className="footer-modal py-4 d-flex justify-content-end">
-                    <div className="close me-4">
-                        <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal"><span>Close</span></div>
-                    </div>
-                    <div className="save-modal me-4">
-                        <input onClick={handleSaveUpdateProduct} type="submit" value="Save"  data-bs-dismiss="modal" className="input-submit modal-btn-close p-2 px-4 inter"/>
-                    </div>
+              {/* <!-- Modal footer --> */}
+              <div className="footer-modal py-4 d-flex justify-content-end">
+                <div className="close me-4">
+                  <div
+                    className="modal-btn-close p-2 px-4"
+                    data-bs-dismiss="modal"
+                  >
+                    <span>Close</span>
+                  </div>
                 </div>
-
+                <div className="save-modal me-4">
+                  <input
+                    onClick={handleSaveUpdateProduct}
+                    type="submit"
+                    value="Save"
+                    data-bs-dismiss="modal"
+                    className="input-submit modal-btn-close p-2 px-4 inter"
+                  />
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-    <ModalConfirmDelete
+        <ModalConfirmDelete
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           onConfirm={handleConfirmDelete}
         />
-    </div>
+      </div>
     </>
-  )
-}
+  );
+};
 export default ManageProduct;
