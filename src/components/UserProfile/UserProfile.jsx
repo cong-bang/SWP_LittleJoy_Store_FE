@@ -386,7 +386,7 @@ const UserProfile = () => {
                     </div>
                     <div className="box-choose-image text-center pt-3">
                     <UploadImage
-                      aspectRatio={3/2}
+                      aspectRatio={1/1}
                       onUploadComplete={handleUploadComplete}
                       maxWidth={2048}
                       maxHeight={2048}
