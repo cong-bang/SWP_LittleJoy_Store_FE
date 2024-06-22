@@ -233,7 +233,7 @@ const Shop = () => {
                 fontFamily: "sans-serif",
               }}
             >
-              Shop
+              Sản Phẩm
             </h1>
             <div className="d-inline-block">
               <div className="d-flex align-content-between">
@@ -242,7 +242,7 @@ const Shop = () => {
                     to="/"
                     style={{ color: "#103A71", textDecoration: "none" }}
                   >
-                    Home
+                    Trang Chủ
                   </Link>
                 </p>
                 <p className="px-2">
@@ -256,7 +256,7 @@ const Shop = () => {
                     to="/shop"
                     style={{ color: "#103A71", textDecoration: "none" }}
                   >
-                    Shop
+                    Sản Phẩm
                   </Link>
                 </p>
               </div>

@@ -3,27 +3,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/css/styleproduct.css";
 import productImg from "../../assets/img/product.png";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [ratingA, setRatingA] = useState(5);
   const { pathname } = useLocation();
-  const [originName, setOriginName] = useState('');
-  const [ageName, setAgeName] = useState('');
-  const [cateName, setCateName] = useState('');
-  const [brandName, setBrandName] = useState('');
+  const [originName, setOriginName] = useState("");
+  const [ageName, setAgeName] = useState("");
+  const [cateName, setCateName] = useState("");
+  const [brandName, setBrandName] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [similarP, setSimilarP] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
   const [selectedRating, setSelectedRating] = useState(null);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const notify = () =>
-    toast.error('Vui lòng nhập đủ thông tin', {
+    toast.error("Vui lòng nhập đủ thông tin", {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -32,8 +32,7 @@ const Product = () => {
       draggable: true,
       progress: undefined,
       theme: "light",
-      });
-  
+    });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -79,40 +78,45 @@ const Product = () => {
 
         const resSimilarProduct = await fetch(
           `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=4&cateId=${dataResponse.cateId}`
-        )
+        );
         const dataSimilarP = await resSimilarProduct.json();
-        const formattedSimilarP = dataSimilarP.map(product => ({
+        const formattedSimilarP = dataSimilarP.map((product) => ({
           ...product,
-          price: formatPrice(product.price)
+          price: formatPrice(product.price),
         }));
         setSimilarP(formattedSimilarP);
-        
+
         const resFeedbacks = await fetch(
           `https://littlejoyapi.azurewebsites.net/api/feedback/feed-back-by-product/${id}?PageIndex=1&PageSize=9`
         );
         const dataFeedbacks = await resFeedbacks.json();
-        const userIds = [...new Set(dataFeedbacks.map(feedback => feedback.userId))];
-        
-        const userInfo = {};
-        await Promise.all(userIds.map(async (userId) => {
-          const userResponse = await fetch(`https://littlejoyapi.azurewebsites.net/api/user/${userId}`);
-          const userData = await userResponse.json();
-          userInfo[userId] = userData;
-        }));
+        const userIds = [
+          ...new Set(dataFeedbacks.map((feedback) => feedback.userId)),
+        ];
 
-        const feedbacksWithUserNames = dataFeedbacks.map(feedback => {
+        const userInfo = {};
+        await Promise.all(
+          userIds.map(async (userId) => {
+            const userResponse = await fetch(
+              `https://littlejoyapi.azurewebsites.net/api/user/${userId}`
+            );
+            const userData = await userResponse.json();
+            userInfo[userId] = userData;
+          })
+        );
+
+        const feedbacksWithUserNames = dataFeedbacks.map((feedback) => {
           const dateParts = feedback.date.split("T")[0].split("-");
           const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 
           return {
             ...feedback,
-            userName: userInfo[feedback.userId]?.userName || 'Unknown User',
-            date: formattedDate
+            userName: userInfo[feedback.userId]?.userName || "Unknown User",
+            date: formattedDate,
           };
         });
 
         setFeedbacks(feedbacksWithUserNames);
-        
       } catch (error) {
         console.error(error.message);
       }
@@ -121,19 +125,22 @@ const Product = () => {
   }, [id, feedbacks.length]);
 
   const formatPrice = (price) => {
-    return price.toLocaleString('de-DE');
+    return price.toLocaleString("de-DE");
   };
 
   const handleCopyLink = (event) => {
     event.preventDefault();
-    
+
     const link = window.location.href;
 
-    navigator.clipboard.writeText(link).then(() => {
-      toast.success('Link đã được sao chép!');
-    }).catch(err => {
-      console.error('Không thể sao chép link: ', err);
-    });
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+        toast.success("Link đã được sao chép!");
+      })
+      .catch((err) => {
+        console.error("Không thể sao chép link: ", err);
+      });
   };
 
   const ProductName = ({ title, maxLength }) => {
@@ -141,18 +148,14 @@ const Product = () => {
       if (title.length <= maxLength) return title;
       return title.substring(0, maxLength) + "...";
     };
-    return (
-      <>
-        {truncateTitle(title, maxLength)}
-      </>
-    );
+    return <>{truncateTitle(title, maxLength)}</>;
   };
 
   const stars = [1, 2, 3, 4, 5].map((star) => (
     <FontAwesomeIcon
       key={star}
       icon={faStar}
-      color={star <= product.ratingAver ? 'gold' : 'lightgrey'}
+      color={star <= product.ratingAver ? "gold" : "lightgrey"}
     />
   ));
 
@@ -161,10 +164,7 @@ const Product = () => {
   };
 
   const handleSendFeedback = async () => {
-    if (
-      comment.trim() === "" ||
-      selectedRating === null
-    ) {
+    if (comment.trim() === "" || selectedRating === null) {
       notify();
       return;
     }
@@ -172,7 +172,7 @@ const Product = () => {
       userId: localStorage.getItem("userId"),
       productId: id,
       comment: comment,
-      rating: selectedRating
+      rating: selectedRating,
     };
     console.log(newFeedback);
     const sendFeedback = async () => {
@@ -191,8 +191,7 @@ const Product = () => {
         const data = await response.json();
         if (data.ok) {
           setSelectedRating(null);
-          setComment('');
-          
+          setComment("");
         }
       } catch (error) {
         console.error("Lỗi tạo blog:", error);
@@ -205,13 +204,12 @@ const Product = () => {
 
   //xử lý tăng giảm quantity của product
   const handleDecrease = () => {
-    if (quantity > 1)
-      setQuantity(quantity - 1);
+    if (quantity > 1) setQuantity(quantity - 1);
   };
 
   const handleIncrease = () => {
     const totalQuantityInCart = getCartTotalQuantity(product.id);
-    if (totalQuantityInCart + quantity < (product.quantity - 1)) {
+    if (totalQuantityInCart + quantity < product.quantity - 1) {
       setQuantity(quantity + 1);
     } else {
       toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho`);
@@ -220,11 +218,15 @@ const Product = () => {
 
   const handleChange = (event) => {
     const value = event.target.value;
-    if (value === '') {
+    if (value === "") {
       setQuantity(1);
-    } else if (!isNaN(value) && parseInt(value) >= 1 && parseInt(value) <= (product.quantity - 1)) {
+    } else if (
+      !isNaN(value) &&
+      parseInt(value) >= 1 &&
+      parseInt(value) <= product.quantity - 1
+    ) {
       const totalQuantityInCart = getCartTotalQuantity(product.id);
-      if (totalQuantityInCart + parseInt(value) <= (product.quantity - 1)) {
+      if (totalQuantityInCart + parseInt(value) <= product.quantity - 1) {
         setQuantity(parseInt(value));
       } else {
         toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho`);
@@ -236,8 +238,8 @@ const Product = () => {
   };
 
   const getCartTotalQuantity = (productId) => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const productInCart = cart.find(p => p.id === productId);
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const productInCart = cart.find((p) => p.id === productId);
     return productInCart ? productInCart.quantity : 0;
   };
 
@@ -245,10 +247,10 @@ const Product = () => {
   const addToCart = async (product, quantity) => {
     const maxQuantity = product.quantity - 1;
 
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const existingProductIndex = cart.findIndex(p => p.id === product.id);
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingProductIndex = cart.findIndex((p) => p.id === product.id);
 
-    const convertPrice = parseInt(product.price.replace(/\./g, ''), 10);
+    const convertPrice = parseInt(product.price.replace(/\./g, ""), 10);
 
     let newQuantity;
     if (existingProductIndex > -1) {
@@ -268,14 +270,14 @@ const Product = () => {
       cart.push({ ...product, price: convertPrice, quantity });
     }
 
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart));
     setQuantity(1);
-    toast.success('Sản phẩm đã được thêm vào giỏ hàng');
+    toast.success("Sản phẩm đã được thêm vào giỏ hàng");
   };
 
   return (
     <>
-    <ToastContainer />
+      <ToastContainer />
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-12 banner py-5 text-center">
@@ -322,7 +324,6 @@ const Product = () => {
       <div className="container-fluid body-content">
         <div className="container pt-5">
           <div className="row">
-            
             <div className="col-md-12">
               <div
                 className="w-100"
@@ -334,7 +335,7 @@ const Product = () => {
                     style={{
                       backgroundColor: "rgba(155, 155, 155, 0.15)",
                       borderRadius: "15px",
-                      border: "2px solid black"
+                      border: "2px solid black",
                     }}
                   >
                     <div className="w-75">
@@ -377,7 +378,9 @@ const Product = () => {
                         }}
                       >
                         <div className="title-price-product fw-bold">
-                          <span style={{ fontSize: "26px" }}>{product.price} VNĐ</span>
+                          <span style={{ fontSize: "26px" }}>
+                            {product.price} VNĐ
+                          </span>
                         </div>
                         <div className="info-cart-product w-75 mt-3">
                           <table className="w-100">
@@ -414,13 +417,26 @@ const Product = () => {
                                 </td>
                                 <td className="w-50 text-center">
                                   <Link to="#" className="">
-                                    <p className=" p-2 m-0 add-cart" style={{fontSize: '16px', fontFamily: 'system-ui'}} onClick={() => addToCart(product, quantity)}>
+                                    <p
+                                      className=" p-2 m-0 add-cart"
+                                      style={{
+                                        fontSize: "16px",
+                                        fontFamily: "system-ui",
+                                      }}
+                                      onClick={() =>
+                                        addToCart(product, quantity)
+                                      }
+                                    >
                                       Thêm Giỏ Hàng
                                     </p>
                                   </Link>
                                 </td>
                                 <td className="w-30 text-center">
-                                  <Link to="" className="btn-share py-1 px-3" onClick={handleCopyLink}>
+                                  <Link
+                                    to=""
+                                    className="btn-share py-1 px-3"
+                                    onClick={handleCopyLink}
+                                  >
                                     <FontAwesomeIcon icon="fa-solid fa-share-nodes" />
                                   </Link>
                                 </td>
@@ -455,9 +471,7 @@ const Product = () => {
                         <td className="w-25 px-4 py-3 fw-bold">
                           Tên sản phẩm:
                         </td>
-                        <td className="w-75 px-4">
-                          {product.productName}
-                        </td>
+                        <td className="w-75 px-4">{product.productName}</td>
                       </tr>
                       <tr>
                         <td className="px-4 py-3 fw-bold">Loại sữa:</td>
@@ -484,9 +498,7 @@ const Product = () => {
                   </span>
                 </div>
                 <div className="px-3 py-2">
-                  <span>
-                    {product.description}
-                  </span>
+                  <span>{product.description}</span>
                 </div>
               </div>
             </div>
@@ -500,346 +512,202 @@ const Product = () => {
               </div>
               <div className="row">
                 {similarP.map((p) => (
-                <div key={p.id} className="col-md-3 p-3 mt-3">
-                  <div className="product-image text-center px-3 py-2 position-relative">
-                    <Link to={{pathname: `/product/${p.id}`}}>
-                      <img
-                        src={p.image}
-                        alt=""
-                        className="w-75"
-                        style={{ height: "15em" }}
-                      />
+                  <div key={p.id} className="col-md-3 p-3 mt-3">
+                    <div className="product-image text-center px-3 py-2 position-relative">
+                      <Link to={{ pathname: `/product/${p.id}` }}>
+                        <img src={p.image} alt="" className="w-75" />
+                      </Link>
+                    </div>
+                    <Link
+                      to={{ pathname: `/product/${p.id}` }}
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <div className="product-content mt-3 px-3 py-2">
+                        <span className="Roboto" style={{ fontSize: "1.2em" }}>
+                          <ProductName title={p.productName} maxLength={20} />
+                        </span>
+                        <div className="rank-product mt-2">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <FontAwesomeIcon
+                              key={star}
+                              icon={faStar}
+                              color={
+                                star <= p.ratingAver ? "gold" : "lightgrey"
+                              }
+                            />
+                          ))}
+                        </div>
+                        <div className="mt-2 fs-5">
+                          <span
+                            className="Opensans"
+                            style={{ fontWeight: "600" }}
+                          >
+                            VND {p.price}
+                          </span>
+                        </div>
+                      </div>
                     </Link>
                   </div>
-                  <Link to={{pathname: `/product/${p.id}`}} style={{ textDecoration: "none", color: "black" }}>
-                    <div className="product-content mt-3 px-3 py-2">
-                      <span className="Roboto" style={{ fontSize: "1.2em" }}>
-                        <ProductName title={p.productName} maxLength={20} />
-                      </span>
-                      <div className="rank-product mt-2">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <FontAwesomeIcon
-                            key={star}
-                            icon={faStar}
-                            color={star <= p.ratingAver ? 'gold' : 'lightgrey'}
-                          />
-                        ))}
-                      </div>
-                      <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: "600" }}
-                        >
-                          VND {p.price}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
                 ))}
-                {/* <div className="col-md-3 p-3 mt-3">
-                  <div className="product-image text-center px-3 py-2 position-relative">
-                    <a href="#">
-                      <img
-                        src={productImg}
-                        alt=""
-                        className="w-75"
-                        style={{ height: "15em" }}
-                      />
-                    </a>
-                  </div>
-                  <a href="" style={{ textDecoration: "none", color: "black" }}>
-                    <div className="product-content mt-3 px-3 py-2">
-                      <span className="Roboto" style={{ fontSize: "1.2em" }}>
-                        Sữa bầu Friso Mum Gold 900g hương cam
-                      </span>
-                      <div className="rank-product mt-2">
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                      </div>
-                      <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: "600" }}
-                        >
-                          VND 249.000
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div className="col-md-3 p-3 mt-3">
-                  <div className="product-image text-center px-3 py-2 position-relative">
-                    <a href="#">
-                      <img
-                        src={productImg}
-                        alt=""
-                        className="w-75"
-                        style={{ height: "15em" }}
-                      />
-                    </a>
-                  </div>
-                  <a href="" style={{ textDecoration: "none", color: "black" }}>
-                    <div className="product-content mt-3 px-3 py-2">
-                      <span className="Roboto" style={{ fontSize: "1.2em" }}>
-                        Sữa bầu Friso Mum Gold 900g hương cam
-                      </span>
-                      <div className="rank-product mt-2">
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                      </div>
-                      <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: "600" }}
-                        >
-                          VND 249.000
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div className="col-md-3 p-3 mt-3">
-                  <div className="product-image text-center px-3 py-2 position-relative">
-                    <a href="#">
-                      <img
-                        src={productImg}
-                        alt=""
-                        className="w-75"
-                        style={{ height: "15em" }}
-                      />
-                    </a>
-                  </div>
-                  <a href="" style={{ textDecoration: "none", color: "black" }}>
-                    <div className="product-content mt-3 px-3 py-2">
-                      <span className="Roboto" style={{ fontSize: "1.2em" }}>
-                        Sữa bầu Friso Mum Gold 900g hương cam
-                      </span>
-                      <div className="rank-product mt-2">
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                        <FontAwesomeIcon icon="fa-solid fa-star" />
-                      </div>
-                      <div className="mt-2 fs-5">
-                        <span
-                          className="Opensans"
-                          style={{ fontWeight: "600" }}
-                        >
-                          VND 249.000
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-                </div> */}
-
               </div>
             </div>
 
             {/* <!-- Đánh giá sản phẩm --> */}
 
-                <div className="col-md-12 mt-5 mb-5">
-                    <div className="content-feedback" style={{border: '1px solid black', borderRadius: '10px'}}>
-                        <div className="title-info-product px-4 py-3">
-                            <span className="fw-bold fs-4" style={{color: '#091E3E'}}>Đánh giá</span>
-                        </div>
-                        <div className="feedback-sao w-40 ps-4 d-flex justify-content-between">
-                        {[5, 4, 3, 2, 1].map(rating => (
-                            <div
-                              key={rating}
-                              data-value={rating}
-                              className={`voting-feedback d-inline-block px-4 py-2 ${selectedRating === rating ? 'voting-feedback-active' : ''}`}
-                              style={{ border: '1px solid black', borderRadius: '10px', cursor: 'pointer' }}
-                              onClick={() => handleRatingClick(rating)}
-                            >
-                              {rating} <FontAwesomeIcon icon="fa-solid fa-star"></FontAwesomeIcon>
-                            </div>
-                          ))}
-                          <input type="hidden" id="star-rating" name="rating" value={selectedRating || ''} />
-                        </div>
-                        <div className="w-75 p-4">
-                            <textarea value={comment} onChange={(e) => setComment(e.target.value)} name="" id="" className="w-100 p-2" rows="5" style={{resize: 'none' }}></textarea>
-                        </div>
-                        <div className="ps-4">
-                            <div className="text-center px-3 py-2 d-inline-block"
-                                style={{backgroundColor: '#005B96', borderRadius: '10px'}}>
-                                <span className="fw-bold" style={{color: 'white', cursor: 'pointer'}} onClick={handleSendFeedback}>Gửi đánh giá</span>
-                            </div>
-                        </div>
-                        <div className="mt-3" style={{borderTop: '1px solid black'}}>
-                            &nbsp;
-                        </div>
-                        <div className="w-100 ps-5 pe-5">
-                            {feedbacks.map((fb) => (
-                            <div key={fb.id} className="item-feedback p-3" style={{borderBottom: '1px solid black'}}>
-                                <table className="w-75">
-                                  <tbody>
-                                    <tr>
-                                        <td className="w-15"><span className="fw-bold">{fb.userName}</span></td>
-                                        <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>{fb.date}</span></td>
-                                        <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="2"><span className="fw-bold py-1"
-                                                style={{textDecoration: 'underline'}}>{fb.rating}.0</span>
-                                            <div className="d-inline-block py-1" style={{color: '#FFC626'}}>
-                                            {[1, 2, 3, 4, 5].map((star) => (
-                                              <FontAwesomeIcon
-                                                key={star}
-                                                icon={faStar}
-                                                color={star <= fb.rating ? 'gold' : 'lightgrey'}
-                                              />
-                                            ))}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3"><span>{fb.comment}</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            ))}
-                            {/* <div className="item-feedback p-3" style={{borderBottom: '1px solid black'}}>
-                                <table className="w-75">
-                                  <tbody>
-                                    <tr>
-                                        <td className="w-15"><span className="fw-bold">phamhieu2k3</span></td>
-                                        <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>22-01-2024</span></td>
-                                        <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="2"><span className="fw-bold py-1"
-                                                style={{textDecoration: 'underline'}}>5.0</span>
-                                            <div className="d-inline-block py-1" style={{color: '#FFC626'}}>
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /><FontAwesomeIcon icon="fa-solid fa-star" />
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /><FontAwesomeIcon icon="fa-solid fa-star" />
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3"><span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nisi eius voluptate quas perspiciatis aliquid molestiae animi quam, inventore est asperiores, accusantium voluptatem, minima eaque explicabo saepe. Facilis, eius accusamus.</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div className="item-feedback p-3" style={{borderBottom: '1px solid black'}}>
-                                <table className="w-75">
-                                  <tbody>
-                                    <tr>
-                                        <td className="w-15"><span className="fw-bold">phamhieu2k3</span></td>
-                                        <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>22-01-2024</span></td>
-                                        <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="2"><span className="fw-bold py-1"
-                                                style={{textDecoration: 'underline'}}>5.0</span>
-                                            <div className="d-inline-block py-1" style={{color: '#FFC626'}}>
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /><FontAwesomeIcon icon="fa-solid fa-star" />
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /><FontAwesomeIcon icon="fa-solid fa-star" />
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3"><span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nisi eius voluptate quas perspiciatis aliquid molestiae animi quam, inventore est asperiores, accusantium voluptatem, minima eaque explicabo saepe. Facilis, eius accusamus.</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div className="item-feedback p-3" style={{borderBottom: '1px solid black'}}>
-                                <table className="w-75">
-                                  <tbody>
-                                    <tr>
-                                        <td className="w-15"><span className="fw-bold">phamhieu2k3</span></td>
-                                        <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>22-01-2024</span></td>
-                                        <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="2"><span className="fw-bold py-1"
-                                                style={{textDecoration: 'underline'}}>5.0</span>
-                                            <div className="d-inline-block py-1" style={{color: '#FFC626'}}>
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /><FontAwesomeIcon icon="fa-solid fa-star" />
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /><FontAwesomeIcon icon="fa-solid fa-star" />
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3"><span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nisi eius voluptate quas perspiciatis aliquid molestiae animi quam, inventore est asperiores, accusantium voluptatem, minima eaque explicabo saepe. Facilis, eius accusamus.</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div className="item-feedback p-3" style={{borderBottom: '1px solid black'}}>
-                                <table className="w-75">
-                                  <tbody>
-                                    <tr>
-                                        <td className="w-15"><span className="fw-bold">phamhieu2k3</span></td>
-                                        <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>22-01-2024</span></td>
-                                        <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="2"><span className="fw-bold py-1"
-                                                style={{textDecoration: 'underline'}}>5.0</span>
-                                            <div className="d-inline-block py-1" style={{color: '#FFC626'}}>
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /><FontAwesomeIcon icon="fa-solid fa-star" />
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /><FontAwesomeIcon icon="fa-solid fa-star" />
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3"><span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nisi eius voluptate quas perspiciatis aliquid molestiae animi quam, inventore est asperiores, accusantium voluptatem, minima eaque explicabo saepe. Facilis, eius accusamus.</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div className="item-feedback p-3">
-                                <table className="w-75">
-                                  <tbody>
-                                    <tr>
-                                        <td className="w-15"><span className="fw-bold">phamhieu2k3</span></td>
-                                        <td className="w-15"><span className="ps-3" style={{color: '#97999D'}}>22-01-2024</span></td>
-                                        <td className="w-70 fs-5" rowSpan="2"><span className="px-2"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /></span><a href="#" style={{color: 'red'}}><FontAwesomeIcon icon="fa-solid fa-trash" /></a></td> 
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="2"><span className="fw-bold py-1"
-                                                style={{textDecoration: 'underline'}}>5.0</span>
-                                            <div className="d-inline-block py-1" style={{color: '#FFC626'}}>
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /><FontAwesomeIcon icon="fa-solid fa-star" />
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /><FontAwesomeIcon icon="fa-solid fa-star" />
-                                            <FontAwesomeIcon icon="fa-solid fa-star" /></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3"><span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nisi eius voluptate quas perspiciatis aliquid molestiae animi quam, inventore est asperiores, accusantium voluptatem, minima eaque explicabo saepe. Facilis, eius accusamus.</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div> */}
-                        </div>
-                        <div className="w-100 p-3">
-                            <div className="fs-5 d-flex justify-content-end">
-                                <a className="px-3 inconCursor" href="#" style={{color: '#3C75A6'}}>
-                                <FontAwesomeIcon icon="fa-solid fa-circle-chevron-left" className="opacity-50" /></a>
-                                <span style={{fontFamily: 'Poppins'}}>Trang 1</span>
-                                <a className="px-3" href="#" style={{color: '#3C75A6'}}>
-                                <FontAwesomeIcon icon="fa-solid fa-circle-chevron-right"/></a>
-                            </div>
-                        </div>
-                    </div>
+            <div className="col-md-12 mt-5 mb-5">
+              <div
+                className="content-feedback"
+                style={{ border: "1px solid black", borderRadius: "10px" }}
+              >
+                <div className="title-info-product px-4 py-3">
+                  <span className="fw-bold fs-4" style={{ color: "#091E3E" }}>
+                    Đánh giá
+                  </span>
                 </div>
-
-
+                <div className="feedback-sao w-40 ps-4 d-flex justify-content-between">
+                  {[5, 4, 3, 2, 1].map((rating) => (
+                    <div
+                      key={rating}
+                      data-value={rating}
+                      className={`voting-feedback d-inline-block px-4 py-2 ${
+                        selectedRating === rating
+                          ? "voting-feedback-active"
+                          : ""
+                      }`}
+                      style={{
+                        border: "1px solid black",
+                        borderRadius: "10px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleRatingClick(rating)}
+                    >
+                      {rating}{" "}
+                      <FontAwesomeIcon icon="fa-solid fa-star"></FontAwesomeIcon>
+                    </div>
+                  ))}
+                  <input
+                    type="hidden"
+                    id="star-rating"
+                    name="rating"
+                    value={selectedRating || ""}
+                  />
+                </div>
+                <div className="w-75 p-4">
+                  <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    name=""
+                    id=""
+                    className="w-100 p-2"
+                    rows="5"
+                    style={{ resize: "none" }}
+                  ></textarea>
+                </div>
+                <div className="ps-4">
+                  <div
+                    className="text-center px-3 py-2 d-inline-block"
+                    style={{ backgroundColor: "#005B96", borderRadius: "10px" }}
+                  >
+                    <span
+                      className="fw-bold"
+                      style={{ color: "white", cursor: "pointer" }}
+                      onClick={handleSendFeedback}
+                    >
+                      Gửi đánh giá
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-3" style={{ borderTop: "1px solid black" }}>
+                  &nbsp;
+                </div>
+                <div className="w-100 ps-5 pe-5">
+                  {feedbacks.map((fb) => (
+                    <div
+                      key={fb.id}
+                      className="item-feedback p-3"
+                      style={{ borderBottom: "1px solid black" }}
+                    >
+                      <table className="w-75">
+                        <tbody>
+                          <tr>
+                            <td className="w-15">
+                              <span className="fw-bold">{fb.userName}</span>
+                            </td>
+                            <td className="w-15">
+                              <span
+                                className="ps-3"
+                                style={{ color: "#97999D" }}
+                              >
+                                {fb.date}
+                              </span>
+                            </td>
+                            <td className="w-70 fs-5" rowSpan="2">
+                              <span className="px-2">
+                                <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
+                              </span>
+                              <a href="#" style={{ color: "red" }}>
+                                <FontAwesomeIcon icon="fa-solid fa-trash" />
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colSpan="2">
+                              <span
+                                className="fw-bold py-1"
+                                style={{ textDecoration: "underline" }}
+                              >
+                                {fb.rating}.0
+                              </span>
+                              <div
+                                className="d-inline-block py-1"
+                                style={{ color: "#FFC626" }}
+                              >
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <FontAwesomeIcon
+                                    key={star}
+                                    icon={faStar}
+                                    color={
+                                      star <= fb.rating ? "gold" : "lightgrey"
+                                    }
+                                  />
+                                ))}
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colSpan="3">
+                              <span>{fb.comment}</span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  ))}
+                </div>
+                <div className="w-100 p-3">
+                  <div className="fs-5 d-flex justify-content-end">
+                    <a
+                      className="px-3 inconCursor"
+                      href="#"
+                      style={{ color: "#3C75A6" }}
+                    >
+                      <FontAwesomeIcon
+                        icon="fa-solid fa-circle-chevron-left"
+                        className="opacity-50"
+                      />
+                    </a>
+                    <span style={{ fontFamily: "Poppins" }}>Trang 1</span>
+                    <a className="px-3" href="#" style={{ color: "#3C75A6" }}>
+                      <FontAwesomeIcon icon="fa-solid fa-circle-chevron-right" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </>
   );
-}
+};
 export default Product;

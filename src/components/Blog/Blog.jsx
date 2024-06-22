@@ -170,7 +170,7 @@ const Blog = () => {
                 fontFamily: "sans-serif",
               }}
             >
-              Blog
+              Bài Viết
             </h1>
             <div className="d-inline-block roboto">
               <div className="d-flex align-content-between">
@@ -179,7 +179,7 @@ const Blog = () => {
                     to="/"
                     style={{ color: "#103A71", textDecoration: "none" }}
                   >
-                    Home
+                    Trang Chủ
                   </Link>
                 </p>
                 <p className="px-2">
@@ -193,7 +193,7 @@ const Blog = () => {
                     to="/blog"
                     style={{ color: "#103A71", textDecoration: "none" }}
                   >
-                    Blog
+                    Bài Viết
                   </Link>
                 </p>
               </div>
