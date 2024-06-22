@@ -240,7 +240,7 @@ const Shop = () => {
       return;
     }
 
-    const maxQuantity = productData.quantity;
+    const maxQuantity = productData.quantity - 1;
 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const existingProductIndex = cart.findIndex(p => p.id === product.id);
@@ -411,7 +411,7 @@ const Shop = () => {
             <div className="col-md-2">
               {/* FILTER CATEGORY */}
               <div className="w-100 d-flex justify-content-center item-filter-left py-4 mb-4 scroll-filter-left">
-                <table className="w-75" style={{ display: 'block', maxHeight: '200px', overflowY: 'auto' }}>
+                <table className="w-75" style={{ display: 'block', maxHeight: '15em', overflowY: 'auto' }}>
                   <tbody style={{ display: 'block' }}>
                     <tr>
                       <td colSpan="2" className="pb-3 fs-5" style={{ color: "#67686C" }}>
@@ -438,7 +438,7 @@ const Shop = () => {
 
               {/* FILTER BRAND */}
               <div className="w-100 d-flex justify-content-center item-filter-left py-3 mb-5">
-                <table className="w-75" style={{ display: 'block', maxHeight: '200px', overflowY: 'auto' }}>
+                <table className="w-75" style={{ display: 'block', maxHeight: '15em', overflowY: 'auto' }}>
                   <tbody style={{ display: 'block' }}>
                     <tr>
                       <td colSpan="2" className="pb-3 fs-5" style={{ color: "#67686C" }}>
@@ -465,7 +465,7 @@ const Shop = () => {
               
               {/* FILTER AGE */}
               <div className="w-100 d-flex justify-content-center item-filter-left py-3 mb-5">
-                <table className="w-75" style={{ display: 'block', maxHeight: '200px', overflowY: 'auto' }}>
+                <table className="w-75" style={{ display: 'block', maxHeight: '15em', overflowY: 'auto' }}>
                   <tbody style={{ display: 'block' }}>
                     <tr>
                       <td colSpan="2" className="pb-3 fs-5" style={{ color: "#67686C" }}>
@@ -492,7 +492,7 @@ const Shop = () => {
 
               {/* FILTER ORIGIN */}
               <div className="w-100 d-flex justify-content-center item-filter-left py-3 mb-4">
-                <table className="w-75" style={{ display: 'block', maxHeight: '200px', overflowY: 'auto' }}>
+                <table className="w-75" style={{ display: 'block', maxHeight: '15em', overflowY: 'auto' }}>
                   <tbody style={{ display: 'block' }}>
                     <tr>
                       <td colSpan="2" className="pb-3 fs-5" style={{ color: "#67686C" }}>
