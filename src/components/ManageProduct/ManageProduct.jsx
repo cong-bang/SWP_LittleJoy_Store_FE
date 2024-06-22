@@ -61,6 +61,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
       const [searchBrand, setSearchBrand] = useState(null);
       const [searchAge, setSearchAge] = useState(null);
       const [categoriesLoaded, setCategoriesLoaded] = useState(false); 
+      const [statusProduct, setStatusProduct] = useState(true);
 
       const TableLoading = () => (
         <ContentLoader
@@ -89,6 +90,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
       useEffect(() => {
         setLoading(true);
         const fetchCategories = async () => {
+          if(statusProduct) {
           try {
             const responseCate = await fetch(
               'https://littlejoyapi.azurewebsites.net/api/category?PageIndex=1&PageSize=9'
@@ -136,6 +138,7 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
           } finally {
             setLoading(false);
           }
+        }
         };
     
         fetchCategories();
@@ -661,6 +664,21 @@ import ModalConfirmDelete from "./ModalConfirmDeleteProduct";
                                                         {ag.ageRange}
                                                       </option>
                                                     ))}
+                                                    
+                                                </select>
+                                            </div>
+
+                                            <div className="filter-status p-3">
+                                                <select name="" id="" className="p-1" defaultValue="" value={statusProduct} onChange={(e) => setSearchAge(e.target.value)}>
+                                                    <option value="" selected disabled>Tình trạng sản phẩm</option>
+                                                   
+                                                      <option key={true} value="conhang">
+                                                        Còn hàng
+                                                      </option>
+                                                      <option key={false} value="hethang">
+                                                        Hết hàng
+                                                      </option>
+                                                    
                                                     
                                                 </select>
                                             </div>
