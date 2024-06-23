@@ -74,8 +74,8 @@ const Shop = () => {
       const paginationData = JSON.parse(response.headers.get("X-Pagination"));
       setPaging(paginationData);
   
-      const previous = document.getElementById("blog-pre");
-      const next = document.getElementById("blog-next");
+      const previous = document.getElementById("p-pre");
+      const next = document.getElementById("p-next");
   
       if (paginationData.CurrentPage === 1) {
         previous.style.opacity = "0.5";
@@ -392,7 +392,7 @@ const Shop = () => {
                       style={{ color: "#3c75a6" }}
                     >
                       <FontAwesomeIcon
-                        id="blog-pre"
+                        id="p-pre"
                         icon="fa-solid fa-circle-chevron-left"
                         className=""
                         onClick={handlePrevious}
@@ -400,7 +400,7 @@ const Shop = () => {
                     </Link>
                     <span style={{ fontFamily: "Poppins" }}>Trang {paging.CurrentPage}</span>
                     <Link className="px-3" href="#" style={{ color: "#3c75a6" }}>
-                      <FontAwesomeIcon id="blog-next" icon="fa-solid fa-circle-chevron-right" onClick={handleNext} />
+                      <FontAwesomeIcon id="p-next" icon="fa-solid fa-circle-chevron-right" onClick={handleNext} />
                     </Link>
                   </div>
                 </div>
@@ -531,6 +531,7 @@ const Shop = () => {
                         
                       />
                     </Link>
+                    {p.quantity > 0 ? (
                     <Link
                       to="#"
                       className="addcart-item position-absolute start-50 translate-middle"
@@ -538,6 +539,11 @@ const Shop = () => {
                     >
                       THÊM VÀO GIỎ HÀNG
                     </Link>
+                  ) : (
+                    <div class="sold-out position-absolute top-50 start-50 translate-middle d-flex justify-content-center align-items-center">
+                      <p class="m-0">SOLD OUT</p>
+                    </div>
+                  )}
                   </div>
                   <Link
                     to={{pathname: `/product/${p.id}`}}

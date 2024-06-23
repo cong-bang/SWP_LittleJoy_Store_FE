@@ -1442,7 +1442,7 @@ const fetchBrandId = async (brandId) => {
                                                 <tr className="table-header">
                                                     <td className="p-3 px-4"><span className="float-start">ID</span></td>
                                                     <td className="p-3 px-4 "><span className="float-start">Brand</span></td>
-                                                    <td className="p-3 px-4 "><span className="float-start">Logo</span></td>
+                                                    <td className="p-3 px-4 "><span className="text-center">Logo</span></td>
                                                     <td className="p-3 px-4 "><span className="float-start">Decription</span></td>
                                                     <td className="p-3 px-4 "><span>Action</span></td>
                                                 </tr>
@@ -1463,7 +1463,7 @@ const fetchBrandId = async (brandId) => {
                                                   <td className="p-3 px-4 ">
                                                     <span className="float-start">{b.brandName}</span>
                                                   </td>
-                                                  <td className="p-3 px-4 ">
+                                                  <td className="p-0 px-4 ">
                                                     <span className="float-start"><img className="w-50" src={b.logo} alt="" ></img></span>
                                                   </td>
                                                   <td className="p-3 px-4 ">

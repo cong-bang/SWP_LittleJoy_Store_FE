@@ -19,9 +19,15 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [similarP, setSimilarP] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
-  const [selectedRating, setSelectedRating] = useState(null);
+  const [selectedRating, setSelectedRating] = useState("");
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const [paging, setPaging] = useState({
+    CurrentPage: 1,
+    PageSize: 5,
+    TotalPages: 1,
+    TotalCount: 0,
+  });
   const notify = () =>
     toast.error("Vui lòng nhập đủ thông tin", {
       position: "top-right",
@@ -38,7 +44,6 @@ const Product = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -86,8 +91,17 @@ const Product = () => {
         }));
         setSimilarP(formattedSimilarP);
 
+        
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+
+    const fetchFeedback = async (pageIndex) => {
+      setLoading(true);
+      try {
         const resFeedbacks = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/feedback/feed-back-by-product/${id}?PageIndex=1&PageSize=9`
+          `https://littlejoyapi.azurewebsites.net/api/feedback/feed-back-by-product/${id}?PageIndex=${pageIndex}&PageSize=5`
         );
         const dataFeedbacks = await resFeedbacks.json();
         const userIds = [
@@ -116,13 +130,56 @@ const Product = () => {
           };
         });
 
+      const paginationData = JSON.parse(resFeedbacks.headers.get("X-Pagination"));
+      setPaging(paginationData);
+  
+      const previous = document.getElementById("fb-pre");
+      const next = document.getElementById("fb-next");
+  
+      if (paginationData.CurrentPage === 1) {
+        previous.style.opacity = "0.5";
+        next.style.opacity = paginationData.TotalPages > 1 ? "1" : "0.5";
+      } else if (paginationData.CurrentPage === paginationData.TotalPages) {
+        previous.style.opacity = "1";
+        next.style.opacity = "0.5";
+      } else {
+        previous.style.opacity = "1";
+        next.style.opacity = "1";
+      }
+
         setFeedbacks(feedbacksWithUserNames);
-      } catch (error) {
-        console.error(error.message);
+      } catch(error) {
+        console.log(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    const handlePrevious = () => {
+      if (paging.CurrentPage > 1) {
+        setPaging((prevState) => ({
+          ...prevState,
+          CurrentPage: prevState.CurrentPage - 1,
+        }));
       }
     };
+  
+    const handleNext = () => {
+      if (paging.CurrentPage < paging.TotalPages) {
+        setPaging((prevState) => ({
+          ...prevState,
+          CurrentPage: prevState.CurrentPage + 1,
+        }));
+      }
+    };
+
+  useEffect(() => {
     fetchData();
-  }, [id, feedbacks.length]);
+  }, [id]);
+
+  useEffect(() => {
+    fetchFeedback(paging.CurrentPage);
+  }, [paging.CurrentPage, paging.TotalCount]);
 
   const formatPrice = (price) => {
     return price.toLocaleString("de-DE");
@@ -163,8 +220,10 @@ const Product = () => {
     setSelectedRating(rating);
   };
 
+  //FEEDBACK
+
   const handleSendFeedback = async () => {
-    if (comment.trim() === "" || selectedRating === null) {
+    if (comment.trim() === "" || selectedRating === "") {
       notify();
       return;
     }
@@ -190,8 +249,9 @@ const Product = () => {
         );
         const data = await response.json();
         if (data.ok) {
-          setSelectedRating(null);
+          setSelectedRating("");
           setComment("");
+          await fetchFeedback(paging.CurrentPage);
         }
       } catch (error) {
         console.error("Lỗi tạo blog:", error);
@@ -612,6 +672,7 @@ const Product = () => {
                     onChange={(e) => setComment(e.target.value)}
                     name=""
                     id=""
+                    placeholder="Nhập phản hồi của bạn"
                     className="w-100 p-2"
                     rows="5"
                     style={{ resize: "none" }}
@@ -699,21 +760,23 @@ const Product = () => {
                   ))}
                 </div>
                 <div className="w-100 p-3">
-                  <div className="fs-5 d-flex justify-content-end">
-                    <a
-                      className="px-3 inconCursor"
+                <div className="fs-5 d-flex justify-content-end">
+                    <Link
+                      className="px-3"
                       href="#"
-                      style={{ color: "#3C75A6" }}
+                      style={{ color: "#3c75a6" }}
                     >
                       <FontAwesomeIcon
+                        id="fb-pre"
                         icon="fa-solid fa-circle-chevron-left"
-                        className="opacity-50"
+                        className=""
+                        onClick={handlePrevious}
                       />
-                    </a>
-                    <span style={{ fontFamily: "Poppins" }}>Trang 1</span>
-                    <a className="px-3" href="#" style={{ color: "#3C75A6" }}>
-                      <FontAwesomeIcon icon="fa-solid fa-circle-chevron-right" />
-                    </a>
+                    </Link>
+                    <span style={{ fontFamily: "Poppins" }}>Trang {paging.CurrentPage}</span>
+                    <Link className="px-3" href="#" style={{ color: "#3c75a6" }}>
+                      <FontAwesomeIcon id="fb-next" icon="fa-solid fa-circle-chevron-right" onClick={handleNext} />
+                    </Link>
                   </div>
                 </div>
               </div>
