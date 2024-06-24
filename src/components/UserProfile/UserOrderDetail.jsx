@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/css/styleUserOrderDetail.css";
 import Ellipse2 from "../../assets/img/Ellipse2.png";
 import Abott from "../../assets/img/Abott.png";
 
-export default function UserOrderDetail() {
+const UserOrderDetail = () => {
   const [showModal, setShowModal] = useState(false);
   const [reason, setReason] = useState("");
   const [comments, setComments] = useState("");
   const [image, setImage] = useState(null);
+  const location = useLocation();
+  const user = location.state?.user || {};
 
   const handleCancelOrder = () => {
     setShowModal(true);
@@ -32,169 +34,13 @@ export default function UserOrderDetail() {
 
   return (
     <>
-      <section>
-        <div>
-          <div className="banner container-fluid pb-5 mb-5">
-            <h1 className="pt-5">My Profile</h1>
-            <p className="myhome pt-2">
-              <Link to="/">Home</Link>
-              <span>
-                <FontAwesomeIcon
-                  icon="fa-solid fa-angles-right"
-                  className="px-4"
-                />
-              </span>
-              <Link to="/userprofile">Profile</Link>
-            </p>
-          </div>
-        </div>
-      </section>
+      
 
-      <div className="container mt-5">
-        <div className="row">
+      
           {/* <!-- User Info Side Bar--> */}
-          <div className="col-md-3">
-            <table className="w-100 m-0">
-              <tbody>
-                <tr>
-                  <td className="w-25">
-                    <div className="w-100 d-flex justify-content-center">
-                      <div className="border-avatar w-75 text-center">
-                        <img src={Ellipse2} alt="" className="w-100" />
-                      </div>
-                    </div>
-                  </td>
-                  <td className="w-75">
-                    <span className="fs-5 ps-2 fw-bold">phamhieu2k3</span>
-                  </td>
-                </tr>
+          
 
-                <tr>
-                  <td className="pt-4" colSpan="2">
-                    <div className="user-address-sidebar">
-                      <Link
-                        className="d-flex py-2"
-                        to="/userprofile"
-                        style={{ textDecoration: "none", color: "black" }}
-                      >
-                        <div
-                          className="text-center w-25"
-                          style={{ color: "#3C75A6" }}
-                        >
-                          <FontAwesomeIcon
-                            icon="fa-solid fa-user"
-                            className="fs-3"
-                          />
-                        </div>
-
-                        <div className="w-75">
-                          <span className="fs-5 ps-2">Thông tin tài khoản</span>
-                        </div>
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td className="pt-4" colSpan="2">
-                    <div className="user-address-sidebar ">
-                      <Link
-                        className="d-flex py-2"
-                        to="/userchangepassword"
-                        style={{ textDecoration: "none", color: "black" }}
-                      >
-                        <div
-                          className="text-center w-25"
-                          style={{ color: "#3C75A6" }}
-                        >
-                          <FontAwesomeIcon
-                            icon="fa-solid fa-lock"
-                            className="fs-3"
-                          />
-                        </div>
-
-                        <div className="w-75">
-                          <span className="fs-5 ps-2">Thay đổi mật khẩu</span>
-                        </div>
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td className="pt-4" colSpan="2">
-                    <div className="user-address-sidebar">
-                      <div className="CoverButton">
-                        <Link
-                          className="d-flex py-2"
-                          to="/userordermanagement"
-                          style={{ textDecoration: "none", color: "black" }}
-                        >
-                          <div
-                            className="text-center w-25"
-                            style={{ color: "#3C75A6" }}
-                          >
-                            <FontAwesomeIcon
-                              icon="fa-solid fa-cart-shopping"
-                              className="fs-3"
-                            />
-                          </div>
-
-                          <div className="w-75">
-                            <span className="fs-5 ps-2">Quản lí đơn hàng</span>
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td className="pt-4" colSpan="2">
-                    <div className="user-address-sidebar">
-                      <Link
-                        className="d-flex py-2"
-                        to="/useraddress"
-                        style={{ textDecoration: "none", color: "black" }}
-                      >
-                        <div
-                          className="text-center w-25"
-                          style={{ color: "#3C75A6" }}
-                        >
-                          <FontAwesomeIcon
-                            icon="fa-solid fa-map-location"
-                            className="fs-3"
-                          />
-                        </div>
-
-                        <div className="w-75">
-                          <span className="fs-5 ps-2">Địa chỉ</span>
-                        </div>
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td colSpan="2" className="pt-4">
-                    <div className="fs-5">
-                      <a href="#" style={{ textDecoration: "none" }}>
-                        <FontAwesomeIcon
-                          icon="fa-solid fa-arrow-right-from-bracket"
-                          style={{ color: "#CCCCCC" }}
-                        />
-                        <span style={{ color: "black" }} className="ps-4">
-                          Đăng xuất
-                        </span>
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div className="col-md-9">
+          
             <div className="row">
               {/* <!-- Return Button --> */}
               <div className="col-md-12">
@@ -550,9 +396,7 @@ export default function UserOrderDetail() {
                 </tbody>
               </table>
             </div>
-          </div>
-        </div>
-      </div>
+          
 
       {/* Modal */}
       {showModal && (
@@ -662,3 +506,4 @@ export default function UserOrderDetail() {
     </>
   );
 }
+export default UserOrderDetail;

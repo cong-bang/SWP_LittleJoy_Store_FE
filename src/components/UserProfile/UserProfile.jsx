@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/css/styleUserProfile.css";
 import Ellipse2 from "../../assets/img/Ellipse2.png";
@@ -9,38 +9,37 @@ import avatarUnknown from "../../assets/img/avatarUnknown.jpg";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const UserProfile = () => {
 
-  const [user, setUser] = useState({});
+const UserProfile = () => {
+  const navigate = useNavigate();
   const [avatar, setAvatar] = useState('');
   const [fullname,setFullname] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [user, setUser] = useState({});
 
-  
-    const fetchDataUser = async () => {
-      try {
-        const userId = localStorage.getItem('userId');
-        const response = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/user/${userId}`
-        );
-        if (!response.ok) {
-          console.log('Lỗi fetch category data...');
-          return;
-        }
-        const userData = await response.json();
-        setUser(userData);
-        setFullname(userData.fullname);
-        setAvatar(userData.avatar);
-        setPhoneNumber(userData.phoneNumber);
-
-      } catch (error) {
-        console.error(error.message);
+  const fetchDataUser = async () => {
+    try {
+      const userId = localStorage.getItem('userId');
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/user/${userId}`
+      );
+      if (!response.ok) {
+        console.log('Lỗi fetch category data...');
+        return;
       }
-    };
+      const userData = await response.json();
+      setUser(userData);
+      setAvatar(userData.avatar);
+      setFullname(userData.fullname);
+      setPhoneNumber(userData.phoneNumber);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
-    useEffect(() => {
-      fetchDataUser();
-    }, [])
+  useEffect(() => {
+    fetchDataUser();
+}, []);
 
   const handleUploadComplete = (url) => {
     setAvatar(url);
@@ -72,7 +71,6 @@ const UserProfile = () => {
     fullname: fullname,
     avatar: avatar,
   };
-  console.log(newProfile);
   try {
     const response = await fetch('https://littlejoyapi.azurewebsites.net/api/user/user-role', {
       method: 'PUT',
@@ -94,177 +92,19 @@ const UserProfile = () => {
   }
   }
 
-  const navigate = useNavigate();
-  const handleLogout = () => {
-    localStorage.removeItem('userId');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('cart');
-    
-    navigate("/");
-    window.location.reload();
-  };
 
   return (
     <>
     <ToastContainer />
-      <section>
-        <div>
-          <div className="banner container-fluid pb-5 mb-5">
-            <h1 className="pt-5">My Profile</h1>
-            <p className="myhome pt-2">
-              <Link to="/">Home</Link>
-              <span>
-                <FontAwesomeIcon
-                  icon="fa-solid fa-angles-right"
-                  className="px-4"
-                />
-              </span>
-              <Link to="/profile">Profile</Link>
-            </p>
-          </div>
-        </div>
-      </section>
+      
 
       {/* <!-- User Info--> */}
-      <div className="container mt-5">
-        <div className="row">
+      
           {/* <!-- User Info Side Bar--> */}
-          <div className="col-md-3">
-            <table className="w-100 m-0">
-              <tbody>
-                <tr>
-                  <td className="w-25">
-                    <div className="w-100 d-flex justify-content-center">
-                      <div className="border-avatar w-75 text-center">
-                        <img src={user.avatar || avatarUnknown} alt="" className="w-100" style={{ borderRadius: '50%', width: '75%' }} />
-                      </div>
-                    </div>
-                  </td>
-                  <td className="w-75">
-                    <span className="fs-5 ps-2 fw-bold">{user.userName}</span>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td className="pt-4" colSpan="2">
-                    <div className="user-address-sidebar">
-                      <div className="CoverButton">
-                        <Link
-                          className="d-flex py-2"
-                          to="/userprofile"
-                          style={{ textDecoration: "none", color: "black" }}
-                        >
-                          <div
-                            className="text-center w-25"
-                            style={{ color: "#3C75A6" }}
-                          >
-                            <FontAwesomeIcon icon="fa-solid fa-user" className="fs-3" />
-                          </div>
-
-                          <div className="w-75">
-                            <span className="fs-5 ps-2">
-                              Thông tin tài khoản
-                            </span>
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td className="pt-4" colSpan="2">
-                    <div className="user-address-sidebar">
-                      <Link
-                        className="d-flex py-2"
-                        to="/userchangepassword"
-                        style={{ textDecoration: "none", color: "black" }}
-                      >
-                        <div
-                          className="text-center w-25"
-                          style={{ color: "#3C75A6" }}
-                        >
-                          <FontAwesomeIcon icon="fa-solid fa-lock" className="fs-3" />
-                        </div>
-
-                        <div className="w-75">
-                          <span className="fs-5 ps-2">Thay đổi mật khẩu</span>
-                        </div>
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td className="pt-4" colSpan="2">
-                    <div className="user-address-sidebar">
-                      <Link
-                        className="d-flex py-2"
-                        to="/userordermanagement"
-                        style={{ textDecoration: "none", color: "black" }}
-                      >
-                        <div
-                          className="text-center w-25"
-                          style={{ color: "#3C75A6" }}
-                        >
-                          <FontAwesomeIcon icon="fa-solid fa-cart-shopping" className="fs-3" />
-                        </div>
-
-                        <div className="w-75">
-                          <span className="fs-5 ps-2">Quản lí đơn hàng</span>
-                        </div>
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td className="pt-4" colSpan="2">
-                    <div className="user-address-sidebar">
-                      <Link
-                        className="d-flex py-2"
-                        to="/useraddress"
-                        style={{ textDecoration: "none", color: "black" }}
-                      >
-                        <div
-                          className="text-center w-25"
-                          style={{ color: "#3C75A6" }}
-                        >
-                          <FontAwesomeIcon icon="fa-solid fa-map-location" className="fs-3" />
-                        </div>
-
-                        <div className="w-75">
-                          <span className="fs-5 ps-2">Địa chỉ</span>
-                        </div>
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-
-                
-
-                <tr>
-                  <td colSpan="2" className="pt-4">
-                    <div className="fs-5">
-                      <Link to="/" style={{ textDecoration: "none" }} onClick={handleLogout}>
-                        
-                        <FontAwesomeIcon icon="fa-solid fa-arrow-right-from-bracket" style={{ color: "#CCCCCC" }} />
-                        <span style={{ color: "black" }} className="ps-4">
-                          Đăng xuất
-                        </span>
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          
 
           {/* <!-- User information detail--> */}
-          <div className="col-md-9">
+          
             <div className="row">
               <div className="col-md-8">
                 <div className="w-100 ms-3">
@@ -404,9 +244,7 @@ const UserProfile = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
+          
     </>
   );
 }

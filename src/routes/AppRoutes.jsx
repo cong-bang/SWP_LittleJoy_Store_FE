@@ -30,6 +30,7 @@ import RequestRefund from "../components/Refund/RequestRefund";
 import UpdateBlog from "../components/Blog/UpdateBlog";
 import ConfirmEmail from "../components/Authen/ConfirmEmail";
 import ManageCategory from "../components/ManageCategory/ManageCategory";
+import UserLayout from "../components/UserProfile/ProfileLayout";
 
 
 const UserRoute = () => {
@@ -110,11 +111,16 @@ const AppRoutes = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/product/:id" element={<Product />} />
-        <Route path="/userprofile" element={<UserProfile />} />
-        <Route path="/useraddress" element={<UserAddress />} />
-        <Route path="/userchangepassword" element={<UserChangePassword />} />
-        <Route path="/userorderdetail" element={<UserOrderDetail />} />
-        <Route path="/userordermanagement" element={<UserOrderManagement />} />
+
+        <Route element={<UserLayout />}>
+          <Route path="/userprofile" element={<UserProfile />} />
+          <Route path="/useraddress" element={<UserAddress />} />
+          <Route path="/userchangepassword" element={<UserChangePassword />} />
+          <Route path="/userordermanagement" element={<UserOrderManagement />} />
+          <Route path="/userorderdetail" element={<UserOrderDetail />} />
+        </Route>
+
+        
         <Route path="/confirm/:id" element={<ConfirmEmail />} />
         <Route path="/forgotpass1" element={<Forgotpass1 />} />
         
