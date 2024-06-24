@@ -13,8 +13,10 @@ const UserChangePassword = () => {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [mess, setMess] = useState({});
+  const [error, setError] = useState({});
+  const [mess, setMess] = useState('');
+  const [newPasswordError, setNewPasswordError] = useState(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
 
   const notify = () =>
@@ -58,34 +60,17 @@ const UserChangePassword = () => {
           toast.success('Thay đổi mật khẩu thành công');
         } else {
           toast.error('Thay đổi mật khẩu thất bại');
-          setError(data.message);
-          
+          setMess(data.message);
+          if (data.errors) {
+            setNewPasswordError(data.errors.NewPassword ? data.errors.NewPassword[0] : null);
+            setConfirmPasswordError(data.errors.ConfirmPassword ? data.errors.ConfirmPassword[0] : null);
+          }
         }
         
       } catch (error) {
         setError({ general: "Something went wrong. Please try again." });
       }
     }
-
-    const displayErrors = () => {
-      if (error.general) {
-        return <span>{error.general}</span>;
-      }
-      return Object.keys(error).map((key) => (
-        <span key={key}>
-          {Array.isArray(error[key]) ? (
-            error[key].map((error, index) => (
-              <>
-                <span key={index}>{error}</span>
-                <br></br>
-              </>
-            ))
-          ) : (
-            <span>{error[key]}</span>
-          )}
-        </span>
-      ));
-    };
 
 
   return (
@@ -135,7 +120,7 @@ const UserChangePassword = () => {
                     <td></td>
                     <td className="pt-3" colSpan="3">
                       <span id="texterror" className="ps-3">
-                        {error}
+                        {mess}
                       </span>
                     </td>
                   </tr>
@@ -163,7 +148,7 @@ const UserChangePassword = () => {
                     <td className="pt-3" colSpan="3">
                       <div>
                         <span id="texterror" className="ps-3">
-                          {}
+                        {newPasswordError && <span className="">{newPasswordError}</span>}
                         </span>
                       </div>
                     </td>
@@ -191,7 +176,7 @@ const UserChangePassword = () => {
                     <td></td>
                     <td className="pt-3" colSpan="3">
                       <span id="texterror" className="ps-3">
-                        {}
+                      {confirmPasswordError && <span className="">{confirmPasswordError}</span>}
                       </span>
                     </td>
                   </tr>

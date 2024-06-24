@@ -36,7 +36,7 @@ export default function Header() {
             </Link>
           </div>
           <div className="col-md-6 align-content-center d-flex justify-content-center">
-            <div className="w-75 align-content-center">
+            <div className=" align-content-center">
               <ul className="nav justify-content-around">
                 <li className="nav-item header-item">
                   <Link to="/" className="nav-link opensans">
