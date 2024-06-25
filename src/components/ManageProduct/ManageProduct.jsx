@@ -31,6 +31,12 @@ const ManageProduct = () => {
     TotalPages: 1,
     TotalCount: 0,
   });
+  const [inventoryPaging, setInventoryPaging] = useState({
+    CurrentPage: 1,
+    PageSize: 9,
+    TotalPages: 1,
+    TotalCount: 0,
+  });
   const { pathname } = useLocation();
   const [categories, setCategories] = useState([]);
   const [origins, setOrigins] = useState([]);
@@ -61,7 +67,7 @@ const ManageProduct = () => {
   const [searchBrand, setSearchBrand] = useState(null);
   const [searchAge, setSearchAge] = useState(null);
   const [categoriesLoaded, setCategoriesLoaded] = useState(false);
-  const [statusProduct, setStatusProduct] = useState(true);
+  const [statusProduct, setStatusProduct] = useState(null);
 
   const TableLoading = () => (
     <ContentLoader
@@ -444,6 +450,77 @@ const ManageProduct = () => {
     }
   };
 
+  //FILTER INVENTORY PRODUCT
+  const fetchInventory = async (pageIndex, pageSize) => {
+    setLoading(true);
+    try {
+      const searchParams = new URLSearchParams();
+      if (statusProduct != null) searchParams.append("status", statusProduct);
+      searchParams.append("PageIndex", pageIndex);
+      searchParams.append("PageSize", pageSize);
+
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/product/filter-inventory-status?PageIndex=${pageIndex}&PageSize=9&${searchParams.toString()}`
+      );
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          setProducts([]);
+          setPaging({
+            CurrentPage: 1,
+            PageSize: 9,
+            TotalPages: 1,
+            TotalCount: 0,
+          });
+        } else {
+          console.log("Lỗi fetch data...");
+          setProducts([]);
+          setPaging({
+            CurrentPage: 1,
+            PageSize: 9,
+            TotalPages: 1,
+            TotalCount: 0,
+          });
+        }
+        return;
+      }
+
+      const paginationData = await JSON.parse(
+        response.headers.get("X-Pagination")
+      );
+      setInventoryPaging(paginationData);
+
+      const dataProducts = await response.json();
+      const formattedProducts = await dataProducts.map((product) => {
+        const category = categories.find((c) => c.id == product.cateId);
+        return {
+          ...product,
+          price: formatPrice(product.price),
+          categoryName: category ? category.categoryName : "Khác",
+        };
+      });
+      setProducts(formattedProducts);
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInventoryPageChange = (newPage) => {
+    setInventoryPaging((prev) => ({
+      ...prev,
+      CurrentPage: newPage,
+    }));
+  };
+  
+  useEffect(() => {
+    if (categoriesLoaded) {
+      fetchInventory(inventoryPaging.CurrentPage, inventoryPaging.PageSize);
+    }
+  }, [categoriesLoaded, inventoryPaging.CurrentPage, statusProduct]);
+
+
   const navigate = useNavigate();
   const handleLogout = () => {
     navigate("/");
@@ -777,17 +854,21 @@ const ManageProduct = () => {
                                 className="p-1"
                                 defaultValue=""
                                 value={statusProduct}
-                                onChange={(e) => setStatusProduct(e.target.value) === "true"}
+                                onChange={(e) => setStatusProduct(parseInt(e.target.value))}
                               >
                                 <option value="" selected disabled>
                                   Tình trạng sản phẩm
                                 </option>
-                                  <option value="true">
+                                  <option value="1">
                                     Còn hàng
                                   </option>
-                                  <option value="false">
+                                  <option value="2">
+                                    Sắp hết hàng
+                                  </option>
+                                  <option value="3">
                                     Hết hàng
                                   </option>
+                                  <option value="" >Không</option>
                               </select>
                             </div>
                           </div>
@@ -914,17 +995,34 @@ const ManageProduct = () => {
                             </table>
                           </div>
 
-                          <div className="col-md-12 d-flex justify-content-end paging p-2">
-                            {Array.from(
-                              { length: paging.TotalPages },
-                              (_, index) => (
+                          <div>
+                            {/* Paging for inventory */}
+                            <div className="col-md-12 d-flex justify-content-end paging p-2">
+                              {Array.from({ length: inventoryPaging.TotalPages }, (_, index) => (
                                 <Link
                                   key={index + 1}
                                   to="#"
                                   className={`p-2 me-3 ${
-                                    paging.CurrentPage === index + 1
-                                      ? "active-paging"
-                                      : ""
+                                    inventoryPaging.CurrentPage === index + 1 ? "active-paging" : ""
+                                  }`}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleInventoryPageChange(index + 1);
+                                  }}
+                                >
+                                  {index + 1}
+                                </Link>
+                              ))}
+                            </div>
+
+                            {/* Paging for data */}
+                            <div className="col-md-12 d-flex justify-content-end paging p-2">
+                              {Array.from({ length: paging.TotalPages }, (_, index) => (
+                                <Link
+                                  key={index + 1}
+                                  to="#"
+                                  className={`p-2 me-3 ${
+                                    paging.CurrentPage === index + 1 ? "active-paging" : ""
                                   }`}
                                   onClick={(e) => {
                                     e.preventDefault();
@@ -933,9 +1031,10 @@ const ManageProduct = () => {
                                 >
                                   {index + 1}
                                 </Link>
-                              )
-                            )}
+                              ))}
+                            </div>
                           </div>
+
                         </div>
                       </div>
                     </div>

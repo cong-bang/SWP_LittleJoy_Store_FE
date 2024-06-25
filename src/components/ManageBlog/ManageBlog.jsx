@@ -66,6 +66,20 @@ const ManageBlog = () => {
     </ContentLoader>
   );
 
+  const fetchUserNameById = async (userId) => {
+    try {
+      const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/user/${userId}`);
+      if (!response.ok) {
+        console.log('Lỗi fetch userName');
+      }
+      const data = await response.json();
+      return data.userName;
+    } catch (error) {
+      console.log(error.message);
+      return 'Unknown User';
+    }
+  };
+
   const fetchBlogs = async (pageIndex, pageSize) => {
     setLoading(true);
     try {
@@ -77,12 +91,17 @@ const ManageBlog = () => {
       setPaging(paginationData);
 
       const data = await response.json();
-      const updatedData = data.map((blog) => ({
-        ...blog,
-        banner:
-          blog.banner == null || blog.banner === "" ? no_found : blog.banner,
-        date: formatDateString(blog.date),
-      }));
+      const updatedData = await Promise.all(
+        data.map(async (blog) => {
+          const userName = await fetchUserNameById(blog.userId);
+          return {
+            ...blog,
+            userName: userName,
+            banner: blog.banner == null || blog.banner === "" ? no_found : blog.banner,
+            date: formatDateString(blog.date),
+          };
+        })
+      );
 
       setBlogs(updatedData);
       
@@ -564,7 +583,7 @@ const ManageBlog = () => {
                                       </td>
                                       <td className="p-3 px-4 ">
                                         <span className="float-start">
-                                          {blog.userId}
+                                          {blog.userName}
                                         </span>
                                       </td>
                                       <td className="p-3 px-4 ">
