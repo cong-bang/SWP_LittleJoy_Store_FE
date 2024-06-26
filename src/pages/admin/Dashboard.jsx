@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -28,8 +28,9 @@ import {
   Filler,
   BarElement,
 } from "chart.js";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import ContentLoader from "react-content-loader";
 
 ChartJS.register(
   CategoryScale,
@@ -73,32 +74,6 @@ const Dashboard = () => {
     ],
   };
 
-  const categoryData = {
-    labels: ["Sữa cao cấp", "Sữa cho mẹ bầu", "Sữa Châu Âu", "Khác"],
-    datasets: [
-      {
-        data: [35, 40, 20, 10],
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#EED2EE"],
-      },
-    ],
-  };
-
-  const topProducts = [
-    { name: "Sữa cao cấp", percentage: 60, color: "bg-success" },
-    { name: "Sữa cho mẹ bầu", percentage: 40, color: "bg-info" },
-    { name: "Sữa Châu Âu", percentage: 30, color: "bg-warning" },
-    { name: "Sữa Mỹ", percentage: 20, color: "bg-danger" },
-    { name: "Khác", percentage: 10, color: "bg-secondary" },
-  ];
-
-  const salesReport = [
-    { product: "Sữa cao cấp", units: 50, revenue: "50,000,000 VND" },
-    { product: "Sữa cho mẹ bầu", units: 30, revenue: "30,000,000 VND" },
-    { product: "Sữa Châu Âu", units: 20, revenue: "25,000,000 VND" },
-    { product: "Sữa Mỹ", units: 15, revenue: "18,000,000 VND" },
-    { product: "Khác", units: 10, revenue: "12,000,000 VND" },
-  ];
-
   const optionLine = {
     scales: {
       x: {
@@ -129,27 +104,6 @@ const Dashboard = () => {
           color: "white",
         },
         titleFont: {
-          color: "white",
-        },
-      },
-    },
-  };
-
-  const optionPie = {
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: function (tooltipItem) {
-            const data = tooltipItem.dataset.data;
-            const currentValue = data[tooltipItem.dataIndex];
-            const total = data.reduce((acc, value) => acc + value, 0);
-            const percentage = ((currentValue / total) * 100).toFixed(0);
-            return `${currentValue} (${percentage}%)`;
-          },
-        },
-      },
-      legend: {
-        labels: {
           color: "white",
         },
       },
@@ -241,6 +195,61 @@ const Dashboard = () => {
       },
     },
   };
+
+  // XỬ LÝ TRANG DASHBOARD:
+  const { pathname } = useLocation();
+  const [myAccount, setMyAccount] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [outOfStockList, setOutOfStockList] = useState([]);
+
+  const TableLoading = () => (
+    <ContentLoader
+      speed={2}
+      width={"100%"}
+      height={160}
+      backgroundColor="#C0C0C0"
+      foregroundColor="#d9d9d9"
+    >
+      <rect x="0" y="20" rx="3" ry="3" width="100%" height="10" />
+      <rect x="0" y="40" rx="3" ry="3" width="100%" height="10" />
+      <rect x="0" y="60" rx="3" ry="3" width="100%" height="10" />
+    </ContentLoader>
+  );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const roleFromLocalStorage = localStorage.getItem("userRole");
+    const usernameFromLocalStorage = localStorage.getItem("userName");
+    if (
+      roleFromLocalStorage === "ADMIN" ||
+      roleFromLocalStorage === "STAFF" ||
+      (roleFromLocalStorage === "USER" && usernameFromLocalStorage)
+    ) {
+      setMyAccount(usernameFromLocalStorage);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    setLoading(true);
+    const fetchOutOfStock = async () => {
+        try {
+          const responseOutOfStock = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/product/filter-inventory-status?PageIndex=1&PageSize=10&status=2"
+          );
+          if (!responseOutOfStock.ok) {
+            console.log("Lỗi fetch inventory data...");
+            return;
+          }
+          const outOfStockData = await responseOutOfStock.json();
+          setOutOfStockList(outOfStockData);    
+        } catch (error) {
+          console.error(error.message);
+        } finally {
+          setLoading(false);
+        }
+    };
+    fetchOutOfStock();
+  }, [])
 
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -429,7 +438,7 @@ const Dashboard = () => {
                       className="m-0"
                       style={{ fontFamily: "sans-serif", fontSize: "16px" }}
                     >
-                      phamhieu
+                      {myAccount}
                     </p>
                   </div>
                   <div className="icon-admin-nav-log p-2 py-3 text-white">
@@ -655,7 +664,7 @@ const Dashboard = () => {
                                                 border: "1px solid #CCCCCC",
                                               }}
                                             >
-                                              Id
+                                              ID
                                             </td>
                                             <td
                                               style={{
@@ -678,7 +687,47 @@ const Dashboard = () => {
                                       </table>
                                       <table className="w-100">
                                         <tbody>
-                                          <tr>
+                                        {loading ? (
+                                          <>
+                                            <tr>
+                                              <td colSpan="3" className="px-3">
+                                                <TableLoading />
+                                              </td>
+                                            </tr>
+                                          </>
+                                        ) : (
+                                          outOfStockList.map((p) => (
+                                          <tr key={p.id}>
+                                            <td
+                                              className="p-2"
+                                              style={{
+                                                border: "1px solid #CCCCCC",
+                                              }}
+                                            >
+                                              {p.id}
+                                            </td>
+                                            <td
+                                              style={{
+                                                border: "1px solid #CCCCCC",
+                                              }}
+                                              className="w-50"
+                                            >
+                                              {p.productName}
+                                            </td>
+                                            <td
+                                              style={{
+                                                border: "1px solid #CCCCCC",
+                                                color: "red",
+                                                fontSize: "20px",
+                                              }}
+                                              className="w-25 fw-bold"
+                                            >
+                                              {p.quantity}
+                                            </td>
+                                          </tr>
+                                          ))
+                                        )}
+                                          {/* <tr>
                                             <td
                                               className="p-2"
                                               style={{
@@ -957,35 +1006,7 @@ const Dashboard = () => {
                                             >
                                               5
                                             </td>
-                                          </tr>
-                                          <tr>
-                                            <td
-                                              className="p-2"
-                                              style={{
-                                                border: "1px solid #CCCCCC",
-                                              }}
-                                            >
-                                              1
-                                            </td>
-                                            <td
-                                              style={{
-                                                border: "1px solid #CCCCCC",
-                                              }}
-                                              className="w-50"
-                                            >
-                                              Sữa cho mẹ
-                                            </td>
-                                            <td
-                                              style={{
-                                                border: "1px solid #CCCCCC",
-                                                color: "red",
-                                                fontSize: "20px",
-                                              }}
-                                              className="w-25 fw-bold"
-                                            >
-                                              5
-                                            </td>
-                                          </tr>
+                                          </tr> */}
                                         </tbody>
                                       </table>
                                     </div>

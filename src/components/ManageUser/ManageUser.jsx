@@ -251,6 +251,17 @@ const ManageUser = () => {
     }
   };
 
+  const refreshFieldAddUser = () => {
+    setUsername('');
+    setPassword('');
+    setFullname('');
+    setAvatar('');
+    setRoleId(null);
+    setPhoneNumber('');
+    setMainAddress('');
+    setEmail('');
+  }
+
   //EDIT USER
   const handleEditUser = (userId) => {
     fetchUserById(userId);
@@ -513,7 +524,7 @@ const ManageUser = () => {
                                 <div className="body-title d-flex justify-content-between align-items-center w-100">
                                     <span className="ms-3" style={{ color: '#F8B940', fontSize: '16px', fontFamily: 'sans-serif' }}>Users</span>
                                     <div className="add-user px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-user">
-                                        <a href="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add User</p></a>
+                                        <a href="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}} onClick={refreshFieldAddUser}>+ Add User</p></a>
                                     </div>
                                 </div>
                             </div>

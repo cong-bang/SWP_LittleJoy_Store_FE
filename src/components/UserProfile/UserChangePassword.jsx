@@ -64,11 +64,14 @@ const UserChangePassword = () => {
           if (data.errors) {
             setNewPasswordError(data.errors.NewPassword ? data.errors.NewPassword[0] : null);
             setConfirmPasswordError(data.errors.ConfirmPassword ? data.errors.ConfirmPassword[0] : null);
+          } else {
+            setNewPasswordError('');
+            setConfirmPasswordError('');
           }
         }
         
       } catch (error) {
-        setError({ general: "Something went wrong. Please try again." });
+        setError("Something went wrong. Please try again.");
       }
     }
 

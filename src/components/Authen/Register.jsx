@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/css/styleregister.css";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Register() {
   const [fullName, setFullName] = useState("");
@@ -11,7 +12,13 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [recaptchaResponse, setRecaptchaResponse] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState([]);
+  const [confirmPassError, setConfirmPassError] = useState(null);
+  const [mess, setMess] = useState("");
+  const [passwordError, setPasswordError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [phoneNumberError, setPhoneNumberError] = useState(null);
+  const [usernameError, setUsernameError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,10 +51,21 @@ export default function Register() {
       return;
     }
 
-    if (password !== confirmPassword) {
-      setError("Password không trùng khớp");
-      return;
+    const userNameRegex = /^[a-zA-Z0-9]+$/;
+    if (!userNameRegex.test(userName)) {
+      setUsernameError("Username không hợp lệ");
+    } else {
+      setUsernameError("");
     }
+
+    if (password !== confirmPassword) {
+      setConfirmPassError("Password không trùng khớp");
+    } else {
+      setConfirmPassError("");
+    }
+
+    
+
 
     const formRegister = {
       fullName: fullName,
@@ -77,33 +95,23 @@ export default function Register() {
         navigate("/login");
       } else {
         // setError(response.errors || 'Registration failed');
-        const validationErrors = data.message;
-        setError(validationErrors);
+        toast.error('Đăng ký tài khoản thất bại');
+        setMess(data.message);
+        if(data.errors) {
+        setError(data.error)
+          setPasswordError(data.errors.Password ? data.errors.Password[0] : null);
+          setEmailError(data.errors.Email ? data.errors.Email[0] : null);
+          setPhoneNumberError(data.errors.PhoneNumber ? data.errors.PhoneNumber[0] : null);
+        } else {
+          setPasswordError('');
+          setEmailError('');
+          setPhoneNumberError('');
+        }
       }
     } catch (error) {
       // setError('Something went wrong. Please try again.');
-      setError({ general: "Something went wrong. Please try again." });
+      setError("Something went wrong. Please try again.");
     }
-  };
-
-  const displayErrors = () => {
-    if (error.general) {
-      return <span>{error.general}</span>;
-    }
-    return Object.keys(error).map((key) => (
-      <span key={key}>
-        {Array.isArray(error[key]) ? (
-          error[key].map((error, index) => (
-            <>
-              <span key={index}>{error}</span>
-              <br></br>
-            </>
-          ))
-        ) : (
-          <span>{error[key]}</span>
-        )}
-      </span>
-    ));
   };
 
   const onRecaptchaChange = (response) => {
@@ -112,6 +120,7 @@ export default function Register() {
 
   return (
     <>
+    <ToastContainer />
       <div style={{ marginBottom: "7%" }}>
         <div className="container p-5 mt-5 mb-5 roboto">
           <div className="row">
@@ -164,10 +173,10 @@ export default function Register() {
                             />
                           </td>
                         </tr>
-                        <tr className="hidden">
+                        <tr className="">
                           <td colSpan="2">
                             <p className="noticia-text text-error mb-0">
-                              Tên đăng nhập phải từ 4-20 chữ số
+                              {usernameError}
                             </p>
                           </td>
                         </tr>
@@ -185,7 +194,7 @@ export default function Register() {
                         <tr className="hidden">
                           <td colSpan="2">
                             <p className="noticia-text text-error mb-0">
-                              Email không hợp lệ
+                            {emailError && <span className="">{emailError}</span>}
                             </p>
                           </td>
                         </tr>
@@ -200,6 +209,13 @@ export default function Register() {
                             />
                           </td>
                         </tr>
+                        <tr className="">
+                          <td colSpan="2">
+                            <p className="noticia-text text-error mb-0">
+                            {phoneNumberError && <span className="">{phoneNumberError}</span>}
+                            </p>
+                          </td>
+                        </tr>
                         <tr>
                           <td colSpan="2" className="input-login py-2">
                             <input
@@ -211,10 +227,10 @@ export default function Register() {
                             />
                           </td>
                         </tr>
-                        <tr className="hidden">
+                        <tr className="">
                           <td colSpan="2">
                             <p className="noticia-text text-error mb-0">
-                              Mật khẩu phải có từ 4 chữ số
+                            {passwordError && <span className="">{passwordError}</span>}
                             </p>
                           </td>
                         </tr>
@@ -231,10 +247,10 @@ export default function Register() {
                             />
                           </td>
                         </tr>
-                        <tr className="hidden">
+                        <tr className="">
                           <td colSpan="2">
                             <p className="noticia-text text-error mb-0">
-                              Mật khẩu không trùng khớp
+                              {confirmPassError}
                             </p>
                           </td>
                         </tr>
@@ -254,7 +270,7 @@ export default function Register() {
                               className="m-1"
                               style={{ color: "red", fontSize: "20px" }}
                             >
-                              {displayErrors()}
+                              {mess || error}
                             </div>
                           </td>
                         </tr>
