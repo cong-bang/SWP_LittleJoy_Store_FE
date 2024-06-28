@@ -7,6 +7,7 @@ import sorry from "../../assets/img/sorry.png";
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ContentLoader from "react-content-loader";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
@@ -31,12 +32,14 @@ const Shop = () => {
   const [brandId, setBrandId] = useState(null);
   const [selectedBrandId, setSelectedBrandId] = useState(null);
   const [checkedBrands, setCheckedBrands] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   const fetchData = async (pageIndex, pageSize) => {
+    setLoading(true);
     try {
       const searchParams = new URLSearchParams();
       searchParams.append('PageIndex', pageIndex);
@@ -101,6 +104,8 @@ const Shop = () => {
       setProducts(formattedProducts);
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -112,7 +117,7 @@ const Shop = () => {
         await fetchData(paging.CurrentPage, paging.PageSize);
         localStorage.removeItem('brandId');
       } else {
-        fetchData(paging.CurrentPage, paging.PageSize);
+        await fetchData(paging.CurrentPage, paging.PageSize);
       }
     };
     
