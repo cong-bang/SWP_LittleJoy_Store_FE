@@ -560,16 +560,16 @@ const ManageUser = () => {
                                                 className="p-1"
                                                 defaultValue=""
                                                 value={statusAcc}
-                                                onChange={(e) => setStatusAcc(e.target.value) === "true"}
+                                                onChange={(e) => setStatusAcc(e.target.value)}
                                               >
                                                 <option value="" selected disabled>
                                                   Trạng thái tài khoản
                                                 </option>
-                                                  <option value="true">
-                                                    True
+                                                  <option value="1">
+                                                    Đang hoạt động
                                                   </option>
-                                                  <option value="false">
-                                                    False
+                                                  <option value="0">
+                                                    Không hoạt động
                                                   </option>
                                                   <option value="">Không</option>
                                               </select>
