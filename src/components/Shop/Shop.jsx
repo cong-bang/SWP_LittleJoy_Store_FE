@@ -27,6 +27,10 @@ const Shop = () => {
   const [origins, setOrigins] = useState([]);
   const [ageGroups, setAgeGroups] = useState([]);
   const [brands, setBrands] = useState([]);
+  const location = useLocation();
+  const [brandId, setBrandId] = useState(null);
+  const [selectedBrandId, setSelectedBrandId] = useState(null);
+  const [checkedBrands, setCheckedBrands] = useState({});
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -99,9 +103,20 @@ const Shop = () => {
       console.error(error.message);
     }
   };
-  
+
   useEffect(() => {
-    fetchData(paging.CurrentPage, paging.PageSize);
+    const fetchDataAndSetBrandId = async () => {
+      const savedBrandId = localStorage.getItem('brandId');
+      if (savedBrandId) {
+        setBrandIds([parseInt(savedBrandId)]);
+        await fetchData(paging.CurrentPage, paging.PageSize);
+        localStorage.removeItem('brandId');
+      } else {
+        fetchData(paging.CurrentPage, paging.PageSize);
+      }
+    };
+    
+    fetchDataAndSetBrandId();
   }, [paging.CurrentPage, sortOrder, keyword, cateIds, ageIds, originIds, brandIds]);
 
   const handlePrevious = () => {
@@ -144,7 +159,7 @@ const Shop = () => {
       case 'originId':
         setOriginIds(prevState => updateFilter(prevState, value));
         break;
-      case 'brandId':
+      case 'brandId':  
         setBrandIds(prevState => updateFilter(prevState, value));
         break;
       default:
@@ -155,8 +170,11 @@ const Shop = () => {
       ...prevState,
       CurrentPage: 1,
     }));
+    
   };
 
+  
+  
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -451,6 +469,7 @@ const Shop = () => {
                           <input
                             type="checkbox"
                             id={`brand-${brand.id}`}
+                            checked={brandIds.includes(brand.id)}
                             onChange={() => handleFilterChange('brandId', brand.id)}
                           />
                         </td>

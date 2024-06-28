@@ -27,6 +27,10 @@ const Home = () => {
   const [originId, setOriginId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [origins, setOrigins] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [brandName, setBrandName] = useState('');
+  const [brandDescription, setBrandDescription] = useState('');
+  const [brandId, setBrandId] = useState('');
 
   const NewProductLoader = () => (
     <ContentLoader
@@ -100,7 +104,7 @@ const Home = () => {
 
   useEffect(() => {
     setLoading(true);
-    const fetchOrigin = async () => {
+    const fetchOriginBrand = async () => {
       try {
         const responseOrigin = await fetch(
           "https://littlejoyapi.azurewebsites.net/api/origin?PageIndex=1&PageSize=5"
@@ -111,14 +115,28 @@ const Home = () => {
         }
         const originData = await responseOrigin.json();
         setOrigins(originData);
-        console.log(origins);
+
+        const responseBrand = await fetch(
+          "https://littlejoyapi.azurewebsites.net/api/brand?PageIndex=1&PageSize=6"
+        );
+        if (!responseBrand.ok) {
+          console.log("Lỗi fetch category data...");
+          return;
+        }
+        const brandData = await responseBrand.json();
+        setBrands(brandData);
+        setBrandId(brandData[0].id);
+        setBrandName(brandData[0].brandName);
+        setBrandDescription(brandData[0].brandDescription);
+        
+
       } catch (error) {
         console.log(error.message);
       } finally {
         setLoading(false);
       }
     }
-    fetchOrigin();
+    fetchOriginBrand();
   }, [])
 
   useEffect(() => {
@@ -240,6 +258,30 @@ const Home = () => {
     }
   };
 
+  //FETCH BRAND
+  const handleDisplayBrand = async (brandId) => {
+    try {
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/brand/${brandId}`
+      );
+      if (!response.ok) {
+        console.log("Lỗi fetch dữ liệu...");
+      }
+      const brandData = await response.json();
+      setBrandId(brandData.id);
+      setBrandName(brandData.brandName);
+      setBrandDescription(brandData.brandDescription);
+    } catch (error) {
+      console.error(error.message);
+      return null;
+    }
+  };
+
+  const handleClick = () => {
+    localStorage.setItem('brandId', brandId);
+  };
+
+
   return (
     <>
       <ToastContainer />
@@ -311,6 +353,7 @@ const Home = () => {
               <div className="col-md-12 d-flex justify-content-between mt-5">
                 {origins.map((o) => (
                 <Link
+                key={o.id}
                   to=""
                   className="w-18 d-inline-block"
                   style={{ textDecoration: "none", color: "black" }}
@@ -494,17 +537,20 @@ const Home = () => {
                 borderRadius: "15px",
               }}
             >
-              <div className="w-15 overflow-hidden">
-                <a href="">
+            {brands.map((b) => (
+              <div key={b.id} className="w-15 overflow-hidden">
+                <Link to="" onClick={() => handleDisplayBrand(b.id)}>
                   <img
-                    src={meji}
+                    src={b.logo}
                     alt=""
                     className="w-100"
                     style={{ height: "6em" }}
+                    
                   />
-                </a>
+                </Link>
               </div>
-              <div className="w-15 overflow-hidden">
+              ))}
+              {/* <div className="w-15 overflow-hidden">
                 <a href="">
                   <img
                     src={ensure}
@@ -553,7 +599,7 @@ const Home = () => {
                     style={{ height: "6em" }}
                   />
                 </a>
-              </div>
+              </div> */}
             </div>
             <div
               className="col-md-12 mt-5 mb-5 position-relative p-2"
@@ -566,28 +612,21 @@ const Home = () => {
               <div className="title-brand d-flex justify-content-start fs-3 px-2 pt-3">
                 <span className="pe-2 m-0 roboto">Thương hiệu:</span>{" "}
                 <span className="fw-bold roboto" style={{ color: "#103A71" }}>
-                  Meji
+                  {brandName}
                 </span>
               </div>
               <div className="content-brand mt-2 px-2 w-90">
                 <span className="fs-6 roboto">
-                  Meiji từ lâu được biết đến là một trong những thương hiệu sản
-                  xuất sữa bột cho bé lâu đời bậc nhất tại Nhật Bản và châu Á.
-                  Được thành lập năm 1917, sau hơn 100 năm hình thành và phát
-                  triển, Meiji đã khẳng định được giá trị thương hiệu số 1 với
-                  dây chuyền sản xuất hiện đại, cho ra những sản phẩm chất lượng
-                  cao nhất. Tất cả sản phẩm Meiji dù ở các thị trường nước ngoài
-                  hay thị trường trong nước đều được sản xuất tại cùng một nhà
-                  máy ở tỉnh Saitama, Nhật Bản.
+                  {brandDescription}
                 </span>
               </div>
-              <a href="#" className="" style={{ textDecoration: "none" }}>
+              <Link to="/shop" onClick={handleClick} className="" style={{ textDecoration: "none" }}>
                 <div className="xemthem position-absolute w-15 text-center px-3 py-2">
                   <span className="roboto" style={{ color: "white" }}>
                     Xem sản phẩm
                   </span>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -989,7 +1028,7 @@ const Home = () => {
                         src={blog.banner}
                         alt=""
                         className="w-100"
-                        style={{ height: "18em" }}
+                        
                       />
                     </div>
                     <div className="position-absolute blog-title w-100">
