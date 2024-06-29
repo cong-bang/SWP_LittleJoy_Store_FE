@@ -442,7 +442,7 @@ const Dashboard = () => {
                     </p>
                   </div>
                   <div className="icon-admin-nav-log p-2 py-3 text-white">
-                    <FontAwesomeIcon icon={faPowerOff} />
+                    <FontAwesomeIcon icon={faPowerOff} onClick={handleLogout} style={{cursor: 'pointer'}}  />
                   </div>
                 </div>
                 

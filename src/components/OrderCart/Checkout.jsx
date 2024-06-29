@@ -1,15 +1,176 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
 import similac from "../../assets/img/similac.png";
 import vnpay from "../../assets/img/vnpay.png";
 import icon_payondelivery from "../../assets/img/icon_payondelivery.png";
 import "../../assets/css/stylecheckout.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-export default function Checkout() {
+const Checkout = () => {
+  const [cart, setCart] = useState([]);
+  const [user, setUser] = useState({});
+  const [selectedDiscountPoints, setSelectedDiscountPoints] = useState(0);
+  const navigate = useNavigate();
+
+  const [address, setAddress] = useState('');
+  const [note, setNote] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState(0);
+  const [mess, setMess] = useState([]);
+
+  useEffect(() => {
+    const cartData = localStorage.getItem('cart');
+    if (cartData) {
+      setCart(JSON.parse(cartData));
+    }
+  }, []);
+
+  const ProductName = ({ title, maxLength }) => {
+    const truncateTitle = (title, maxLength) => {
+      if (title.length <= maxLength) return title;
+      return title.substring(0, maxLength) + "...";
+    };
+    return (
+      <>
+        {truncateTitle(title, maxLength)}
+      </>
+    );
+  };
+
+  const calculateTotalCart = () => {
+    return cart.reduce((total, product) => total + product.price * product.quantity, 0);
+  };
+
+  //FETCH INFO USER
+  const fetchUserById = async () => {
+    try {
+      const userId = localStorage.getItem('userId');
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/user/${userId}`
+      );
+      const responseAddress = await fetch(`https://littlejoyapi.azurewebsites.net/api/address/main-address-by-user-id/${userId}`);
+      
+      const dataUser = await response.json();
+      if (response.ok) {
+        setUser(dataUser);
+      }
+      const dataMainAddress = await responseAddress.json();
+      if(responseAddress.ok) {
+        setAddress(dataMainAddress.address1);
+      }
+      
+    } catch (error) {
+      console.error("Lỗi fetch user by id", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserById();
+  }, []);
+
+  //CHECK POINTS
+  const discounts = [
+    { points: 1000, value: 10000, label: '10.000 VNĐ (1000 điểm)' },
+    { points: 5000, value: 50000, label: '50.000 VNĐ (5000 điểm)' },
+    { points: 10000, value: 100000, label: '100.000 VNĐ (10000 điểm)' },
+    { points: 50000, value: 1000000, label: '1.000.000 VNĐ (50000 điểm)' },
+    { points: 100000, value: 5000000, label: '5.000.000 VNĐ (100000 điểm)' },
+  ];
+
+  const isOptionEnabled = (pointsRequired) => {
+    return user.points >= pointsRequired;
+  };
+
+  //TOTAL COST OF ORDER
+  const handleDiscountChange = (event) => {
+    setSelectedDiscountPoints(parseInt(event.target.value, 10));
+  };
+
+  const selectedDiscount = discounts.find(discount => discount.points === selectedDiscountPoints)?.value || 0;
+  const shippingCost = 30000;
+  const totalCost = calculateTotalCart() + shippingCost - selectedDiscount;
+
+  //HANDLE PAYMENT
+  const notify = () =>
+    toast.error("Vui lòng nhập đủ thông tin", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+  const handleCreateOrder = async () => {
+    if (
+      address === "" ||
+      paymentMethod === 0
+    ) {
+      notify();
+      return;
+    }
+
+    const productOrders = cart.map(product => ({
+      id: product.id,
+      quantity: product.quantity,
+    }));
+
+    const newOrder = {
+      userId: localStorage.getItem('userId'),
+      totalPrice: calculateTotalCart(),
+      address: address,
+      note: note,
+      amountDiscount: selectedDiscount,
+      paymentMethod: paymentMethod,
+      productOrders: productOrders
+    };
+    try {
+      const responseCheckProduct = await fetch(
+        "https://littlejoyapi.azurewebsites.net/api/product/check-product-can-payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(productOrders),
+        }
+      );
+      const resultCheck = await responseCheckProduct.json();
+      
+      if (responseCheckProduct.ok) {
+        setMess(resultCheck);
+        if (resultCheck.length == 0) {
+          const responseCreateOrder = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/order/create-order",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(newOrder),
+            }
+          );
+        }
+        else {
+          toast.error('Đặt hàng thất bại');
+        }
+      } 
+      
+    } catch (error) {
+      console.error("Lỗi:", error);
+    }
+  };
+
+  
+
+
   return (
     <>
+    <ToastContainer />
       <section>
         <div className="banner container-fluid mb-5 pb-5">
           <h1 className="pt-5">Checkout</h1>
@@ -58,7 +219,7 @@ export default function Checkout() {
                             name="Fullname"
                             id=""
                             placeholder="Fullname"
-                            value=""
+                            value={user.fullname}
                             className="w-100 p-1 ps-2 nochange"
                             readOnly
                             required
@@ -72,7 +233,7 @@ export default function Checkout() {
                             name="Email"
                             id=""
                             placeholder="Email"
-                            value=""
+                            value={user.email}
                             className="w-100 p-1 ps-2 nochange"
                             readOnly
                             required
@@ -86,7 +247,7 @@ export default function Checkout() {
                             name="phoneNumber"
                             id=""
                             placeholder="Mobile Phone"
-                            value=""
+                            value={user.phoneNumber}
                             className="w-100 p-1 ps-2"
                             required
                           />
@@ -99,7 +260,8 @@ export default function Checkout() {
                             name="address"
                             id=""
                             placeholder="Address"
-                            value=""
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
                             className="w-100 p-1 ps-2"
                             required
                           />
@@ -113,6 +275,8 @@ export default function Checkout() {
                             cols="30"
                             rows="3"
                             placeholder="Note"
+                            value={note}
+                            onChange={(e) => setNote(e.target.value)}
                             style={{ resize: "none" }}
                             className="w-100 p-1 ps-2"
                           ></textarea>
@@ -141,133 +305,39 @@ export default function Checkout() {
                           <span>Tổng cộng</span>
                         </td>
                       </tr>
+                      {cart.map((p) => (
                       <tr>
                         <td className="w-5 py-1">
                           <div className="item w-100 text-center">
                             <img
-                              src={similac}
+                              src={p.image}
                               alt="product-img"
                               className="w-50"
                             />
                           </div>
                         </td>
                         <td className="py-1 text-center">
-                          <span>Sữa bầu cho mẹ</span>
+                          <span><ProductName title={p.productName} maxLength={20} /></span>
                         </td>
                         <td className="py-1 text-center">
-                          <span>300.000 VND</span>
+                          <span>{(p.price).toLocaleString('de-DE')} VND</span>
                         </td>
                         <td className="py-1 text-center">
-                          <span>50</span>
+                          <span>{p.quantity}</span>
                         </td>
                         <td className="py-1 text-center">
-                          <span>500.000 VND</span>
+                          <span>{(p.price * p.quantity).toLocaleString('de-DE')} VND</span>
                         </td>
                         <td className="py-1 text-center w-15">
                           <span
                             className="text-center fw-bold"
                             style={{ color: "#FF0000" }}
                           >
-                            hết hàng
+                            {mess.find((c) => c.id === p.id)?.message || "" }
                           </span>
                         </td>
                       </tr>
-
-                      <tr>
-                        <td className="w-5 py-1">
-                          <div className="item w-100 text-center">
-                            <img
-                              src={similac}
-                              alt="product-img"
-                              className="w-50"
-                            />
-                          </div>
-                        </td>
-                        <td className="py-1 text-center">
-                          <span>Sữa bầu cho mẹ</span>
-                        </td>
-                        <td className="py-1 text-center">
-                          <span>300.000 VND</span>
-                        </td>
-                        <td className="py-1 text-center">
-                          <span>50</span>
-                        </td>
-                        <td className="py-1 text-center">
-                          <span>500.000 VND</span>
-                        </td>
-                        <td className="py-1 text-center w-15">
-                          <span
-                            className="text-center fw-bold"
-                            style={{ color: "#FF0000" }}
-                          >
-                            hết hàng
-                          </span>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td className="w-5 py-1">
-                          <div className="item w-100 text-center">
-                            <img
-                              src={similac}
-                              alt="product-img"
-                              className="w-50"
-                            />
-                          </div>
-                        </td>
-                        <td className="py-1 text-center">
-                          <span>Sữa bầu cho mẹ</span>
-                        </td>
-                        <td className="py-1 text-center">
-                          <span>300.000 VND</span>
-                        </td>
-                        <td className="py-1 text-center">
-                          <span>50</span>
-                        </td>
-                        <td className="py-1 text-center">
-                          <span>500.000 VND</span>
-                        </td>
-                        <td className="py-1 text-center w-15">
-                          <span
-                            className="text-center fw-bold"
-                            style={{ color: "#FF0000" }}
-                          >
-                            hết hàng
-                          </span>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td className="w-5 py-1">
-                          <div className="item w-100 text-center">
-                            <img
-                              src={similac}
-                              alt="product-img"
-                              className="w-50"
-                            />
-                          </div>
-                        </td>
-                        <td className="py-1 text-center">
-                          <span>Sữa bầu cho mẹ</span>
-                        </td>
-                        <td className="py-1 text-center">
-                          <span>300.000 VND</span>
-                        </td>
-                        <td className="py-1 text-center">
-                          <span>50</span>
-                        </td>
-                        <td className="py-1 text-center">
-                          <span>500.000 VND</span>
-                        </td>
-                        <td className="py-1 text-center w-15">
-                          <span
-                            className="text-center fw-bold"
-                            style={{ color: "#FF0000" }}
-                          >
-                            hết hàng
-                          </span>
-                        </td>
-                      </tr>
+                        ))}
 
                       <tr style={{ borderTop: "1px solid black" }}>
                         <td className="w-20 py-3">
@@ -278,8 +348,8 @@ export default function Checkout() {
                               borderRadius: "10px",
                             }}
                           >
-                            <a
-                              href="#"
+                            <Link
+                              to="/cart"
                               style={{
                                 textDecoration: "none",
                                 color: "#FF0000",
@@ -287,7 +357,7 @@ export default function Checkout() {
                               }}
                             >
                               Quay về Cart
-                            </a>
+                            </Link>
                           </div>
                         </td>
                       </tr>
@@ -306,7 +376,7 @@ export default function Checkout() {
                     <tbody>
                       <tr>
                         <td className="pt-3 ps-3 fw-semibold fs-5 w-75">
-                          <span>Điểm của bạn: 1000</span>
+                          <span>Điểm của bạn: {user.points}</span>
                         </td>
                         <td className="pt-3 ps-3 fw-semibold fs-5 w-25 text-center">
                           <div
@@ -329,22 +399,21 @@ export default function Checkout() {
                             id=""
                             className="w-100 py-2 px-2"
                             style={{ borderRadius: "15px" }}
+                            value={selectedDiscountPoints}
+                            onChange={handleDiscountChange}
                           >
-                            <option value="apple" defaultValue>
-                              10.000 VNĐ (1000 điểm)
+                            <option value="0" selected>
+                              Chọn điểm để giảm giá
                             </option>
-                            <option value="apple">
-                              10.000 VNĐ (1000 điểm)
-                            </option>
-                            <option value="apple" disabled>
-                              10.000 VNĐ (1000 điểm)
-                            </option>
-                            <option value="apple">
-                              10.000 VNĐ (1000 điểm)
-                            </option>
-                            <option value="apple">
-                              10.000 VNĐ (1000 điểm)
-                            </option>
+                            {discounts.map((discount) => (
+                              <option 
+                                key={discount.points} 
+                                value={discount.points} 
+                                disabled={!isOptionEnabled(discount.points)}
+                              >
+                                {discount.label}
+                              </option>
+                            ))}
                           </select>
                         </td>
                       </tr>
@@ -381,7 +450,7 @@ export default function Checkout() {
                               className="float-end"
                               style={{ fontWeight: "600" }}
                             >
-                              VND 4.603.000
+                              VND {calculateTotalCart().toLocaleString('de-DE')}
                             </span>
                           </td>
                         </tr>
@@ -399,7 +468,7 @@ export default function Checkout() {
                               className="float-end"
                               style={{ fontWeight: "600" }}
                             >
-                              VND 25.000
+                              VND {shippingCost.toLocaleString('de-DE')}
                             </span>
                           </td>
                         </tr>
@@ -417,7 +486,7 @@ export default function Checkout() {
                               className="float-end"
                               style={{ fontWeight: "600" }}
                             >
-                              VND -10.000
+                              VND -{selectedDiscount.toLocaleString('de-DE')}
                             </span>
                           </td>
                         </tr>
@@ -435,7 +504,7 @@ export default function Checkout() {
                               className="float-end"
                               style={{ color: "#FF0000", fontWeight: "600" }}
                             >
-                              VND 4.618.000
+                              VND {totalCost.toLocaleString('de-DE')}
                             </span>
                           </td>
                         </tr>
@@ -455,7 +524,7 @@ export default function Checkout() {
                   <div className="w-100 d-flex flex-column justify-content-center">
                     <div
                       className="payment w-100 d-flex justify-content-between pe-2"
-                      onclick="checkradio('vnpay')"
+                      onClick={() => setPaymentMethod(2)}
                       style={{ cursor: "pointer" }}
                     >
                       <div className="w-75">
@@ -465,7 +534,7 @@ export default function Checkout() {
                       <input
                         type="radio"
                         name="payment"
-                        value="vnpay"
+                        value="2"
                         id="vnpay"
                         className="float-end"
                         required
@@ -473,7 +542,7 @@ export default function Checkout() {
                     </div>
                     <div
                       className="mt-3 payment w-100 d-flex justify-content-between pe-2"
-                      onclick="checkradio('cod')"
+                      onClick={() => setPaymentMethod(1)}
                       style={{ cursor: "pointer" }}
                     >
                       <div className="w-75">
@@ -483,7 +552,7 @@ export default function Checkout() {
                       <input
                         type="radio"
                         name="payment"
-                        value="cod"
+                        value="1"
                         id="cod"
                         className="float-end"
                         required
@@ -503,6 +572,7 @@ export default function Checkout() {
                     <input
                       type="submit"
                       value="Payment"
+                      onClick={handleCreateOrder}
                       className="w-90 submit-checkout py-2"
                     />
                   </div>
@@ -536,7 +606,7 @@ export default function Checkout() {
                 aria-label="Close"
               ></button>
             </div>
-            <div className="modal-body table-responsive mx-2">
+            <div className="modal-body table-responsive mx-2" style={{backgroundColor: 'white'}}>
               <p>Quy trình tích điểm:</p>
               <div className="mx-4">
                 <span>
@@ -599,3 +669,4 @@ export default function Checkout() {
     </>
   );
 }
+export default Checkout;

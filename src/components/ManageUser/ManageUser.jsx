@@ -256,10 +256,11 @@ const ManageUser = () => {
     setPassword('');
     setFullname('');
     setAvatar('');
-    setRoleId(null);
+    setRoleId('');
     setPhoneNumber('');
     setMainAddress('');
     setEmail('');
+    
   }
 
   //EDIT USER
@@ -515,7 +516,7 @@ const ManageUser = () => {
                             <p className="m-0" style={{fontFamily: "sans-serif", fontSize: '16px'}}>{myAccount}</p>
                         </div>
                         <div className="icon-nav-log p-2 py-3 text-white">
-                            <FontAwesomeIcon icon={faPowerOff} />
+                            <FontAwesomeIcon icon={faPowerOff} onClick={handleLogout} style={{cursor: 'pointer'}} />
                         </div>
                     </div>
                     <div className="col-md-12 p-0">

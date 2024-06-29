@@ -5,6 +5,7 @@ import logogoogle from "../../assets/img/logogoogle.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import LoginG from "./GoogleLogin"
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -174,10 +175,11 @@ export default function Login() {
                     </table>
                   </div>
                   <div className="d-flex justify-content-center">
-                    <div className="login-google text-center">
+                    {/* <div className="login-google text-center">
                       <img src={logogoogle} alt="Google Logo" />
                       <span className="mb-0">Đăng nhập với Google</span>
-                    </div>
+                    </div> */}
+                    <LoginG />
                   </div>
                 </form>
               </div>

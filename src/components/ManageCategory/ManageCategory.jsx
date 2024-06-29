@@ -912,6 +912,25 @@ const fetchBrandId = async (brandId) => {
     }
   };
 
+  //REFRESH FIELD
+  const refreshFieldAddCategory = () => {
+    setCategoryName('');
+  }
+
+  const refreshFieldAddOrigin = () => {
+    setOriginName('');
+  }
+
+  const refreshFieldAddAge = () => {
+    setAgeGroup('');
+  }
+
+  const refreshFieldAddBrand = () => {
+    setBrandName('');
+    setLogo('');
+    setDescription('');
+  }
+
 
   const handleLogout = () => {
     navigate("/");
@@ -1106,7 +1125,7 @@ const fetchBrandId = async (brandId) => {
                     </p>
                   </div>
                   <div className="icon-nav-log p-2 py-3 text-white">
-                    <FontAwesomeIcon icon={faPowerOff} />
+                    <FontAwesomeIcon icon={faPowerOff} onClick={handleLogout} style={{cursor: 'pointer'}} />
                   </div>
                 </div>
                 <div className="col-md-12 p-0">
@@ -1136,7 +1155,7 @@ const fetchBrandId = async (brandId) => {
                                 <div className="body-title d-flex justify-content-between align-items-center w-100">
                                     <span className="ms-3" style={{ color: '#F8B940', fontSize: '16px', fontFamily: 'sans-serif' }}>Category</span>
                                     <div className="add-user px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-category">
-                                        <Link to="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Category</p></Link>
+                                        <Link to="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}} onClick={refreshFieldAddCategory}>+ Add Category</p></Link>
                                     </div>
                                 </div>
                             </div>
@@ -1144,7 +1163,7 @@ const fetchBrandId = async (brandId) => {
                                 <div className="container-fluid">
                                     <div className="row">
                                         <div className="col-md-12">
-                                            <div className="search-user float-start p-3"><input type="text" className="p-1 ps-3" placeholder="Search"/></div>
+                                            
                                             <div className=" p-3 float-end">
                                               <Link
                                                 className="px-3"
@@ -1227,7 +1246,7 @@ const fetchBrandId = async (brandId) => {
                                 <div className="body-title d-flex justify-content-between align-items-center w-100">
                                     <span className="ms-3" style={{ color: '#F8B940', fontSize: '16px', fontFamily: 'sans-serif' }}>Origin</span>
                                     <div className="add-user px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-origin">
-                                        <Link to="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Origin</p></Link>
+                                        <Link to="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}} onClick={refreshFieldAddOrigin}>+ Add Origin</p></Link>
                                     </div>
                                     
                                 </div>
@@ -1236,7 +1255,7 @@ const fetchBrandId = async (brandId) => {
                                 <div className="container-fluid">
                                     <div className="row">
                                         <div className="col-md-12">
-                                            <div className="search-user float-start p-3"><input type="text" className="p-1 ps-3" placeholder="Search"/></div>
+                                            
                                             <div className=" p-3 float-end">
                                               <Link
                                                 className="px-3"
@@ -1319,7 +1338,7 @@ const fetchBrandId = async (brandId) => {
                                 <div className="body-title d-flex justify-content-between align-items-center w-100">
                                     <span className="ms-3" style={{ color: '#F8B940', fontSize: '16px', fontFamily: 'sans-serif' }}>Age Group</span>
                                     <div className="add-user px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-age">
-                                        <Link to="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Age Group</p></Link>
+                                        <Link to="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}} onClick={refreshFieldAddAge}>+ Add Age Group</p></Link>
                                     </div>
                                 </div>
                             </div>
@@ -1327,7 +1346,7 @@ const fetchBrandId = async (brandId) => {
                                 <div className="container-fluid">
                                     <div className="row">
                                         <div className="col-md-12">
-                                            <div className="search-user float-start p-3"><input type="text" className="p-1 ps-3" placeholder="Search"/></div>
+                                            
                                             <div className=" p-3 float-end">
                                               <Link
                                                 className="px-3"
@@ -1408,7 +1427,7 @@ const fetchBrandId = async (brandId) => {
                                 <div className="body-title d-flex justify-content-between align-items-center w-100">
                                     <span className="ms-3" style={{ color: '#F8B940', fontSize: '16px', fontFamily: 'sans-serif' }}>Brand</span>
                                     <div className="add-user px-3 py-1 me-3" data-bs-toggle="modal" data-bs-target="#add-brand">
-                                        <Link to="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}}>+ Add Brand</p></Link>
+                                        <Link to="#"><p className="m-0 inter" style={{fontSize: '16px', fontFamily: 'system-ui'}} onClick={refreshFieldAddBrand}>+ Add Brand</p></Link>
                                     </div>
                                 </div>
                             </div>
@@ -1416,7 +1435,7 @@ const fetchBrandId = async (brandId) => {
                                 <div className="container-fluid">
                                     <div className="row">
                                         <div className="col-md-12">
-                                            <div className="search-user float-start p-3"><input type="text" className="p-1 ps-3" placeholder="Search"/></div>
+                                            
                                             <div className=" p-3 float-end">
                                               <Link
                                                 className="px-3"

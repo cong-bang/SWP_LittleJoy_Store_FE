@@ -644,7 +644,7 @@ const ManageProduct = () => {
                     </p>
                   </div>
                   <div className="icon-nav-log p-2 py-3 text-white">
-                    <FontAwesomeIcon icon={faPowerOff} />
+                    <FontAwesomeIcon icon={faPowerOff} onClick={handleLogout} style={{cursor: 'pointer'}}  />
                   </div>
                 </div>
                 <div className="col-md-12 p-0">

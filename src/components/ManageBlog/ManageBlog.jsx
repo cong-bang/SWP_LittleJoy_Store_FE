@@ -118,7 +118,7 @@ const ManageBlog = () => {
       const searchParams = new URLSearchParams();
       if (searchTitle) searchParams.append("search", searchTitle);
       if (sortDate !== undefined) searchParams.append("sortDate", sortDate);
-      if (userId) searchParams.append("UserId", userId);
+      if (userId) searchParams.append("UserName", userId);
       searchParams.append("PageIndex", pageIndex);
       searchParams.append("PageSize", pageSize);
 
@@ -430,7 +430,7 @@ const ManageBlog = () => {
                     </p>
                   </div>
                   <div className="icon-admin-nav-log p-2 py-3 text-white">
-                    <FontAwesomeIcon icon={faPowerOff} />
+                    <FontAwesomeIcon icon={faPowerOff} onClick={handleLogout} style={{cursor: 'pointer'}}  />
                   </div>
                 </div>
 
@@ -484,7 +484,7 @@ const ManageBlog = () => {
                               <input
                                 type="text"
                                 className="p-1 ps-3"
-                                placeholder="Search userid"
+                                placeholder="Search user"
                                 value={userId}
                                 onChange={(e) => setUserId(e.target.value)}
                               />
@@ -526,7 +526,7 @@ const ManageBlog = () => {
                                     <span className="float-start">Banner</span>
                                   </td>
                                   <td className="p-3 px-4 ">
-                                    <span className="float-start">UserId</span>
+                                    <span className="float-start">User</span>
                                   </td>
                                   <td className="p-3 px-4 ">
                                     <span className="float-start">Date</span>

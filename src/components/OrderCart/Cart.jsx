@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import similac from "../../assets/img/similac.png";
 import "../../assets/css/stylecart.css";
 import cartImg from "../../assets/img/cart.png";
@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const cartData = localStorage.getItem('cart');
@@ -101,6 +102,11 @@ const Cart = () => {
     const productInCart = cart.find(p => p.id === productId);
     return productInCart ? productInCart.quantity : 0;
   };
+
+  //NAVIGATE CHECKOUT
+  const navigateCheckout = () => {
+    navigate('/checkout');
+  }
 
   return (
     <>
@@ -326,7 +332,7 @@ const Cart = () => {
                               type="submit"
                               value=""
                             >
-                              <span style={{fontSize: '20px'}}>Thanh toán</span>
+                              <span style={{fontSize: '20px'}} onClick={navigateCheckout}>Thanh toán</span>
                             </div>
                           </div>
                         </td>
