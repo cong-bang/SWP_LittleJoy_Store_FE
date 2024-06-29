@@ -5,7 +5,9 @@ import logogoogle from "../../assets/img/logogoogle.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import LoginG from "./GoogleLogin"
+import LoginG from "./GoogleLogin";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -21,8 +23,8 @@ export default function Login() {
   ];
 
   useEffect(() => {
-    const rememberedUsername = sessionStorage.getItem('rememberedUsername');
-    const rememberedPassword = sessionStorage.getItem('rememberedPassword');
+    const rememberedUsername = sessionStorage.getItem("rememberedUsername");
+    const rememberedPassword = sessionStorage.getItem("rememberedPassword");
     if (rememberedUsername && rememberedPassword) {
       setUsername(rememberedUsername);
       setPassword(rememberedPassword);
@@ -34,50 +36,54 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://littlejoyapi.azurewebsites.net/api/authen/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await fetch(
+        "https://littlejoyapi.azurewebsites.net/api/authen/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('refreshToken', data.refreshToken);
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
 
         // Decode
         const decodedToken = jwtDecode(data.accessToken);
         console.log(decodedToken);
-        const nameClaim = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
-        const roleClaim = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
-        const userClaim = 'user_ID';
-        
+        const nameClaim =
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name";
+        const roleClaim =
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+        const userClaim = "user_ID";
+
         const userName = decodedToken[nameClaim];
         const userRole = decodedToken[roleClaim];
         const userId = decodedToken[userClaim];
 
-        localStorage.setItem('userName', userName);
-        localStorage.setItem('userRole', userRole);
-        localStorage.setItem('userId', userId);
+        localStorage.setItem("userName", userName);
+        localStorage.setItem("userRole", userRole);
+        localStorage.setItem("userId", userId);
 
         if (rememberMe) {
-          sessionStorage.setItem('rememberedUsername', username);
-          sessionStorage.setItem('rememberedPassword', password);
+          sessionStorage.setItem("rememberedUsername", username);
+          sessionStorage.setItem("rememberedPassword", password);
         } else {
-          sessionStorage.removeItem('rememberedUsername');
-          sessionStorage.removeItem('rememberedPassword');
+          sessionStorage.removeItem("rememberedUsername");
+          sessionStorage.removeItem("rememberedPassword");
         }
-        
 
         console.log(userName, userRole, userId);
 
         navigate("/");
         window.location.reload();
       } else {
-        setError(data.message || 'Đăng nhập thất bại');
+        setError(data.message || "Đăng nhập thất bại");
       }
     } catch (error) {
       setError(error.message);
@@ -86,7 +92,21 @@ export default function Login() {
 
   return (
     <>
-      <div style={{ marginBottom: '7%' }}>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      {/* Same as */}
+      <ToastContainer />
+      <div style={{ marginBottom: "7%" }}>
         <div className="container p-5 mt-5 mb-xl-5 roboto">
           <div className="row">
             <div className="col-md-12 text-center nav-login">
@@ -111,7 +131,9 @@ export default function Login() {
                       <tbody>
                         <tr>
                           <td colSpan="2">
-                            <p className="noticia-text title-login">Đăng nhập</p>
+                            <p className="noticia-text title-login">
+                              Đăng nhập
+                            </p>
                           </td>
                         </tr>
                         <tr>
@@ -149,7 +171,9 @@ export default function Login() {
                               onChange={(e) => setRememberMe(e.target.checked)}
                               id="remember"
                             />
-                            <span className="ps-3"><label htmlFor="remember">Remember me</label></span>
+                            <span className="ps-3">
+                              <label htmlFor="remember">Remember me</label>
+                            </span>
                           </td>
                           <td className="forgot-pass">
                             <Link to="/forgotpass1" className="float-end">
