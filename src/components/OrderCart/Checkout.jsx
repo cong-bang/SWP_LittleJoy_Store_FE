@@ -19,6 +19,7 @@ const Checkout = () => {
   const [note, setNote] = useState('');
   const [paymentMethod, setPaymentMethod] = useState(0);
   const [mess, setMess] = useState([]);
+  const [responseOrder, setResponseOrder] = useState({});
 
   useEffect(() => {
     const cartData = localStorage.getItem('cart');
@@ -106,6 +107,11 @@ const Checkout = () => {
     });
 
   const handleCreateOrder = async () => {
+    if (Object.values(user).length === 0) {
+      toast.error('Vui lòng đăng nhập trước khi thanh toán');
+      return;
+    }
+
     if (
       address === "" ||
       paymentMethod === 0
@@ -121,7 +127,7 @@ const Checkout = () => {
 
     const newOrder = {
       userId: localStorage.getItem('userId'),
-      totalPrice: calculateTotalCart(),
+      totalPrice: calculateTotalCart() + shippingCost,
       address: address,
       note: note,
       amountDiscount: selectedDiscount,
@@ -144,16 +150,44 @@ const Checkout = () => {
       if (responseCheckProduct.ok) {
         setMess(resultCheck);
         if (resultCheck.length == 0) {
-          const responseCreateOrder = await fetch(
-            "https://littlejoyapi.azurewebsites.net/api/order/create-order",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(newOrder),
+          if(paymentMethod === 1) {
+            const responseCreateOrder = await fetch(
+              "https://littlejoyapi.azurewebsites.net/api/order/create-order",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newOrder),
+              }
+            );
+            const data = await responseCreateOrder.json();
+            if(responseCreateOrder.ok) {
+              setResponseOrder(data);
+              localStorage.removeItem('cart');
+              navigate(`/paymentpending/${data.orderCode}`);
             }
-          );
+          }
+          if(paymentMethod === 2) {
+            const responseCreateOrder = await fetch(
+              "https://littlejoyapi.azurewebsites.net/api/order/create-order",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newOrder),
+              }
+            );
+            const data = await responseCreateOrder.json();
+            if(responseCreateOrder.ok) {
+              setResponseOrder(data);
+              localStorage.removeItem('cart');
+              window.location.href = data.urlPayment;
+            }
+          }
+
+          
         }
         else {
           toast.error('Đặt hàng thất bại');

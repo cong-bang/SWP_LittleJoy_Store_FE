@@ -71,6 +71,7 @@ const About = () => {
         <button onClick={notify}>Notify!</button>
         <ToastContainer />
       </div>
+
     </div>
   );
 };

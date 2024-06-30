@@ -60,7 +60,7 @@ export default function Header() {
                 </li>
                 <li className="nav-item header-item" id="dashboard-link">
                   {user && user.role !== "USER" && (
-                    <Link to="/dashboard" className="nav-link">
+                    <Link to="/dashboard" className="nav-link opensans">
                       Admin Dashboard
                     </Link>
                   )}

@@ -5,6 +5,7 @@ import UserProfileSidebar from './UserProfileSideBar';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const UserLayout = () => {
+  
   return (
     <>
     <section>

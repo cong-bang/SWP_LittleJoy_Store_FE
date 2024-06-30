@@ -330,7 +330,7 @@ const UserAddress = () => {
                       <input
                         id="ButtonAdd"
                         type="submit"
-                        value=" Đặc làm mặc định"
+                        value=" Đặt làm mặc định"
                         className="px-3 py-1"
                       />
                     </div>
