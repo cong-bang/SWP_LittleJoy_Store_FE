@@ -20,6 +20,10 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState(0);
   const [mess, setMess] = useState([]);
   const [responseOrder, setResponseOrder] = useState({});
+  const [addressList, setAddressList] = useState([{}]);
+  const [addressName, setAddressName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   useEffect(() => {
     const cartData = localStorage.getItem('cart');
@@ -51,16 +55,22 @@ const Checkout = () => {
       const response = await fetch(
         `https://littlejoyapi.azurewebsites.net/api/user/${userId}`
       );
-      const responseAddress = await fetch(`https://littlejoyapi.azurewebsites.net/api/address/main-address-by-user-id/${userId}`);
+      const responseAddress = await fetch(`https://littlejoyapi.azurewebsites.net/api/address/user-id/${userId}`);
       
       const dataUser = await response.json();
       if (response.ok) {
         setUser(dataUser);
+        setPhoneNumber(dataUser.phoneNumber)
       }
-      const dataMainAddress = await responseAddress.json();
+      const dataAddress = await responseAddress.json();
       if(responseAddress.ok) {
-        setAddress(dataMainAddress.address1);
+        setAddressList(dataAddress);
       }
+
+      // const mainAddr = dataAddress.find(address => address.isMainAddress === true);
+      //     if (mainAddr) {
+      //       setAddress(mainAddr.id);
+      //     }
       
     } catch (error) {
       console.error("Lỗi fetch user by id", error);
@@ -115,13 +125,23 @@ const Checkout = () => {
     });
 
   const handleCreateOrder = async () => {
+    if (!termsAccepted) {
+      toast.error('Bạn phải chấp nhận các điều khoản trước khi tiếp tục.');
+      return;
+    }
+
     if (Object.values(user).length === 0) {
       toast.error('Vui lòng đăng nhập trước khi thanh toán');
       return;
     }
 
+    if (!(phoneNumber && /^0\d{9}$/.test(phoneNumber))) {
+      toast.error('Số điện thoại không hợp lệ');
+      return;
+    }
     if (
       address === "" ||
+      phoneNumber === "" ||
       paymentMethod === 0
     ) {
       notify();
@@ -138,6 +158,7 @@ const Checkout = () => {
       totalPrice: calculateTotalCart() + shippingCost,
       address: address,
       note: note,
+      phoneNumber: phoneNumber,
       amountDiscount: selectedDiscount,
       paymentMethod: paymentMethod,
       productOrders: productOrders
@@ -173,7 +194,8 @@ const Checkout = () => {
             if(responseCreateOrder.ok) {
               setResponseOrder(data);
               localStorage.removeItem('cart');
-              navigate(`/paymentpending/${data.orderCode}`);
+              localStorage.setItem('orderCode', data.orderCode);
+              navigate(`/paymentpending`);
             }
           }
           if(paymentMethod === 2) {
@@ -206,6 +228,46 @@ const Checkout = () => {
       console.error("Lỗi:", error);
     }
   };
+
+    //ADD NEW ADDRESS
+    const handleAddAddress = async () => {
+      if (
+          addressName.trim() === ""
+        ) {
+          notify();
+          return;
+        }
+  
+      const newAddress = {
+        userId: localStorage.getItem('userId'),
+        address1: addressName
+      };
+  
+      try {
+        const response = await fetch('https://littlejoyapi.azurewebsites.net/api/address', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newAddress),
+        });
+        
+        if (response.ok) {
+          toast.success('Địa chỉ mới được tạo thành công!');
+          fetchUserById();
+          setAddressName('');
+        } else {
+          toast.error('Thêm địa chỉ mới thất bại');
+        }
+        const result = await response.json();
+      } catch (error) {
+        console.error('Lỗi:', error);
+      }
+    };
+  
+    const refreshFiledAddAddress = () => {
+      setAddressName('');
+    }
 
   
 
@@ -289,13 +351,15 @@ const Checkout = () => {
                             name="phoneNumber"
                             id=""
                             placeholder="Mobile Phone"
-                            value={user.phoneNumber}
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
                             className="w-100 p-1 ps-2"
                             required
                           />
                         </td>
                       </tr>
-                      <tr>
+
+                      {/* <tr>
                         <td className="py-1">
                           <input
                             type="text"
@@ -304,11 +368,44 @@ const Checkout = () => {
                             placeholder="Address"
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
-                            className="w-100 p-1 ps-2"
+                            className="w-75 p-1 ps-2"
                             required
                           />
                         </td>
+                      </tr> */}
+                      <tr>
+                        <td className="py-1 ">
+                              <select
+                                name=""
+                                id=""
+                                className="p-1 w-75"
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
+                              >
+                                <option value="" disabled>
+                                  Address
+                                </option>
+                                {addressList.map((a) => (
+                                  <option key={a.id} value={a.id}>
+                                    {a.address1}
+                                  </option>
+                                ))}
+                              </select>
+
+                          <div className="w-25 d-inline-block" data-bs-toggle="modal" data-bs-target="#add-address">
+                            <input
+                              id="ButtonAdd"
+                              type="submit"
+                              value="Thêm địa chỉ mới"
+                              onClick={refreshFiledAddAddress}
+                              className="px-4 py-1"
+                            />
+                          </div>
+                        
+                        </td>
+                        
                       </tr>
+
                       <tr>
                         <td className="py-1">
                           <textarea
@@ -604,7 +701,7 @@ const Checkout = () => {
                     </div>
                   </div>
                   <div className="terms d-flex justify-content-center mt-3">
-                    <input type="checkbox" required />
+                    <input type="checkbox" required checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)}/>
                     <p
                       className="m-0 ps-3"
                       style={{ fontFamily: "sans-serif", fontSize: "16px" }}
@@ -710,6 +807,54 @@ const Checkout = () => {
           </div>
         </div>
       </div>
+
+      {/* <!-- Modal add address --> */}
+    <div className="modal" id="add-address">
+        <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+
+                {/* <!-- Modal Header --> */}
+                <div className="py-2 d-flex justify-content-between" style={{backgroundColor: 'rgba(60, 117, 166, 1)'}}>
+                    <h4 className="modal-title inter ms-3" style={{color: 'white'}}>Thêm địa chỉ mới</h4>
+                    <div className="btn-close-modal me-3" style={{color: 'white'}} data-bs-dismiss="modal"></div>
+                </div>
+
+                {/* <!-- Modal body --> */}
+                <div className="modal-body" style={{backgroundColor: 'white'}}>
+                <div className="p-2" >
+                    <table className="w-100 table-modal" >
+                    <tbody>
+                        <tr>
+                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Địa chỉ mới:</span></td>
+                        <td className="py-2">
+                            <input
+                            type="text"
+                            className="ps-2 p-1 w-100"
+                            value={addressName}
+                            onChange={(e) => setAddressName(e.target.value)}
+                            style={{backgroundColor: 'white', color:'black'}}
+                            />
+                        </td>
+                        </tr>
+                        
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+
+                {/* <!-- Modal footer --> */}
+                <div className="footer-modal py-4 d-flex justify-content-end" style={{backgroundColor: 'white'}}>
+                    <div className="close me-4">
+                        <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal" style={{backgroundColor: 'rgb(60, 117, 166)'}}><span>Hủy</span></div>
+                    </div>
+                    <div className="save-modal me-4">
+                        <input onClick={handleAddAddress} type="submit" data-bs-dismiss="modal" value="Lưu" style={{backgroundColor: '#E33539'}} className="input-submit modal-btn-close p-2 px-4 inter"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     </>
   );
 }

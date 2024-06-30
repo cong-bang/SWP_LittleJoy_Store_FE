@@ -312,7 +312,7 @@ const UserAddress = () => {
                       />
                     </div>
                   </td>
-                  {a.isMainAddress == true ? (
+                  {a.isMainAddress == true && (
                   <td className="w-15 pe-4 pt-2">
                     <div className="w-75 pt-3">
                       <input
@@ -324,17 +324,7 @@ const UserAddress = () => {
                       />
                     </div>
                   </td>
-                  ) : (
-                    <td className="w-15 pe-4 pt-2">
-                    <div className="w-75 pt-3">
-                      <input
-                        id="ButtonAdd"
-                        type="submit"
-                        value=" Đặt làm mặc định"
-                        className="px-3 py-1"
-                      />
-                    </div>
-                  </td>
+                 
                   )}
                   <td></td>
                 </tr>

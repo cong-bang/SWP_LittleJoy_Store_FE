@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import '../../assets/css/stylepaymentsuccess.css'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const PaymentPending = () => {
     const [inforPending, setInforPending] = useState({});
     const [user, setUser] = useState({});
-    const { id } = useParams();
-    const [countP, setCountP] = useState(1);
+    const [countP, setCountP] = useState(null);
+    const [flag, setFlag] = useState(false);
+    const navigate = useNavigate();
 
     const fetchData = async () => {
         try {
+            const orderCode = localStorage.getItem('orderCode')
+            if (orderCode !== null ) {
+                setFlag(true);
+            }
             const userId = localStorage.getItem('userId');
             const responseUser = await fetch(`https://littlejoyapi.azurewebsites.net/api/user/${userId}`);
-            const responseOrder = await fetch(`https://littlejoyapi.azurewebsites.net/api/order/get-order-by-orderCode/${id}`);
+            const responseOrder = await fetch(`https://littlejoyapi.azurewebsites.net/api/order/get-order-by-orderCode/${orderCode}`);
 
+            localStorage.removeItem('orderCode')
             const dataUser = await responseUser.json();
             if (responseUser.ok) {
                 setUser(dataUser)
@@ -50,8 +56,14 @@ const PaymentPending = () => {
         fetchData();
       }, []);
 
+      const handleRrturnHome = () => {
+        setFlag(false);
+        navigate('/');
+      }
+
   return (
     <>
+    {flag == true ? (
         <div className="outline">
         <div className="container payment-body">
             <div className="row payment-container">
@@ -76,7 +88,7 @@ const PaymentPending = () => {
                             </tr>
                             <tr>
                                 <th>Order code:</th>
-                                <td>{id}</td>
+                                <td>{inforPending.orderCode}</td>
                             </tr>
                             <tr>
                                 <th>Amout paid:</th>
@@ -103,7 +115,7 @@ const PaymentPending = () => {
                             </tr>
                             <tr>
                                 <th>Phone number:</th>
-                                <td>{user.phoneNumber}</td>
+                                <td>{inforPending.phoneNumber}</td>
                             </tr>
                             <tr>
                                 <th>Total quantity:</th>
@@ -125,13 +137,16 @@ const PaymentPending = () => {
                         <p className='fs-6'>Hẹn gặp lại!</p>
                     </div>
                     <div className="payment-footer">
-                        <p><Link to="/" className='fs-6'>Quay về trang chủ</Link></p>
+                        <p><span className='fs-6' style={{cursor: 'pointer'}} onClick={handleRrturnHome}>Quay về trang chủ</span></p>
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
+    ) : (
+    <div>Error</div>
+    )}
     </>
   )
 }

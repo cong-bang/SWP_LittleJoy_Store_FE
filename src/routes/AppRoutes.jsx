@@ -32,6 +32,7 @@ import ConfirmEmail from "../components/Authen/ConfirmEmail";
 import ManageCategory from "../components/ManageCategory/ManageCategory";
 import UserLayout from "../components/UserProfile/ProfileLayout";
 import PaymentPending from "../components/Payment/PaymentPending";
+import PaymentInfo from "../components/Payment/PaymentInfo";
 
 
 const UserRoute = () => {
@@ -121,8 +122,8 @@ const AppRoutes = () => {
           <Route path="/userorderdetail" element={<UserOrderDetail />} />
         </Route>
 
-        <Route path="/paymentpending/:id" element={<PaymentPending />} />
-
+        <Route path="/paymentpending" element={<PaymentPending />} />
+        <Route path="/payment/info" element={<PaymentInfo />} />
         
         <Route path="/confirm/:id" element={<ConfirmEmail />} />
         <Route path="/forgotpass1" element={<Forgotpass1 />} />
