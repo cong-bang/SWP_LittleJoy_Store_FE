@@ -105,7 +105,14 @@ const Cart = () => {
 
   //NAVIGATE CHECKOUT
   const navigateCheckout = () => {
-    navigate('/checkout');
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      navigate('/checkout');
+    }
+    else {
+      toast.error('Vui lòng đăng nhập trước khi thanh toán');
+    }
+    
   }
 
   return (

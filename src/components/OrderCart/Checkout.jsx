@@ -80,17 +80,25 @@ const Checkout = () => {
     { points: 100000, value: 5000000, label: '5.000.000 VNĐ (100000 điểm)' },
   ];
 
-  const isOptionEnabled = (pointsRequired) => {
-    return user.points >= pointsRequired;
+  const shippingCost = 30000;
+  const totalCartCost = calculateTotalCart();
+  const isOptionEnabled = (pointsRequired, discountValue) => {
+    return user.points >= pointsRequired && (totalCartCost + shippingCost) >= discountValue;
   };
 
   //TOTAL COST OF ORDER
   const handleDiscountChange = (event) => {
-    setSelectedDiscountPoints(parseInt(event.target.value, 10));
+    const selectedPoints = parseInt(event.target.value, 10);
+    const selectedDiscountValue = discounts.find(discount => discount.points === selectedPoints)?.value || 0;
+    
+    if ((totalCartCost + shippingCost) >= selectedDiscountValue) {
+      setSelectedDiscountPoints(selectedPoints);
+    } else {
+      toast.error('Giảm giá đang vượt quá tổng giá trị đơn hàng');
+    }
   };
 
   const selectedDiscount = discounts.find(discount => discount.points === selectedDiscountPoints)?.value || 0;
-  const shippingCost = 30000;
   const totalCost = calculateTotalCart() + shippingCost - selectedDiscount;
 
   //HANDLE PAYMENT
@@ -443,7 +451,7 @@ const Checkout = () => {
                               <option 
                                 key={discount.points} 
                                 value={discount.points} 
-                                disabled={!isOptionEnabled(discount.points)}
+                                disabled={!isOptionEnabled(discount.points, discount.value)}
                               >
                                 {discount.label}
                               </option>
@@ -506,6 +514,7 @@ const Checkout = () => {
                             </span>
                           </td>
                         </tr>
+                        {selectedDiscount > 0 && (
                         <tr>
                           <td className="py-2 w-50 text-center">
                             <span
@@ -524,6 +533,7 @@ const Checkout = () => {
                             </span>
                           </td>
                         </tr>
+                      )}
                         <tr style={{ borderTop: "1px solid black" }}>
                           <td className="py-2 w-50 text-center">
                             <span
