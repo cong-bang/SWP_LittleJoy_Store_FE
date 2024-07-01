@@ -4,9 +4,8 @@
     box-sizing: border-box;
 }
 
-.Vidaloka{
-}
-.Dongle{
+.roboto{
+    font-family: 'Roboto', sans-serif !important;
 }
 .w-5{
     width: 5%;

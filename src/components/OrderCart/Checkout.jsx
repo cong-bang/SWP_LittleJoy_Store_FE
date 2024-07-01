@@ -277,40 +277,42 @@ const Checkout = () => {
     <ToastContainer />
       <section>
         <div className="banner container-fluid mb-5 pb-5">
-          <h1 className="pt-5">Checkout</h1>
-          <p className="myhome">
-            <Link to="/">Home</Link>
+          <h1 className="pt-5 roboto" style={{
+                color: "#3C75A6",
+                fontWeight: "600",
+              }}>Thanh Toán</h1>
+          <p className="myhome roboto">
+            <Link to="/">Trang chủ</Link>
             <span>
               <FontAwesomeIcon
                 icon="fa-solid fa-angles-right"
                 className="px-4"
               />
             </span>
-            <Link to="/cart">Cart</Link>
+            <Link to="/cart" className="roboto">Giỏ hàng</Link>
             <span>
               <FontAwesomeIcon
                 icon="fa-solid fa-angles-right"
                 className="px-4"
               />
             </span>
-            <Link to="/checkout">Checkout</Link>
+            <Link to="/checkout" className="roboto">Thanh toán</Link>
           </p>
         </div>
       </section>
 
-      <div className="background-container">
-        <div className="container">
+      <div className="background-container my-5 py-5">
+        <div className="container my-5">
           <div className="row">
             <div className="col-md-7">
               <div className="w-100">
                 <div className="profile-info w-100 d-flex justify-content-center">
-                  <table className="w-75">
+                  <table className="w-75 roboto">
                     <tbody>
                       <tr>
                         <td className="py-2">
                           <span
-                            className="Vidaloka"
-                            style={{ fontSize: "25px" }}
+                            className="roboto fs-5 fw-bold"
                           >
                             Thông tin giao hàng
                           </span>
@@ -324,7 +326,7 @@ const Checkout = () => {
                             id=""
                             placeholder="Fullname"
                             value={user.fullname}
-                            className="w-100 p-1 ps-2 nochange"
+                            className="w-100 p-1 ps-2 nochange roboto"
                             readOnly
                             required
                           />
@@ -338,7 +340,7 @@ const Checkout = () => {
                             id=""
                             placeholder="Email"
                             value={user.email}
-                            className="w-100 p-1 ps-2 nochange"
+                            className="w-100 p-1 ps-2 nochange roboto"
                             readOnly
                             required
                           />
@@ -374,11 +376,11 @@ const Checkout = () => {
                         </td>
                       </tr> */}
                       <tr>
-                        <td className="py-1 ">
+                        <td className="">
                               <select
                                 name=""
                                 id=""
-                                className="p-1 w-75"
+                                className="w-70 py-2 roboto"
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
                               >
@@ -391,14 +393,14 @@ const Checkout = () => {
                                   </option>
                                 ))}
                               </select>
-
-                          <div className="w-25 d-inline-block" data-bs-toggle="modal" data-bs-target="#add-address">
+                          <div className="w-30 d-inline-block ps-2" data-bs-toggle="modal" data-bs-target="#add-address">
                             <input
                               id="ButtonAdd"
                               type="submit"
                               value="Thêm địa chỉ mới"
                               onClick={refreshFiledAddAddress}
-                              className="px-4 py-1"
+                              className="w-100 py-1 roboto"
+                              style={{border: '1px solid white', color: 'white', backgroundColor: '#3C75A6', fontSize: '18px'}}
                             />
                           </div>
                         
@@ -417,7 +419,7 @@ const Checkout = () => {
                             value={note}
                             onChange={(e) => setNote(e.target.value)}
                             style={{ resize: "none" }}
-                            className="w-100 p-1 ps-2"
+                            className="w-100 p-1 ps-2 roboto"
                           ></textarea>
                         </td>
                       </tr>
@@ -429,19 +431,19 @@ const Checkout = () => {
                     <tbody>
                       <tr style={{ borderBottom: "1px solid black" }}>
                         <td className="w-20 py-1 text-center fw-bold">
-                          <span>Sản Phẩm</span>
+                          <span className="roboto">Sản Phẩm</span>
                         </td>
                         <td className="py-1">
                           <span></span>
                         </td>
                         <td className="py-1 text-center fw-bold">
-                          <span>Giá</span>
+                          <span className="roboto">Giá</span>
                         </td>
                         <td className="py-1 text-center fw-bold">
-                          <span>Số lượng</span>
+                          <span className="roboto">Số lượng</span>
                         </td>
                         <td className="py-1 text-center fw-bold">
-                          <span>Tổng cộng</span>
+                          <span className="roboto">Tổng cộng</span>
                         </td>
                       </tr>
                       {cart.map((p) => (
@@ -456,20 +458,20 @@ const Checkout = () => {
                           </div>
                         </td>
                         <td className="py-1 text-center">
-                          <span><ProductName title={p.productName} maxLength={20} /></span>
+                          <span className="roboto"><ProductName title={p.productName} maxLength={20} /></span>
                         </td>
                         <td className="py-1 text-center">
-                          <span>{(p.price).toLocaleString('de-DE')} VND</span>
+                          <span className="roboto">{(p.price).toLocaleString('de-DE')} VND</span>
                         </td>
                         <td className="py-1 text-center">
-                          <span>{p.quantity}</span>
+                          <span className="roboto">{p.quantity}</span>
                         </td>
                         <td className="py-1 text-center">
-                          <span>{(p.price * p.quantity).toLocaleString('de-DE')} VND</span>
+                          <span className="roboto">{(p.price * p.quantity).toLocaleString('de-DE')} VND</span>
                         </td>
-                        <td className="py-1 text-center w-15">
+                        <td className="py-1 text-center">
                           <span
-                            className="text-center fw-bold"
+                            className="text-center fw-bold roboto"
                             style={{ color: "#FF0000" }}
                           >
                             {mess.find((c) => c.id === p.id)?.message || "" }
@@ -487,7 +489,7 @@ const Checkout = () => {
                               borderRadius: "10px",
                             }}
                           >
-                            <Link
+                            <Link className="roboto"
                               to="/cart"
                               style={{
                                 textDecoration: "none",
@@ -515,7 +517,7 @@ const Checkout = () => {
                     <tbody>
                       <tr>
                         <td className="pt-3 ps-3 fw-semibold fs-5 w-75">
-                          <span>Điểm của bạn: {user.points}</span>
+                          <span className="roboto">Điểm của bạn: {user.points}</span>
                         </td>
                         <td className="pt-3 ps-3 fw-semibold fs-5 w-25 text-center">
                           <div
@@ -541,7 +543,7 @@ const Checkout = () => {
                             value={selectedDiscountPoints}
                             onChange={handleDiscountChange}
                           >
-                            <option value="0" selected>
+                            <option value="0" selected className="roboto">
                               Chọn điểm để giảm giá
                             </option>
                             {discounts.map((discount) => (
@@ -570,7 +572,7 @@ const Checkout = () => {
                             colSpan="2"
                             className="py-2 w-50 fw-semibold fs-5"
                           >
-                            <span style={{ fontSize: "25px" }}>
+                            <span className="roboto fs-5">
                               Tóm tắt đơn hàng
                             </span>
                           </td>
@@ -579,14 +581,14 @@ const Checkout = () => {
                           <td className="py-2 w-50 text-center">
                             <span
                               style={{ color: "#757575" }}
-                              className="float-start"
+                              className="float-start roboto"
                             >
                               Tổng tiền:
                             </span>
                           </td>
                           <td className="py-2 w-50 text-center">
                             <span
-                              className="float-end"
+                              className="float-end roboto"
                               style={{ fontWeight: "600" }}
                             >
                               VND {calculateTotalCart().toLocaleString('de-DE')}
@@ -597,14 +599,14 @@ const Checkout = () => {
                           <td className="py-2 w-50 text-center">
                             <span
                               style={{ color: "#757575" }}
-                              className="float-start"
+                              className="float-start roboto"
                             >
                               Shipping:
                             </span>
                           </td>
                           <td className="py-2 w-50 text-center">
                             <span
-                              className="float-end"
+                              className="float-end roboto"
                               style={{ fontWeight: "600" }}
                             >
                               VND {shippingCost.toLocaleString('de-DE')}
@@ -616,14 +618,14 @@ const Checkout = () => {
                           <td className="py-2 w-50 text-center">
                             <span
                               style={{ color: "#757575" }}
-                              className="float-start"
+                              className="float-start roboto"
                             >
                               Điểm thưởng:
                             </span>
                           </td>
                           <td className="py-2 w-50 text-center">
                             <span
-                              className="float-end"
+                              className="float-end roboto"
                               style={{ fontWeight: "600" }}
                             >
                               VND -{selectedDiscount.toLocaleString('de-DE')}
@@ -634,7 +636,7 @@ const Checkout = () => {
                         <tr style={{ borderTop: "1px solid black" }}>
                           <td className="py-2 w-50 text-center">
                             <span
-                              className="float-start"
+                              className="float-start roboto"
                               style={{ fontWeight: "600" }}
                             >
                               Tổng cộng:
@@ -642,7 +644,7 @@ const Checkout = () => {
                           </td>
                           <td className="py-2 w-50 text-center">
                             <span
-                              className="float-end"
+                              className="float-end roboto"
                               style={{ color: "#FF0000", fontWeight: "600" }}
                             >
                               VND {totalCost.toLocaleString('de-DE')}
@@ -657,8 +659,7 @@ const Checkout = () => {
               <div className="w-100 mt-5 d-flex justify-content-center">
                 <div className="w-80 px-4 py-3 d-flex flex-column justify-content-center payment-choose">
                   <span
-                    className="m-2 fw-semibold fs-5"
-                    style={{ fontSize: "25px" }}
+                    className="m-2 fw-semibold fs-5 roboto"
                   >
                     Phương thức thanh toán
                   </span>
@@ -666,11 +667,11 @@ const Checkout = () => {
                     <div
                       className="payment w-100 d-flex justify-content-between pe-2"
                       onClick={() => setPaymentMethod(2)}
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: "po" }}
                     >
                       <div className="w-75">
                         <img src={vnpay} alt="" className="w-25" />
-                        <span className="ps-2">VNPAY</span>
+                        <span className="ps-2 roboto">VNPAY</span>
                       </div>
                       <input
                         type="radio"
@@ -684,11 +685,11 @@ const Checkout = () => {
                     <div
                       className="mt-3 payment w-100 d-flex justify-content-between pe-2"
                       onClick={() => setPaymentMethod(1)}
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: "po" }}
                     >
                       <div className="w-75">
                         <img src={icon_payondelivery} alt="" className="w-25" />
-                        <span className="ps-2">Thanh toán khi nhận hàng</span>
+                        <span className="ps-2 roboto">Thanh toán khi nhận hàng</span>
                       </div>
                       <input
                         type="radio"
@@ -737,9 +738,9 @@ const Checkout = () => {
               className="modal-header"
               style={{ backgroundColor: "#3C75A6", color: "white" }}
             >
-              <h5 className="modal-title" id="pointsModalLabel">
-                Points Information
-              </h5>
+              <span className="modal-title roboto fs-5" id="pointsModalLabel">
+                Điểm Thưởng
+              </span>
               <button
                 type="button"
                 className="btn-close btn-outline-light"
@@ -748,18 +749,18 @@ const Checkout = () => {
               ></button>
             </div>
             <div className="modal-body table-responsive mx-2" style={{backgroundColor: 'white'}}>
-              <p>Quy trình tích điểm:</p>
+              <p className="roboto">Quy trình tích điểm:</p>
               <div className="mx-4">
-                <span>
-                  Với <span className="fw-bold">1.000 VND / hóa đơn</span> mua
+                <span className="roboto">
+                  Với <span className="fw-bold roboto">1.000 VND / hóa đơn</span> mua
                   hàng thành công bạn sẽ tích ngay cho mình được{" "}
-                  <span className="fw-bold">1 điểm</span> tương ứng.
+                  <span className="fw-bold roboto">1 điểm</span> tương ứng.
                 </span>
               </div>
 
               <p>Quá trình đổi điểm:</p>
               <div className="mx-4">
-                <span>
+                <span className="roboto">
                   Khi mua hàng, bạn sẽ được chọn các mốc đổi điểm như sau:
                 </span>
               </div>
@@ -767,30 +768,30 @@ const Checkout = () => {
               <table className="table table-bordered">
                 <thead>
                   <tr>
-                    <th className="text-center">Point</th>
-                    <th className="text-center">Money Discount</th>
+                    <th className="text-center roboto">Point</th>
+                    <th className="text-center roboto">Money Discount</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="text-center">1000</td>
-                    <td className="text-center">10.000 VND</td>
+                    <td className="text-center roboto">1000</td>
+                    <td className="text-center roboto">10.000 VND</td>
                   </tr>
                   <tr>
-                    <td className="text-center">5000</td>
-                    <td className="text-center">50.000 VND</td>
+                    <td className="text-center roboto">5000</td>
+                    <td className="text-center roboto">50.000 VND</td>
                   </tr>
                   <tr>
-                    <td className="text-center">10000</td>
-                    <td className="text-center">100.000 VND</td>
+                    <td className="text-center roboto">10000</td>
+                    <td className="text-center roboto">100.000 VND</td>
                   </tr>
                   <tr>
-                    <td className="text-center">50000</td>
-                    <td className="text-center">1.000.000 VND</td>
+                    <td className="text-center roboto">50000</td>
+                    <td className="text-center roboto">1.000.000 VND</td>
                   </tr>
                   <tr>
-                    <td className="text-center">100000</td>
-                    <td className="text-center">5.000.000 VND</td>
+                    <td className="text-center roboto">100000</td>
+                    <td className="text-center roboto">5.000.000 VND</td>
                   </tr>
                 </tbody>
               </table>
@@ -798,7 +799,7 @@ const Checkout = () => {
             <div className="modal-footer border-black">
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-secondary roboto"
                 data-bs-dismiss="modal"
               >
                 Close
@@ -815,7 +816,7 @@ const Checkout = () => {
 
                 {/* <!-- Modal Header --> */}
                 <div className="py-2 d-flex justify-content-between" style={{backgroundColor: 'rgba(60, 117, 166, 1)'}}>
-                    <h4 className="modal-title inter ms-3" style={{color: 'white'}}>Thêm địa chỉ mới</h4>
+                    <span className="modal-title ms-3 roboto" style={{color: 'white'}}>Thêm địa chỉ mới</span>
                     <div className="btn-close-modal me-3" style={{color: 'white'}} data-bs-dismiss="modal"></div>
                 </div>
 
@@ -825,11 +826,11 @@ const Checkout = () => {
                     <table className="w-100 table-modal" >
                     <tbody>
                         <tr>
-                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Địa chỉ mới:</span></td>
+                        <td className="w-20"><span className="py-2 roboto" style={{color: '#3C75A6'}}>Địa chỉ mới:</span></td>
                         <td className="py-2">
                             <input
                             type="text"
-                            className="ps-2 p-1 w-100"
+                            className="ps-2 p-1 w-100 roboto"
                             value={addressName}
                             onChange={(e) => setAddressName(e.target.value)}
                             style={{backgroundColor: 'white', color:'black'}}
@@ -845,10 +846,10 @@ const Checkout = () => {
                 {/* <!-- Modal footer --> */}
                 <div className="footer-modal py-4 d-flex justify-content-end" style={{backgroundColor: 'white'}}>
                     <div className="close me-4">
-                        <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal" style={{backgroundColor: 'rgb(60, 117, 166)'}}><span>Hủy</span></div>
+                        <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal" style={{backgroundColor: 'rgb(60, 117, 166)'}}><span className="roboto">Hủy</span></div>
                     </div>
                     <div className="save-modal me-4">
-                        <input onClick={handleAddAddress} type="submit" data-bs-dismiss="modal" value="Lưu" style={{backgroundColor: '#E33539'}} className="input-submit modal-btn-close p-2 px-4 inter"/>
+                        <input onClick={handleAddAddress} type="submit" data-bs-dismiss="modal" value="Lưu" style={{backgroundColor: '#E33539'}} className="input-submit modal-btn-close p-2 px-4 roboto"/>
                     </div>
                 </div>
 
