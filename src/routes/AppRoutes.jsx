@@ -119,7 +119,7 @@ const AppRoutes = () => {
           <Route path="/useraddress" element={<UserAddress />} />
           <Route path="/userchangepassword" element={<UserChangePassword />} />
           <Route path="/userordermanagement" element={<UserOrderManagement />} />
-          <Route path="/userorderdetail" element={<UserOrderDetail />} />
+          <Route path="/userorderdetail/:id" element={<UserOrderDetail />} />
         </Route>
 
         <Route path="/paymentpending" element={<PaymentPending />} />

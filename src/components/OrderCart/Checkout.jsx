@@ -155,7 +155,7 @@ const Checkout = () => {
 
     const newOrder = {
       userId: localStorage.getItem('userId'),
-      totalPrice: calculateTotalCart() + shippingCost,
+      totalPrice: totalCost,
       address: address,
       note: note,
       phoneNumber: phoneNumber,

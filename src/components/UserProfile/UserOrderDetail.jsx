@@ -1,36 +1,87 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSquareCaretLeft,
+  faSquareCaretRight,
+  faX
+} from "@fortawesome/free-solid-svg-icons";
 import "../../assets/css/styleUserOrderDetail.css";
 import Ellipse2 from "../../assets/img/Ellipse2.png";
 import Abott from "../../assets/img/Abott.png";
+import UploadImage from "../UploadImage/UploadImage";
 
 const UserOrderDetail = () => {
   const [showModal, setShowModal] = useState(false);
   const [reason, setReason] = useState("");
   const [comments, setComments] = useState("");
-  const [image, setImage] = useState(null);
-  const location = useLocation();
-  const user = location.state?.user || {};
+  const [image, setImage] = useState('');
+  const [inforOrder, setInforOrder] = useState({});
+  const [user, setUser] = useState({});
+  const { id } = useParams();
+  const [mainAddress, setMainAddress] = useState('');
+  const [listProduct, setListProduct] = useState([{}]);
+  const { pathname } = useLocation();
 
-  const handleCancelOrder = () => {
-    setShowModal(true);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  const handleUploadComplete = (url) => {
+    setImage(url);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
+  //Refresh field cancel order
+  const refreshFieldCancelOrder = () => {
+    setReason('');
+    setComments('');
+    setImage('');
+  }
+  
+
+  //Fetch order by orderCode
+  const fetchData = async () => {
+    try {
+        const userId = localStorage.getItem('userId');
+        const responseUser = await fetch(`https://littlejoyapi.azurewebsites.net/api/user/${userId}`);
+        const responseOrder = await fetch(`https://littlejoyapi.azurewebsites.net/api/order/get-order-by-orderCode/${id}`);
+        const responseMainAddress = await fetch(`https://littlejoyapi.azurewebsites.net/api/address/main-address-by-user-id/${userId}`)
+
+        const dataUser = await responseUser.json();
+        if (responseUser.ok) {
+            setUser(dataUser)
+        }
+
+        const dataMainAddress = await responseMainAddress.json();
+        if (responseMainAddress.ok) {
+          setMainAddress(dataMainAddress.address1);
+        }
+      
+        const dataOrder = await responseOrder.json();
+        if (responseOrder.ok) {
+            // Format the date in dataOrder
+            if (dataOrder.date) {
+                const dateObj = new Date(dataOrder.date);
+                const formattedDate = `${('0' + dateObj.getDate()).slice(-2)}/${('0' + (dateObj.getMonth() + 1)).slice(-2)}/${dateObj.getFullYear()} ${('0' + dateObj.getHours()).slice(-2)}:${('0' + dateObj.getMinutes()).slice(-2)}`;
+                dataOrder.date = formattedDate;
+            }
+
+            if (dataOrder.totalPrice) {
+                const formattedPrice = dataOrder.totalPrice;
+                dataOrder.totalPrice = formattedPrice.toLocaleString('de-DE');
+            }
+            setInforOrder(dataOrder);
+            setListProduct(dataOrder.productOrders);
+          }
+      
+    } catch (error) {
+        console.log(error.message);
+    }
   };
 
-  const handleCancelConfirmation = () => {
-    console.log("Reason:", reason);
-    console.log("Comments:", comments);
-    console.log("Image:", image);
-    closeModal();
-  };
-
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -86,7 +137,7 @@ const UserOrderDetail = () => {
                         </td>
                         <td className="ps-3 pt-3">
                           <span style={{ fontSize: "20px" }}>
-                            Pham Van Tuan Hieu
+                            {user.fullname}
                           </span>
                         </td>
                         <td colSpan="2"></td>
@@ -98,7 +149,7 @@ const UserOrderDetail = () => {
                           </span>
                         </td>
                         <td className="ps-3 pt-4">
-                          <span style={{ fontSize: "20px" }}>090 001 1234</span>
+                          <span style={{ fontSize: "20px" }}>{user.phoneNumber}</span>
                         </td>
                         <td colSpan="2"></td>
                       </tr>
@@ -108,7 +159,7 @@ const UserOrderDetail = () => {
                         </td>
                         <td className="ps-3 pt-4">
                           <span style={{ fontSize: "20px" }}>
-                            baoton1234@gmail.com
+                            {user.email}
                           </span>
                           <td colSpan="2"></td>
                         </td>
@@ -120,7 +171,7 @@ const UserOrderDetail = () => {
                         <td className="pt-4 ps-3">
                           <span style={{ fontSize: "20px" }}>
                             {" "}
-                            S1.02 vinhomesgrandpark,....
+                            {mainAddress}
                           </span>
                         </td>
                       </tr>
@@ -151,7 +202,7 @@ const UserOrderDetail = () => {
                                   className="pe-3"
                                   style={{ fontSize: "20px" }}
                                 >
-                                  #271455
+                                  #{inforOrder.orderCode}
                                 </span>
                                 <div
                                   style={{ borderLeft: "1px solid black" }}
@@ -178,7 +229,7 @@ const UserOrderDetail = () => {
                             </td>
                             <td className="pt-4 ps-3">
                               <span style={{ fontSize: "20px" }}>
-                                27/05/2024
+                                {inforOrder.date}
                               </span>
                             </td>
                           </tr>
@@ -191,7 +242,7 @@ const UserOrderDetail = () => {
                             </td>
                             <td className="pt-4 ps-3">
                               <span style={{ fontSize: "20px" }}>
-                                đang giao...
+                                {inforOrder.deliveryStatus || 'Đang chờ xác nhận'}
                               </span>
                             </td>
                           </tr>
@@ -203,7 +254,7 @@ const UserOrderDetail = () => {
                               </span>
                             </td>
                             <td className="pt-4 ps-3 pb-4">
-                              <span style={{ fontSize: "20px" }}>VN Pay</span>
+                              <span style={{ fontSize: "20px" }}>{inforOrder.paymentMethod}</span>
                             </td>
                           </tr>
                         </tbody>
@@ -245,8 +296,32 @@ const UserOrderDetail = () => {
                       </div>
                     </td>
                   </tr>
+                  {listProduct.map((p) => (
+                  <tr key={p.id}>
+                    <td className="w-10 pt-3 pb-3">
+                      <div id="ProductImg">
+                        <img src={p.image} alt="Product" style={{height: '60px', width: '60px'}}/>
+                      </div>
+                    </td>
 
-                  <tr>
+                    <td className="pb-3" colSpan="3">
+                      <div>
+                        <span>{p.productName}</span>
+                      </div>
+
+                      <div>
+                        <span>x{p.quantity}</span>
+                      </div>
+                    </td>
+
+                    <td className="w-20 pb-3">
+                      <div className="ms-4 ps-3">
+                        <span className="ps-3">{p.price ? p.price.toLocaleString('de-DE') : 'N/A'} đ</span>
+                      </div>
+                    </td>
+                  </tr>
+                  ))}
+                  {/* <tr>
                     <td className="w-10 pt-3 pb-3">
                       <div id="ProductImg">
                         <img src={Abott} alt="Product" />
@@ -316,31 +391,7 @@ const UserOrderDetail = () => {
                         <span className="ps-3">575.000 đ</span>
                       </div>
                     </td>
-                  </tr>
-
-                  <tr>
-                    <td className="w-10 pt-3 pb-3">
-                      <div id="ProductImg">
-                        <img src={Abott} alt="Product" />
-                      </div>
-                    </td>
-
-                    <td className="pb-3" colSpan="3">
-                      <div>
-                        <span>Sữa Abbott Grow 4 1,7kg (trên 2 tuổi)</span>
-                      </div>
-
-                      <div>
-                        <span>x1</span>
-                      </div>
-                    </td>
-
-                    <td className="w-20 pb-3">
-                      <div className="ms-4 ps-3">
-                        <span className="ps-3">575.000 đ</span>
-                      </div>
-                    </td>
-                  </tr>
+                  </tr> */}
 
                   <tr>
                     <td className="pt-2" colSpan="5">
@@ -355,17 +406,20 @@ const UserOrderDetail = () => {
 
               <table className="w-100 mt-4">
                 <tbody>
-                  <tr>
-                    <td className="w-75 pt-3 posButton-SummaryOrder">
-                      <span className="pe-3">Giảm giá:</span>
-                    </td>
 
-                    <td className="w-20 pt-3 me-4 posButton-SummaryOrder">
-                      <div className="pe-5">
-                        <span className="pe-4">-10.000 đ</span>
-                      </div>
-                    </td>
-                  </tr>
+                  {inforOrder.amountDiscount > 0 && (
+                    <tr>
+                      <td className="w-75 pt-3 posButton-SummaryOrder">
+                        <span className="pe-3">Giảm giá:</span>
+                      </td>
+
+                      <td className="w-20 pt-3 me-4 posButton-SummaryOrder">
+                        <div className="pe-5">
+                          <span className="pe-4">-{inforOrder.amountDiscount.toLocaleString('de-DE')} đ</span>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
 
                   <tr>
                     <td className="w-75 pt-3 posButton-SummaryOrder">
@@ -374,7 +428,7 @@ const UserOrderDetail = () => {
 
                     <td className="w-20 pt-3 posButton-SummaryOrder">
                       <div className="pe-5">
-                        <span className="pe-4">100.000.000 đ</span>
+                        <span className="pe-4">{inforOrder.totalPrice} đ</span>
                       </div>
                     </td>
                   </tr>
@@ -386,7 +440,7 @@ const UserOrderDetail = () => {
                       <div className="w-100 pe-5">
                         <button
                           className="w-100 Borderall-CancelOrder px-4 py-1 text-center text-white"
-                          onClick={handleCancelOrder}
+                          data-bs-toggle="modal" data-bs-target="#cancel-order" onClick={refreshFieldCancelOrder}
                         >
                           Hủy đơn hàng
                         </button>
@@ -398,111 +452,85 @@ const UserOrderDetail = () => {
             </div>
           
 
-      {/* Modal */}
-      {showModal && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "white",
-              padding: "20px",
-              borderRadius: "5px",
-              textAlign: "center",
-            }}
-          >
-            <span
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                cursor: "pointer",
-              }}
-              onClick={closeModal}
-            >
-              &times;
-            </span>
-            <p>Bạn có chắc chắn muốn hủy đơn hàng?</p>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                textAlign: "left",
-              }}
-            >
-              <span className="fw-bold text-start">Lý do hủy đơn</span>
-              <input
-                type="text"
-                placeholder="Lý do"
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                style={{ marginBottom: "10px", padding: "5px" }}
-              />
-              <span className="fw-bold text-start">Mô tả lý do</span>
-              <input
-                type="text"
-                placeholder="Mô tả"
-                value={comments}
-                onChange={(e) => setComments(e.target.value)}
-                style={{ marginBottom: "10px", padding: "5px" }}
-              />
-              <span className="fw-bold text-start">Image</span>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ marginBottom: "10px" }}
-              />
+       {/* <!-- Modal cancel --> */}
+    <div className="modal" id="cancel-order">
+        <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+
+                {/* <!-- Modal Header --> */}
+                <div className="py-2 d-flex justify-content-between" style={{backgroundColor: 'rgba(60, 117, 166, 1)'}}>
+                    <h4 className="modal-title inter ms-3" style={{color: 'white'}}>Bạn có chắc chắn muốn hủy đơn hàng?</h4>
+                    <div className="btn-close-modal me-3" style={{color: 'white'}} data-bs-dismiss="modal"><FontAwesomeIcon icon={faX} /></div>
+                </div>
+
+                {/* <!-- Modal body --> */}
+                <div className="modal-body" style={{backgroundColor: 'white'}}>
+                <div className="p-2" >
+                    <table className="w-100 table-modal" >
+                    <tbody>
+                        <tr>
+                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Lý do hủy đơn:</span></td>
+                        <td className="py-2">
+                            <input
+                            type="text"
+                            className="ps-2 p-1 w-100"
+                            value={reason}
+                            onChange={(e) => setReason(e.target.value)}
+                            style={{backgroundColor: 'white', color:'black'}}
+                            />
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Mô tả:</span></td>
+                        <td className="py-2">
+                            <input
+                            type="text"
+                            className="ps-2 p-1 w-100"
+                            value={comments}
+                            onChange={(e) => setComments(e.target.value)}
+                            style={{backgroundColor: 'white', color:'black'}}
+                            />
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td><span className="py-2" style={{color: '#3C75A6'}}>Hình ảnh:</span></td>
+                        <td className="py-2">
+                        <UploadImage
+                            aspectRatio={4 / 5}
+                            onUploadComplete={handleUploadComplete}
+                            maxWidth={2048}
+                            maxHeight={2048}
+                            minWidth={126}
+                            minHeight={126}
+                            value={image}
+                            />
+                            <div>
+                            <img src={image} alt='' style={{weight: '70px', height: '105px'}}></img></div>
+                        </td>
+                        </tr>
+                        
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+
+                {/* <!-- Modal footer --> */}
+                <div className="footer-modal py-4 d-flex justify-content-end" style={{backgroundColor: 'white'}}>
+                    <div className="close me-4">
+                        <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal" style={{backgroundColor: 'rgb(60, 117, 166)'}}><span>Thoát</span></div>
+                    </div>
+                    <div className="save-modal me-4">
+                        <input type="submit" data-bs-dismiss="modal" value="Xác nhận hủy" style={{backgroundColor: '#E33539'}} className="input-submit modal-btn-close p-2 px-4 inter"/>
+                    </div>
+                </div>
+
             </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                marginTop: "5px",
-              }}
-            >
-              <button
-                onClick={closeModal}
-                style={{
-                  backgroundColor: "#3c75a6",
-                  color: "#ffffff",
-                  border: "none",
-                  borderRadius: "5px",
-                  padding: "10px 20px",
-                  cursor: "pointer",
-                  marginLeft: "10px",
-                }}
-              >
-                Hủy
-              </button>
-              <button
-                onClick={handleCancelConfirmation}
-                style={{
-                  backgroundColor: "#e74c3c",
-                  color: "#ffffff",
-                  border: "none",
-                  borderRadius: "5px",
-                  padding: "10px 20px",
-                  cursor: "pointer",
-                  marginLeft: "10px",
-                }}
-              >
-                Xác nhận hủy
-              </button>
-            </div>
-          </div>
         </div>
-      )}
+    </div>
+
+
     </>
   );
 }
