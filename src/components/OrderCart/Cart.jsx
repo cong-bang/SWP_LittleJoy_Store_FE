@@ -106,6 +106,10 @@ const Cart = () => {
   //NAVIGATE CHECKOUT
   const navigateCheckout = () => {
     const userId = localStorage.getItem('userId');
+    const userRole = localStorage.getItem('userRole');
+    if (userRole == 'STAFF' || userRole == 'ADMIN') {
+      return;
+    }
     if (userId) {
       navigate('/checkout');
     }

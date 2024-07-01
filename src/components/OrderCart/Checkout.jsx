@@ -67,10 +67,10 @@ const Checkout = () => {
         setAddressList(dataAddress);
       }
 
-      // const mainAddr = dataAddress.find(address => address.isMainAddress === true);
-      //     if (mainAddr) {
-      //       setAddress(mainAddr.id);
-      //     }
+      const mainAddr = dataAddress.find(address => address.isMainAddress === true);
+          if (mainAddr) {
+            setAddress(mainAddr.address1);
+          }
       
     } catch (error) {
       console.error("Lỗi fetch user by id", error);
@@ -125,6 +125,7 @@ const Checkout = () => {
     });
 
   const handleCreateOrder = async () => {
+    console.log(address);
     if (!termsAccepted) {
       toast.error('Bạn phải chấp nhận các điều khoản trước khi tiếp tục.');
       return;
@@ -388,7 +389,7 @@ const Checkout = () => {
                                   Address
                                 </option>
                                 {addressList.map((a) => (
-                                  <option key={a.id} value={a.id}>
+                                  <option key={a.id} value={a.address1}>
                                     {a.address1}
                                   </option>
                                 ))}

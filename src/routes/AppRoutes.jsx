@@ -111,8 +111,10 @@ const AppRoutes = () => {
         <Route path="/updateblog/:id" element={<UpdateBlog />} />
         <Route path="/blogdetail/:id" element={<BlogDetail />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
         <Route path="/product/:id" element={<Product />} />
+        {user && user.role === "USER" && (
+          <Route path="/checkout" element={<Checkout />} />
+        )}
 
         <Route element={<UserLayout />}>
           <Route path="/userprofile" element={<UserProfile />} />
