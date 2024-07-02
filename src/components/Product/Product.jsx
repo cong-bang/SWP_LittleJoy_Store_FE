@@ -476,34 +476,40 @@ const Product = () => {
                                   </div>
                                 </td>
                                 <td className="w-50 text-center">
-                                  {product.quantity > 0 ? (
-                                  <Link to="#" className="">
-                                    <p
-                                      className=" p-2 m-0 add-cart"
-                                      style={{
-                                        fontSize: "16px",
-                                        fontFamily: "system-ui",
-                                      }}
-                                      onClick={() =>
-                                        addToCart(product, quantity)
-                                      }
-                                    >
-                                      Thêm Giỏ Hàng
-                                    </p>
-                                  </Link>
-                                  ) : (
-                                  <Link to="#" className="">
-                                    <p
-                                      className=" p-2 m-0 add-cart"
-                                      style={{
-                                        fontSize: "16px",
-                                        fontFamily: "system-ui",
-                                      }}
-                                    >
-                                      Hết hàng
-                                    </p>
-                                  </Link>
-                                  )}
+                                {product.quantity > 0 ? (
+                                  <td className="w-50 text-center">
+                                    <Link to="#" className="">
+                                      <p
+                                        className=" p-2 m-0 add-cart"
+                                        style={{
+                                          fontSize: "16px",
+                                          fontFamily: "system-ui",
+                                        }}
+                                        onClick={() =>
+                                          addToCart(product, quantity)
+                                        }
+                                      >
+                                        Thêm Giỏ Hàng
+                                      </p>
+                                    </Link>
+                                  </td>
+                                ) : (
+                                  <td className="w-50 text-center">
+                                    <Link to="#" className="">
+                                      <p
+                                        className=" p-2 m-0 add-cart"
+                                        style={{
+                                          fontSize: "16px",
+                                          fontFamily: "system-ui",
+                                          cursor: 'not-allowed',
+                                          opacity: '0.6'
+                                        }}
+                                      >
+                                        Hết Hàng
+                                      </p>
+                                    </Link>
+                                  </td>
+                                )}
                                 </td>
                                 <td className="w-30 text-center">
                                   <Link
