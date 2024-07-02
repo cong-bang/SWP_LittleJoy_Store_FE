@@ -35,6 +35,8 @@ const UserAddress = () => {
       const data = await response.json();
       if (response.ok) {
         setMainAddress(data);
+      } else if (response.status === 404) {
+        setMainAddress(null);
       }
 
     } catch (error) {
@@ -71,7 +73,15 @@ const UserAddress = () => {
       const data = await response.json();
       if (response.ok) {
         setAddressList(data);
-      }
+      } else if (response.status === 404) {
+        setAddressList([]);
+        setPaging({
+          CurrentPage: 1,
+          PageSize: 5,
+          TotalPages: 1,
+          TotalCount: 0,
+        });
+      } 
 
     } catch (error) {
       console.log(error.message);
@@ -276,7 +286,14 @@ const UserAddress = () => {
                     <span className="fs-5">Địa chỉ</span>
                   </td>
                 </tr>
-                {addressList.map((a) => (
+                {addressList.length === 0 ? (
+            <tr>
+              <td colSpan="6" className="pt-4 text-center">
+                <span className="fs-5">Chưa có địa chỉ nào</span>
+              </td>
+            </tr>
+          ) : (
+                addressList.map((a) => (
                 <tr key={a.id}>
                   <td className="pt-4" colSpan="3">
                     <input
@@ -328,42 +345,9 @@ const UserAddress = () => {
                   )}
                   <td></td>
                 </tr>
-                ))}
-                {/* <tr className="pt-2">
-                  <td className="pt-4" colSpan="3">
-                    <input
-                      type="text"
-                      name=""
-                      id="inputAddress"
-                      value="S1.02 vinhomes grandpark, Long Thạnh Mỹ"
-                      className="w-90 px-2 py-1"
-                    />
-                  </td>
-
-                  <td className="w-15 pe-4 pt-2">
-                    <div className="w-75 pt-3">
-                      <input
-                        id="ButtonAdd"
-                        type="submit"
-                        value="Cập nhật"
-                        className="px-3 py-1"
-                      />
-                    </div>
-                  </td>
-
-                  <td className="w-15 pe-4 pt-2">
-                    <div className="w-75 pt-3">
-                      <input
-                        id="ButtonAdd"
-                        type="submit"
-                        value=" Đặc làm mặc định"
-                        className="px-3 py-1"
-                      />
-                    </div>
-                  </td>
-
-                  <td></td>
-                </tr> */}
+                ))
+              )}
+                
               </tbody>
             </table>
           
@@ -378,7 +362,7 @@ const UserAddress = () => {
                   />
                 </Link>
                 <span className="px-2 fs-4" style={{ fontFamily: "Roboto" }}>
-                  Trang {paging.CurrentPage}
+                  Trang {paging.CurrentPage || ''}
                 </span>
                 <Link className="ps-2 fs-3" to="#" style={{ color: "#3C75A6" }}>
                   <FontAwesomeIcon
