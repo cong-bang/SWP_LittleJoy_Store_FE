@@ -44,98 +44,98 @@ const Product = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/product/${id}`
-        );
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/product/${id}`
+      );
 
-        const dataResponse = await response.json();
-        if (dataResponse.price) {
-          dataResponse.price = formatPrice(dataResponse.price);
-        }
-        setProduct(dataResponse);
-        console.log(dataResponse);
-
-        const resOriginId = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/origin/${dataResponse.originId}`
-        );
-        const dataOriginName = await resOriginId.json();
-        setOriginName(dataOriginName);
-
-        const resCateId = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/category/${dataResponse.cateId}`
-        );
-        const dataCateName = await resCateId.json();
-        setCateName(dataCateName);
-
-        const resBrandId = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/brand/${dataResponse.brandId}`
-        );
-        const dataBrandName = await resBrandId.json();
-        setBrandName(dataBrandName);
-
-        const resAgeId = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/age-group-product/${dataResponse.ageId}`
-        );
-        const dataAgeName = await resAgeId.json();
-        setAgeName(dataAgeName);
-
-        const resSimilarProduct = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=4&cateId=${dataResponse.cateId}`
-        );
-        const dataSimilarP = await resSimilarProduct.json();
-        const formattedSimilarP = dataSimilarP.map((product) => ({
-          ...product,
-          price: formatPrice(product.price),
-        }));
-        setSimilarP(formattedSimilarP);
-
-        
-      } catch (error) {
-        console.error(error.message);
+      const dataResponse = await response.json();
+      if (dataResponse.price) {
+        dataResponse.price = formatPrice(dataResponse.price);
       }
-    };
+      setProduct(dataResponse);
+      console.log(dataResponse);
 
-    const fetchFeedback = async (pageIndex) => {
-      setLoading(true);
-      try {
-        const resFeedbacks = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/feedback/feed-back-by-product/${id}?PageIndex=${pageIndex}&PageSize=5`
-        );
-        const dataFeedbacks = await resFeedbacks.json();
-        const userIds = [
-          ...new Set(dataFeedbacks.map((feedback) => feedback.userId)),
-        ];
+      const resOriginId = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/origin/${dataResponse.originId}`
+      );
+      const dataOriginName = await resOriginId.json();
+      setOriginName(dataOriginName);
 
-        const userInfo = {};
-        await Promise.all(
-          userIds.map(async (userId) => {
-            const userResponse = await fetch(
-              `https://littlejoyapi.azurewebsites.net/api/user/${userId}`
-            );
-            const userData = await userResponse.json();
-            userInfo[userId] = userData;
-          })
-        );
+      const resCateId = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/category/${dataResponse.cateId}`
+      );
+      const dataCateName = await resCateId.json();
+      setCateName(dataCateName);
 
-        const feedbacksWithUserNames = dataFeedbacks.map((feedback) => {
-          const dateParts = feedback.date.split("T")[0].split("-");
-          const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+      const resBrandId = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/brand/${dataResponse.brandId}`
+      );
+      const dataBrandName = await resBrandId.json();
+      setBrandName(dataBrandName);
 
-          return {
-            ...feedback,
-            userName: userInfo[feedback.userId]?.userName || "Unknown User",
-            date: formattedDate,
-          };
-        });
+      const resAgeId = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/age-group-product/${dataResponse.ageId}`
+      );
+      const dataAgeName = await resAgeId.json();
+      setAgeName(dataAgeName);
 
-      const paginationData = JSON.parse(resFeedbacks.headers.get("X-Pagination"));
+      const resSimilarProduct = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=4&cateId=${dataResponse.cateId}`
+      );
+      const dataSimilarP = await resSimilarProduct.json();
+      const formattedSimilarP = dataSimilarP.map((product) => ({
+        ...product,
+        price: formatPrice(product.price),
+      }));
+      setSimilarP(formattedSimilarP);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const fetchFeedback = async (pageIndex) => {
+    setLoading(true);
+    try {
+      const resFeedbacks = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/feedback/feed-back-by-product/${id}?PageIndex=${pageIndex}&PageSize=5`
+      );
+      const dataFeedbacks = await resFeedbacks.json();
+      const userIds = [
+        ...new Set(dataFeedbacks.map((feedback) => feedback.userId)),
+      ];
+
+      const userInfo = {};
+      await Promise.all(
+        userIds.map(async (userId) => {
+          const userResponse = await fetch(
+            `https://littlejoyapi.azurewebsites.net/api/user/${userId}`
+          );
+          const userData = await userResponse.json();
+          userInfo[userId] = userData;
+        })
+      );
+
+      const feedbacksWithUserNames = dataFeedbacks.map((feedback) => {
+        const dateParts = feedback.date.split("T")[0].split("-");
+        const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+        return {
+          ...feedback,
+          userName: userInfo[feedback.userId]?.userName || "Unknown User",
+          date: formattedDate,
+        };
+      });
+
+      const paginationData = JSON.parse(
+        resFeedbacks.headers.get("X-Pagination")
+      );
       setPaging(paginationData);
-  
+
       const previous = document.getElementById("fb-pre");
       const next = document.getElementById("fb-next");
-  
+
       if (paginationData.CurrentPage === 1) {
         previous.style.opacity = "0.5";
         next.style.opacity = paginationData.TotalPages > 1 ? "1" : "0.5";
@@ -147,31 +147,31 @@ const Product = () => {
         next.style.opacity = "1";
       }
 
-        setFeedbacks(feedbacksWithUserNames);
-      } catch(error) {
-        console.log(error.message);
-      } finally {
-        setLoading(false);
-      }
+      setFeedbacks(feedbacksWithUserNames);
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const handlePrevious = () => {
-      if (paging.CurrentPage > 1) {
-        setPaging((prevState) => ({
-          ...prevState,
-          CurrentPage: prevState.CurrentPage - 1,
-        }));
-      }
-    };
-  
-    const handleNext = () => {
-      if (paging.CurrentPage < paging.TotalPages) {
-        setPaging((prevState) => ({
-          ...prevState,
-          CurrentPage: prevState.CurrentPage + 1,
-        }));
-      }
-    };
+  const handlePrevious = () => {
+    if (paging.CurrentPage > 1) {
+      setPaging((prevState) => ({
+        ...prevState,
+        CurrentPage: prevState.CurrentPage - 1,
+      }));
+    }
+  };
+
+  const handleNext = () => {
+    if (paging.CurrentPage < paging.TotalPages) {
+      setPaging((prevState) => ({
+        ...prevState,
+        CurrentPage: prevState.CurrentPage + 1,
+      }));
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -475,36 +475,41 @@ const Product = () => {
                                     </div>
                                   </div>
                                 </td>
-                                <td className="w-50 text-center">
-                                  {product.quantity > 0 ? (
-                                  <Link to="#" className="">
-                                    <p
-                                      className=" p-2 m-0 add-cart"
-                                      style={{
-                                        fontSize: "16px",
-                                        fontFamily: "system-ui",
-                                      }}
-                                      onClick={() =>
-                                        addToCart(product, quantity)
-                                      }
-                                    >
-                                      Thêm Giỏ Hàng
-                                    </p>
-                                  </Link>
-                                  ) : (
-                                  <Link to="#" className="">
-                                    <p
-                                      className=" p-2 m-0 add-cart"
-                                      style={{
-                                        fontSize: "16px",
-                                        fontFamily: "system-ui",
-                                      }}
-                                    >
-                                      Hết hàng
-                                    </p>
-                                  </Link>
-                                  )}
-                                </td>
+                                {product.quantity > 0 ? (
+                                  <td className="w-50 text-center">
+                                    <Link to="#" className="">
+                                      <p
+                                        className=" p-2 m-0 add-cart"
+                                        style={{
+                                          fontSize: "16px",
+                                          fontFamily: "system-ui",
+                                        }}
+                                        onClick={() =>
+                                          addToCart(product, quantity)
+                                        }
+                                      >
+                                        Thêm Giỏ Hàng
+                                      </p>
+                                    </Link>
+                                  </td>
+                                ) : (
+                                  <td className="w-50 text-center">
+                                    <Link to="#" className="">
+                                      <p
+                                        className=" p-2 m-0 add-cart"
+                                        style={{
+                                          fontSize: "16px",
+                                          fontFamily: "system-ui",
+                                          cursor: 'not-allowed',
+                                          opacity: '0.6'
+                                        }}
+                                      >
+                                        Hết Hàng
+                                      </p>
+                                    </Link>
+                                  </td>
+                                )}
+
                                 <td className="w-30 text-center">
                                   <Link
                                     to=""
@@ -760,7 +765,7 @@ const Product = () => {
                   ))}
                 </div>
                 <div className="w-100 p-3">
-                <div className="fs-5 d-flex justify-content-end">
+                  <div className="fs-5 d-flex justify-content-end">
                     <Link
                       className="px-3"
                       href="#"
@@ -773,9 +778,19 @@ const Product = () => {
                         onClick={handlePrevious}
                       />
                     </Link>
-                    <span style={{ fontFamily: "Poppins" }}>Trang {paging.CurrentPage}</span>
-                    <Link className="px-3" href="#" style={{ color: "#3c75a6" }}>
-                      <FontAwesomeIcon id="fb-next" icon="fa-solid fa-circle-chevron-right" onClick={handleNext} />
+                    <span style={{ fontFamily: "Poppins" }}>
+                      Trang {paging.CurrentPage}
+                    </span>
+                    <Link
+                      className="px-3"
+                      href="#"
+                      style={{ color: "#3c75a6" }}
+                    >
+                      <FontAwesomeIcon
+                        id="fb-next"
+                        icon="fa-solid fa-circle-chevron-right"
+                        onClick={handleNext}
+                      />
                     </Link>
                   </div>
                 </div>

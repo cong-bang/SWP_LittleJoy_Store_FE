@@ -113,8 +113,8 @@ const UserChangePassword = () => {
                       />
                     </td>
                     <td className="w-25">
-                      <Link to="/forgotpass1" id="forgotpasswordUserProfile">
-                        <span>Quên mật khẩu ? </span>
+                      <Link to="/forgotpass1" id="forgotpasswordUserProfile" style={{color: '#808080'}}>
+                        <span style={{color: '#808080'}}>Quên mật khẩu ? </span>
                       </Link>
                     </td>
                   </tr>

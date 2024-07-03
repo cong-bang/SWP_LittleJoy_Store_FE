@@ -606,15 +606,14 @@ const Shop = () => {
               <div className="col-md-10 text-center">
           
                 <div
-                  className="d-inline-block p-5"
+                  className="w-100 p-5"
                   style={{
                     backgroundColor: "#FAFAFA",
-                    border: "1px dotted black",
                     borderRadius: "15px",
                   }}
                 >
-                  <div className="d-flex flex-column align-items-center p-3">
-                    <img src={sorry} alt="" className="w-50" />
+                  <div className="d-flex flex-column align-items-center p-3" style={{border: '1px dotted #1A4CA2', borderRadius: '15px'}}>
+                    <img src={sorry} alt="" className="w-10" />
                     <span
                       className="text-center fs-4 pt-3"
                       style={{
