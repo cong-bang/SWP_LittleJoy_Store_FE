@@ -201,6 +201,7 @@ const Dashboard = () => {
   const [myAccount, setMyAccount] = useState("");
   const [loading, setLoading] = useState(false);
   const [outOfStockList, setOutOfStockList] = useState([]);
+  const [roleName, setRoleName] = useState('');
 
   const TableLoading = () => (
     <ContentLoader
@@ -226,6 +227,7 @@ const Dashboard = () => {
       (roleFromLocalStorage === "USER" && usernameFromLocalStorage)
     ) {
       setMyAccount(usernameFromLocalStorage);
+      setRoleName(roleFromLocalStorage);
     }
   }, [pathname]);
 
@@ -278,9 +280,12 @@ const Dashboard = () => {
                   </p>
                 </a>
               </div>
+              
               <div className="nav-admin mt-5 w-100">
                 <table className="w-100">
                   <tbody>
+                  {roleName == "ADMIN" && (
+                    <>
                     <tr>
                       <td colSpan="2" className="py-1">
                         <span
@@ -301,6 +306,7 @@ const Dashboard = () => {
                         </Link>
                       </td>
                     </tr>
+                    </>)}
                     <tr>
                       <td colSpan="2" className="py-1">
                         <span
@@ -311,6 +317,7 @@ const Dashboard = () => {
                         </span>
                       </td>
                     </tr>
+                    {roleName == "ADMIN" && (
                     <tr>
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
@@ -322,6 +329,7 @@ const Dashboard = () => {
                         </Link>
                       </td>
                     </tr>
+                    )}          
                     <tr>
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
@@ -366,18 +374,7 @@ const Dashboard = () => {
                         </Link>
                       </td>
                     </tr>
-                    <tr>
-                      <td></td>
-                      <td className="py-1 ps-3 hover-dashboard">
-                        <Link to="/requestrefund">
-                          <FontAwesomeIcon icon="fa-solid fa-credit-card" />{" "}
-                          <span style={{ fontFamily: "sans-serif" }}>
-                            Yêu cầu hoàn tiền
-                          </span>
-                        </Link>
-                      </td>
-                    </tr>
-
+                    
                     <tr>
                       <td className="py-2">
                         <Link
@@ -403,6 +400,7 @@ const Dashboard = () => {
                   </tbody>
                 </table>
               </div>
+
             </div>
             <div className="col-md-10">
               <div className="row top-admin-nav">

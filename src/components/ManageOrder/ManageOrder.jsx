@@ -41,6 +41,7 @@ const ManageOrder = () => {
   const [listProduct, setListProduct] = useState([{}])
   const [status, setStatus] = useState(null);
   const [deliveryStatus, setDeliveryStatus] = useState(null);
+  const [roleName, setRoleName] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -52,6 +53,7 @@ const ManageOrder = () => {
       (roleFromLocalStorage === "USER" && usernameFromLocalStorage)
     ) {
       setMyAccount(usernameFromLocalStorage);
+      setRoleName(roleFromLocalStorage);
     }
   }, [pathname]);
 
@@ -355,6 +357,8 @@ const ManageOrder = () => {
             <div className="nav-admin mt-5 w-100">
               <table className="w-100">
                 <tbody>
+                  {roleName == "ADMIN" &&(
+                  <>
                   <tr>
                     <td colSpan="2" className="py-1">
                       <span
@@ -375,6 +379,7 @@ const ManageOrder = () => {
                       </Link>
                     </td>
                   </tr>
+                  </>)}
                   <tr>
                     <td colSpan="2" className="py-1">
                       <span
@@ -385,6 +390,7 @@ const ManageOrder = () => {
                       </span>
                     </td>
                   </tr>
+                  {roleName == "ADMIN" &&(
                   <tr>
                     <td></td>
                     <td className="py-1 ps-3 hover-dashboard">
@@ -396,6 +402,7 @@ const ManageOrder = () => {
                       </Link>
                     </td>
                   </tr>
+                  )}
                   <tr>
                     <td></td>
                     <td className="py-1 ps-3 active-admin">
@@ -440,17 +447,7 @@ const ManageOrder = () => {
                         </Link>
                       </td>
                     </tr>
-                    <tr>
-                      <td></td>
-                      <td className="py-1 ps-3 hover-dashboard">
-                        <Link to="/requestrefund">
-                        <FontAwesomeIcon icon="fa-solid fa-credit-card" />{" "}
-                          <span style={{ fontFamily: "sans-serif" }}>
-                            Yêu cầu hoàn tiền
-                          </span>
-                        </Link>
-                      </td>
-                    </tr>
+                    
                   <tr>
                   <td className="py-2">
                       <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>

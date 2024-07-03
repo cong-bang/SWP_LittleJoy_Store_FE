@@ -81,6 +81,7 @@ const ManageCategory = () => {
   const [selectedBrand, setSelectedBrand] = useState({});
   const [isModalOpenBrand, setIsModalOpenBrand] = useState(false);
   const [idBrandToDelete, setIdBrandToDelete] = useState(null);
+  const [roleName, setRoleName] = useState('');
 
   const TableLoading = () => (
     <ContentLoader
@@ -107,6 +108,7 @@ const ManageCategory = () => {
       (roleFromLocalStorage === "USER" && usernameFromLocalStorage)
     ) {
       setUsername(usernameFromLocalStorage);
+      setRoleName(roleFromLocalStorage);
     }
   }, [pathname]);
 
@@ -962,6 +964,8 @@ const fetchBrandId = async (brandId) => {
               <div className="nav-admin mt-5 w-100">
                 <table className="w-100">
                   <tbody>
+                    {roleName == "ADMIN" && (
+                    <>
                     <tr>
                       <td colSpan="2" className="py-1">
                         <span
@@ -982,6 +986,7 @@ const fetchBrandId = async (brandId) => {
                         </Link>
                       </td>
                     </tr>
+                    </>)}
                     <tr>
                       <td colSpan="2" className="py-1">
                         <span
@@ -992,6 +997,7 @@ const fetchBrandId = async (brandId) => {
                         </span>
                       </td>
                     </tr>
+                    {roleName == "ADMIN" && (
                     <tr>
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
@@ -1003,6 +1009,7 @@ const fetchBrandId = async (brandId) => {
                         </Link>
                       </td>
                     </tr>
+                    )}
                     <tr>
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
@@ -1047,17 +1054,7 @@ const fetchBrandId = async (brandId) => {
                         </Link>
                       </td>
                     </tr>
-                    <tr>
-                      <td></td>
-                      <td className="py-1 ps-3 hover-dashboard">
-                        <Link to="/requestrefund">
-                          <FontAwesomeIcon icon="fa-solid fa-credit-card" />{" "}
-                          <span style={{ fontFamily: "sans-serif" }}>
-                            Yêu cầu hoàn tiền
-                          </span>
-                        </Link>
-                      </td>
-                    </tr>
+                    
                     <tr>
                       <td className="py-2">
                         <Link
@@ -1598,7 +1595,7 @@ const fetchBrandId = async (brandId) => {
                             type="text"
                             className="ps-2 p-1 w-100"
                             value={categoryName}
-                            onChange={(e) => setOriginName(e.target.value)}
+                            onChange={(e) => setCategoryName(e.target.value)}
                             />
                         </td>
                         </tr>

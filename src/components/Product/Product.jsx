@@ -28,6 +28,7 @@ const Product = () => {
     TotalPages: 1,
     TotalCount: 0,
   });
+  const [numberOfFeedback, setNumberOfFeedback] = useState(0);
   const notify = () =>
     toast.error("Vui lòng nhập đủ thông tin", {
       position: "top-right",
@@ -90,6 +91,14 @@ const Product = () => {
           price: formatPrice(product.price),
         }));
         setSimilarP(formattedSimilarP);
+
+        const responseNumberFeedback = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/feedback/count-feedback-by-product/${id}`
+        );
+        const dataNumberOfFeedback = await responseNumberFeedback.json();
+        if (responseNumberFeedback.ok) {
+          setNumberOfFeedback(dataNumberOfFeedback);
+        }
 
         
       } catch (error) {
@@ -425,7 +434,7 @@ const Product = () => {
                         className="fw-bold ms-2"
                         style={{ textDecoration: "underline" }}
                       >
-                        123
+                        {numberOfFeedback}
                       </span>
                       <span> đánh giá</span>
                     </div>

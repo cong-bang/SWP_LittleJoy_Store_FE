@@ -39,6 +39,7 @@ const ManageUser = () => {
   const [selectedUser, setSelectedUser] = useState({});
   const [isModalOpenUser, setIsModalOpenUser] = useState(false);
   const [idUserToDelete, setIdUserToDelete] = useState(null);
+  const [roleName, setRoleName] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -50,6 +51,7 @@ const ManageUser = () => {
       (roleFromLocalStorage === "USER" && usernameFromLocalStorage)
     ) {
       setMyAccount(usernameFromLocalStorage);
+      setRoleName(roleFromLocalStorage);
     }
   }, [pathname]);
 
@@ -400,6 +402,8 @@ const ManageUser = () => {
               <div className="nav-admin mt-5 w-100">
                 <table className="w-100">
                   <tbody>
+                    {roleName == "ADMIN" && (
+                    <>
                     <tr>
                       <td colSpan="2" className="py-1">
                         <span className="nav-admin-title" style={{ fontFamily: 'sans-serif' }}>Main</span>
@@ -413,11 +417,13 @@ const ManageUser = () => {
                         </Link>
                       </td>
                     </tr>
+                    </>)}
                     <tr>
                       <td colSpan="2" className="py-1">
                         <span className="nav-admin-title" style={{ fontFamily: 'sans-serif' }}>Shop</span>
                       </td>
                     </tr>
+                    {roleName == "ADMIN" && (
                     <tr>
                       <td></td>
                       <td className="py-1 ps-3 active-admin">
@@ -427,6 +433,7 @@ const ManageUser = () => {
                         </Link>
                       </td>
                     </tr>
+                    )}
                     <tr>
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
@@ -467,17 +474,7 @@ const ManageUser = () => {
                         </Link>
                       </td>
                     </tr>
-                    <tr>
-                      <td></td>
-                      <td className="py-1 ps-3 hover-dashboard">
-                        <Link to="/requestrefund">
-                        <FontAwesomeIcon icon="fa-solid fa-credit-card" />{" "}
-                          <span style={{ fontFamily: "sans-serif" }}>
-                            Yêu cầu hoàn tiền
-                          </span>
-                        </Link>
-                      </td>
-                    </tr>
+                    
                     <tr>
                     <td className="py-2">
                       <Link to="/" style={{textDecoration: 'none'}} className="text-white" onClick={handleLogout}>
@@ -971,7 +968,7 @@ const ManageUser = () => {
                 <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal"><span>Close</span></div>
               </div>
               <div className="save-modal me-4">
-                <input type="submit" value="Save" className="input-submit p-2 px-4 inter" onClick={handleSaveUpdateUser}/>
+                <input type="submit" value="Save" data-bs-dismiss="modal" className="input-submit modal-btn-close p-2 px-4 inter"  onClick={handleSaveUpdateUser}/>
               </div>
             </div>
       
