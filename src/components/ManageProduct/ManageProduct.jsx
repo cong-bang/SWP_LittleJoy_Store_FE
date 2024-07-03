@@ -52,10 +52,10 @@ const ManageProduct = () => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [isActive, setIsActive] = useState(true);
-  const [ageId, setAgeId] = useState(2);
-  const [originId, setOriginId] = useState(1);
-  const [brandId, setBrandId] = useState(1);
-  const [cateId, setCateId] = useState(1);
+  const [ageId, setAgeId] = useState(null);
+  const [originId, setOriginId] = useState(null);
+  const [brandId, setBrandId] = useState(null);
+  const [cateId, setCateId] = useState(null);
 
   const [selectedProduct, setSelectedProduct] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);

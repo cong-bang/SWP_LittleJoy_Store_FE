@@ -475,7 +475,7 @@ const Product = () => {
                                     </div>
                                   </div>
                                 </td>
-                                <td className="w-50 text-center">
+                                
                                 {product.quantity > 0 ? (
                                   <td className="w-50 text-center">
                                     <Link to="#" className="">
@@ -510,7 +510,7 @@ const Product = () => {
                                     </Link>
                                   </td>
                                 )}
-                                </td>
+                                
                                 <td className="w-30 text-center">
                                   <Link
                                     to=""
