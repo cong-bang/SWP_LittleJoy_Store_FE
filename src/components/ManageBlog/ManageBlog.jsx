@@ -41,6 +41,7 @@ const ManageBlog = () => {
   const [idToDelete, setIdToDelete] = useState(null);
   const { pathname } = useLocation();
   const [username, setUsername] = useState("");
+  const [roleName, setRoleName] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -48,6 +49,7 @@ const ManageBlog = () => {
     const usernameFromLocalStorage = localStorage.getItem("userName");
     if (roleFromLocalStorage === "ADMIN" || roleFromLocalStorage === "STAFF" || roleFromLocalStorage === "USER" && usernameFromLocalStorage) {
       setUsername(usernameFromLocalStorage);
+      setRoleName(roleFromLocalStorage);
     }
   }, [pathname]);
 
@@ -269,6 +271,8 @@ const ManageBlog = () => {
               <div className="nav-admin mt-5 w-100">
                 <table className="w-100">
                   <tbody>
+                    {roleName == "ADMIN" && (
+                    <>
                     <tr>
                       <td colSpan="2" className="py-1">
                         <span
@@ -289,6 +293,7 @@ const ManageBlog = () => {
                         </Link>
                       </td>
                     </tr>
+                    </>)}
                     <tr>
                       <td colSpan="2" className="py-1">
                         <span
@@ -299,6 +304,7 @@ const ManageBlog = () => {
                         </span>
                       </td>
                     </tr>
+                    {roleName == "ADMIN" && (
                     <tr>
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
@@ -310,6 +316,7 @@ const ManageBlog = () => {
                         </Link>
                       </td>
                     </tr>
+                    )}
                     <tr>
                       <td></td>
                       <td className="py-1 ps-3 hover-dashboard">
@@ -354,17 +361,7 @@ const ManageBlog = () => {
                         </Link>
                       </td>
                     </tr>
-                    <tr>
-                      <td></td>
-                      <td className="py-1 ps-3 hover-dashboard">
-                        <Link to="/requestrefund">
-                          <FontAwesomeIcon icon="fa-solid fa-credit-card" />{" "}
-                          <span style={{ fontFamily: "sans-serif" }}>
-                            Yêu cầu hoàn tiền
-                          </span>
-                        </Link>
-                      </td>
-                    </tr>
+                    
 
                     <tr>
                       <td className="py-2">

@@ -24,6 +24,7 @@ const Checkout = () => {
   const [addressName, setAddressName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [flag, setFlag] = useState(false);
 
   useEffect(() => {
     const cartData = localStorage.getItem('cart');
@@ -61,6 +62,10 @@ const Checkout = () => {
       if (response.ok) {
         setUser(dataUser);
         setPhoneNumber(dataUser.phoneNumber)
+        if (dataUser.phoneNumber == null || dataUser.phoneNumber == "") {
+          setFlag(true);
+        }
+        
       }
       const dataAddress = await responseAddress.json();
       if(responseAddress.ok) {
@@ -125,7 +130,7 @@ const Checkout = () => {
     });
 
   const handleCreateOrder = async () => {
-    console.log(address);
+    
     if (!termsAccepted) {
       toast.error('Bạn phải chấp nhận các điều khoản trước khi tiếp tục.');
       return;
@@ -153,6 +158,34 @@ const Checkout = () => {
       id: product.id,
       quantity: product.quantity,
     }));
+
+    if (flag) {
+      const updatedUser = {
+        id: localStorage.getItem('userId'),
+        fullname: user.fullname,
+        phoneNumber: phoneNumber,
+        avatar: user.avatar
+      };
+      console.log(updatedUser)
+      try {
+        const response = await fetch(
+          "https://littlejoyapi.azurewebsites.net/api/user/user-role",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedUser),
+          }
+        );
+        if (response.ok) {
+          console.log("update thành công")
+        }
+      } catch (error) {
+        console.error("Error updating user:", error);
+      }
+    }    
+
 
     const newOrder = {
       userId: localStorage.getItem('userId'),

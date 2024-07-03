@@ -28,6 +28,7 @@ const Product = () => {
     TotalPages: 1,
     TotalCount: 0,
   });
+  const [numberOfFeedback, setNumberOfFeedback] = useState(0);
   const notify = () =>
     toast.error("Vui lòng nhập đủ thông tin", {
       position: "top-right",
@@ -81,19 +82,29 @@ const Product = () => {
       const dataAgeName = await resAgeId.json();
       setAgeName(dataAgeName);
 
-      const resSimilarProduct = await fetch(
-        `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=4&cateId=${dataResponse.cateId}`
-      );
-      const dataSimilarP = await resSimilarProduct.json();
-      const formattedSimilarP = dataSimilarP.map((product) => ({
-        ...product,
-        price: formatPrice(product.price),
-      }));
-      setSimilarP(formattedSimilarP);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
+        const resSimilarProduct = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=4&cateId=${dataResponse.cateId}`
+        );
+        const dataSimilarP = await resSimilarProduct.json();
+        const formattedSimilarP = dataSimilarP.map((product) => ({
+          ...product,
+          price: formatPrice(product.price),
+        }));
+        setSimilarP(formattedSimilarP);
+
+        const responseNumberFeedback = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/feedback/count-feedback-by-product/${id}`
+        );
+        const dataNumberOfFeedback = await responseNumberFeedback.json();
+        if (responseNumberFeedback.ok) {
+          setNumberOfFeedback(dataNumberOfFeedback);
+        }
+
+        
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
 
   const fetchFeedback = async (pageIndex) => {
     setLoading(true);
@@ -425,7 +436,7 @@ const Product = () => {
                         className="fw-bold ms-2"
                         style={{ textDecoration: "underline" }}
                       >
-                        123
+                        {numberOfFeedback}
                       </span>
                       <span> đánh giá</span>
                     </div>
@@ -475,6 +486,7 @@ const Product = () => {
                                     </div>
                                   </div>
                                 </td>
+                                
                                 {product.quantity > 0 ? (
                                   <td className="w-50 text-center">
                                     <Link to="#" className="">
@@ -509,7 +521,7 @@ const Product = () => {
                                     </Link>
                                   </td>
                                 )}
-
+                                
                                 <td className="w-30 text-center">
                                   <Link
                                     to=""
