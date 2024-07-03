@@ -625,7 +625,7 @@ const ManageOrder = () => {
                               </td>
                               <td className="p-3 px-4 ">
                                 <span className="float-start">
-                                  Phone number
+                                  Phone
                                 </span>
                               </td>
                               <td className="p-3 px-4 ">
@@ -1157,6 +1157,12 @@ const ManageOrder = () => {
               <div className="p-2 mt-2">
                 <table className="w-100 table-option-modal">
                     <tbody>
+                    <tr>
+                  <td className="p-2">Total: </td>
+                  <td colSpan="" className="p-2">
+                    {selectedOrder.totalPrice} VNĐ
+                  </td>
+                </tr>
                   <tr>
                     <td className="py-2 w-20">
                       <span>Status:</span>
