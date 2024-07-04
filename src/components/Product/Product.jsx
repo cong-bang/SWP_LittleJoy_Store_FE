@@ -36,6 +36,7 @@ const Product = () => {
   const [numberOfFeedback, setNumberOfFeedback] = useState(0);
   const [checkAdd, setCheckAdd] = useState(false);
   const [idFeedbackToDelete, setIdFeedbackToDelete] = useState(null);
+  const [selectedFeedback, setSelectedFeedback] = useState({});
 
   const notify = () =>
     toast.error("Vui lòng nhập đủ thông tin", {
@@ -276,7 +277,7 @@ const Product = () => {
   //FEEDBACK
   //ADD FEEDBACK
   const handleSendFeedback = async () => {
-    if (comment.trim() === "" || selectedRating === "") {
+    if (selectedRating === "") {
       notify();
       return;
     }
@@ -348,6 +349,59 @@ const Product = () => {
       
     }
   };
+
+  //EDIT FEEDBACK
+  const handleEditFeedback = (feedbackId) => {
+    fetchFeedbackById(feedbackId);
+  };
+
+  const fetchFeedbackById = async (feedbackId) => {
+    try {
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/feedback/${feedbackId}`
+      );
+      const data = await response.json();
+      setSelectedFeedback(data);
+      setSelectedRating(data.rating);
+      setComment(data.comment);
+    } catch (error) {
+      console.error("Lỗi fetch product details", error);
+    } 
+  };
+
+  const handleUpdateFeedback = async () => {
+    if (selectedRating === "") {
+      notify();
+      return;
+    }
+    const updateFeedback = {
+      userId: localStorage.getItem("userId"),
+      id: selectedFeedback.id,
+      comment: comment,
+      rating: selectedRating,
+    };
+    console.log(updateFeedback)
+    try {
+      const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/feedback`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateFeedback)
+      });
+      if (response.ok) {
+        toast.success('Bình luận được sửa thành công!');
+        await fetchData();
+        await fetchFeedback(paging.CurrentPage);
+      } else {
+          toast.error('Bình luận được sửa thất bại!');
+      }
+
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
 
 
   //xử lý tăng giảm quantity của product
@@ -818,7 +872,7 @@ const Product = () => {
                             {localStorage.getItem('userId') == fb.userId ? (
                             <td className="w-70 fs-5" rowSpan="2">
                               <span className="px-2">
-                                <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
+                                <FontAwesomeIcon icon="fa-solid fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#edit-feedback" onClick={() => handleEditFeedback(fb.id)} />
                               </span>
                               <span style={{ color: "red" }}>
                                 <FontAwesomeIcon icon="fa-solid fa-trash" data-bs-toggle="modal" data-bs-target="#delete-fb" onClick={() => handleDeleteFeedback(fb.id)}/>
@@ -926,7 +980,7 @@ const Product = () => {
           </div>
         </div>
       </div>
-      {/* <!-- Modal add address --> */}
+      {/* <!-- Modal delete feedback --> */}
     <div className="modal" id="delete-fb">
         <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
@@ -964,6 +1018,75 @@ const Product = () => {
             </div>
         </div>
     </div>
+
+    {/* <!-- Modal edit feedback --> */}
+    <div className="modal" id="edit-feedback">
+        <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+
+                {/* <!-- Modal Header --> */}
+                <div className="py-2 d-flex justify-content-between" style={{backgroundColor: 'rgba(60, 117, 166, 1)'}}>
+                    <h4 className="modal-title inter ms-3" style={{color: 'white'}}>Đánh giá</h4>
+                    <div className="btn-close-modal me-3" style={{color: 'white'}} data-bs-dismiss="modal"><FontAwesomeIcon icon={faX} /></div>
+                </div>
+
+                {/* <!-- Modal body --> */}
+                <div className="modal-body" style={{backgroundColor: 'white'}}>
+                <div className="p-2" >
+                    <table className="w-100 table-modal" >
+                    <tbody>
+                        <tr>
+                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Rating:</span></td>
+                        <td className="py-2">
+                        {[1, 2, 3, 4, 5].map((rating) => (
+                          <FontAwesomeIcon
+                            key={rating}
+                            icon={faStar}
+                            className={`star ${selectedRating >= rating ? "star-active" : ""}`}
+                            onClick={() => handleRatingClick(rating)}
+                            style={{
+                              cursor: "pointer",
+                              color: selectedRating >= rating ? "gold" : "gray",
+                            }}
+                          />
+                        ))}
+                        </td>
+                        </tr>
+                        <tr>
+                          <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Phản hồi:</span></td>
+                          <td>
+                          <textarea
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            name=""
+                            id=""
+                            placeholder="Nhập phản hồi của bạn"
+                            className="w-100 p-2"
+                            rows="3"
+                            style={{ resize: "none" }}
+                          ></textarea>
+                          </td>
+                      </tr>
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+
+                {/* <!-- Modal footer --> */}
+                <div className="footer-modal py-4 d-flex justify-content-end" style={{backgroundColor: 'white'}}>
+                    <div className="close me-4">
+                        <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal" style={{backgroundColor: 'rgb(60, 117, 166)'}}><span>Hủy</span></div>
+                    </div>
+                    <div className="save-modal me-4">
+                        <input onClick={handleUpdateFeedback} type="submit" data-bs-dismiss="modal" value="Lưu" style={{backgroundColor: '#E33539'}} className="input-submit modal-btn-close p-2 px-4 inter"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
     </>
   );
 };
