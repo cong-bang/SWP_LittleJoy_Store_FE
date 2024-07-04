@@ -61,7 +61,7 @@ const UserProfileSidebar = () => {
               </div>
             </td>
             <td className="w-75">
-              <span className="fs-5 ps-2 fw-bold">{user.userName}</span>
+              <span className="fs-5 ps-2 fw-bold">{user.userName || 'Username not found'}</span>
             </td>
           </tr>
           <tr>

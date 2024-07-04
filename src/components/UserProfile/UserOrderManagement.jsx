@@ -127,9 +127,7 @@ const UserOrderManagement = () => {
 
   return (
     <>
-      
 
-      
           {/* <!-- User Info Side Bar--> */}
           
 
@@ -142,7 +140,7 @@ const UserOrderManagement = () => {
                     <span className="fs-3">Quản lí đơn hàng</span>
                   </td>
                 </tr>
-
+                
                 <tr>
                   <td className="FieldAll" colSpan="5">
                     <div className="d-flex w-100 pt-2">
@@ -427,6 +425,8 @@ const UserOrderManagement = () => {
                     </span>
                   </td>
                 </tr> */}
+                {orderList.length > 0 ? (
+                <>
                 {orderList.map((o) => (
                 <div key={o.id}>
                 <tr>
@@ -558,6 +558,32 @@ const UserOrderManagement = () => {
                 </tr>
                 </div>
                 ))}
+                </>
+                 ) : (
+                  <div className="col-md-12 text-center my-5 py-5">
+        
+              <div
+                className="d-inline-block p-5"
+                style={{
+                  backgroundColor: "#FAFAFA",
+                  border: "1px dotted black",
+                  borderRadius: "15px",
+                }}
+              >
+                <div className="d-flex flex-column align-items-center p-3">
+                  <img src="" alt="" className="w-25" />
+                  <span
+                    className="text-center fs-4 pt-3"
+                    style={{
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    Hiện chưa có đơn hàng nào
+                  </span>
+                </div>
+              </div>
+            </div>
+                )}
               </tbody>
             </table>
           
