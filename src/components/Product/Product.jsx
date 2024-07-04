@@ -6,6 +6,11 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSquareCaretLeft,
+  faSquareCaretRight,
+  faX
+} from "@fortawesome/free-solid-svg-icons";
 
 const Product = () => {
   const { id } = useParams();
@@ -29,6 +34,9 @@ const Product = () => {
     TotalCount: 0,
   });
   const [numberOfFeedback, setNumberOfFeedback] = useState(0);
+  const [checkAdd, setCheckAdd] = useState(false);
+  const [idFeedbackToDelete, setIdFeedbackToDelete] = useState(null);
+
   const notify = () =>
     toast.error("Vui lòng nhập đủ thông tin", {
       position: "top-right",
@@ -56,7 +64,6 @@ const Product = () => {
         dataResponse.price = formatPrice(dataResponse.price);
       }
       setProduct(dataResponse);
-      console.log(dataResponse);
 
       const resOriginId = await fetch(
         `https://littlejoyapi.azurewebsites.net/api/origin/${dataResponse.originId}`
@@ -86,20 +93,34 @@ const Product = () => {
           `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=4&cateId=${dataResponse.cateId}`
         );
         const dataSimilarP = await resSimilarProduct.json();
-        const formattedSimilarP = dataSimilarP.map((product) => ({
-          ...product,
-          price: formatPrice(product.price),
-        }));
-        setSimilarP(formattedSimilarP);
-
+        if (resSimilarProduct.ok) {
+          const formattedSimilarP = dataSimilarP.map((product) => ({
+            ...product,
+            price: formatPrice(product.price),
+          }));
+          setSimilarP(formattedSimilarP);
+        }
+        
         const responseNumberFeedback = await fetch(
           `https://littlejoyapi.azurewebsites.net/api/feedback/count-feedback-by-product/${id}`
         );
         const dataNumberOfFeedback = await responseNumberFeedback.json();
         if (responseNumberFeedback.ok) {
           setNumberOfFeedback(dataNumberOfFeedback);
+        } else {
+          setNumberOfFeedback(0);
         }
 
+        const userId = localStorage.getItem('userId');
+        if (userId != null) {
+          const responseCheckAdd = await fetch(
+            `https://littlejoyapi.azurewebsites.net/api/feedback/check-add-feedback?productId=${id}&userID=${userId}`
+          );
+          const dataCheckAdd = await responseCheckAdd.json();
+          if (responseCheckAdd.ok) {
+            setCheckAdd(dataCheckAdd);
+          }
+        }
         
       } catch (error) {
         console.error(error.message);
@@ -113,6 +134,26 @@ const Product = () => {
         `https://littlejoyapi.azurewebsites.net/api/feedback/feed-back-by-product/${id}?PageIndex=${pageIndex}&PageSize=5`
       );
       const dataFeedbacks = await resFeedbacks.json();
+      if (!resFeedbacks.ok) {
+        if (resFeedbacks.status === 404 || resFeedbacks.status === 400) {
+          setFeedbacks([]);
+          setPaging({
+            CurrentPage: 1,
+            PageSize: 5,
+            TotalPages: 1,
+            TotalCount: 0,
+          });
+        } else {
+          setFeedbacks([]);
+          setPaging({
+            CurrentPage: 1,
+            PageSize: 5,
+            TotalPages: 1,
+            TotalCount: 0,
+          });
+        }
+        return;
+      }
       const userIds = [
         ...new Set(dataFeedbacks.map((feedback) => feedback.userId)),
       ];
@@ -128,7 +169,7 @@ const Product = () => {
         })
       );
 
-      const feedbacksWithUserNames = dataFeedbacks.map((feedback) => {
+      const feedbacksWithUserNames = await dataFeedbacks.map((feedback) => {
         const dateParts = feedback.date.split("T")[0].split("-");
         const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 
@@ -159,6 +200,7 @@ const Product = () => {
       }
 
       setFeedbacks(feedbacksWithUserNames);
+
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -232,7 +274,7 @@ const Product = () => {
   };
 
   //FEEDBACK
-
+  //ADD FEEDBACK
   const handleSendFeedback = async () => {
     if (comment.trim() === "" || selectedRating === "") {
       notify();
@@ -244,7 +286,6 @@ const Product = () => {
       comment: comment,
       rating: selectedRating,
     };
-    console.log(newFeedback);
     const sendFeedback = async () => {
       setLoading(true);
       try {
@@ -259,10 +300,11 @@ const Product = () => {
           }
         );
         const data = await response.json();
-        if (data.ok) {
+        if (response.ok) {
           setSelectedRating("");
           setComment("");
-          await fetchFeedback(paging.CurrentPage);
+          await fetchData();
+          await fetchFeedback(1);
         }
       } catch (error) {
         console.error("Lỗi tạo blog:", error);
@@ -272,6 +314,41 @@ const Product = () => {
     };
     sendFeedback();
   };
+
+  //DELETE FEEDBACK
+  const handleDeleteFeedback = async (feedbackId) => {
+    setIdFeedbackToDelete(feedbackId);
+  };
+  const handleConfirmDeleteFeedback = async () => {
+    try {
+      const userId = localStorage.getItem('userId') 
+      if (userId != null) {
+        const response = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/feedback?Id=${idFeedbackToDelete}&UserId=${userId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+  
+        if (response.ok) {
+          await fetchData();
+          await fetchFeedback(paging.CurrentPage);
+          toast.success('Bình luận được xóa thành công!')
+        } else {
+          toast.error("Xóa bình luận thất bại!");
+        }
+      }
+      
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      
+    }
+  };
+
 
   //xử lý tăng giảm quantity của product
   const handleDecrease = () => {
@@ -650,11 +727,14 @@ const Product = () => {
                 className="content-feedback"
                 style={{ border: "1px solid black", borderRadius: "10px" }}
               >
+                
                 <div className="title-info-product px-4 py-3">
                   <span className="fw-bold fs-4" style={{ color: "#091E3E" }}>
                     Đánh giá
                   </span>
                 </div>
+                {checkAdd == true && (
+                <>
                 <div className="feedback-sao w-40 ps-4 d-flex justify-content-between">
                   {[5, 4, 3, 2, 1].map((rating) => (
                     <div
@@ -694,7 +774,7 @@ const Product = () => {
                     rows="5"
                     style={{ resize: "none" }}
                   ></textarea>
-                </div>
+                </div>          
                 <div className="ps-4">
                   <div
                     className="text-center px-3 py-2 d-inline-block"
@@ -712,8 +792,10 @@ const Product = () => {
                 <div className="mt-3" style={{ borderTop: "1px solid black" }}>
                   &nbsp;
                 </div>
+                </>)}
                 <div className="w-100 ps-5 pe-5">
-                  {feedbacks.map((fb) => (
+                  {feedbacks.length > 0 ? (
+                  feedbacks.map((fb) => (
                     <div
                       key={fb.id}
                       className="item-feedback p-3"
@@ -733,14 +815,20 @@ const Product = () => {
                                 {fb.date}
                               </span>
                             </td>
+                            {localStorage.getItem('userId') == fb.userId ? (
                             <td className="w-70 fs-5" rowSpan="2">
                               <span className="px-2">
                                 <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
                               </span>
-                              <a href="#" style={{ color: "red" }}>
-                                <FontAwesomeIcon icon="fa-solid fa-trash" />
-                              </a>
+                              <span style={{ color: "red" }}>
+                                <FontAwesomeIcon icon="fa-solid fa-trash" data-bs-toggle="modal" data-bs-target="#delete-fb" onClick={() => handleDeleteFeedback(fb.id)}/>
+                              </span>
                             </td>
+                            ) : (
+                              <td className="w-70 fs-5" rowSpan="2">
+                              
+                            </td>
+                            )}
                           </tr>
                           <tr>
                             <td colSpan="2">
@@ -774,8 +862,34 @@ const Product = () => {
                         </tbody>
                       </table>
                     </div>
-                  ))}
+                  ))
+                ) : (
+                  <div className="col-md-12 text-center">
+                          
+                          <div
+                            className="d-inline-block p-5"
+                            style={{
+                              backgroundColor: "#FAFAFA",
+                              border: "1px dotted black",
+                              borderRadius: "15px",
+                            }}
+                          >
+                            <div className="d-flex flex-column align-items-center p-3">
+                              <img src="" alt="" className="w-25" />
+                              <span
+                                className="text-center fs-4 pt-3"
+                                style={{
+                                  fontFamily: "sans-serif",
+                                }}
+                              >
+                                Hiện tại chưa có phản hồi nào
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                )}
                 </div>
+                {paging.TotalCount && (
                 <div className="w-100 p-3">
                   <div className="fs-5 d-flex justify-content-end">
                     <Link
@@ -806,11 +920,50 @@ const Product = () => {
                     </Link>
                   </div>
                 </div>
+                  )}
               </div>
             </div>
           </div>
         </div>
       </div>
+      {/* <!-- Modal add address --> */}
+    <div className="modal" id="delete-fb">
+        <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+
+                {/* <!-- Modal Header --> */}
+                <div className="py-2 d-flex justify-content-between" style={{backgroundColor: 'rgba(60, 117, 166, 1)'}}>
+                    <h4 className="modal-title inter ms-3" style={{color: 'white'}}>Xác nhận xóa bình luận của bạn</h4>
+                    <div className="btn-close-modal me-3" style={{color: 'white'}} data-bs-dismiss="modal"><FontAwesomeIcon icon={faX} /></div>
+                </div>
+
+                {/* <!-- Modal body --> */}
+                <div className="modal-body" style={{backgroundColor: 'white'}}>
+                <div className="p-2" >
+                    <table className="w-100 table-modal" >
+                    <tbody>
+                        <tr>
+                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Bạn có chắc chắn muốn xóa bình luận này không?</span></td>                  
+                        </tr>
+                        
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+
+                {/* <!-- Modal footer --> */}
+                <div className="footer-modal py-4 d-flex justify-content-end" style={{backgroundColor: 'white'}}>
+                    <div className="close me-4">
+                        <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal" style={{backgroundColor: 'rgb(60, 117, 166)'}}><span>Hủy</span></div>
+                    </div>
+                    <div className="save-modal me-4">
+                        <input onClick={handleConfirmDeleteFeedback} type="submit" data-bs-dismiss="modal" value="Xác nhận" style={{backgroundColor: '#E33539'}} className="input-submit modal-btn-close p-2 px-4 inter"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     </>
   );
 };

@@ -94,7 +94,7 @@ const ManageOrder = () => {
 
       if (!response.ok) {
         if (response.status === 404 || response.status === 400) {
-          setProducts([]);
+          setOrderList([]);
           setPaging({
             CurrentPage: 1,
             PageSize: 9,
@@ -103,7 +103,7 @@ const ManageOrder = () => {
           });
         } else {
           console.log("Lỗi fetch data...");
-          setProducts([]);
+          setOrderList([]);
           setPaging({
             CurrentPage: 1,
             PageSize: 9,
@@ -1223,8 +1223,9 @@ const ManageOrder = () => {
                 <input
                   type="submit"
                   value="Save"
-                  className="input-submit p-2 px-4 inter"
+                  className="input-submit modal-btn-close p-2 px-4 inter"
                   onClick={handleUpdateOrder}
+                  data-bs-dismiss="modal" 
                 />
               </div>
             </div>
