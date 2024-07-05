@@ -177,6 +177,7 @@ const Product = () => {
         return {
           ...feedback,
           userName: userInfo[feedback.userId]?.userName || "Unknown User",
+          avatar: userInfo[feedback.userId]?.avatar || avtunknow,
           date: formattedDate,
         };
       });
@@ -231,7 +232,7 @@ const Product = () => {
 
   useEffect(() => {
     fetchFeedback(paging.CurrentPage);
-  }, [paging.CurrentPage, paging.TotalCount]);
+  }, [paging.CurrentPage, paging.TotalCount, id]);
 
   const formatPrice = (price) => {
     return price.toLocaleString("de-DE");
@@ -868,7 +869,7 @@ const Product = () => {
                                     }}
                                   >
                                     <img
-                                      src={avtunknow}
+                                      src={fb.avatar || avtunknow}
                                       alt=""
                                       className="w-100"
                                     />
