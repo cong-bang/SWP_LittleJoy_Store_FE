@@ -132,27 +132,27 @@ const Dashboard = () => {
     ],
   };
 
-  const topPoints = [
-    { name: "User A", points: 25000 },
-    { name: "User B", points: 20000 },
-    { name: "User C", points: 17000 },
-    { name: "User D", points: 13000 },
-    { name: "User E", points: 9999 },
-  ];
+  // const topPoints = [
+  //   { name: "User A", points: 25000 },
+  //   { name: "User B", points: 20000 },
+  //   { name: "User C", points: 17000 },
+  //   { name: "User D", points: 13000 },
+  //   { name: "User E", points: 9999 },
+  // ];
 
-  const chartBarPoints = {
-    labels: topPoints.map((point) => point.name),
-    datasets: [
-      {
-        label: "Point",
-        data: topPoints.map((point) => point.points),
-        backgroundColor: "rgba(255, 205, 86, 0.2)",
-        borderColor: "rgb(255, 205, 86)",
-        borderWidth: 1,
-        barThickness: 30,
-      },
-    ],
-  };
+  // const chartBarPoints = {
+  //   labels: topPoints.map((point) => point.name),
+  //   datasets: [
+  //     {
+  //       label: "Point",
+  //       data: topPoints.map((point) => point.points),
+  //       backgroundColor: "rgba(255, 205, 86, 0.2)",
+  //       borderColor: "rgb(255, 205, 86)",
+  //       borderWidth: 1,
+  //       barThickness: 30,
+  //     },
+  //   ],
+  // };
 
   const optionsBar = {
     indexAxis: "y",
@@ -202,6 +202,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [outOfStockList, setOutOfStockList] = useState([]);
   const [roleName, setRoleName] = useState('');
+  const [topPoints, setTopPoints] = useState([]);
 
   const TableLoading = () => (
     <ContentLoader
@@ -238,11 +239,19 @@ const Dashboard = () => {
           const responseOutOfStock = await fetch(
             "https://littlejoyapi.azurewebsites.net/api/product/filter-inventory-status?PageIndex=1&PageSize=10&status=2"
           );
-          if (!responseOutOfStock.ok) {
-            return;
+          if (responseOutOfStock.ok) {
+            const outOfStockData = await responseOutOfStock.json();
+            setOutOfStockList(outOfStockData);
           }
-          const outOfStockData = await responseOutOfStock.json();
-          setOutOfStockList(outOfStockData);    
+
+          const responseTopPoint = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/user/highest-score"
+          );
+          if (responseTopPoint.ok) {
+            const dataTopPoint = await responseTopPoint.json();
+            setTopPoints(dataTopPoint);
+          }
+              
         } catch (error) {
           console.error(error.message);
         } finally {
@@ -251,6 +260,21 @@ const Dashboard = () => {
     };
     fetchOutOfStock();
   }, [])
+
+  const chartBarPoints = {
+    labels: topPoints.map((point) => point.userName),
+    datasets: [
+      {
+        label: "Point",
+        data: topPoints.map((point) => point.points),
+        backgroundColor: "rgba(255, 205, 86, 0.2)",
+        borderColor: "rgb(255, 205, 86)",
+        borderWidth: 1,
+        barThickness: 30,
+      },
+    ],
+  };
+
 
   const navigate = useNavigate();
   const handleLogout = () => {

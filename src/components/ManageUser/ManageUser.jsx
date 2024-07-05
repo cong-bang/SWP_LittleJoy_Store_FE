@@ -307,6 +307,14 @@ const ManageUser = () => {
       notify();
       return;
     }
+
+    const userId = localStorage.getItem('userId');
+    const id = selectedUser.id;
+    if (id == userId) {
+      toast.error('Không thể sửa tài khoản này');
+      return;
+    }
+
     const updatedUser = {
       id: selectedUser.id,
       fullname: fullname,
