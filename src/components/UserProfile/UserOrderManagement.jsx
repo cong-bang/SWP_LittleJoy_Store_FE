@@ -482,15 +482,19 @@ const UserOrderManagement = () => {
                 {o.productOrders.map((p) => (
                 <tr key={p.id}>
                   <td className="w-10 pt-3 pb-3">
-                    <div id="ProductImg">
+                  <Link to={{pathname: `/product/${p.id}`}} >
+                    <div id="ProductImg">            
                       <img src={p.image} alt="Product" style={{height: '60px', width: '60px'}} />
                     </div>
+                    </Link>
                   </td>
 
                   <td className="pb-3" colSpan="3">
+                    <Link to={{pathname: `/product/${p.id}`}} style={{color: 'black', textDecoration: 'none'}} >
                     <div>
                       <span>{p.productName}</span>
                     </div>
+                    </Link>
 
                     <div>
                       <span>x{p.quantity}</span>

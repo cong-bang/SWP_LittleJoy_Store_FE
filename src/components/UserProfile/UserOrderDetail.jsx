@@ -10,6 +10,8 @@ import "../../assets/css/styleUserOrderDetail.css";
 import Ellipse2 from "../../assets/img/Ellipse2.png";
 import Abott from "../../assets/img/Abott.png";
 import UploadImage from "../UploadImage/UploadImage";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserOrderDetail = () => {
   const [showModal, setShowModal] = useState(false);
@@ -22,6 +24,7 @@ const UserOrderDetail = () => {
   const [mainAddress, setMainAddress] = useState('');
   const [listProduct, setListProduct] = useState([{}]);
   const { pathname } = useLocation();
+  const [checkCancel, setCheckCancel] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -46,6 +49,7 @@ const UserOrderDetail = () => {
         const responseUser = await fetch(`https://littlejoyapi.azurewebsites.net/api/user/${userId}`);
         const responseOrder = await fetch(`https://littlejoyapi.azurewebsites.net/api/order/get-order-by-orderCode/${id}`);
         const responseMainAddress = await fetch(`https://littlejoyapi.azurewebsites.net/api/address/main-address-by-user-id/${userId}`)
+        const reponseCheckCancel = await fetch(`https://littlejoyapi.azurewebsites.net/api/order/check-cancel-order/${id}`)
 
         const dataUser = await responseUser.json();
         if (responseUser.ok) {
@@ -73,6 +77,11 @@ const UserOrderDetail = () => {
             setInforOrder(dataOrder);
             setListProduct(dataOrder.productOrders);
           }
+
+          const dataCheckCancel = await reponseCheckCancel.json();
+          if (reponseCheckCancel.ok) {
+            setCheckCancel(dataCheckCancel);
+          }
       
     } catch (error) {
     }
@@ -82,15 +91,41 @@ const UserOrderDetail = () => {
     fetchData();
   }, []);
 
+  //CANCEL ORDER 
+
+  const handleConfirmCancelOrder = async () => {
+    const order = {
+      orderCode: id,
+      status: 2
+    }
+    try {
+      const response = await fetch(
+        "https://littlejoyapi.azurewebsites.net/api/order/update-order-status",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(order),
+        }
+      );
+
+      if (response.ok) {
+        toast.success("Đơn hàng đã hủy thành công");
+      } else {
+        toast.error("Hủy đơn hàng thất bại");
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   return (
     <>
-      
-
-      
+      <ToastContainer />
+    
           {/* <!-- User Info Side Bar--> */}
-          
-
-          
+             
             <div className="row">
               {/* <!-- Return Button --> */}
               <div className="col-md-12">
@@ -210,14 +245,15 @@ const UserOrderDetail = () => {
                                   className="ps-3"
                                   style={{
                                     fontSize: "20px",
-                                    color: "rgba(48, 207, 35, 1)",
+                                    color: inforOrder.status === "Đặt Hàng Thành Công" ? "rgba(48, 207, 35, 1)" : inforOrder.status === "Đã Hủy" ? "red" : "black"
                                   }}
                                 >
                                   {" "}
-                                  Mua hàng
+                                  {inforOrder.status}
                                 </span>
                               </div>
                             </td>
+
                           </tr>
 
                           <tr>
@@ -431,10 +467,9 @@ const UserOrderDetail = () => {
                       </div>
                     </td>
                   </tr>
-
+                  {checkCancel == true && (
                   <tr>
                     <td></td>
-
                     <td className="pt-4">
                       <div className="w-100 pe-5">
                         <button
@@ -446,6 +481,7 @@ const UserOrderDetail = () => {
                       </div>
                     </td>
                   </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -458,7 +494,7 @@ const UserOrderDetail = () => {
 
                 {/* <!-- Modal Header --> */}
                 <div className="py-2 d-flex justify-content-between" style={{backgroundColor: 'rgba(60, 117, 166, 1)'}}>
-                    <h4 className="modal-title inter ms-3" style={{color: 'white'}}>Bạn có chắc chắn muốn hủy đơn hàng?</h4>
+                    <h4 className="modal-title inter ms-3" style={{color: 'white'}}>Hủy đơn</h4>
                     <div className="btn-close-modal me-3" style={{color: 'white'}} data-bs-dismiss="modal"><FontAwesomeIcon icon={faX} /></div>
                 </div>
 
@@ -468,48 +504,8 @@ const UserOrderDetail = () => {
                     <table className="w-100 table-modal" >
                     <tbody>
                         <tr>
-                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Lý do hủy đơn:</span></td>
-                        <td className="py-2">
-                            <input
-                            type="text"
-                            className="ps-2 p-1 w-100"
-                            value={reason}
-                            onChange={(e) => setReason(e.target.value)}
-                            style={{backgroundColor: 'white', color:'black'}}
-                            />
-                        </td>
-                        </tr>
-
-                        <tr>
-                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Mô tả:</span></td>
-                        <td className="py-2">
-                            <input
-                            type="text"
-                            className="ps-2 p-1 w-100"
-                            value={comments}
-                            onChange={(e) => setComments(e.target.value)}
-                            style={{backgroundColor: 'white', color:'black'}}
-                            />
-                        </td>
-                        </tr>
-
-                        <tr>
-                        <td><span className="py-2" style={{color: '#3C75A6'}}>Hình ảnh:</span></td>
-                        <td className="py-2">
-                        <UploadImage
-                            aspectRatio={4 / 5}
-                            onUploadComplete={handleUploadComplete}
-                            maxWidth={2048}
-                            maxHeight={2048}
-                            minWidth={126}
-                            minHeight={126}
-                            value={image}
-                            />
-                            <div>
-                            <img src={image} alt='' style={{weight: '70px', height: '105px'}}></img></div>
-                        </td>
-                        </tr>
-                        
+                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Bạn có chắc muốn hủy đơn hàng hay không?</span></td>
+                       </tr>
                     </tbody>
                     </table>
                 </div>
@@ -521,7 +517,7 @@ const UserOrderDetail = () => {
                         <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal" style={{backgroundColor: 'rgb(60, 117, 166)'}}><span>Thoát</span></div>
                     </div>
                     <div className="save-modal me-4">
-                        <input type="submit" data-bs-dismiss="modal" value="Xác nhận hủy" style={{backgroundColor: '#E33539'}} className="input-submit modal-btn-close p-2 px-4 inter"/>
+                        <input onClick={handleConfirmCancelOrder} type="submit" data-bs-dismiss="modal" value="Xác nhận hủy" style={{backgroundColor: '#E33539'}} className="input-submit modal-btn-close p-2 px-4 inter"/>
                     </div>
                 </div>
 

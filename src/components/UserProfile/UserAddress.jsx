@@ -52,6 +52,27 @@ const UserAddress = () => {
       const userId = localStorage.getItem('userId');
       const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/address/user-id/${userId}?PageIndex=${pageIndex}&PageSize=5`)
 
+      if (!response.ok) {
+        if (response.status == 400 || response.status == 404) {
+          setOrderList([]);
+          setPaging({
+            CurrentPage: 1,
+            PageSize: 5,
+            TotalPages: 1,
+            TotalCount: 0,
+          });
+        } else {
+          setOrderList([]);
+          setPaging({
+            CurrentPage: 1,
+            PageSize: 5,
+            TotalPages: 1,
+            TotalCount: 0,
+          });
+        }
+        return;
+      }
+
       const paginationData = JSON.parse(response.headers.get("X-Pagination"));
       setPaging(paginationData);
   
@@ -70,17 +91,11 @@ const UserAddress = () => {
       }
 
       const data = await response.json();
+      
+
       if (response.ok) {
         setAddressList(data);
-      } else if (response.status === 404) {
-        setAddressList([]);
-        setPaging({
-          CurrentPage: 1,
-          PageSize: 5,
-          TotalPages: 1,
-          TotalCount: 0,
-        });
-      } 
+      }
 
     } catch (error) {
     }
@@ -283,14 +298,9 @@ const UserAddress = () => {
                     <span className="fs-5">Địa chỉ</span>
                   </td>
                 </tr>
-                {addressList.length === 0 ? (
-            <tr>
-              <td colSpan="6" className="pt-4 text-center">
-                <span className="fs-5">Chưa có địa chỉ nào</span>
-              </td>
-            </tr>
-          ) : (
-                addressList.map((a) => (
+                {addressList.length > 0 ? (
+                <>
+                {addressList.map((a) => (
                 <tr key={a.id}>
                   <td className="pt-4" colSpan="3">
                     <input
@@ -342,12 +352,39 @@ const UserAddress = () => {
                   )}
                   <td></td>
                 </tr>
-                ))
-              )}
-                
+                ))}
+                </>
+                ) : (
+                  <tr>
+                    <td colSpan="6">
+                  <div className="col-md-12 text-center my-5 py-5">
+                  <div
+                    className="d-inline-block p-5"
+                    style={{
+                      backgroundColor: "#FAFAFA",
+                      border: "1px dotted black",
+                      borderRadius: "15px",
+                    }}
+                  >
+                    <div className="d-flex flex-column align-items-center p-3">
+                      <img src="" alt="" className="w-25" />
+                      <span
+                        className="text-center fs-4 pt-3"
+                        style={{
+                          fontFamily: "sans-serif",
+                        }}
+                      >
+                        Hiện chưa có địa chỉ nào
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                </td>
+                </tr>
+                )}
               </tbody>
             </table>
-          
+          {addressList.length > 0 && (
           <div className="mt-3 mb-5 py-5 roboto" style={{ fontSize: "25px" }}>
             <div className="d-inline-block float-end">
               <div className="fs-5 px-5">
@@ -372,6 +409,7 @@ const UserAddress = () => {
               </div>
             </div>
           </div>
+          )}
 
           {/* <!-- Modal add address --> */}
     <div className="modal" id="add-address">

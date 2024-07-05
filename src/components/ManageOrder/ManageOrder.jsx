@@ -42,6 +42,8 @@ const ManageOrder = () => {
   const [status, setStatus] = useState(null);
   const [deliveryStatus, setDeliveryStatus] = useState(null);
   const [roleName, setRoleName] = useState('');
+  const [checkCancel, setCheckCancel] = useState(false);
+  const [statusName, setStatusName] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -213,12 +215,13 @@ const ManageOrder = () => {
           data.totalPrice = formattedPrice.toLocaleString('de-DE');
       }
         setSelectedOrder(data);
+        setStatusName(data.status);
         setListProduct(data.productOrders);
         if (data.status == "Đang Chờ") {
           setStatus("0");
         } else if (data.status == "Đặt Hàng Thành Công") {
           setStatus("1");
-        } else if (data.status == "Đã hủy") {
+        } else if (data.status == "Đã Hủy") {
           setStatus("2");
         }
 
@@ -233,8 +236,13 @@ const ManageOrder = () => {
         } else {
           setDeliveryStatus("");
         }
-        
       }
+
+      const reponseCheckCancel = await fetch(`https://littlejoyapi.azurewebsites.net/api/order/check-cancel-order/${orderCode}`);
+      const dataCheckCancel = await reponseCheckCancel.json();
+        if (reponseCheckCancel.ok) {
+          setCheckCancel(dataCheckCancel);
+        }
       
       
     } catch (error) {
@@ -1161,7 +1169,8 @@ const ManageOrder = () => {
                       <span>Status:</span>
                     </td>
                     <td className="py-2 w-80">
-                    <select
+                      {checkCancel == true ? (
+                        <select
                             className="ps-2 p-1 w-50"
                             value={status}
                             onChange={(e) =>
@@ -1174,7 +1183,11 @@ const ManageOrder = () => {
                             <option value="0">Đang chờ</option>
                             <option value="1">Đặt hàng thành công</option>
                             <option value="2">Đã hủy</option>
-                          </select>
+                        </select>
+                        ) : (
+                          <span>{statusName}</span>
+                        )}
+
                     </td>
                   </tr>
                   <tr>
