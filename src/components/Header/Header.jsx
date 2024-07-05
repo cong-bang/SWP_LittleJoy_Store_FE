@@ -31,7 +31,7 @@ export default function Header() {
       <div className="container-fluid header-content sticky-top" style={{zIndex: '1000'}}>
         <div className="row">
           <div className="col-md-3 text-center">
-            <Link to="#" className="w-100">
+            <Link to="https://littlejoy.vercel.app/" className="w-100">
               <img src={logoshop} alt="Logo Shop" className="w-25" />
             </Link>
           </div>
