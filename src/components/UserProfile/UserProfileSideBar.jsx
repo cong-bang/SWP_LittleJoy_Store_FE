@@ -64,10 +64,10 @@ const UserProfileSidebar = () => {
             </td>
           </tr>
           <tr>
-            <td className="pt-4" colSpan="2">
+            <td className="pt-3" colSpan="2">
               <div className="user-address-sidebar">
               <div className={(location.pathname == '/userprofile') ? "CoverButton" : ""}>
-                <Link className="d-flex py-2" to={{pathname: '/userprofile', state: {user}}} style={{ textDecoration: "none", color: "black" }}>
+                <Link className="d-flex py-1" to={{pathname: '/userprofile', state: {user}}} style={{ textDecoration: "none", color: "black" }}>
                   <div className="text-center w-25" style={{ color: "#3C75A6" }}>
                     <FontAwesomeIcon icon={faUser} className="fs-3" />
                   </div>
@@ -80,10 +80,10 @@ const UserProfileSidebar = () => {
             </td>
           </tr>
           <tr>
-            <td className="pt-4" colSpan="2">
+            <td className="pt-3" colSpan="2">
               <div className="user-address-sidebar">
                 <div className={(location.pathname == '/userchangepassword') ? "CoverButton" : ""}>
-                  <Link className="d-flex py-2" to={{pathname: '/userchangepassword', state: {user}}} style={{ textDecoration: "none", color: "black" }}>
+                  <Link className="d-flex py-1" to={{pathname: '/userchangepassword', state: {user}}} style={{ textDecoration: "none", color: "black" }}>
                     <div className="text-center w-25" style={{ color: "#3C75A6" }}>
                       <FontAwesomeIcon icon={faLock} className="fs-3" />
                     </div>
@@ -96,10 +96,10 @@ const UserProfileSidebar = () => {
             </td>
           </tr>
           <tr>
-            <td className="pt-4" colSpan="2">
+            <td className="pt-3" colSpan="2">
               <div className="user-address-sidebar">
               <div className={(location.pathname == '/userordermanagement' || location.pathname == '/userorderdetail') ? "CoverButton" : ""}>
-                <Link className="d-flex py-2" to={{pathname: "/userordermanagement", state: {user}}} style={{ textDecoration: "none", color: "black" }}>
+                <Link className="d-flex py-1" to={{pathname: "/userordermanagement", state: {user}}} style={{ textDecoration: "none", color: "black" }}>
                   <div className="text-center w-25" style={{ color: "#3C75A6" }}>
                     <FontAwesomeIcon icon={faCartShopping} className="fs-3" />
                   </div>
@@ -112,10 +112,10 @@ const UserProfileSidebar = () => {
             </td>
           </tr>
           <tr>
-            <td className="pt-4" colSpan="2">
+            <td className="pt-3" colSpan="2">
               <div className="user-address-sidebar">
               <div className={(location.pathname == '/useraddress') ? "CoverButton" : ""}>
-                <Link className="d-flex py-2" to={{pathname: '/useraddress', state: {user}}} style={{ textDecoration: "none", color: "black" }}>
+                <Link className="d-flex py-1" to={{pathname: '/useraddress', state: {user}}} style={{ textDecoration: "none", color: "black" }}>
                   <div className="text-center w-25" style={{ color: "#3C75A6" }}>
                     <FontAwesomeIcon icon={faMapLocation} className="fs-3" />
                   </div>
@@ -128,7 +128,7 @@ const UserProfileSidebar = () => {
             </td>
           </tr>
           <tr>
-            <td colSpan="2" className="pt-4">
+            <td colSpan="2" className="pt-3">
               <div className="fs-5">
                 <Link to="/" style={{ textDecoration: "none" }} onClick={handleLogout}>
                   <FontAwesomeIcon icon={faArrowRightFromBracket} style={{ color: "#CCCCCC" }} />

@@ -33,6 +33,7 @@ import ManageCategory from "../components/ManageCategory/ManageCategory";
 import UserLayout from "../components/UserProfile/ProfileLayout";
 import PaymentPending from "../components/Payment/PaymentPending";
 import PaymentInfo from "../components/Payment/PaymentInfo";
+import UserOrderManagementTest from "../components/UserProfile/UserOrderManagementTest";
 
 
 const UserRoute = () => {
@@ -122,6 +123,7 @@ const AppRoutes = () => {
           <Route path="/userchangepassword" element={<UserChangePassword />} />
           <Route path="/userordermanagement" element={<UserOrderManagement />} />
           <Route path="/userorderdetail/:id" element={<UserOrderDetail />} />
+          <Route path="/test" element={<UserOrderManagementTest />} />
         </Route>
 
         <Route path="/paymentpending" element={<PaymentPending />} />
