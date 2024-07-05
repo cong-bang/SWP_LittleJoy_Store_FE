@@ -17,7 +17,6 @@ import UserProfile from "../components/UserProfile/UserProfile";
 import UserAddress from "../components/UserProfile/UserAddress";
 import UserChangePassword from "../components/UserProfile/UserChangePassword";
 import UserOrderDetail from "../components/UserProfile/UserOrderDetail";
-import UserOrderManagement from "../components/UserProfile/UserOrderManagement";
 import ManageUser from "../components/ManageUser/ManageUser";
 import ManageOrder from "../components/ManageOrder/ManageOrder";
 import Dashboard from "../pages/admin/Dashboard";
@@ -33,7 +32,7 @@ import ManageCategory from "../components/ManageCategory/ManageCategory";
 import UserLayout from "../components/UserProfile/ProfileLayout";
 import PaymentPending from "../components/Payment/PaymentPending";
 import PaymentInfo from "../components/Payment/PaymentInfo";
-import UserOrderManagementTest from "../components/UserProfile/UserOrderManagementTest";
+import UserOrderManagement from "../components/UserProfile/UserOrderManagementTest";
 
 
 const UserRoute = () => {
@@ -121,9 +120,8 @@ const AppRoutes = () => {
           <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/useraddress" element={<UserAddress />} />
           <Route path="/userchangepassword" element={<UserChangePassword />} />
-          <Route path="/userordermanagement" element={<UserOrderManagement />} />
           <Route path="/userorderdetail/:id" element={<UserOrderDetail />} />
-          <Route path="/test" element={<UserOrderManagementTest />} />
+          <Route path="/userordermanagement" element={<UserOrderManagement />} />
         </Route>
 
         <Route path="/paymentpending" element={<PaymentPending />} />

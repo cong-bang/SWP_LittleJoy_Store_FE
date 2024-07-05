@@ -384,7 +384,7 @@ const UserAddress = () => {
                 )}
               </tbody>
             </table>
-          {addressList.length > 0 && (
+          
           <div className="mt-3 mb-5 py-5 roboto" style={{ fontSize: "25px" }}>
             <div className="d-inline-block float-end">
               <div className="fs-5 px-5">
@@ -409,7 +409,7 @@ const UserAddress = () => {
               </div>
             </div>
           </div>
-          )}
+          
 
           {/* <!-- Modal add address --> */}
     <div className="modal" id="add-address">

@@ -6,7 +6,7 @@ import Ellipse2 from "../../assets/img/Ellipse2.png";
 import Abott from "../../assets/img/Abott.png";
 import similac from "../../assets/img/similac.png";
 import notfound from "../../assets/img/404.jpg";
-const UserOrderManagementTest = () => {
+const UserOrderManagement = () => {
   const [orderList, setOrderList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [paging, setPaging] = useState({
@@ -115,7 +115,7 @@ const UserOrderManagementTest = () => {
       case "Đang chờ":
         return "#9AA14B";
       case "Thành Công":
-        return "#5D9C59";
+        return "#4DC95A";
       case "Thất Bại":
         return "#DF0029";
       default:
@@ -133,13 +133,16 @@ const UserOrderManagementTest = () => {
           <span></span>
         </div>
         <div className="py-3"></div>
-        <div className="p-2 py-3">
+        {orderList.length > 0 ? (
+        <>
+        {orderList.map((o) => (
+        <div key={o.id} className="p-2 py-3">
           <table className="w-100">
             <tbody>
               <tr>
                 <td className="w-10">
-                  <Link to='#' style={{textDecoration: 'none'}}>
-                    <span className="fw-bold" style={{color: '#3C75A6', fontSize: '18px'}}>#123456</span>
+                  <Link to={{ pathname: `/userorderdetail/${o.orderCode}` }} style={{textDecoration: 'none'}}>
+                    <span className="fw-bold" style={{color: '#3C75A6', fontSize: '18px'}}>#{o.orderCode}</span>
                   </Link>
                 </td>
                 <td></td>
@@ -149,13 +152,13 @@ const UserOrderManagementTest = () => {
                     <div
                       className="d-inline-block py-1 px-3"
                       style={{
-                        backgroundColor: "#4DC95A",
+                        backgroundColor: getStatusColor(o.paymentStatus),
                         color: "white",
                         borderRadius: "10px",
                         fontSize: '18px'
                       }}
                     >
-                      Thành Công
+                      {o.paymentStatus}
                     </div>
                   </div>
                 </td>
@@ -167,7 +170,7 @@ const UserOrderManagementTest = () => {
                     &nbsp;
                   </div>
                   <div className="d-inline-block ps-3">
-                    <span className="" style={{color: '#757575'}}>Giao hàng thành công</span>
+                    <span className="" style={{color: '#757575'}}>{o.deliveryStatus}</span>
                   </div>
                 </td>
               </tr>
@@ -176,12 +179,13 @@ const UserOrderManagementTest = () => {
                   <div style={{ borderTop: "1px solid #CCCCCC" }}></div>
                 </td>
               </tr>
+              {o.productOrders.map((p) => (
               <tr>
                 <td className="py-2">
-                  <Link>
+                  <Link to={{ pathname: `/product/${p.id}` }}>
                   <div className="w-100 text-center">
                     <img
-                      src="https://firebasestorage.googleapis.com/v0/b/little-joy-2c5d3.appspot.com/o/images%2F1719031349579.jpg?alt=media&token=cf6e00a3-bf57-4b5d-b0f9-c1ab19ad35b9"
+                      src={p.image}
                       alt=""
                       className="w-60"
                     />
@@ -189,16 +193,17 @@ const UserOrderManagementTest = () => {
                   </Link>
                 </td>
                 <td>
-                  <Link style={{textDecoration: 'none', color: 'black'}}>
+                  <Link to={{ pathname: `/product/${p.id}` }} style={{textDecoration: 'none', color: 'black'}}>
                     <div className="d-flex flex-column" style={{textDecoration: 'none', color: 'black'}}>
-                      <span>Sữa Abbott Grow 4 1,7kg (trên 2 tuổi)</span>
-                      <span>x1</span>
+                      <span>{p.productName}</span>
+                      <span>x{p.quantity}</span>
                     </div>
                   </Link>
                 </td>
                 <td></td>
-                <td><div className="float-end"><span>100.000 VNĐ</span></div></td>
+                <td><div className="float-end"><span>{p.price.toLocaleString("de-DE")} VNĐ</span></div></td>
               </tr>
+              ))}
               <tr>
                 <td colSpan="4" className="py-2">
                   <div style={{ borderTop: "1px solid #CCCCCC" }}></div>
@@ -206,25 +211,80 @@ const UserOrderManagementTest = () => {
               </tr>
               <tr>
                 <td colSpan='2'>
-                  <div>
-                  <FontAwesomeIcon
+                {o.status === "Đặt Hàng Thành Công" && (
+                    <div>
+                      <FontAwesomeIcon
                         icon="fa-solid fa-circle-check"
                         className="ps-2"
                         style={{ color: "rgb(60, 117, 166)" }}
                       />
-                    <span className="ps-3" style={{color: '#3C75A6'}}>Đặt Hàng Thành Công</span>
-                  </div>
+                      <span className="ps-3" style={{ color: "#3C75A6" }}>
+                        {o.status}
+                      </span>
+                    </div>
+                  )}
+                  {o.status === "Đã Hủy" && (
+                    <div>
+                      <FontAwesomeIcon
+                        icon="fa-solid fa-circle-xmark"
+                        className="ps-2"
+                        style={{ color: "#E74646" }}
+                      />
+                      <span className="ps-3" style={{ color: "#E74646" }}>
+                        {o.status}
+                      </span>
+                    </div>
+                  )}
+                  {o.status === "Đang Chờ" && (
+                    <div>
+                      <FontAwesomeIcon
+                        icon="fa-solid fa-circle-check"
+                        className="ps-2"
+                        style={{ color: "#9aa14ba1" }}
+                      />
+                      <span className="ps-3" style={{ color: "#9aa14ba1" }}>
+                        {o.status}
+                      </span>
+                    </div>
+                  )}
                 </td>
                 <td colSpan='2'>
                   <div>
-                    <span className="float-end" style={{fontSize: '18px'}}>Tổng cộng: <span className="ps-2 fw-bold" style={{color: '#3C75A6'}}>100.000 VNĐ</span></span>
+                    <span className="float-end" style={{fontSize: '18px'}}>Tổng cộng: <span className="ps-2 fw-bold" style={{color: '#3C75A6'}}>{o.totalPrice.toLocaleString("de-DE")} VNĐ</span></span>
                   </div>
                 </td>
               </tr>
-            </tbody>
+            </tbody>          
           </table>
         </div>
-        <div className="p-2 py-3">
+        ))}
+         </>
+          ) : (
+            <div className="col-md-12 text-center my-5 py-5">
+              <div
+                className="d-inline-block p-5"
+                style={{
+                  backgroundColor: "#FAFAFA",
+                  border: "1px dotted black",
+                  borderRadius: "15px",
+                }}
+              >
+                <div className="d-flex flex-column align-items-center p-3">
+                  <img src={notfound} alt="" className="w-50" />
+                  <span
+                    className="text-center fs-4 pt-3"
+                    style={{
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    Hiện chưa có đơn hàng nào
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+        {/* <div className="p-2 py-3">
           <table className="w-100">
             <tbody>
               <tr>
@@ -337,14 +397,15 @@ const UserOrderManagementTest = () => {
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> */}
+
       </div>
       <div className="w-100 mt-4 py-2">
       <div className="d-inline-block float-end">
           <div className="fs-5">
             <Link className="pe-2" to="#" style={{ color: "#3C75A6" }}>
               <FontAwesomeIcon
-                id="blog-pre"
+                id="order-pre"
                 icon="fa-solid fa-circle-chevron-left"
                 onClick={handlePrevious}
               />
@@ -354,7 +415,7 @@ const UserOrderManagementTest = () => {
             </span>
             <Link className="ps-2" to="#" style={{ color: "#3C75A6" }}>
               <FontAwesomeIcon
-                id="blog-next"
+                id="order-next"
                 icon="fa-solid fa-circle-chevron-right"
                 className="pe-3"
                 onClick={handleNext}
@@ -363,7 +424,8 @@ const UserOrderManagementTest = () => {
           </div>
         </div>
       </div>
+
     </>
   );
 };
-export default UserOrderManagementTest;
+export default UserOrderManagement;
