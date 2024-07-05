@@ -339,6 +339,30 @@ const UserOrderManagementTest = () => {
           </table>
         </div>
       </div>
+      <div className="w-100 mt-4 py-2">
+      <div className="d-inline-block float-end">
+          <div className="fs-5">
+            <Link className="pe-2" to="#" style={{ color: "#3C75A6" }}>
+              <FontAwesomeIcon
+                id="blog-pre"
+                icon="fa-solid fa-circle-chevron-left"
+                onClick={handlePrevious}
+              />
+            </Link>
+            <span className="px-2" style={{ fontFamily: "Roboto" }}>
+              Trang {paging.CurrentPage}
+            </span>
+            <Link className="ps-2" to="#" style={{ color: "#3C75A6" }}>
+              <FontAwesomeIcon
+                id="blog-next"
+                icon="fa-solid fa-circle-chevron-right"
+                className="pe-3"
+                onClick={handleNext}
+              />
+            </Link>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
