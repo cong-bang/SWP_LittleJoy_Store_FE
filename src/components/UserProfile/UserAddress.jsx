@@ -40,7 +40,6 @@ const UserAddress = () => {
       }
 
     } catch (error) {
-      console.log(error.message);
     }
   }
 
@@ -84,7 +83,6 @@ const UserAddress = () => {
       } 
 
     } catch (error) {
-      console.log(error.message);
     }
   }
 
@@ -169,7 +167,6 @@ const UserAddress = () => {
       
 
     } catch (error) {
-      console.log(error.message)
     }
   }
 

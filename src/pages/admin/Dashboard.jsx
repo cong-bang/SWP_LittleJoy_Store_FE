@@ -239,7 +239,6 @@ const Dashboard = () => {
             "https://littlejoyapi.azurewebsites.net/api/product/filter-inventory-status?PageIndex=1&PageSize=10&status=2"
           );
           if (!responseOutOfStock.ok) {
-            console.log("Lỗi fetch inventory data...");
             return;
           }
           const outOfStockData = await responseOutOfStock.json();

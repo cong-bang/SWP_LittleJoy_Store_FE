@@ -10,7 +10,6 @@ const LoginG = () => {
     "30879456615-if2h2961oa2o059jf9lvncjpo0b68rfv.apps.googleusercontent.com";
   const navigate = useNavigate();
   const handleSuccess = async (response) => {
-    console.log(response.credential)
     try {
       const res = await fetch(
         "https://littlejoyapi.azurewebsites.net/api/authen/login-with-google",
@@ -29,7 +28,6 @@ const LoginG = () => {
 
         // Decode
         const decodedToken = jwtDecode(data.accessToken);
-        console.log(decodedToken);
         const nameClaim =
           "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name";
         const roleClaim =
@@ -57,7 +55,6 @@ const LoginG = () => {
           progress: undefined,
           theme: "light",
         });
-        console.log(data)
       }
     } catch (error) {
       console.error("Error during Google login:", error);
@@ -65,7 +62,6 @@ const LoginG = () => {
   };
 
   const handleFailure = (error) => {
-    console.log("Login Failed:", error);
   };
 
   return (

@@ -66,7 +66,6 @@ const Shop = () => {
             TotalCount: 0,
           });
         } else {
-          console.log('Lỗi fetch data...');
           setProducts([]);
           setPaging({
             CurrentPage: 1,
@@ -187,7 +186,6 @@ const Shop = () => {
           'https://littlejoyapi.azurewebsites.net/api/category'
         );
         if (!responseCate.ok) {
-          console.log('Lỗi fetch category data...');
           return;
         }
         const categoryData = await responseCate.json();
@@ -197,7 +195,6 @@ const Shop = () => {
           'https://littlejoyapi.azurewebsites.net/api/origin'
         );
         if (!responseOrigin.ok) {
-          console.log('Lỗi fetch category data...');
           return;
         }
         const originData = await responseOrigin.json();
@@ -207,7 +204,6 @@ const Shop = () => {
           'https://littlejoyapi.azurewebsites.net/api/age-group-product'
         );
         if (!responseAge.ok) {
-          console.log('Lỗi fetch category data...');
           return;
         }
         const ageData = await responseAge.json();
@@ -217,7 +213,6 @@ const Shop = () => {
           'https://littlejoyapi.azurewebsites.net/api/brand'
         );
         if (!responseBrand.ok) {
-          console.log('Lỗi fetch category data...');
           return;
         }
         const brandData = await responseBrand.json();
@@ -288,7 +283,6 @@ const Shop = () => {
     try {
       const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/product/${productId}`);
       if (!response.ok) {
-        console.log('Lỗi fetch dữ liệu...');
       }
       const productData = await response.json();
       return productData;

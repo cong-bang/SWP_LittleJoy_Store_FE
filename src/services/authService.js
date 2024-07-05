@@ -2,7 +2,6 @@
 export const refreshAccessToken = async () => {
   const refreshToken = localStorage.getItem('refreshToken');
   if (!refreshToken) {
-    console.log('No refresh token available');
   }
   
   const response = await fetch('https://littlejoyapi.azurewebsites.net/api/authen/refresh-token', {

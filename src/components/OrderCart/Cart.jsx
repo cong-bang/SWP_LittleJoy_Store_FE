@@ -88,7 +88,6 @@ const Cart = () => {
     try {
       const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/product/${productId}`);
       if (!response.ok) {
-        console.log('Lỗi fetch dữ liệu...');
       }
       const productData = await response.json();
       return productData;

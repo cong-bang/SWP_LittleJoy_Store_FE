@@ -105,7 +105,6 @@ const ManageProduct = () => {
             "https://littlejoyapi.azurewebsites.net/api/category?PageIndex=1&PageSize=9"
           );
           if (!responseCate.ok) {
-            console.log("Lỗi fetch category data...");
             return;
           }
           const categoryData = await responseCate.json();
@@ -116,7 +115,6 @@ const ManageProduct = () => {
             "https://littlejoyapi.azurewebsites.net/api/origin?PageIndex=1&PageSize=9"
           );
           if (!responseOrigin.ok) {
-            console.log("Lỗi fetch category data...");
             return;
           }
           const originData = await responseOrigin.json();
@@ -126,7 +124,6 @@ const ManageProduct = () => {
             "https://littlejoyapi.azurewebsites.net/api/age-group-product?PageIndex=1&PageSize=9"
           );
           if (!responseAge.ok) {
-            console.log("Lỗi fetch category data...");
             return;
           }
           const ageData = await responseAge.json();
@@ -136,7 +133,6 @@ const ManageProduct = () => {
             "https://littlejoyapi.azurewebsites.net/api/brand?PageIndex=1&PageSize=9"
           );
           if (!responseBrand.ok) {
-            console.log("Lỗi fetch category data...");
             return;
           }
           const brandData = await responseBrand.json();
@@ -179,7 +175,6 @@ const ManageProduct = () => {
             TotalCount: 0,
           });
         } else {
-          console.log("Lỗi fetch data...");
           setProducts([]);
           setPaging({
             CurrentPage: 1,
@@ -325,7 +320,6 @@ const ManageProduct = () => {
         setCateId("");
         setOriginId("");
       } else {
-        console.log("Lỗi khi tạo sản phẩm");
       }
       const result = await response.json();
     } catch (error) {

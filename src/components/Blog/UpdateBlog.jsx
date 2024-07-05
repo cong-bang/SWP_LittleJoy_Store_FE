@@ -28,7 +28,6 @@ const UpdateBlog = () => {
           throw new Error('Có lỗi trong quá trình fetch dữ liệu');
         }
         const data = await response.json();
-        console.log('Fetched data:', data);  
 
         setTitle(data.title);
         setBanner(data.banner);
@@ -64,7 +63,6 @@ const UpdateBlog = () => {
       banner: banner,
       content: editorContent,
     };
-    console.log(updateBlog);
 
     const fetchData = async () => {
       try {

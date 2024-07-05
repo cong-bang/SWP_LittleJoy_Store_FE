@@ -31,7 +31,6 @@ import Loader from "react-js-loader";
           });
           const data = await response.json();
           if (response.ok) {
-            console.log(data);
             setResponsePayment(data);
           }
           

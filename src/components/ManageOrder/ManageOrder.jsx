@@ -62,12 +62,10 @@ const ManageOrder = () => {
     try {
       const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/user/${userId}`);
       if (!response.ok) {
-        console.log('Lỗi fetch userName');
       }
       const data = await response.json();
       return data.userName;
     } catch (error) {
-      console.log(error.message);
       return 'Unknown User';
     }
   };
@@ -102,7 +100,6 @@ const ManageOrder = () => {
             TotalCount: 0,
           });
         } else {
-          console.log("Lỗi fetch data...");
           setOrderList([]);
           setPaging({
             CurrentPage: 1,
@@ -300,7 +297,6 @@ const ManageOrder = () => {
           orderCode: selectedOrder.orderCode,
           status: deliveryStatus
         }
-        console.log(updateDeliveryStatus);
         const response = await fetch(
           "https://littlejoyapi.azurewebsites.net/api/order/update-order-delivery",
           {

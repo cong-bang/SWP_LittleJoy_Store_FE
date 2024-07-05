@@ -33,7 +33,6 @@ const BlogDetail = () => {
           data.date = formattedDate;
           data.banner =
             data.banner == null || data.banner == "" ? no_found : data.banner;
-          console.log(data);
         }
         if (dataRelatedBlog.httpCode != 404) {
           const updatedData = dataRelatedBlog.map((blog) => {
@@ -47,7 +46,6 @@ const BlogDetail = () => {
               date: formattedDate,
             };
           });
-          console.log(dataRelatedBlog);
           setRelatedBlogs(updatedData);
         }
         setBlog(data);

@@ -72,12 +72,10 @@ const ManageBlog = () => {
     try {
       const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/user/${userId}`);
       if (!response.ok) {
-        console.log('Lỗi fetch userName');
       }
       const data = await response.json();
       return data.userName;
     } catch (error) {
-      console.log(error.message);
       return 'Unknown User';
     }
   };

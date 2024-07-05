@@ -17,7 +17,6 @@ const UserProfileSidebar = () => {
             `https://littlejoyapi.azurewebsites.net/api/user/${userId}`
           );
           if (!response.ok) {
-            console.log('Lỗi fetch category data...');
             return;
           }
           const userData = await response.json();

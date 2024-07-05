@@ -20,7 +20,6 @@ const ConfirmEmail = () => {
           }
         );
         const data = await response.json();
-        console.log(id);
         if (response.ok) {
           setMess("Xác thực tài khoản thành công");
         } else {

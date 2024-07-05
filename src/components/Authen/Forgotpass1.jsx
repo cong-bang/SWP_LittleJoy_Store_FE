@@ -58,7 +58,6 @@ export default function Forgotpass1() {
       if (response.ok) {
         notify("Gửi OTP thành công")
       } else {
-        console.log(data.message);
         setMess(data.message);
       }
     } catch (error) {
@@ -78,7 +77,6 @@ export default function Forgotpass1() {
         email: email,
         otpCode: otp,
       };
-      console.log(formResetPass1);
       const response = await fetch(
         `https://littlejoyapi.azurewebsites.net/api/authen/verify-otp`,
         {
@@ -108,7 +106,6 @@ export default function Forgotpass1() {
         password: newPassword,
         confirmPassword: newPasswordConfirm,
       };
-      console.log(formResetPass2);
       const response = await fetch(
         `https://littlejoyapi.azurewebsites.net/api/authen/forgot-password`,
         {
@@ -128,7 +125,6 @@ export default function Forgotpass1() {
         setMessResetPass(data.errors);
       }
     } catch (error) {
-      console.log(error.message);
     }
   };
 

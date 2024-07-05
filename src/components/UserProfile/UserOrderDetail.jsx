@@ -75,7 +75,6 @@ const UserOrderDetail = () => {
           }
       
     } catch (error) {
-        console.log(error.message);
     }
   };
 

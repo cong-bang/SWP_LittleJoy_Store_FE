@@ -129,7 +129,6 @@ const ManageCategory = () => {
             TotalCount: 0,
           });
         } else {
-          console.log("Lỗi fetch data...");
           setCategories([]);
           setPagingCate({
             CurrentPage: 1,
@@ -186,7 +185,6 @@ const ManageCategory = () => {
             TotalCount: 0,
           });
         } else {
-          console.log("Lỗi fetch data...");
           setOrigins([]);
           setPagingOrigin({
             CurrentPage: 1,
@@ -243,7 +241,6 @@ const ManageCategory = () => {
             TotalCount: 0,
           });
         } else {
-          console.log("Lỗi fetch data...");
           setAgeGroups([]);
           setPagingAge({
             CurrentPage: 1,
@@ -299,7 +296,6 @@ const ManageCategory = () => {
             TotalCount: 0,
           });
         } else {
-          console.log("Lỗi fetch data...");
           setBrands([]);
           setPagingBrand({
             CurrentPage: 1,
@@ -465,7 +461,6 @@ const ManageCategory = () => {
         fetchCategories(pagingCate.CurrentPage, pagingCate.PageSize);
         setCategoryName(null);
       } else {
-        console.log('Lỗi khi tạo category mới');
       }
       const result = await response.json();
     } catch (error) {
@@ -580,7 +575,6 @@ const fetchCateId = async (cateId) => {
         fetchOrigins(pagingOrigin.CurrentPage, pagingOrigin.PageSize);
         setOriginName(null);
       } else {
-        console.log('Lỗi khi tạo origin mới');
       }
       const result = await response.json();
     } catch (error) {
@@ -695,7 +689,6 @@ const fetchOriginId = async (originId) => {
         fetchAgeGroups(pagingAge.CurrentPage, pagingAge.PageSize);
         setAgeGroup(null);
       } else {
-        console.log('Lỗi khi tạo ageGroup mới');
       }
       const result = await response.json();
     } catch (error) {
@@ -819,7 +812,6 @@ const fetchAgeId = async (ageId) => {
         setLogo(null);
         setDescription('');
       } else {
-        console.log('Lỗi khi tạo brand mới');
       }
       const result = await response.json();
     } catch (error) {

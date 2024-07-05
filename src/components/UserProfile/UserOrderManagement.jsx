@@ -35,7 +35,6 @@ const UserOrderManagement = () => {
             TotalCount: 0,
           });
         } else {
-          console.log("Lỗi fetch data...");
           setOrderList([]);
           setPaging({
             CurrentPage: 1,

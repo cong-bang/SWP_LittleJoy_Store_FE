@@ -77,7 +77,6 @@ const ManageUser = () => {
             "https://littlejoyapi.azurewebsites.net/api/role"
           );
           if (!responseRole.ok) {
-            console.log("Lỗi fetch role data...");
             return;
           }
           const roleData = await responseRole.json();
@@ -100,7 +99,6 @@ const ManageUser = () => {
         const address = await response.json();
         return address;
       } else {
-        console.log(`Lỗi fetch address cho userId`);
         return null;
       }
     } catch (error) {
@@ -132,7 +130,6 @@ const ManageUser = () => {
             TotalCount: 0,
           });
         } else {
-          console.log("Lỗi fetch data...");
           setUsers([]);
           setPaging({
             CurrentPage: 1,

@@ -110,7 +110,6 @@ const Home = () => {
           "https://littlejoyapi.azurewebsites.net/api/origin?PageIndex=1&PageSize=5"
         );
         if (!responseOrigin.ok) {
-          console.log("Lỗi fetch category data...");
           return;
         }
         const originData = await responseOrigin.json();
@@ -120,7 +119,6 @@ const Home = () => {
           "https://littlejoyapi.azurewebsites.net/api/brand?PageIndex=1&PageSize=6"
         );
         if (!responseBrand.ok) {
-          console.log("Lỗi fetch category data...");
           return;
         }
         const brandData = await responseBrand.json();
@@ -131,7 +129,6 @@ const Home = () => {
         
 
       } catch (error) {
-        console.log(error.message);
       } finally {
         setLoading(false);
       }
@@ -158,7 +155,6 @@ const Home = () => {
                 TotalCount: 0,
               });
             } else {
-              console.log("Lỗi fetch data...");
               setNewProducts([]);
               setPaging({
                 CurrentPage: 1,
@@ -248,7 +244,6 @@ const Home = () => {
         `https://littlejoyapi.azurewebsites.net/api/product/${productId}`
       );
       if (!response.ok) {
-        console.log("Lỗi fetch dữ liệu...");
       }
       const productData = await response.json();
       return productData;
@@ -265,7 +260,6 @@ const Home = () => {
         `https://littlejoyapi.azurewebsites.net/api/brand/${brandId}`
       );
       if (!response.ok) {
-        console.log("Lỗi fetch dữ liệu...");
       }
       const brandData = await response.json();
       setBrandId(brandData.id);

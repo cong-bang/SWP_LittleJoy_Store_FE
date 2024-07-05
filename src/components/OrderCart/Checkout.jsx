@@ -166,7 +166,6 @@ const Checkout = () => {
         phoneNumber: phoneNumber,
         avatar: user.avatar
       };
-      console.log(updatedUser)
       try {
         const response = await fetch(
           "https://littlejoyapi.azurewebsites.net/api/user/user-role",
@@ -179,7 +178,6 @@ const Checkout = () => {
           }
         );
         if (response.ok) {
-          console.log("update thành công")
         }
       } catch (error) {
         console.error("Error updating user:", error);

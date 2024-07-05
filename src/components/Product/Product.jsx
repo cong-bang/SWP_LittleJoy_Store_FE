@@ -202,7 +202,6 @@ const Product = () => {
 
       setFeedbacks(feedbacksWithUserNames);
     } catch (error) {
-      console.log(error.message);
     } finally {
       setLoading(false);
     }
@@ -377,7 +376,6 @@ const Product = () => {
       comment: comment,
       rating: selectedRating,
     };
-    console.log(updateFeedback);
     try {
       const response = await fetch(
         `https://littlejoyapi.azurewebsites.net/api/feedback`,
@@ -397,7 +395,6 @@ const Product = () => {
         toast.error("Bình luận được sửa thất bại!");
       }
     } catch (error) {
-      console.log(error.message);
     }
   };
 

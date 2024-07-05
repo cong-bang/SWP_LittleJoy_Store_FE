@@ -55,7 +55,6 @@ export default function Login() {
 
         // Decode
         const decodedToken = jwtDecode(data.accessToken);
-        console.log(decodedToken);
         const nameClaim =
           "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name";
         const roleClaim =
@@ -78,7 +77,6 @@ export default function Login() {
           sessionStorage.removeItem("rememberedPassword");
         }
 
-        console.log(userName, userRole, userId);
 
         navigate("/");
         window.location.reload();

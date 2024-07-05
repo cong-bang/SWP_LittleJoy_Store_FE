@@ -114,7 +114,6 @@ const UploadImage = ({
           const progress = Math.round(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
-          console.log(progress);
         },
         (error) => {
           console.error(error);
@@ -122,7 +121,6 @@ const UploadImage = ({
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
             .then((downloadURL) => {
-              console.log("File available at", downloadURL);
               setIsModalOpen(false);
               if (onUploadComplete) {
                 onUploadComplete(downloadURL);
@@ -134,7 +132,6 @@ const UploadImage = ({
         }
       );
     } else {
-      console.log("No image selected");
     }
   };
 

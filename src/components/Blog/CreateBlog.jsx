@@ -48,7 +48,6 @@ const CreateBlog = () => {
       banner: banner,
       content: editorContent,
     };
-    console.log(newBlog);
 
     const fetchData = async () => {
       try {

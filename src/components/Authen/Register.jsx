@@ -74,7 +74,6 @@ export default function Register() {
       phoneNumber: phoneNumber,
       password: password,
     };
-    console.log(formRegister);
 
     try {
       const response = await fetch(
