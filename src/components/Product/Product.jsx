@@ -9,9 +9,10 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import {
   faSquareCaretLeft,
   faSquareCaretRight,
-  faX
+  faX,
 } from "@fortawesome/free-solid-svg-icons";
-
+import feedback from "../../assets/img/feedback.png";
+import avtunknow from "../../assets/img/avatarUnknown.jpg";
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
@@ -90,43 +91,42 @@ const Product = () => {
       const dataAgeName = await resAgeId.json();
       setAgeName(dataAgeName);
 
-        const resSimilarProduct = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=4&cateId=${dataResponse.cateId}`
-        );
-        const dataSimilarP = await resSimilarProduct.json();
-        if (resSimilarProduct.ok) {
-          const formattedSimilarP = dataSimilarP.map((product) => ({
-            ...product,
-            price: formatPrice(product.price),
-          }));
-          setSimilarP(formattedSimilarP);
-        }
-        
-        const responseNumberFeedback = await fetch(
-          `https://littlejoyapi.azurewebsites.net/api/feedback/count-feedback-by-product/${id}`
-        );
-        const dataNumberOfFeedback = await responseNumberFeedback.json();
-        if (responseNumberFeedback.ok) {
-          setNumberOfFeedback(dataNumberOfFeedback);
-        } else {
-          setNumberOfFeedback(0);
-        }
-
-        const userId = localStorage.getItem('userId');
-        if (userId != null) {
-          const responseCheckAdd = await fetch(
-            `https://littlejoyapi.azurewebsites.net/api/feedback/check-add-feedback?productId=${id}&userID=${userId}`
-          );
-          const dataCheckAdd = await responseCheckAdd.json();
-          if (responseCheckAdd.ok) {
-            setCheckAdd(dataCheckAdd);
-          }
-        }
-        
-      } catch (error) {
-        console.error(error.message);
+      const resSimilarProduct = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=4&cateId=${dataResponse.cateId}`
+      );
+      const dataSimilarP = await resSimilarProduct.json();
+      if (resSimilarProduct.ok) {
+        const formattedSimilarP = dataSimilarP.map((product) => ({
+          ...product,
+          price: formatPrice(product.price),
+        }));
+        setSimilarP(formattedSimilarP);
       }
-    };
+
+      const responseNumberFeedback = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/feedback/count-feedback-by-product/${id}`
+      );
+      const dataNumberOfFeedback = await responseNumberFeedback.json();
+      if (responseNumberFeedback.ok) {
+        setNumberOfFeedback(dataNumberOfFeedback);
+      } else {
+        setNumberOfFeedback(0);
+      }
+
+      const userId = localStorage.getItem("userId");
+      if (userId != null) {
+        const responseCheckAdd = await fetch(
+          `https://littlejoyapi.azurewebsites.net/api/feedback/check-add-feedback?productId=${id}&userID=${userId}`
+        );
+        const dataCheckAdd = await responseCheckAdd.json();
+        if (responseCheckAdd.ok) {
+          setCheckAdd(dataCheckAdd);
+        }
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   const fetchFeedback = async (pageIndex) => {
     setLoading(true);
@@ -201,7 +201,6 @@ const Product = () => {
       }
 
       setFeedbacks(feedbacksWithUserNames);
-
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -322,7 +321,7 @@ const Product = () => {
   };
   const handleConfirmDeleteFeedback = async () => {
     try {
-      const userId = localStorage.getItem('userId') 
+      const userId = localStorage.getItem("userId");
       if (userId != null) {
         const response = await fetch(
           `https://littlejoyapi.azurewebsites.net/api/feedback?Id=${idFeedbackToDelete}&UserId=${userId}`,
@@ -333,20 +332,18 @@ const Product = () => {
             },
           }
         );
-  
+
         if (response.ok) {
           await fetchData();
           await fetchFeedback(paging.CurrentPage);
-          toast.success('Bình luận được xóa thành công!')
+          toast.success("Bình luận được xóa thành công!");
         } else {
           toast.error("Xóa bình luận thất bại!");
         }
       }
-      
     } catch (error) {
       console.error(error.message);
     } finally {
-      
     }
   };
 
@@ -366,7 +363,7 @@ const Product = () => {
       setComment(data.comment);
     } catch (error) {
       console.error("Lỗi fetch product details", error);
-    } 
+    }
   };
 
   const handleUpdateFeedback = async () => {
@@ -380,29 +377,29 @@ const Product = () => {
       comment: comment,
       rating: selectedRating,
     };
-    console.log(updateFeedback)
+    console.log(updateFeedback);
     try {
-      const response = await fetch(`https://littlejoyapi.azurewebsites.net/api/feedback`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updateFeedback)
-      });
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/feedback`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateFeedback),
+        }
+      );
       if (response.ok) {
-        toast.success('Bình luận được sửa thành công!');
+        toast.success("Bình luận được sửa thành công!");
         await fetchData();
         await fetchFeedback(paging.CurrentPage);
       } else {
-          toast.error('Bình luận được sửa thất bại!');
+        toast.error("Bình luận được sửa thất bại!");
       }
-
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }
-
-
+  };
 
   //xử lý tăng giảm quantity của product
   const handleDecrease = () => {
@@ -617,7 +614,7 @@ const Product = () => {
                                     </div>
                                   </div>
                                 </td>
-                                
+
                                 {product.quantity > 0 ? (
                                   <td className="w-50 text-center">
                                     <Link to="#" className="">
@@ -643,8 +640,8 @@ const Product = () => {
                                         style={{
                                           fontSize: "16px",
                                           fontFamily: "system-ui",
-                                          cursor: 'not-allowed',
-                                          opacity: '0.6'
+                                          cursor: "not-allowed",
+                                          opacity: "0.6",
                                         }}
                                       >
                                         Hết Hàng
@@ -652,7 +649,7 @@ const Product = () => {
                                     </Link>
                                   </td>
                                 )}
-                                
+
                                 <td className="w-30 text-center">
                                   <Link
                                     to=""
@@ -781,268 +778,339 @@ const Product = () => {
                 className="content-feedback"
                 style={{ border: "1px solid black", borderRadius: "10px" }}
               >
-                
                 <div className="title-info-product px-4 py-3">
                   <span className="fw-bold fs-4" style={{ color: "#091E3E" }}>
                     Đánh giá
                   </span>
                 </div>
                 {checkAdd == true && (
-                <>
-                <div className="feedback-sao w-40 ps-4 d-flex justify-content-between">
-                  {[5, 4, 3, 2, 1].map((rating) => (
-                    <div
-                      key={rating}
-                      data-value={rating}
-                      className={`voting-feedback d-inline-block px-4 py-2 ${
-                        selectedRating === rating
-                          ? "voting-feedback-active"
-                          : ""
-                      }`}
-                      style={{
-                        border: "1px solid black",
-                        borderRadius: "10px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => handleRatingClick(rating)}
-                    >
-                      {rating}{" "}
-                      <FontAwesomeIcon icon="fa-solid fa-star"></FontAwesomeIcon>
+                  <>
+                    <div className="feedback-sao w-40 ps-4 d-flex justify-content-between">
+                      {[5, 4, 3, 2, 1].map((rating) => (
+                        <div
+                          key={rating}
+                          data-value={rating}
+                          className={`voting-feedback d-inline-block px-4 py-2 ${
+                            selectedRating === rating
+                              ? "voting-feedback-active"
+                              : ""
+                          }`}
+                          style={{
+                            border: "1px solid black",
+                            borderRadius: "10px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleRatingClick(rating)}
+                        >
+                          {rating}{" "}
+                          <FontAwesomeIcon icon="fa-solid fa-star"></FontAwesomeIcon>
+                        </div>
+                      ))}
+                      <input
+                        type="hidden"
+                        id="star-rating"
+                        name="rating"
+                        value={selectedRating || ""}
+                      />
                     </div>
-                  ))}
-                  <input
-                    type="hidden"
-                    id="star-rating"
-                    name="rating"
-                    value={selectedRating || ""}
-                  />
-                </div>
-                <div className="w-75 p-4">
-                  <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    name=""
-                    id=""
-                    placeholder="Nhập phản hồi của bạn"
-                    className="w-100 p-2"
-                    rows="5"
-                    style={{ resize: "none" }}
-                  ></textarea>
-                </div>          
-                <div className="ps-4">
-                  <div
-                    className="text-center px-3 py-2 d-inline-block"
-                    style={{ backgroundColor: "#005B96", borderRadius: "10px" }}
-                  >
-                    <span
-                      className="fw-bold"
-                      style={{ color: "white", cursor: "pointer" }}
-                      onClick={handleSendFeedback}
+                    <div className="w-75 p-4">
+                      <textarea
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        name=""
+                        id=""
+                        placeholder="Nhập phản hồi của bạn"
+                        className="w-100 p-2"
+                        rows="5"
+                        style={{ resize: "none" }}
+                      ></textarea>
+                    </div>
+                    <div className="ps-4">
+                      <div
+                        className="text-center px-3 py-2 d-inline-block"
+                        style={{
+                          backgroundColor: "#005B96",
+                          borderRadius: "10px",
+                        }}
+                      >
+                        <span
+                          className="fw-bold"
+                          style={{ color: "white", cursor: "pointer" }}
+                          onClick={handleSendFeedback}
+                        >
+                          Gửi đánh giá
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className="mt-3"
+                      style={{ borderTop: "1px solid black" }}
                     >
-                      Gửi đánh giá
-                    </span>
-                  </div>
-                </div>
-                <div className="mt-3" style={{ borderTop: "1px solid black" }}>
-                  &nbsp;
-                </div>
-                </>)}
+                      &nbsp;
+                    </div>
+                  </>
+                )}
                 <div className="w-100 ps-5 pe-5">
                   {feedbacks.length > 0 ? (
-                  feedbacks.map((fb) => (
-                    <div
-                      key={fb.id}
-                      className="item-feedback p-3"
-                      style={{ borderBottom: "1px solid black" }}
-                    >
-                      <table className="w-75">
-                        <tbody>
-                          <tr>
-                            <td className="w-15">
-                              <span className="fw-bold">{fb.userName}</span>
-                            </td>
-                            <td className="w-15">
-                              <span
-                                className="ps-3"
-                                style={{ color: "#97999D" }}
-                              >
-                                {fb.date}
-                              </span>
-                            </td>
-                            {localStorage.getItem('userId') == fb.userId ? (
-                            <td className="w-70 fs-5" rowSpan="2">
-                              <span className="px-2">
-                                <FontAwesomeIcon icon="fa-solid fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#edit-feedback" onClick={() => handleEditFeedback(fb.id)} />
-                              </span>
-                              <span style={{ color: "red" }}>
-                                <FontAwesomeIcon icon="fa-solid fa-trash" data-bs-toggle="modal" data-bs-target="#delete-fb" onClick={() => handleDeleteFeedback(fb.id)}/>
-                              </span>
-                            </td>
-                            ) : (
-                              <td className="w-70 fs-5" rowSpan="2">
-                              
-                            </td>
-                            )}
-                          </tr>
-                          <tr>
-                            <td colSpan="2">
-                              <span
-                                className="fw-bold py-1"
-                                style={{ textDecoration: "underline" }}
-                              >
-                                {fb.rating}.0
-                              </span>
-                              <div
-                                className="d-inline-block py-1"
-                                style={{ color: "#FFC626" }}
-                              >
-                                {[1, 2, 3, 4, 5].map((star) => (
-                                  <FontAwesomeIcon
-                                    key={star}
-                                    icon={faStar}
-                                    color={
-                                      star <= fb.rating ? "gold" : "lightgrey"
-                                    }
-                                  />
-                                ))}
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colSpan="3">
-                              <span>{fb.comment}</span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                    feedbacks.map((fb) => (
+                      <div
+                        key={fb.id}
+                        className="item-feedback p-3"
+                        style={{ borderBottom: "1px solid black" }}
+                      >
+                        <table className="w-75">
+                          <tbody>
+                            <tr>
+                              <td className="w-15">
+                                <div className="w-100 d-flex">
+                                  <div
+                                    className="d-inline-block w-30"
+                                    style={{
+                                      borderRadius: "50%",
+                                      overflow: "hidden",
+                                    }}
+                                  >
+                                    <img
+                                      src={avtunknow}
+                                      alt=""
+                                      className="w-100"
+                                    />
+                                  </div>
+                                  <div className="d-flex justify-content-center flex-column">
+                                    <span className="fw-bold ps-3">
+                                      {fb.userName}
+                                    </span>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="w-15">
+                                <span
+                                  className="ps-3"
+                                  style={{ color: "#97999D" }}
+                                >
+                                  {fb.date}
+                                </span>
+                              </td>
+                              {localStorage.getItem("userId") == fb.userId ? (
+                                <td className="w-70 fs-5" rowSpan="2">
+                                  <span className="px-2">
+                                    <FontAwesomeIcon
+                                      icon="fa-solid fa-pen-to-square"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#edit-feedback"
+                                      onClick={() => handleEditFeedback(fb.id)}
+                                    />
+                                  </span>
+                                  <span style={{ color: "red" }}>
+                                    <FontAwesomeIcon
+                                      icon="fa-solid fa-trash"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#delete-fb"
+                                      onClick={() =>
+                                        handleDeleteFeedback(fb.id)
+                                      }
+                                    />
+                                  </span>
+                                </td>
+                              ) : (
+                                <td className="w-70 fs-5" rowSpan="2"></td>
+                              )}
+                            </tr>
+                            <tr>
+                              <td colSpan="2">
+                                <span
+                                  className="fw-bold py-1"
+                                  style={{ textDecoration: "underline" }}
+                                >
+                                  {fb.rating}.0
+                                </span>
+                                <div
+                                  className="d-inline-block py-1"
+                                  style={{ color: "#FFC626" }}
+                                >
+                                  {[1, 2, 3, 4, 5].map((star) => (
+                                    <FontAwesomeIcon
+                                      key={star}
+                                      icon={faStar}
+                                      color={
+                                        star <= fb.rating ? "gold" : "lightgrey"
+                                      }
+                                    />
+                                  ))}
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colSpan="3">
+                                <span>{fb.comment}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="col-md-12 text-center">
+                      <div
+                        className="my-5 py-5 px-5"
+                        style={{
+                          border: "1px dotted black",
+                          borderRadius: "15px",
+                        }}
+                      >
+                        <img src={feedback} alt="" className="w-15" />
+                        <span className="fs-5 d-block">
+                          Hiện tại chưa có đánh giá, mua sản phẩm để đánh giá
+                          ngay
+                        </span>
+                      </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="col-md-12 text-center">
-                          
-                          <div
-                            className="d-inline-block p-5"
-                            style={{
-                              backgroundColor: "#FAFAFA",
-                              border: "1px dotted black",
-                              borderRadius: "15px",
-                            }}
-                          >
-                            <div className="d-flex flex-column align-items-center p-3">
-                              <img src="" alt="" className="w-25" />
-                              <span
-                                className="text-center fs-4 pt-3"
-                                style={{
-                                  fontFamily: "sans-serif",
-                                }}
-                              >
-                                Hiện tại chưa có phản hồi nào
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                )}
-                </div>
-                {paging.TotalCount && (
-                <div className="w-100 p-3">
-                  <div className="fs-5 d-flex justify-content-end">
-                    <Link
-                      className="px-3"
-                      href="#"
-                      style={{ color: "#3c75a6" }}
-                    >
-                      <FontAwesomeIcon
-                        id="fb-pre"
-                        icon="fa-solid fa-circle-chevron-left"
-                        className=""
-                        onClick={handlePrevious}
-                      />
-                    </Link>
-                    <span style={{ fontFamily: "Poppins" }}>
-                      Trang {paging.CurrentPage}
-                    </span>
-                    <Link
-                      className="px-3"
-                      href="#"
-                      style={{ color: "#3c75a6" }}
-                    >
-                      <FontAwesomeIcon
-                        id="fb-next"
-                        icon="fa-solid fa-circle-chevron-right"
-                        onClick={handleNext}
-                      />
-                    </Link>
-                  </div>
-                </div>
                   )}
+                </div>
+                {paging.TotalCount != 0 && (
+                  <div className="w-100 p-3">
+                    <div className="fs-5 d-flex justify-content-end">
+                      <Link
+                        className="px-3"
+                        href="#"
+                        style={{ color: "#3c75a6" }}
+                      >
+                        <FontAwesomeIcon
+                          id="fb-pre"
+                          icon="fa-solid fa-circle-chevron-left"
+                          className=""
+                          onClick={handlePrevious}
+                        />
+                      </Link>
+                      <span style={{ fontFamily: "Poppins" }}>
+                        Trang {paging.CurrentPage}
+                      </span>
+                      <Link
+                        className="px-3"
+                        href="#"
+                        style={{ color: "#3c75a6" }}
+                      >
+                        <FontAwesomeIcon
+                          id="fb-next"
+                          icon="fa-solid fa-circle-chevron-right"
+                          onClick={handleNext}
+                        />
+                      </Link>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
       {/* <!-- Modal delete feedback --> */}
-    <div className="modal" id="delete-fb">
+      <div className="modal" id="delete-fb">
         <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-
-                {/* <!-- Modal Header --> */}
-                <div className="py-2 d-flex justify-content-between" style={{backgroundColor: 'rgba(60, 117, 166, 1)'}}>
-                    <h4 className="modal-title inter ms-3" style={{color: 'white'}}>Xác nhận xóa bình luận của bạn</h4>
-                    <div className="btn-close-modal me-3" style={{color: 'white'}} data-bs-dismiss="modal"><FontAwesomeIcon icon={faX} /></div>
-                </div>
-
-                {/* <!-- Modal body --> */}
-                <div className="modal-body" style={{backgroundColor: 'white'}}>
-                <div className="p-2" >
-                    <table className="w-100 table-modal" >
-                    <tbody>
-                        <tr>
-                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Bạn có chắc chắn muốn xóa bình luận này không?</span></td>                  
-                        </tr>
-                        
-                    </tbody>
-                    </table>
-                </div>
-                </div>
-
-                {/* <!-- Modal footer --> */}
-                <div className="footer-modal py-4 d-flex justify-content-end" style={{backgroundColor: 'white'}}>
-                    <div className="close me-4">
-                        <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal" style={{backgroundColor: 'rgb(60, 117, 166)'}}><span>Hủy</span></div>
-                    </div>
-                    <div className="save-modal me-4">
-                        <input onClick={handleConfirmDeleteFeedback} type="submit" data-bs-dismiss="modal" value="Xác nhận" style={{backgroundColor: '#E33539'}} className="input-submit modal-btn-close p-2 px-4 inter"/>
-                    </div>
-                </div>
-
+          <div className="modal-content">
+            {/* <!-- Modal Header --> */}
+            <div
+              className="py-2 d-flex justify-content-between"
+              style={{ backgroundColor: "rgba(60, 117, 166, 1)" }}
+            >
+              <h4 className="modal-title inter ms-3" style={{ color: "white" }}>
+                Xác nhận xóa bình luận của bạn
+              </h4>
+              <div
+                className="btn-close-modal me-3"
+                style={{ color: "white" }}
+                data-bs-dismiss="modal"
+              >
+                <FontAwesomeIcon icon={faX} />
+              </div>
             </div>
-        </div>
-    </div>
 
-    {/* <!-- Modal edit feedback --> */}
-    <div className="modal" id="edit-feedback">
-        <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
+            {/* <!-- Modal body --> */}
+            <div className="modal-body" style={{ backgroundColor: "white" }}>
+              <div className="p-2">
+                <table className="w-100 table-modal">
+                  <tbody>
+                    <tr>
+                      <td className="w-20">
+                        <span className="py-2" style={{ color: "#3C75A6" }}>
+                          Bạn có chắc chắn muốn xóa bình luận này không?
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
 
-                {/* <!-- Modal Header --> */}
-                <div className="py-2 d-flex justify-content-between" style={{backgroundColor: 'rgba(60, 117, 166, 1)'}}>
-                    <h4 className="modal-title inter ms-3" style={{color: 'white'}}>Đánh giá</h4>
-                    <div className="btn-close-modal me-3" style={{color: 'white'}} data-bs-dismiss="modal"><FontAwesomeIcon icon={faX} /></div>
+            {/* <!-- Modal footer --> */}
+            <div
+              className="footer-modal py-4 d-flex justify-content-end"
+              style={{ backgroundColor: "white" }}
+            >
+              <div className="close me-4">
+                <div
+                  className="modal-btn-close p-2 px-4"
+                  data-bs-dismiss="modal"
+                  style={{ backgroundColor: "rgb(60, 117, 166)" }}
+                >
+                  <span>Hủy</span>
                 </div>
+              </div>
+              <div className="save-modal me-4">
+                <input
+                  onClick={handleConfirmDeleteFeedback}
+                  type="submit"
+                  data-bs-dismiss="modal"
+                  value="Xác nhận"
+                  style={{ backgroundColor: "#E33539" }}
+                  className="input-submit modal-btn-close p-2 px-4 inter"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                {/* <!-- Modal body --> */}
-                <div className="modal-body" style={{backgroundColor: 'white'}}>
-                <div className="p-2" >
-                    <table className="w-100 table-modal" >
-                    <tbody>
-                        <tr>
-                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Rating:</span></td>
-                        <td className="py-2">
+      {/* <!-- Modal edit feedback --> */}
+      <div className="modal" id="edit-feedback">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            {/* <!-- Modal Header --> */}
+            <div
+              className="py-2 d-flex justify-content-between"
+              style={{ backgroundColor: "rgba(60, 117, 166, 1)" }}
+            >
+              <h4 className="modal-title inter ms-3" style={{ color: "white" }}>
+                Đánh giá
+              </h4>
+              <div
+                className="btn-close-modal me-3"
+                style={{ color: "white" }}
+                data-bs-dismiss="modal"
+              >
+                <FontAwesomeIcon icon={faX} />
+              </div>
+            </div>
+
+            {/* <!-- Modal body --> */}
+            <div className="modal-body" style={{ backgroundColor: "white" }}>
+              <div className="p-2">
+                <table className="w-100 table-modal">
+                  <tbody>
+                    <tr>
+                      <td className="w-20">
+                        <span className="py-2" style={{ color: "#3C75A6" }}>
+                          Rating:
+                        </span>
+                      </td>
+                      <td className="py-2">
                         {[1, 2, 3, 4, 5].map((rating) => (
                           <FontAwesomeIcon
                             key={rating}
                             icon={faStar}
-                            className={`star ${selectedRating >= rating ? "star-active" : ""}`}
+                            className={`star ${
+                              selectedRating >= rating ? "star-active" : ""
+                            }`}
                             onClick={() => handleRatingClick(rating)}
                             style={{
                               cursor: "pointer",
@@ -1050,43 +1118,60 @@ const Product = () => {
                             }}
                           />
                         ))}
-                        </td>
-                        </tr>
-                        <tr>
-                          <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Phản hồi:</span></td>
-                          <td>
-                          <textarea
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            name=""
-                            id=""
-                            placeholder="Nhập phản hồi của bạn"
-                            className="w-100 p-2"
-                            rows="3"
-                            style={{ resize: "none" }}
-                          ></textarea>
-                          </td>
-                      </tr>
-                    </tbody>
-                    </table>
-                </div>
-                </div>
-
-                {/* <!-- Modal footer --> */}
-                <div className="footer-modal py-4 d-flex justify-content-end" style={{backgroundColor: 'white'}}>
-                    <div className="close me-4">
-                        <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal" style={{backgroundColor: 'rgb(60, 117, 166)'}}><span>Hủy</span></div>
-                    </div>
-                    <div className="save-modal me-4">
-                        <input onClick={handleUpdateFeedback} type="submit" data-bs-dismiss="modal" value="Lưu" style={{backgroundColor: '#E33539'}} className="input-submit modal-btn-close p-2 px-4 inter"/>
-                    </div>
-                </div>
-
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="w-20">
+                        <span className="py-2" style={{ color: "#3C75A6" }}>
+                          Phản hồi:
+                        </span>
+                      </td>
+                      <td>
+                        <textarea
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                          name=""
+                          id=""
+                          placeholder="Nhập phản hồi của bạn"
+                          className="w-100 p-2"
+                          rows="3"
+                          style={{ resize: "none" }}
+                        ></textarea>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
+
+            {/* <!-- Modal footer --> */}
+            <div
+              className="footer-modal py-4 d-flex justify-content-end"
+              style={{ backgroundColor: "white" }}
+            >
+              <div className="close me-4">
+                <div
+                  className="modal-btn-close p-2 px-4"
+                  data-bs-dismiss="modal"
+                  style={{ backgroundColor: "rgb(60, 117, 166)" }}
+                >
+                  <span>Hủy</span>
+                </div>
+              </div>
+              <div className="save-modal me-4">
+                <input
+                  onClick={handleUpdateFeedback}
+                  type="submit"
+                  data-bs-dismiss="modal"
+                  value="Lưu"
+                  style={{ backgroundColor: "#E33539" }}
+                  className="input-submit modal-btn-close p-2 px-4 inter"
+                />
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
-
-
+      </div>
     </>
   );
 };
