@@ -16,7 +16,6 @@ import Product from "../components/Product/Product";
 import UserProfile from "../components/UserProfile/UserProfile";
 import UserAddress from "../components/UserProfile/UserAddress";
 import UserChangePassword from "../components/UserProfile/UserChangePassword";
-import UserOrderDetail from "../components/UserProfile/UserOrderDetail";
 import ManageUser from "../components/ManageUser/ManageUser";
 import ManageOrder from "../components/ManageOrder/ManageOrder";
 import Dashboard from "../pages/admin/Dashboard";
@@ -33,7 +32,8 @@ import UserLayout from "../components/UserProfile/ProfileLayout";
 import PaymentPending from "../components/Payment/PaymentPending";
 import PaymentInfo from "../components/Payment/PaymentInfo";
 import UserOrderManagement from "../components/UserProfile/UserOrderManagement";
-import UserOrderDetailTest from "../components/UserProfile/UserOrderDetailTest";
+import UserOrderDetail from "../components/UserProfile/UserOrderDetailTest";
+
 
 
 const UserRoute = () => {
@@ -122,7 +122,6 @@ const AppRoutes = () => {
           <Route path="/useraddress" element={<UserAddress />} />
           <Route path="/userchangepassword" element={<UserChangePassword />} />
           <Route path="/userorderdetail/:id" element={<UserOrderDetail />} />
-          <Route path="/test" element={<UserOrderDetailTest />} />
           <Route path="/userordermanagement" element={<UserOrderManagement />} />
         </Route>
 
