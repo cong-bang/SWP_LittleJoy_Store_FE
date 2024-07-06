@@ -33,6 +33,7 @@ import UserLayout from "../components/UserProfile/ProfileLayout";
 import PaymentPending from "../components/Payment/PaymentPending";
 import PaymentInfo from "../components/Payment/PaymentInfo";
 import UserOrderManagement from "../components/UserProfile/UserOrderManagement";
+import UserOrderDetailTest from "../components/UserProfile/UserOrderDetailTest";
 
 
 const UserRoute = () => {
@@ -121,6 +122,7 @@ const AppRoutes = () => {
           <Route path="/useraddress" element={<UserAddress />} />
           <Route path="/userchangepassword" element={<UserChangePassword />} />
           <Route path="/userorderdetail/:id" element={<UserOrderDetail />} />
+          <Route path="/test" element={<UserOrderDetailTest />} />
           <Route path="/userordermanagement" element={<UserOrderManagement />} />
         </Route>
 

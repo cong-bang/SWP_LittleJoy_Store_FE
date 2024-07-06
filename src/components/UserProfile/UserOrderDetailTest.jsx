@@ -13,7 +13,7 @@ import UploadImage from "../UploadImage/UploadImage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const UserOrderDetail = () => {
+const UserOrderDetailTest = () => {
   const [showModal, setShowModal] = useState(false);
   const [reason, setReason] = useState("");
   const [comments, setComments] = useState("");
@@ -530,4 +530,4 @@ const UserOrderDetail = () => {
     </>
   );
 }
-export default UserOrderDetail;
+export default UserOrderDetailTest;
