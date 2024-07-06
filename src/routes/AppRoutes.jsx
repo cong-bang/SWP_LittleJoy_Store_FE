@@ -32,7 +32,7 @@ import ManageCategory from "../components/ManageCategory/ManageCategory";
 import UserLayout from "../components/UserProfile/ProfileLayout";
 import PaymentPending from "../components/Payment/PaymentPending";
 import PaymentInfo from "../components/Payment/PaymentInfo";
-import UserOrderManagement from "../components/UserProfile/UserOrderManagementTest";
+import UserOrderManagement from "../components/UserProfile/UserOrderManagement";
 
 
 const UserRoute = () => {

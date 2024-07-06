@@ -112,6 +112,7 @@ const UserOrderDetail = () => {
 
       if (response.ok) {
         toast.success("Đơn hàng đã hủy thành công");
+        await fetchData();
       } else {
         toast.error("Hủy đơn hàng thất bại");
       }
