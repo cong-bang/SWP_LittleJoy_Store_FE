@@ -46,33 +46,33 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
-  const revenueData = {
-    labels: [
-      "Tháng 1",
-      "Tháng 2",
-      "Tháng 3",
-      "Tháng 4",
-      "Tháng 5",
-      "Tháng 6",
-      "Tháng 7",
-      "Tháng 8",
-      "Tháng 9",
-      "Tháng 10",
-      "Tháng 11",
-      "Tháng 12",
-    ],
-    datasets: [
-      {
-        label: "Doanh thu (VND)",
-        data: [
-          10000000, 20000000, 15000000, 30000000, 25000000, 40000000, 32000000,
-          29000000, 22500000, 50000000, 67000000, 12300000
-        ],
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-      },
-    ],
-  };
+  // const revenueData = {
+  //   labels: [
+  //     "Tháng 1",
+  //     "Tháng 2",
+  //     "Tháng 3",
+  //     "Tháng 4",
+  //     "Tháng 5",
+  //     "Tháng 6",
+  //     "Tháng 7",
+  //     "Tháng 8",
+  //     "Tháng 9",
+  //     "Tháng 10",
+  //     "Tháng 11",
+  //     "Tháng 12",
+  //   ],
+  //   datasets: [
+  //     {
+  //       label: "Doanh thu (VND)",
+  //       data: [
+  //         10000000, 20000000, 15000000, 30000000, 25000000, 40000000, 32000000,
+  //         29000000, 22500000, 50000000, 67000000, 12300000
+  //       ],
+  //       borderColor: "rgba(75, 192, 192, 1)",
+  //       backgroundColor: "rgba(75, 192, 192, 0.2)",
+  //     },
+  //   ],
+  // };
 
   const optionLine = {
     scales: {
@@ -110,27 +110,27 @@ const Dashboard = () => {
     },
   };
 
-  const topProductsMonthly = [
-    { name: "Product A", revenue: 25000000 },
-    { name: "Product B", revenue: 22000000 },
-    { name: "Product C", revenue: 13000000 },
-    { name: "Product D", revenue: 12000000 },
-    { name: "Product E", revenue: 10000000 },
-  ];
+  // const topProductsMonthly = [
+  //   { name: "Product A", revenue: 25000000 },
+  //   { name: "Product B", revenue: 22000000 },
+  //   { name: "Product C", revenue: 13000000 },
+  //   { name: "Product D", revenue: 12000000 },
+  //   { name: "Product E", revenue: 10000000 },
+  // ];
 
-  const chartDataBar = {
-    labels: topProductsMonthly.map((product) => product.name),
-    datasets: [
-      {
-        label: "Revenue (VND)",
-        data: topProductsMonthly.map((product) => product.revenue),
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgb(255, 99, 132)",
-        borderWidth: 1,
-        barThickness: 30,
-      },
-    ],
-  };
+  // const chartDataBar = {
+  //   labels: topProductsMonthly.map((product) => product.name),
+  //   datasets: [
+  //     {
+  //       label: "Revenue (VND)",
+  //       data: topProductsMonthly.map((product) => product.revenue),
+  //       backgroundColor: "rgba(255, 99, 132, 0.2)",
+  //       borderColor: "rgb(255, 99, 132)",
+  //       borderWidth: 1,
+  //       barThickness: 30,
+  //     },
+  //   ],
+  // };
 
   // const topPoints = [
   //   { name: "User A", points: 25000 },
@@ -203,6 +203,12 @@ const Dashboard = () => {
   const [outOfStockList, setOutOfStockList] = useState([]);
   const [roleName, setRoleName] = useState('');
   const [topPoints, setTopPoints] = useState([]);
+  const [numberOfUser, setNumberOfUser] = useState(0);
+  const [revenueToday, setRevenueToday] = useState(0);
+  const [countOrder, setCountOrder] = useState(0);
+  const [countCancelOrder, setCountCancelOrder] = useState(0);
+  const [revenueOverview, setRevenueOverview] = useState([]);
+  const [productHighSales, setProductHighSales] = useState([{}]);
 
   const TableLoading = () => (
     <ContentLoader
@@ -251,6 +257,80 @@ const Dashboard = () => {
             const dataTopPoint = await responseTopPoint.json();
             setTopPoints(dataTopPoint);
           }
+
+          const responseCountAllUser = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/user/count-all-user"
+          );
+          if (responseCountAllUser.ok) {
+            const dataCountAllUser = await responseCountAllUser.json();
+            setNumberOfUser(dataCountAllUser);
+          }
+
+          const responseRevenueToday = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/order/get-revenue-today"
+          );
+          if (responseRevenueToday.ok) {
+            const dataRevenueToday = await responseRevenueToday.json();
+            setRevenueToday(dataRevenueToday);
+          }
+
+          const responseCountOrder = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/order/count-order-active"
+          );
+          if (responseCountOrder.ok) {
+            const dataCountOrder = await responseCountOrder.json();
+            setCountOrder(dataCountOrder);
+          }
+
+          const responseCancelOrder = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/order/count-order-in-active"
+          );
+          if (responseCancelOrder.ok) {
+            const dataCancelOrder = await responseCancelOrder.json();
+            setCountCancelOrder(dataCancelOrder);
+          }
+          
+          const responseRevenueOverview = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/order/get-revenue-overview"
+          );
+          if (responseRevenueOverview.ok) {
+            const dataRevenueOverview = await responseRevenueOverview.json();
+            setRevenueOverview(dataRevenueOverview);
+          }
+
+          const responseHighSales = await fetch(
+            "https://littlejoyapi.azurewebsites.net/api/order/get-product-high-sales"
+          );
+          if (responseHighSales.ok) {
+            const dataHighSales = await responseHighSales.json();
+            setProductHighSales(dataHighSales);
+          }
+
+          // const responseHighSales = await fetch(
+          //   "https://littlejoyapi.azurewebsites.net/api/order/get-revenue-overview"
+          // );
+          // if (responseHighSales.ok) {
+          //   const dataHighSales = await responseHighSales.json();
+          
+          //   const highSalesWithNames = await Promise.all(
+          //     dataHighSales.map(async (product) => {
+          //       const responseProduct = await fetch(
+          //         `https://littlejoyapi.azurewebsites.net/api/product/${product.productId}`
+          //       );
+          //       if (responseProduct.ok) {
+          //         const dataProduct = await responseProduct.json();
+          //         return {
+          //           ...product,
+          //           productName: dataProduct.productName
+          //         };
+          //       } else {
+          //         return product;
+          //       }
+          //     })
+          //   );
+          
+          //   setProductHighSales(highSalesWithNames);
+          // }
               
         } catch (error) {
           console.error(error.message);
@@ -269,6 +349,35 @@ const Dashboard = () => {
         data: topPoints.map((point) => point.points),
         backgroundColor: "rgba(255, 205, 86, 0.2)",
         borderColor: "rgb(255, 205, 86)",
+        borderWidth: 1,
+        barThickness: 30,
+      },
+    ],
+  };
+
+  const revenueData = {
+    labels: [
+      "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", 
+      "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+    ],
+    datasets: [
+      {
+        label: "Doanh thu (VND)",
+        data: revenueOverview.map(item => item.totalMoney),
+        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+      },
+    ],
+  };
+
+  const chartDataBar = {
+    labels: productHighSales.map(product => `Product ${product.productId}`),
+    datasets: [
+      {
+        label: "Revenue (VND)",
+        data: productHighSales.map(product => product.totalPrice),
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgb(255, 99, 132)",
         borderWidth: 1,
         barThickness: 30,
       },
@@ -507,7 +616,7 @@ const Dashboard = () => {
                                   className="pt-1 fw-bold"
                                   style={{ fontSize: "25px" }}
                                 >
-                                  4,500,000 VND
+                                  {revenueToday.toLocaleString("de-DE")} VND
                                 </div>
                                 <span
                                   className="card-title"
@@ -540,7 +649,7 @@ const Dashboard = () => {
                                   className="pt-1 fw-bold"
                                   style={{ fontSize: "25px" }}
                                 >
-                                  215
+                                  {countOrder}
                                 </div>
                                 <span
                                   className="card-title"
@@ -573,13 +682,13 @@ const Dashboard = () => {
                                   className="pt-1 fw-bold"
                                   style={{ fontSize: "25px" }}
                                 >
-                                  50
+                                  {numberOfUser}
                                 </div>
                                 <span
                                   className="card-title"
                                   style={{ opacity: "0.6", fontSize: "20px" }}
                                 >
-                                  Người dùng mới (tháng này)
+                                  Tổng số lượng người dùng
                                 </span>
                               </div>
                             </div>
@@ -607,7 +716,7 @@ const Dashboard = () => {
                                   className="pt-1 fw-bold"
                                   style={{ fontSize: "25px" }}
                                 >
-                                  19
+                                  {countCancelOrder}
                                 </div>
                                 <span
                                   className="card-title"

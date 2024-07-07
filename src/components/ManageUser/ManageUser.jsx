@@ -26,6 +26,8 @@ const ManageUser = () => {
   const [statusAcc, setStatusAcc] = useState(null);
   const [rolesLoaded, setRolesLoaded] = useState(false);
   const [mess, setMess] = useState(''); 
+  const [searchUserName, setSearchUserName] = useState(null);
+  const [searchFullName, setSearchFullName] = useState(null);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -113,6 +115,8 @@ const ManageUser = () => {
       const searchParams = new URLSearchParams();
       if (searchRole != null) searchParams.append("roleId", searchRole);
       if (statusAcc != null) searchParams.append("status", statusAcc);
+      if (searchUserName) searchParams.append("userName", searchUserName);
+      if (searchFullName) searchParams.append("fullName", searchFullName);
       // searchParams.append("PageIndex", pageIndex);
       // searchParams.append("PageSize", pageSize);
 
@@ -168,7 +172,7 @@ const ManageUser = () => {
     if(rolesLoaded) {
       fetchData(paging.CurrentPage, paging.PageSize);
     }
-  }, [paging.CurrentPage, searchRole, statusAcc, rolesLoaded]);
+  }, [paging.CurrentPage, searchRole, statusAcc, rolesLoaded, searchUserName, searchFullName]);
 
   const handlePageChange = (newPage) => {
     setPaging((prev) => ({
@@ -535,7 +539,8 @@ const ManageUser = () => {
                                 <div className="container-fluid">
                                     <div className="row">
                                         <div className="col-md-12 d-flex justify-content-start">
-                                            <div className="search-user float-start p-3"><input type="text" className="p-1 ps-3" placeholder="Search user"/></div>
+                                            <div className="search-user float-start p-3"><input type="text" className="p-1 ps-3" placeholder="Search user" value={searchUserName} onChange={(e) => setSearchUserName(e.target.value)}/></div>
+                                            <div className="search-user float-start p-3"><input type="text" className="p-1 ps-3" placeholder="Search fulname" value={searchFullName} onChange={(e) => setSearchFullName(e.target.value)}/></div>
                                             <div className="filter-status p-3">
                                               <select
                                                 name=""
