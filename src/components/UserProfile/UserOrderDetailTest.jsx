@@ -13,7 +13,7 @@ import UploadImage from "../UploadImage/UploadImage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const UserOrderDetailTest = () => {
+const UserOrderDetail = () => {
   const [showModal, setShowModal] = useState(false);
   const [reason, setReason] = useState("");
   const [comments, setComments] = useState("");
@@ -86,6 +86,10 @@ const UserOrderDetailTest = () => {
           const formattedPrice = dataOrder.totalPrice;
           dataOrder.totalPrice = formattedPrice.toLocaleString("de-DE");
         }
+        if (dataOrder.amountDiscount) {
+          const formattedAmountDiscount = dataOrder.amountDiscount;
+          dataOrder.amountDiscount = formattedAmountDiscount.toLocaleString("de-DE");
+        }
         setInforOrder(dataOrder);
         setListProduct(dataOrder.productOrders);
       }
@@ -136,7 +140,7 @@ const UserOrderDetailTest = () => {
       <div className="w-100 robotto">
         <ToastContainer />
         <div className="py-3 mb-3">
-          <Link to="#" style={{ textDecoration: "none", color: "black" }}>
+          <Link to="/userordermanagement" style={{ textDecoration: "none", color: "black" }}>
             <FontAwesomeIcon icon="fa-solid fa-circle-arrow-left" />
             <span className="ps-2" style={{ color: "black" }}>
               Quay lại
@@ -163,7 +167,7 @@ const UserOrderDetailTest = () => {
                   </td>
                   <td className="w-60">
                     <div className="pt-3">
-                      <span>Phạm Hiếu</span>
+                      <span>{user.fullname}</span>
                     </div>
                   </td>
                 </tr>
@@ -175,7 +179,7 @@ const UserOrderDetailTest = () => {
                   </td>
                   <td>
                     <div className="pt-3">
-                      <span>asdasd</span>
+                      <span>{mainAddress}</span>
                     </div>
                   </td>
                 </tr>
@@ -187,7 +191,7 @@ const UserOrderDetailTest = () => {
                   </td>
                   <td>
                     <div className="pt-3">
-                      <span>asdasd</span>
+                      <span>{user.phoneNumber}</span>
                     </div>
                   </td>
                 </tr>
@@ -199,7 +203,7 @@ const UserOrderDetailTest = () => {
                   </td>
                   <td>
                     <div className="pt-3">
-                      <span>asdasd</span>
+                      <span>{user.email}</span>
                     </div>
                   </td>
                 </tr>
@@ -211,7 +215,7 @@ const UserOrderDetailTest = () => {
                   </td>
                   <td>
                     <div className="pt-3">
-                      <span>26/06/2024</span>
+                      <span>{inforOrder.date}</span>
                     </div>
                   </td>
                 </tr>
@@ -236,7 +240,7 @@ const UserOrderDetailTest = () => {
                   </td>
                   <td className="w-60">
                     <div className="pt-3">
-                      <span>#626210</span>
+                      <span>#{inforOrder.orderCode}</span>
                     </div>
                   </td>
                 </tr>
@@ -248,7 +252,7 @@ const UserOrderDetailTest = () => {
                   </td>
                   <td>
                     <div className="pt-3">
-                      <span>100,000</span>
+                      <span>{inforOrder.totalPrice}</span>
                     </div>
                   </td>
                 </tr>
@@ -259,8 +263,8 @@ const UserOrderDetailTest = () => {
                     </div>
                   </td>
                   <td>
-                    <div className="pt-3">
-                      <span>Đặt hàng thành công</span>
+                    <div className="pt-3" style={{color: inforOrder.status === "Đặt Hàng Thành Công" ? "rgba(48, 207, 35, 1)" : inforOrder.status === "Đã Hủy" ? "red" : "#9AA14B"}}>
+                      <span>{inforOrder.status}</span>
                     </div>
                   </td>
                 </tr>
@@ -272,7 +276,7 @@ const UserOrderDetailTest = () => {
                   </td>
                   <td>
                     <div className="pt-3">
-                      <span>Đang chờ</span>
+                      <span>{inforOrder.paymentStatus}</span>
                     </div>
                   </td>
                 </tr>
@@ -284,7 +288,7 @@ const UserOrderDetailTest = () => {
                   </td>
                   <td>
                     <div className="pt-3">
-                      <span>Chưa có</span>
+                      <span>{inforOrder.deliveryStatus || "Chưa có"}</span>
                     </div>
                   </td>
                 </tr>
@@ -293,6 +297,8 @@ const UserOrderDetailTest = () => {
           </div>
         </div>
         <div style={{ borderBottom: "1px solid #CCCCCC" }}>&nbsp;</div>
+        {inforOrder.note != "" && (
+          <>
         <div className="p-3 d-flex justify-content-center mt-3">
           <div className="pe-3 pt-2">
             <span>Ghi Chú :</span>
@@ -304,16 +310,12 @@ const UserOrderDetailTest = () => {
               borderRadius: "10px",
             }}
           >
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            Dignissimos ullam voluptate nobis dolor quis laborum, velit natus
-            debitis quasi quo, a, minima fugit quod consequuntur itaque!
-            Laudantium ipsa assumenda sit. Lorem ipsum dolor sit amet
-            consectetur adipisicing elit. Amet hic sunt quia voluptas. Nisi
-            suscipit eos qui. Vero quae quibusdam reprehenderit cum molestias!
-            Molestias, nisi nesciunt? Dignissimos harum in perferendis?
+            {inforOrder.note}
           </div>
         </div>
         <div style={{ borderBottom: "1px solid #CCCCCC" }}>&nbsp;</div>
+        </>
+        )}
         <div>&nbsp;</div>
         <div>
           <table
@@ -335,25 +337,43 @@ const UserOrderDetailTest = () => {
                   THÀNH TIỀN (VNĐ)
                 </td>
               </tr>
-              <tr>
-                <td className="px-2 py-2" style={{ border: "1px solid gray" }}>1</td>
+              {listProduct.map((p, index) => (
+              <tr key={p.id}>
+                <td className="px-2 py-2" style={{ border: "1px solid gray" }}>{index + 1}</td>
                 <td className="px-2" style={{ border: "1px solid gray" }}>
                   <Link to='#' style={{color: 'black', textDecoration: 'none'}}>
-                    <span>Sữa Ensure Gold</span>
+                    <span>{p.productName}</span>
                   </Link>
                 </td>
                 <td className="px-2" style={{ border: "1px solid gray" }}>
-                  <span style={{ float: "inline-end" }}>10</span>
+                  <span style={{ float: "inline-end" }}>{p.quantity}</span>
                 </td>
                 <td className="px-2" style={{ border: "1px solid gray" }}>
-                  <span style={{ float: "inline-end" }}>20,000</span>
+                  <span style={{ float: "inline-end" }}>{p.price ? p.price.toLocaleString('de-DE') : 'N/A'}</span>
                 </td>
                 <td className="px-2" style={{ border: "1px solid gray" }}>
-                  <span style={{ float: "inline-end" }}>200,000</span>
+                  <span style={{ float: "inline-end" }}>{p.quantity * p.price ? (p.quantity * p.price).toLocaleString('de-DE') : "N/A" }</span>
                 </td>
               </tr>
+              ))}
               <tr>
-                <td className="px-2 py-2" style={{ border: "1px solid gray" }}>2</td>
+                <td className="px-2 py-2" style={{ border: "1px solid gray" }}>{listProduct.length + 1}</td>
+                <td className="px-2" style={{ border: "1px solid gray" }}>
+                  <span>Shipping</span>
+                </td>
+                <td className="px-2" style={{ border: "1px solid gray" }}>
+                  <span style={{ float: "inline-end" }}></span>
+                </td>
+                <td className="px-2" style={{ border: "1px solid gray" }}>
+                  <span style={{ float: "inline-end" }}></span>
+                </td>
+                <td className="px-2" style={{ border: "1px solid gray" }}>
+                  <span style={{ float: "inline-end" }}>30.000</span>
+                </td>
+              </tr>
+              {inforOrder.amountDiscount !== 0 && (
+              <tr>
+                <td className="px-2 py-2" style={{ border: "1px solid gray" }}>{listProduct.length + 2}</td>
                 <td className="px-2" style={{ border: "1px solid gray" }}>
                   <span>Giảm giá</span>
                 </td>
@@ -364,24 +384,78 @@ const UserOrderDetailTest = () => {
                   <span style={{ float: "inline-end" }}></span>
                 </td>
                 <td className="px-2" style={{ border: "1px solid gray" }}>
-                  <span style={{ float: "inline-end" }}>- 150,000</span>
+                  <span style={{ float: "inline-end" }}>- {inforOrder.amountDiscount}</span>
                 </td>
               </tr>
+              )}
+              
               <tr style={{ backgroundColor: "#3C75A6", color: "white" }}>
                 <td className="px-2 py-2" colSpan="4" style={{ border: "1px solid gray" }}>
                   TỔNG TIỀN (VNĐ)
                 </td>
                 <td className="px-2" style={{ border: "1px solid gray" }}>
-                  <span style={{ float: "inline-end" }}>450,000</span>
+                  <span style={{ float: "inline-end" }}>{inforOrder.totalPrice}</span>
                 </td>
-              </tr>
+              </tr>      
             </tbody>
           </table>
         </div>
+        <div>
+        {checkCancel == true && (
+          <>
+            <div className="pt-4 d-flex justify-content-end">
+              <div className="w-25 px-4 ">
+                <button
+                  className="w-100 Borderall-CancelOrder px-4 py-1 text-center text-white"
+                  data-bs-toggle="modal" data-bs-target="#cancel-order" onClick={refreshFieldCancelOrder}
+                >
+                Hủy đơn hàng
+                </button>
+              </div>
+            </div>
+          </>
+          )}
+        </div>
       </div>
 
-      {/* <!-- User Info Side Bar--> */}
+      {/* <!-- Modal cancel --> */}
+    <div className="modal" id="cancel-order">
+        <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+
+                {/* <!-- Modal Header --> */}
+                <div className="py-2 d-flex justify-content-between" style={{backgroundColor: 'rgba(60, 117, 166, 1)'}}>
+                    <h4 className="modal-title inter ms-3" style={{color: 'white'}}>Hủy đơn</h4>
+                    <div className="btn-close-modal me-3" style={{color: 'white'}} data-bs-dismiss="modal"><FontAwesomeIcon icon={faX} /></div>
+                </div>
+
+                {/* <!-- Modal body --> */}
+                <div className="modal-body" style={{backgroundColor: 'white'}}>
+                <div className="p-2" >
+                    <table className="w-100 table-modal" >
+                    <tbody>
+                        <tr>
+                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Bạn có chắc muốn hủy đơn hàng hay không?</span></td>
+                       </tr>
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+
+                {/* <!-- Modal footer --> */}
+                <div className="footer-modal py-4 d-flex justify-content-end" style={{backgroundColor: 'white'}}>
+                    <div className="close me-4">
+                        <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal" style={{backgroundColor: 'rgb(60, 117, 166)'}}><span>Thoát</span></div>
+                    </div>
+                    <div className="save-modal me-4">
+                        <input onClick={handleConfirmCancelOrder} type="submit" data-bs-dismiss="modal" value="Xác nhận hủy" style={{backgroundColor: '#E33539'}} className="input-submit modal-btn-close p-2 px-4 inter"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     </>
   );
 };
-export default UserOrderDetailTest;
+export default UserOrderDetail;
