@@ -22,12 +22,12 @@ const ManageOrder = () => {
   const [loading, setLoading] = useState(false);
   const [searchOrderCode, setSearchOrderCode] = useState(null);
   const [searchUsername, setSearchUsername] = useState(null);
-  const [searchStatus, setSearchStatus] = useState(null);
-  const [searchDeliveryStatus, setSearchDeliveryStatus] = useState(null);
-  const [searchSortDate, setSearchSortDate] = useState(null);
-  const [searchSortPrice, setSearchSortPrice] = useState(null);
-  const [searchPaymentStatus, setSearchPaymentStatus] = useState(null);
-  const [searchPaymentMethod, setSearchPaymentMethod] = useState(null);
+  const [searchStatus, setSearchStatus] = useState(0);
+  const [searchDeliveryStatus, setSearchDeliveryStatus] = useState(0);
+  const [searchSortDate, setSearchSortDate] = useState(0);
+  const [searchSortPrice, setSearchSortPrice] = useState(0);
+  const [searchPaymentStatus, setSearchPaymentStatus] = useState(0);
+  const [searchPaymentMethod, setSearchPaymentMethod] = useState(0);
   const [userLoaded, setUserLoaded] = useState(false);
   const [paging, setPaging] = useState({
     CurrentPage: 1,
@@ -76,12 +76,12 @@ const ManageOrder = () => {
     setLoading(true);
     try {
       const searchParams = new URLSearchParams();
-      if (searchStatus != null && searchStatus == "" && searchStatus != 0) searchParams.append("Status", searchStatus);
-      if (searchDeliveryStatus != null && searchDeliveryStatus == "" && searchDeliveryStatus != 0) searchParams.append("DeliveryStatus", searchDeliveryStatus);
-      if (searchSortDate != null && searchSortDate == "" && searchSortDate != 0) searchParams.append("SortDate", searchSortDate);
-      if (searchSortPrice != null && searchSortPrice == "" && searchSortPrice != 0) searchParams.append("SortPrice", searchSortPrice);
-      if (searchPaymentStatus != null && searchPaymentStatus == "" && searchPaymentStatus != 0) searchParams.append("PaymentStatus", searchPaymentStatus);
-      if (searchPaymentMethod != null && searchPaymentMethod == "" && searchPaymentMethod != 0) searchParams.append("PaymentMethod", searchPaymentMethod);
+      if (searchStatus != 0) searchParams.append("Status", searchStatus);
+      if (searchDeliveryStatus != 0) searchParams.append("DeliveryStatus", searchDeliveryStatus);
+      if (searchSortDate != 0) searchParams.append("SortDate", searchSortDate);
+      if (searchSortPrice != 0) searchParams.append("SortPrice", searchSortPrice);
+      if (searchPaymentStatus != 0) searchParams.append("PaymentStatus", searchPaymentStatus);
+      if (searchPaymentMethod != 0) searchParams.append("PaymentMethod", searchPaymentMethod);
       searchParams.append("PageIndex", pageIndex);
       searchParams.append("PageSize", pageSize);
 

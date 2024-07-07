@@ -13,7 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import feedback from "../../assets/img/feedback.png";
 import avtunknow from "../../assets/img/avatarUnknown.jpg";
-import { SideBySideMagnifier } from "@datobs/react-image-magnifiers";
+//import { SideBySideMagnifier } from "@datobs/react-image-magnifiers";
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
@@ -536,13 +536,14 @@ const Product = () => {
                     }}
                   >
                     <div className="w-75">
-                      <SideBySideMagnifier
+                      {/* <SideBySideMagnifier
                         imageSrc={product.image}
                         imageAlt="Sample Image"
                         alwaysInPlace={true}
                         fillAvailableSpace={false}
                         className="w-100"
-                      />
+                      /> */}
+                      <img src={product.image} className="w-100"/>
                     </div>
                   </div>
                   <div className="col-md-8 px-5 py-3">
