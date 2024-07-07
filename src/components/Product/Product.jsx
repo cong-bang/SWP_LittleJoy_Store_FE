@@ -13,6 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import feedback from "../../assets/img/feedback.png";
 import avtunknow from "../../assets/img/avatarUnknown.jpg";
+import { SideBySideMagnifier } from "@datobs/react-image-magnifiers";
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
@@ -395,8 +396,7 @@ const Product = () => {
       } else {
         toast.error("Bình luận được sửa thất bại!");
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   //xử lý tăng giảm quantity của product
@@ -536,7 +536,13 @@ const Product = () => {
                     }}
                   >
                     <div className="w-75">
-                      <img src={product.image} alt="" className="w-100" />
+                      <SideBySideMagnifier
+                        imageSrc={product.image}
+                        imageAlt="Sample Image"
+                        alwaysInPlace={true}
+                        fillAvailableSpace={false}
+                        className="w-100"
+                      />
                     </div>
                   </div>
                   <div className="col-md-8 px-5 py-3">
