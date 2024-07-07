@@ -600,7 +600,7 @@ const ManageOrder = () => {
                             <div className="filter-status p-3" >
                               <select name="" id="" className="p-1" defaultValue="" value={searchPaymentMethod} onChange={(e) => setSearchPaymentMethod(parseInt(e.target.value))}>
                                 <option value="" selected disabled>
-                                  Sort Price
+                                  Payment method
                                 </option>
                                 <option value="1">COD</option>
                                 <option value="2">VNPAY</option>
@@ -622,12 +622,7 @@ const ManageOrder = () => {
                                 <span className="float-start">Date</span>
                               </td>
                               <td className="p-3 px-4 ">
-                                <span className="float-start">Address</span>
-                              </td>
-                              <td className="p-3 px-4 ">
-                                <span className="float-start">
-                                  Phone
-                                </span>
+                                <span className="float-start">Delivery status</span>
                               </td>
                               <td className="p-3 px-4 ">
                                 <span className="float-start">Method</span>
@@ -656,10 +651,7 @@ const ManageOrder = () => {
                                 </span>
                               </td>
                               <td className="p-3 px-4 ">
-                                <span className="float-start">...</span>
-                              </td>
-                              <td className="p-3 px-4 ">
-                                <span className="float-start">{o.phoneNumber}</span>
+                                <span className="float-start">{o.deliveryStatus}</span>
                               </td>
                               <td className="p-3 px-4 ">
                                 <span className="float-start">{o.paymentMethod}</span>
