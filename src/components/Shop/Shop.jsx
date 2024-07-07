@@ -558,8 +558,8 @@ const Shop = () => {
                       THÊM VÀO GIỎ HÀNG
                     </Link>
                   ) : (
-                    <div class="sold-out position-absolute top-50 start-50 translate-middle d-flex justify-content-center align-items-center">
-                      <p class="m-0">SOLD OUT</p>
+                    <div className="sold-out position-absolute top-50 start-50 translate-middle d-flex justify-content-center align-items-center">
+                      <p className="m-0">SOLD OUT</p>
                     </div>
                   )}
                   </div>
