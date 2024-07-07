@@ -76,12 +76,12 @@ const ManageOrder = () => {
     setLoading(true);
     try {
       const searchParams = new URLSearchParams();
-      if (searchStatus != null || searchStatus == "") searchParams.append("Status", searchStatus);
-      if (searchDeliveryStatus != null || searchDeliveryStatus == "") searchParams.append("DeliveryStatus", searchDeliveryStatus);
-      if (searchSortDate != null || searchSortDate == "") searchParams.append("SortDate", searchSortDate);
-      if (searchSortPrice != null || searchSortPrice == "") searchParams.append("SortPrice", searchSortPrice);
-      if (searchPaymentStatus != null || searchPaymentStatus == "") searchParams.append("PaymentStatus", searchPaymentStatus);
-      if (searchPaymentMethod != null || searchPaymentMethod == "") searchParams.append("PaymentMethod", searchPaymentMethod);
+      if (searchStatus != null && searchStatus == "" && searchStatus != 0) searchParams.append("Status", searchStatus);
+      if (searchDeliveryStatus != null && searchDeliveryStatus == "" && searchDeliveryStatus != 0) searchParams.append("DeliveryStatus", searchDeliveryStatus);
+      if (searchSortDate != null && searchSortDate == "" && searchSortDate != 0) searchParams.append("SortDate", searchSortDate);
+      if (searchSortPrice != null && searchSortPrice == "" && searchSortPrice != 0) searchParams.append("SortPrice", searchSortPrice);
+      if (searchPaymentStatus != null && searchPaymentStatus == "" && searchPaymentStatus != 0) searchParams.append("PaymentStatus", searchPaymentStatus);
+      if (searchPaymentMethod != null && searchPaymentMethod == "" && searchPaymentMethod != 0) searchParams.append("PaymentMethod", searchPaymentMethod);
       searchParams.append("PageIndex", pageIndex);
       searchParams.append("PageSize", pageSize);
 
@@ -545,66 +545,66 @@ const ManageOrder = () => {
                         <div className="col-md-12 d-flex justify-content-start">
                           <div className="filter-status p-3" >
                             <select name="" id="" className="p-1" defaultValue="" value={searchStatus} onChange={(e) => setSearchStatus(parseInt(e.target.value))}>
-                              <option value="" selected disabled>
+                              <option value="0" selected disabled>
                                 Status
                               </option>
                               <option value="1">Đang chờ</option>
                               <option value="2">Đặt hàng thành công</option>
                               <option value="3">Đã hủy</option>
-                              <option value="">Không</option>
+                              <option value="0">Không</option>
                             </select>
                           </div>
                           <div className="filter-status p-3" >
                             <select name="" id="" className="p-1" defaultValue="" value={searchPaymentStatus} onChange={(e) => setSearchPaymentStatus(parseInt(e.target.value))}>
-                              <option value="" selected disabled>
+                              <option value="0" selected disabled>
                                 Payment Status
                               </option>
                               <option value="1">Đang chờ</option>
                               <option value="2">Thành công</option>
                               <option value="3">Thất bại</option>
-                              <option value="">Không</option>
+                              <option value="0">Không</option>
                             </select>
                           </div>
                           <div className="filter-status p-3" >
                             <select name="" id="" className="p-1" defaultValue="" value={searchDeliveryStatus} onChange={(e) => setSearchDeliveryStatus(parseInt(e.target.value))}>
-                              <option value="" selected disabled>
+                              <option value="0" selected disabled>
                                 Delivery Status
                               </option>
                               <option value="1">Đang chuẩn bị</option>
                               <option value="2">Đang giao hàng</option>
                               <option value="3">Giao hàng thất bại</option>
                               <option value="4">Giao hàng thành công</option>
-                              <option value="">Không</option>
+                              <option value="0">Không</option>
                             </select>
                           </div>
                           <div className="filter-status p-3" >
                               <select name="" id="" className="p-1" defaultValue="" value={searchSortDate} onChange={(e) => setSearchSortDate(parseInt(e.target.value))}>
-                                <option value="" selected disabled>
+                                <option value="0" selected disabled>
                                   Sort Date
                                 </option>
                                 <option value="1">Tăng dần</option>
                                 <option value="2">Giảm dần</option>
-                                <option value="">Không</option>
+                                <option value="0">Không</option>
                               </select>
                             </div>
                             <div className="filter-status p-3" >
                               <select name="" id="" className="p-1" defaultValue="" value={searchSortPrice} onChange={(e) => setSearchSortPrice(parseInt(e.target.value))}>
-                                <option value="" selected disabled>
+                                <option value="0" selected disabled>
                                   Sort Price
                                 </option>
                                 <option value="1">Tăng dần</option>
                                 <option value="2">Giảm dần</option>
-                                <option value="">Không</option>
+                                <option value="0">Không</option>
                               </select>
                             </div>
                             <div className="filter-status p-3" >
                               <select name="" id="" className="p-1" defaultValue="" value={searchPaymentMethod} onChange={(e) => setSearchPaymentMethod(parseInt(e.target.value))}>
-                                <option value="" selected disabled>
+                                <option value="0" selected disabled>
                                   Payment method
                                 </option>
                                 <option value="1">COD</option>
                                 <option value="2">VNPAY</option>
-                                <option value="">Không</option>
+                                <option value="0">Không</option>
                               </select>
                             </div>
                         </div>
@@ -619,19 +619,19 @@ const ManageOrder = () => {
                                 <span className="float-start">User</span>
                               </td>
                               <td className="p-3 px-4 ">
-                                <span className="float-start">Date</span>
-                              </td>
-                              <td className="p-3 px-4 ">
-                                <span className="float-start">Delivery status</span>
+                                <span className="float-start">Price</span>
                               </td>
                               <td className="p-3 px-4 ">
                                 <span className="float-start">Method</span>
                               </td>
                               <td className="p-3 px-4 ">
-                                <span className="float-start">Price</span>
+                                <span className="float-start">Date</span>
                               </td>
                               <td className="p-3 px-4 ">
-                                <span className="">Status</span>
+                                <span className="float-start">Status</span>
+                              </td>
+                              <td className="p-3 px-4 ">
+                                <span className="">Delivery status</span>
                               </td>
                               <td className="p-3 px-4 ">
                                 <span>Action</span>
@@ -646,18 +646,18 @@ const ManageOrder = () => {
                                 <span className="float-start"><UserName title={o.userName} maxLength={8}/></span>
                               </td>
                               <td className="p-3 px-4 ">
-                                <span className="float-start">
-                                  {o.date}
-                                </span>
-                              </td>
-                              <td className="p-3 px-4 ">
-                                <span className="float-start">{o.deliveryStatus}</span>
+                                <span className="float-start">{o.totalPrice}</span>
                               </td>
                               <td className="p-3 px-4 ">
                                 <span className="float-start">{o.paymentMethod}</span>
                               </td>
                               <td className="p-3 px-4 ">
-                                <span className="float-start">{o.totalPrice}</span>
+                                <span className="float-start">
+                                  {o.date}
+                                </span>
+                              </td>
+                              <td className="p-3 px-4 ">
+                                <span className="float-start">{o.deliveryStatus || "Chưa có"}</span>
                               </td>
                               <td className="p-3 px-4 ">
                               {o.paymentStatus === "Thành Công" && (
