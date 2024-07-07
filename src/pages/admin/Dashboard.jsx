@@ -431,11 +431,11 @@ const Dashboard = () => {
                     <tr>
                       <td></td>
                       <td className="py-1 active-admin ps-3">
-                        <Link to="/dashboard">
+                        <span>
                           <span style={{ fontFamily: "sans-serif" }}>
                             Dashboard
                           </span>
-                        </Link>
+                        </span>
                       </td>
                     </tr>
                     </>)}
@@ -538,19 +538,19 @@ const Dashboard = () => {
               <div className="row top-admin-nav">
                 <div className="col-md-2 text-center">
                   <div className="dashboard p-2 py-3">
-                    <a href="">
+                    <span>
                       <p
                         className="m-0"
-                        style={{ fontFamily: "sans-serif", fontSize: "16px" }}
+                        style={{ fontFamily: "sans-serif", fontSize: "16px", color: 'white'}}
                       >
                         Dashboard
                       </p>
-                    </a>
+                    </span>
                   </div>
                 </div>
                 <div className="col-md-8 d-flex align-content-center">
                   <div className="icon-admin-nav p-2 py-3">
-                    <FontAwesomeIcon icon={faHouse} />
+                    <FontAwesomeIcon icon={faHouse} className="text-white"/>
                   </div>
                   <div className="pos-admin-nav d-flex align-content-center p-2 py-3">
                     <p

@@ -391,19 +391,19 @@ const ManageBlog = () => {
               <div className="row top-admin-nav">
                 <div className="col-md-2 text-center">
                   <div className="dashboard p-2 py-3">
-                    <Link to="/dashboard">
+                    <span className="text-white">
                       <p
                         className="m-0"
                         style={{ fontFamily: "sans-serif", fontSize: "16px" }}
                       >
                         Dashboard
                       </p>
-                    </Link>
+                    </span>
                   </div>
                 </div>
                 <div className="col-md-8 d-flex align-content-center">
                   <div className="icon-admin-nav p-2 py-3 text-white">
-                    <FontAwesomeIcon icon={faHouse} />
+                    <FontAwesomeIcon icon={faHouse} className="text-white" />
                   </div>
                   <div className="pos-admin-nav d-flex align-content-center p-2 py-3">
                     <p

@@ -474,16 +474,16 @@ const ManageOrder = () => {
             <div className="row top-nav">
               <div className="col-md-2 text-center">
                 <div className="dashboard p-2 py-3">
-                  <a href="" className="">
-                    <p className="m-0" style={{ fontFamily: "sans-serif", fontSize: '16px' }}>
+                  <span className="">
+                    <p className="m-0" style={{ fontFamily: "sans-serif", fontSize: '16px', color:'white' }}>
                       Dashboard
                     </p>
-                  </a>
+                  </span>
                 </div>
               </div>
               <div className="col-md-8 d-flex align-content-center">
                 <div className="icon-nav p-2 py-3">
-                  <i className="fa-solid fa-house"></i>
+                  <FontAwesomeIcon icon="fa-solid fa-house" className="text-white"></FontAwesomeIcon>
                 </div>
                 <div className="pos-nav d-flex align-content-center p-2 py-3">
                   <p className="m-0" style={{ fontFamily: "sans-serif", fontSize: '16px' }}>
