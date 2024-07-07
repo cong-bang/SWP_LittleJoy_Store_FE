@@ -93,7 +93,7 @@ const Product = () => {
       setAgeName(dataAgeName);
 
       const resSimilarProduct = await fetch(
-        `https://littlejoyapi.azurewebsites.net/api/product/filter?PageIndex=1&PageSize=4&cateId=${dataResponse.cateId}`
+        `https://littlejoyapi.azurewebsites.net/api/product/get-product-related/${id}`
       );
       const dataSimilarP = await resSimilarProduct.json();
       if (resSimilarProduct.ok) {
