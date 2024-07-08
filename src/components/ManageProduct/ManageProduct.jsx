@@ -405,10 +405,15 @@ const ManageProduct = () => {
       setDescription(data.description);
       setImage(data.image);
       setIsActive(data.isActive);
-      setAgeId(data.ageId);
       setOriginId(data.originId);
       setBrandId(data.brandId);
       setCateId(data.cateId);
+      if (data.ageId == null) {
+        setAgeId(0);
+      } else {
+        setAgeId(data.ageId);
+      }
+      
     } catch (error) {
       console.error("Lỗi fetch product details", error);
     } finally {
