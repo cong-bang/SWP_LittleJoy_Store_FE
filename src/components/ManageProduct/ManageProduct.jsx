@@ -279,58 +279,107 @@ const ManageProduct = () => {
       image.trim() === "" ||
       cateId === "" ||
       originId === "" ||
-      brandId === ""
+      brandId === "" ||
+      ageId === ""
     ) {
       notify();
       return;
     }
 
-    const newProduct = {
-      productName: productName,
-      price: parseFloat(price),
-      description: description,
-      weight: parseInt(weight),
-      quantity: quantity,
-      image: image,
-      isActive: isActive,
-      ageId: ageId,
-      originId: originId,
-      brandId: brandId,
-      cateId: cateId,
-    };
-
-    try {
-      const response = await fetch(
-        "https://littlejoyapi.azurewebsites.net/api/product",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newProduct),
+    if (ageId == 0) {
+      const newProduct = {
+        productName: productName,
+        price: parseFloat(price),
+        description: description,
+        weight: parseInt(weight),
+        quantity: quantity,
+        image: image,
+        isActive: isActive,
+        originId: originId,
+        brandId: brandId,
+        cateId: cateId,
+      };
+      try {
+        const response = await fetch(
+          "https://littlejoyapi.azurewebsites.net/api/product",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newProduct),
+          }
+        );
+  
+        if (response.ok) {
+          toast.success("Sản phẩm được tạo thành công!");
+          fetchData(paging.CurrentPage, paging.PageSize);
+          setProductName("");
+          setPrice("");
+          setDescription("");
+          setWeight("");
+          setQuantity(1);
+          setImage("");
+          setIsActive("");
+          setAgeId("");
+          setBrandId("");
+          setCateId("");
+          setOriginId("");
+        } else {
         }
-      );
-
-      if (response.ok) {
-        toast.success("Sản phẩm được tạo thành công!");
-        fetchData(paging.CurrentPage, paging.PageSize);
-        setProductName("");
-        setPrice("");
-        setDescription("");
-        setWeight("");
-        setQuantity(1);
-        setImage("");
-        setIsActive("");
-        setAgeId("");
-        setBrandId("");
-        setCateId("");
-        setOriginId("");
-      } else {
+        const result = await response.json();
+      } catch (error) {
+        console.error("Lỗi:", error);
       }
-      const result = await response.json();
-    } catch (error) {
-      console.error("Lỗi:", error);
+    } 
+    else {
+      const newProduct = {
+        productName: productName,
+        price: parseFloat(price),
+        description: description,
+        weight: parseInt(weight),
+        quantity: quantity,
+        image: image,
+        isActive: isActive,
+        ageId: ageId,
+        originId: originId,
+        brandId: brandId,
+        cateId: cateId,
+      };
+      try {
+        const response = await fetch(
+          "https://littlejoyapi.azurewebsites.net/api/product",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newProduct),
+          }
+        );
+  
+        if (response.ok) {
+          toast.success("Sản phẩm được tạo thành công!");
+          fetchData(paging.CurrentPage, paging.PageSize);
+          setProductName("");
+          setPrice("");
+          setDescription("");
+          setWeight("");
+          setQuantity(1);
+          setImage("");
+          setIsActive("");
+          setAgeId("");
+          setBrandId("");
+          setCateId("");
+          setOriginId("");
+        } else {
+        }
+        const result = await response.json();
+      } catch (error) {
+        console.error("Lỗi:", error);
+      }
     }
+    
   };
 
   const handleUploadComplete = (url) => {
@@ -377,44 +426,85 @@ const ManageProduct = () => {
       notify();
       return;
     }
-    const updatedProduct = {
-      id: selectedProduct.id,
-      productName,
-      type,
-      price,
-      weight,
-      quantity,
-      description,
-      image,
-      isActive,
-      ageId,
-      originId,
-      brandId,
-      cateId,
-    };
 
-    try {
-      const response = await fetch(
-        "https://littlejoyapi.azurewebsites.net/api/product",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedProduct),
+    if (ageId == 0) {
+      const updatedProduct = {
+        id: selectedProduct.id,
+        productName,
+        type,
+        price,
+        weight,
+        quantity,
+        description,
+        image,
+        isActive,
+        originId,
+        brandId,
+        cateId,
+      };
+      try {
+        const response = await fetch(
+          "https://littlejoyapi.azurewebsites.net/api/product",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedProduct),
+          }
+        );
+  
+        if (response.ok) {
+          toast.success("Sản phẩm được sửa thành công!");
+          fetchData(paging.CurrentPage, paging.PageSize);
+        } else {
+          const errorData = await response.json();
+          toast.error("Sản phẩm được sửa thất bại!");
         }
-      );
-
-      if (response.ok) {
-        toast.success("Sản phẩm được sửa thành công!");
-        fetchData(paging.CurrentPage, paging.PageSize);
-      } else {
-        const errorData = await response.json();
-        toast.error("Sản phẩm được sửa thất bại!");
+      } catch (error) {
+        console.error("Error updating product:", error);
       }
-    } catch (error) {
-      console.error("Error updating product:", error);
+    } 
+    else {
+      const updatedProduct = {
+        id: selectedProduct.id,
+        productName,
+        type,
+        price,
+        weight,
+        quantity,
+        description,
+        image,
+        isActive,
+        ageId,
+        originId,
+        brandId,
+        cateId,
+      };
+      try {
+        const response = await fetch(
+          "https://littlejoyapi.azurewebsites.net/api/product",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedProduct),
+          }
+        );
+  
+        if (response.ok) {
+          toast.success("Sản phẩm được sửa thành công!");
+          fetchData(paging.CurrentPage, paging.PageSize);
+        } else {
+          const errorData = await response.json();
+          toast.error("Sản phẩm được sửa thất bại!");
+        }
+      } catch (error) {
+        console.error("Error updating product:", error);
+      }
     }
+    
   };
 
   const handleDeleteProduct = async (id) => {
@@ -770,7 +860,7 @@ const ManageProduct = () => {
                                     {ag.ageRange}
                                   </option>
                                 ))}
-                                <option value="">Không</option>
+                                <option value="0">Không</option>
                               </select>
                             </div>
                             <div className="filter-status p-3">
@@ -1118,6 +1208,7 @@ const ManageProduct = () => {
                                 {ag.ageRange}
                               </option>
                             ))}
+                            <option value="0">Không</option>
                           </select>
                         </td>
                       </tr>
@@ -1387,7 +1478,7 @@ const ManageProduct = () => {
                                 {ag.ageRange}
                               </option>
                             ))}
-                            <option value="">Không</option>
+                            <option value="0">Không</option>
                           </select>
                         </td>
                       </tr>
