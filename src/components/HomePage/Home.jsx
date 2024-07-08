@@ -116,7 +116,7 @@ const Home = () => {
         setOrigins(originData);
 
         const responseBrand = await fetch(
-          "https://littlejoyapi.azurewebsites.net/api/brand?PageIndex=1&PageSize=6"
+          "https://littlejoyapi.azurewebsites.net/api/brand"
         );
         if (!responseBrand.ok) {
           return;
@@ -525,14 +525,14 @@ const Home = () => {
               <p className="fs-1 title-arrival roboto">Thương Hiệu</p>
             </div>
             <div
-              className="col-md-12 d-flex justify-content-evenly p-4"
+              className="col-md-12 d-flex flex-md-wrap justify-content-evenly p-4"
               style={{
                 backgroundColor: "rgba(155, 155, 155, 0.05)",
                 borderRadius: "15px",
               }}
             >
             {brands.map((b) => (
-              <div key={b.id} className="w-15 ">
+              <div key={b.id} className="w-15 py-2 ">
                 <Link to="" onClick={() => handleDisplayBrand(b.id)} className="w-100">
                   <img
                     src={b.logo}
