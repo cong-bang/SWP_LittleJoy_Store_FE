@@ -53,7 +53,7 @@ const Shop = () => {
       if (brandIds.length) searchParams.append('brandId', brandIds);
   
       const response = await fetch(
-        `https://littlejoyapi.azurewebsites.net/api/product/filter?${searchParams.toString()}`
+        `https://littlejoyapi.azurewebsites.net/api/product/filter?IsActive=1&${searchParams.toString()}`
       );
   
       if (!response.ok) {
@@ -101,6 +101,7 @@ const Shop = () => {
         price: formatPrice(product.price)
       }));
       setProducts(formattedProducts);
+      console.log(formattedProducts);
     } catch (error) {
       console.error(error.message);
     } finally {

@@ -24,6 +24,7 @@ const Blog = () => {
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
   const { pathname } = useLocation();
+  const [selectedBlog, setSelectedBlog] = useState({});
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -97,10 +98,30 @@ const Blog = () => {
     fetchBlogs(paging.CurrentPage, paging.PageSize);
   }, [paging.CurrentPage, refresh]);
 
-  const handleDeleteBlog = async (id) => {
+  //DELETE BLOG
+  const handleDeleteBlog = (blogId) => {
+    fetchBlogById(blogId);
+  };
+
+  const fetchBlogById = async (blogId) => {
+    try {
+      const response = await fetch(
+        `https://littlejoyapi.azurewebsites.net/api/blog/${blogId}`
+      );
+      const data = await response.json();
+      if (response.ok) {
+        setSelectedBlog(data);
+        console.log(data);
+      }
+    } catch (error) {
+      console.error("Lỗi fetch blog", error);
+    } 
+  };
+
+  const handleConfirmDeleteBlog = async () => {
     try {
       const response = await apiFetch(
-        `https://littlejoyapi.azurewebsites.net/api/blog?id=${id}`,
+        `https://littlejoyapi.azurewebsites.net/api/blog?id=${selectedBlog.id}`,
         {
           method: "DELETE",
           headers: {
@@ -283,6 +304,7 @@ const Blog = () => {
                     <div
                       className="delete-blog"
                       onClick={() => handleDeleteBlog(blog.id)}
+                      data-bs-toggle="modal" data-bs-target="#delete-blog"
                       style={{
                         position: "absolute",
                         top: "10px",
@@ -324,6 +346,44 @@ const Blog = () => {
           </div>
         </div>
       </div>
+
+      {/* <!-- Modal delete blog --> */}
+      <div className="modal" id="delete-blog">
+        <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+
+                {/* <!-- Modal Header --> */}
+                <div className="py-2 d-flex justify-content-between" style={{backgroundColor: 'rgba(60, 117, 166, 1)'}}>
+                    <h4 className="modal-title inter ms-3" style={{color: 'white'}}>Xác nhận xóa bài viết</h4>
+                    <div className="btn-close-modal me-3" style={{color: 'white'}} data-bs-dismiss="modal"></div>
+                </div>
+
+                {/* <!-- Modal body --> */}
+                <div className="modal-body" style={{backgroundColor: 'white'}}>
+                <div className="p-2" >
+                    <table className="w-100 table-modal" >
+                    <tbody>
+                        <tr>
+                        <td className="w-20"><span className="py-2" style={{color: '#3C75A6'}}>Bạn có chắc muốn xóa bài viết này không?</span></td>
+                       </tr>
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+
+                {/* <!-- Modal footer --> */}
+                <div className="footer-modal py-4 d-flex justify-content-end" style={{backgroundColor: 'white'}}>
+                    <div className="close me-4">
+                        <div className="modal-btn-close p-2 px-4" data-bs-dismiss="modal" style={{backgroundColor: 'rgb(60, 117, 166)'}}><span>Hủy</span></div>
+                    </div>
+                    <div className="save-modal me-4">
+                        <input onClick={handleConfirmDeleteBlog} type="submit" data-bs-dismiss="modal" value="Xác nhận xóa" style={{backgroundColor: '#E33539'}} className="input-submit modal-btn-close p-2 px-4 inter"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     </>
   );
 };
