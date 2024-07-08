@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import "../../assets/css/styleblog.css";
 import UploadImage from "../UploadImage/UploadImage";
 import { apiFetch } from "../../services/api"
+import Editor from "../Quill/Editor";
 
 const UpdateBlog = () => {
   const [editorContent, setEditorContent] = useState("");
@@ -197,12 +198,12 @@ const UpdateBlog = () => {
               )}
             </div>
             <div className="text-xemtrc" style={{ display: "flex", flexDirection: "column" }}>
-              <ReactQuill
+              {/* <ReactQuill
                 value={editorContent}
                 onChange={handleEditorChange}
                 style={{backgroundColor: 'white', borderRadius: '5px', overflow: 'hidden'}}
-              />
-
+              /> */}
+              <Editor value={editorContent} onChange={handleEditorChange} />
               {showPreview && (
                 <div
                   className="mt-5 p-3"
