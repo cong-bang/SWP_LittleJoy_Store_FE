@@ -101,7 +101,6 @@ const Shop = () => {
         price: formatPrice(product.price)
       }));
       setProducts(formattedProducts);
-      console.log(formattedProducts);
     } catch (error) {
       console.error(error.message);
     } finally {
@@ -113,7 +112,7 @@ const Shop = () => {
     const fetchDataAndSetBrandId = async () => {
       const savedBrandId = localStorage.getItem('brandId');
       if (savedBrandId) {
-        setBrandIds([parseInt(savedBrandId)]);
+        setBrandIds([parseInt(savedBrandId)]);  
         await fetchData(paging.CurrentPage, paging.PageSize);
         localStorage.removeItem('brandId');
       } else {
