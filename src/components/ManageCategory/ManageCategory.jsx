@@ -1472,7 +1472,7 @@ const fetchBrandId = async (brandId) => {
                                                     <span className="float-start">{b.brandName}</span>
                                                   </td>
                                                   <td className="p-0 px-4 ">
-                                                    <span className="float-start"><img className="w-50" src={b.logo} alt="" ></img></span>
+                                                    <span className="float-start"><img className="" src={b.logo} alt="" style={{width: "100px", height: 'auto'}} ></img></span>
                                                   </td>
                                                   <td className="p-3 px-4 ">
                                                     <span className="float-start">...</span>

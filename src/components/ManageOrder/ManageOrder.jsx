@@ -657,9 +657,6 @@ const ManageOrder = () => {
                                 </span>
                               </td>
                               <td className="p-3 px-4 ">
-                                <span className="float-start">{o.deliveryStatus || "Chưa có"}</span>
-                              </td>
-                              <td className="p-3 px-4 ">
                               {o.paymentStatus === "Thành Công" && (
                                 <div className="status-order-complete px-1 py-2">
                                   <span className="inter">COMPLETED</span>
@@ -675,6 +672,9 @@ const ManageOrder = () => {
                                   <span className="inter">PENDING</span>
                                 </div>
                               )}
+                              </td>
+                              <td className="p-3 px-4 ">
+                                <span className="float-start">{o.deliveryStatus || "Chưa có"}</span>
                               </td>
                               <td className="p-3 px-4">
                                 <div
