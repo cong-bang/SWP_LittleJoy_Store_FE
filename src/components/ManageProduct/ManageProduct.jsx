@@ -279,7 +279,6 @@ const ManageProduct = () => {
       image.trim() === "" ||
       cateId === "" ||
       originId === "" ||
-      ageId === "" ||
       brandId === ""
     ) {
       notify();
@@ -1388,6 +1387,7 @@ const ManageProduct = () => {
                                 {ag.ageRange}
                               </option>
                             ))}
+                            <option value="">Không</option>
                           </select>
                         </td>
                       </tr>

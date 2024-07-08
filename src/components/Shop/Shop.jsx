@@ -569,7 +569,7 @@ const Shop = () => {
                   >
                     <div className="product-content mt-3 px-3 py-2">
                       <span className="Roboto" style={{ fontSize: "1.2em" }}>
-                        <ProductName title={p.productName} maxLength={20} />
+                        <ProductName title={p.productName} maxLength={17} />
                       </span>
                       <div className="rank-product mt-2">
                       {[1, 2, 3, 4, 5].map((star) => (
