@@ -170,7 +170,7 @@ const UserOrderManagement = () => {
                     &nbsp;
                   </div>
                   <div className="d-inline-block ps-3">
-                    <span className="" style={{color: '#757575'}}>{o.deliveryStatus}</span>
+                    <span className="" style={{color: '#757575'}}>{o.deliveryStatus || "Chưa có"}</span>
                   </div>
                 </td>
               </tr>

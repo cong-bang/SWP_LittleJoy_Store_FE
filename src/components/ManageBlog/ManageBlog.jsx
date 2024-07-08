@@ -503,6 +503,7 @@ const ManageBlog = () => {
                                 </option>
                                 <option value="1">Tăng Dần</option>
                                 <option value="0">Giảm Dần</option>
+                                <option value="">Không</option>
                               </select>
                             </div>
                           </div>
