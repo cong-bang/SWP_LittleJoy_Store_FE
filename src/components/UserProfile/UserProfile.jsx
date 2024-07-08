@@ -64,6 +64,7 @@ const UserProfile = () => {
     const newProfile = {
       id: user.id,
       fullname: fullname,
+      phoneNumber: phoneNumber,
       avatar: avatar,
     };
     try {
@@ -79,9 +80,10 @@ const UserProfile = () => {
       );
 
       if (response.ok) {
-        toast.success("Thông tin cá nhân của bạn được sửa thành công!");
         await fetchDataUser();
-        window.location.reload();
+        toast.success("Thông tin cá nhân của bạn được sửa thành công!")
+        setTimeout(() => window.location.reload(), 1500);
+        
       } else {
         toast.error("Thông tin cá nhân của bạn sửa thất bại");
       }

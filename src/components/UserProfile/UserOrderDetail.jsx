@@ -349,10 +349,10 @@ const UserOrderDetail = () => {
                   <span style={{ float: "inline-end" }}>{p.quantity}</span>
                 </td>
                 <td className="px-2" style={{ border: "1px solid gray" }}>
-                  <span style={{ float: "inline-end" }}>{p.price ? p.price.toLocaleString('de-DE') : 'N/A'}</span>
+                  <span style={{ float: "inline-end" }}>{p.price / p.quantity ? (p.price / p.quantity).toLocaleString('de-DE') : 'N/A'}</span>
                 </td>
                 <td className="px-2" style={{ border: "1px solid gray" }}>
-                  <span style={{ float: "inline-end" }}>{p.quantity * p.price ? (p.quantity * p.price).toLocaleString('de-DE') : "N/A" }</span>
+                  <span style={{ float: "inline-end" }}>{p.price ? (p.price).toLocaleString('de-DE') : "N/A" }</span>
                 </td>
               </tr>
               ))}

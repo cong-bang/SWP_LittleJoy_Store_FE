@@ -1278,8 +1278,8 @@ const ManageProduct = () => {
                             <option value="" disabled>
                               Choose
                             </option>
-                            <option value="true">true</option>
-                            <option value="false">false</option>
+                            <option value="true">Đang hoạt động</option>
+                            <option value="false">Không hoạt động</option>
                           </select>
                         </td>
                       </tr>
