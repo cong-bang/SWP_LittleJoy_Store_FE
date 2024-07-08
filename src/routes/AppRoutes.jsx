@@ -109,8 +109,7 @@ const AppRoutes = () => {
         <Route path="/forgotpass" element={<Forgotpass1 />} />
         <Route path="/register" element={<Register />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/createblog" element={<CreateBlog />} />
-        <Route path="/updateblog/:id" element={<UpdateBlog />} />
+        
         <Route path="/blogdetail/:id" element={<BlogDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/:id" element={<Product />} />
@@ -118,6 +117,12 @@ const AppRoutes = () => {
           <Route path="/checkout" element={<Checkout />} />
         )}
 
+        {user && (user.role === "ADMIN" || user.role === "STAFF") && (
+          <>
+          <Route path="/createblog" element={<CreateBlog />} />
+          <Route path="/updateblog/:id" element={<UpdateBlog />} />
+          </>
+        )}
         <Route element={<UserLayout />}>
           <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/useraddress" element={<UserAddress />} />
