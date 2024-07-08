@@ -68,6 +68,7 @@ const ManageProduct = () => {
   const [searchAge, setSearchAge] = useState(null);
   const [categoriesLoaded, setCategoriesLoaded] = useState(false);
   const [roleName, setRoleName] = useState('');
+  const [statusProduct, setStatusProduct] = useState(null);
  
   const TableLoading = () => (
     <ContentLoader
@@ -156,6 +157,7 @@ const ManageProduct = () => {
       if (searchOrigin != null) searchParams.append("originId", searchOrigin);
       if (searchAge != null) searchParams.append("ageId", searchAge);
       if (searchBrand != null) searchParams.append("brandId", searchBrand);
+      if (statusProduct != null) searchParams.append("IsActive", statusProduct);
       searchParams.append("PageIndex", pageIndex);
       searchParams.append("PageSize", pageSize);
 
@@ -767,6 +769,27 @@ const ManageProduct = () => {
                                 <option value="">Không</option>
                               </select>
                             </div>
+                            <div className="filter-status p-3">
+                              <select
+                                name=""
+                                id=""
+                                className="p-1"
+                                defaultValue=""
+                                value={statusProduct}
+                                onChange={(e) => setStatusProduct(e.target.value)}
+                                >
+                                <option value="" selected disabled>
+                                  Trạng thái sản phẩm
+                                </option>
+                                <option value="1">
+                                  Đang hoạt động
+                                </option>
+                                <option value="0">
+                                  Không hoạt động
+                                </option>
+                                <option value="">Không</option>
+                                  </select>
+                                </div>
                             
                           </div>
                           <div className="col-md-12 p-0">

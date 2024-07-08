@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faCartShopping, faMapLocation, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import avatarUnknown from "../../assets/img/avatarUnknown.jpg";
@@ -9,6 +9,7 @@ const UserProfileSidebar = () => {
     const [user, setUser] = useState({});
     const navigate = useNavigate();
     const location = useLocation();
+    const { id } = useParams();
 
     const fetchDataUser = async () => {
         try {
@@ -98,7 +99,7 @@ const UserProfileSidebar = () => {
           <tr>
             <td className="pt-3" colSpan="2">
               <div className="user-address-sidebar">
-              <div className={(location.pathname == '/userordermanagement' || location.pathname == '/userorderdetail') ? "CoverButton" : ""}>
+              <div className={(location.pathname == '/userordermanagement' || location.pathname == `/userorderdetail/${id}`) ? "CoverButton" : ""}>
                 <Link className="d-flex py-1" to={{pathname: "/userordermanagement", state: {user}}} style={{ textDecoration: "none", color: "black" }}>
                   <div className="text-center w-25" style={{ color: "#3C75A6" }}>
                     <FontAwesomeIcon icon={faCartShopping} className="fs-3" />

@@ -32,7 +32,8 @@ import UserLayout from "../components/UserProfile/ProfileLayout";
 import PaymentPending from "../components/Payment/PaymentPending";
 import PaymentInfo from "../components/Payment/PaymentInfo";
 import UserOrderManagement from "../components/UserProfile/UserOrderManagement";
-import UserOrderDetail from "../components/UserProfile/UserOrderDetailTest";
+import UserOrderDetail from "../components/UserProfile/UserOrderDetail";
+
 
 
 
