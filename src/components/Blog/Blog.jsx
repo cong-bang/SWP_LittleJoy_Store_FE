@@ -270,9 +270,7 @@ const Blog = () => {
                           alt=""
                           style={{
                             width: "100%",
-                            height: "auto",
                             borderRadius: "15px",
-                            aspectRatio: "2/1",
                             backgroundPosition: "center",
                             backgroundSize: "cover",
                             backgroundRepeat: "no-repeat",

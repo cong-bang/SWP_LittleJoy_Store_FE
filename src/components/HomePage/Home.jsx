@@ -19,6 +19,9 @@ import ContentLoader from "react-content-loader";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import avatarUnknown from "../../assets/img/avatarUnknown.jpg"
+import avatar2 from "../../assets/img/avatar2.png";
+import avatar3 from "../../assets/img/avatar3.jpg";
 
 const Home = () => {
   const [relatedBlogs, setRelatedBlogs] = useState([]);
@@ -694,7 +697,7 @@ const Home = () => {
                                       </div>
                                     </td>
                                     <td className="w-80 fw-bold roboto">
-                                      Nguyễn Thanh Hùng
+                                      Phạm Văn Tuấn Hiếu
                                     </td>
                                   </tr>
                                   <tr>
@@ -737,7 +740,7 @@ const Home = () => {
                                       <div className="d-flex justify-content-center align-content-center w-100">
                                         <div className="avatar-user-feedback w-75">
                                           <img
-                                            src={avatar1}
+                                            src={avatar2}
                                             alt=""
                                             className="w-100 avatar-user-feedback-img"
                                           />
@@ -745,7 +748,7 @@ const Home = () => {
                                       </div>
                                     </td>
                                     <td className="w-80 fw-bold roboto">
-                                      Nguyễn Thanh Hùng
+                                      Nguyễn Kiến Minh
                                     </td>
                                   </tr>
                                   <tr>
@@ -764,10 +767,9 @@ const Home = () => {
                             </div>
                             <div className="content-feedback p-3 roboto">
                               <span>
-                                Tôi rất ấn tượng với sự đa dạng của các loại sữa
-                                tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu,
-                                cửa hàng đều có đủ. Dịch vụ giao hàng cũng rất
-                                nhanh chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
+                              Sữa có vị ngọt tự nhiên, không quá ngọt gắt, rất dễ uống.
+                              Hương vị của sữa thật sự tuyệt vời, cả gia đình tôi đều yêu 
+                              thích, sữa có mùi thơm dễ chịu, không hề bị nồng hay khó chịu.
                               </span>
                             </div>
                           </div>
@@ -788,7 +790,7 @@ const Home = () => {
                                       <div className="d-flex justify-content-center align-content-center w-100">
                                         <div className="avatar-user-feedback w-75">
                                           <img
-                                            src={avatar1}
+                                            src={avatar3}
                                             alt=""
                                             className="w-100 avatar-user-feedback-img"
                                           />
@@ -796,7 +798,7 @@ const Home = () => {
                                       </div>
                                     </td>
                                     <td className="w-80 fw-bold roboto">
-                                      Nguyễn Thanh Hùng
+                                      Lương Công Bằng
                                     </td>
                                   </tr>
                                   <tr>
@@ -815,10 +817,9 @@ const Home = () => {
                             </div>
                             <div className="content-feedback p-3 roboto">
                               <span>
-                                Tôi rất ấn tượng với sự đa dạng của các loại sữa
-                                tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu,
-                                cửa hàng đều có đủ. Dịch vụ giao hàng cũng rất
-                                nhanh chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
+                                Sữa này chứa nhiều vitamin và khoáng chất, rất tốt 
+                                cho sức khỏe của tôi và gia đình. Sữa giúp tôi cung 
+                                cấp đầy đủ dưỡng chất cần thiết hàng ngày.                           
                               </span>
                             </div>
                           </div>
@@ -845,7 +846,7 @@ const Home = () => {
                                       <div className="d-flex justify-content-center align-content-center w-100">
                                         <div className="avatar-user-feedback w-75">
                                           <img
-                                            src={avatar1}
+                                            src={avatarUnknown}
                                             alt=""
                                             className="w-100 avatar-user-feedback-img"
                                           />
@@ -853,7 +854,7 @@ const Home = () => {
                                       </div>
                                     </td>
                                     <td className="w-80 fw-bold roboto">
-                                      Nguyễn Thanh Hùng
+                                      Trần Đại Dương
                                     </td>
                                   </tr>
                                   <tr>
@@ -872,10 +873,11 @@ const Home = () => {
                             </div>
                             <div className="content-feedback p-3 roboto">
                               <span>
-                                Tôi rất ấn tượng với sự đa dạng của các loại sữa
-                                tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu,
-                                cửa hàng đều có đủ. Dịch vụ giao hàng cũng rất
-                                nhanh chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
+                                Sản phẩm có nhiều loại và hương vị để lựa chọn, 
+                                rất đa dạng, tôi rất thích sự phong phú của các 
+                                loại sữa, từ sữa tươi đến sữa chua, sữa hạt.
+                                Có nhiều dung tích khác nhau để phù hợp với nhu cầu 
+                                của mọi người.
                               </span>
                             </div>
                           </div>
@@ -896,7 +898,7 @@ const Home = () => {
                                       <div className="d-flex justify-content-center align-content-center w-100">
                                         <div className="avatar-user-feedback w-75">
                                           <img
-                                            src={avatar1}
+                                            src={avatarUnknown}
                                             alt=""
                                             className="w-100 avatar-user-feedback-img"
                                           />
@@ -904,7 +906,7 @@ const Home = () => {
                                       </div>
                                     </td>
                                     <td className="w-80 fw-bold roboto">
-                                      Nguyễn Thanh Hùng
+                                      Nguyễn Văn An
                                     </td>
                                   </tr>
                                   <tr>
@@ -923,10 +925,11 @@ const Home = () => {
                             </div>
                             <div className="content-feedback p-3 roboto">
                               <span>
-                                Tôi rất ấn tượng với sự đa dạng của các loại sữa
-                                tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu,
-                                cửa hàng đều có đủ. Dịch vụ giao hàng cũng rất
-                                nhanh chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
+                                Sản phẩm có nguồn gốc rõ ràng, đảm bảo an toàn 
+                                vệ sinh thực phẩm. Tôi yên tâm khi sử dụng sản 
+                                phẩm vì biết rằng nó đã qua kiểm định chất lượng 
+                                nghiêm ngặt.
+                                
                               </span>
                             </div>
                           </div>
@@ -947,7 +950,7 @@ const Home = () => {
                                       <div className="d-flex justify-content-center align-content-center w-100">
                                         <div className="avatar-user-feedback w-75">
                                           <img
-                                            src={avatar1}
+                                            src={avatarUnknown}
                                             alt=""
                                             className="w-100 avatar-user-feedback-img"
                                           />
@@ -974,10 +977,9 @@ const Home = () => {
                             </div>
                             <div className="content-feedback p-3 roboto">
                               <span>
-                                Tôi rất ấn tượng với sự đa dạng của các loại sữa
-                                tại cửa hàng. Từ sữa tươi, sữa bột cho mẹ bầu,
-                                cửa hàng đều có đủ. Dịch vụ giao hàng cũng rất
-                                nhanh chóng và tiện lợi. Tôi sẽ tiếp tục ủng hộ!
+                                Sữa dễ dàng bảo quản trong tủ lạnh mà không bị 
+                                hỏng nhanh. Sản phẩm có hạn sử dụng dài, giúp 
+                                tôi tiết kiệm chi phí và thời gian mua sắm.
                               </span>
                             </div>
                           </div>
