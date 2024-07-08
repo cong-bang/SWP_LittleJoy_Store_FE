@@ -532,13 +532,12 @@ const Home = () => {
               }}
             >
             {brands.map((b) => (
-              <div key={b.id} className="w-15 overflow-hidden">
-                <Link to="" onClick={() => handleDisplayBrand(b.id)}>
+              <div key={b.id} className="w-15 ">
+                <Link to="" onClick={() => handleDisplayBrand(b.id)} className="w-100">
                   <img
                     src={b.logo}
                     alt=""
                     className="w-100"
-                    style={{ height: "6em" }}
                     
                   />
                 </Link>

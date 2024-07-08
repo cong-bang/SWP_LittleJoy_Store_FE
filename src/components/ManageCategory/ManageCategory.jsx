@@ -864,7 +864,7 @@ const fetchBrandId = async (brandId) => {
 
       if (response.ok) {
         toast.success('Thương hiệu được sửa thành công!');
-        fetchAgeGroups(pagingAge.CurrentPage, pagingAge.PageSize);
+        fetchBrands(pagingAge.CurrentPage, pagingAge.PageSize);
       } else {
           toast.error('Thương hiệu được sửa thất bại!');
       }
