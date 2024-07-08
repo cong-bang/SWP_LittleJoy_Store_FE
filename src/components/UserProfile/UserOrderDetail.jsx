@@ -191,7 +191,7 @@ const UserOrderDetail = () => {
                   </td>
                   <td>
                     <div className="pt-3">
-                      <span>{user.phoneNumber}</span>
+                      <span>{inforOrder.phoneNumber}</span>
                     </div>
                   </td>
                 </tr>

@@ -768,8 +768,8 @@ const Home = () => {
                             <div className="content-feedback p-3 roboto">
                               <span>
                               Sữa có vị ngọt tự nhiên, không quá ngọt gắt, rất dễ uống.
-                              Hương vị của sữa thật sự tuyệt vời, cả gia đình tôi đều yêu 
-                              thích, sữa có mùi thơm dễ chịu, không hề bị nồng hay khó chịu.
+                              Hương vị của sữa thật sự tuyệt vời, sữa có mùi thơm dễ chịu, 
+                              không hề bị nồng hay khó chịu.
                               </span>
                             </div>
                           </div>
@@ -818,7 +818,7 @@ const Home = () => {
                             <div className="content-feedback p-3 roboto">
                               <span>
                                 Sữa này chứa nhiều vitamin và khoáng chất, rất tốt 
-                                cho sức khỏe của tôi và gia đình. Sữa giúp tôi cung 
+                                cho sức khỏe của tôi. Sữa giúp tôi cung 
                                 cấp đầy đủ dưỡng chất cần thiết hàng ngày.                           
                               </span>
                             </div>

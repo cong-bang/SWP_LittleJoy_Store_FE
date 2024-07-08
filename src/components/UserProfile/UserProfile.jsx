@@ -80,7 +80,7 @@ const UserProfile = () => {
 
       if (response.ok) {
         toast.success("Thông tin cá nhân của bạn được sửa thành công!");
-        fetchDataUser();
+        await fetchDataUser();
         window.location.reload();
       } else {
         toast.error("Thông tin cá nhân của bạn sửa thất bại");
