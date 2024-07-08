@@ -276,7 +276,11 @@ const ManageProduct = () => {
       price.trim() === "" ||
       description.trim() === "" ||
       weight.trim() === "" ||
-      image.trim() === ""
+      image.trim() === "" ||
+      cateId === "" ||
+      originId === "" ||
+      ageId === "" ||
+      brandId === ""
     ) {
       notify();
       return;
