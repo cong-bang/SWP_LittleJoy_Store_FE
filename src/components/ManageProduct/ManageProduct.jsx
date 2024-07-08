@@ -222,6 +222,7 @@ const ManageProduct = () => {
     searchAge,
     searchBrand,
     searchOrigin,
+    statusProduct
   ]);
 
   const formatPrice = (price) => {
