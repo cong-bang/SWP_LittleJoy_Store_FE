@@ -543,7 +543,7 @@ const Product = () => {
                         fillAvailableSpace={false}
                         className="w-100"
                       /> */}
-                      <img src={product.image} className="w-100"/>
+                      <img src={product.image} className="w-100" />
                     </div>
                   </div>
                   <div className="col-md-8 px-5 py-3">
@@ -866,10 +866,10 @@ const Product = () => {
                         <table className="w-75">
                           <tbody>
                             <tr>
-                              <td className="w-15">
+                              <td className="w-20">
                                 <div className="w-100 d-flex">
                                   <div
-                                    className="d-inline-block w-30"
+                                    className="w-30"
                                     style={{
                                       borderRadius: "50%",
                                       overflow: "hidden",
@@ -881,14 +881,14 @@ const Product = () => {
                                       className="w-100"
                                     />
                                   </div>
-                                  <div className="d-flex justify-content-center flex-column">
-                                    <span className="fw-bold ps-3">
-                                      {fb.userName}
-                                    </span>
+                                    <div className="d-flex justify-content-center flex-column">
+                                      <span className="fw-bold ps-3">
+                                        {fb.userName}
+                                      </span>
                                   </div>
                                 </div>
                               </td>
-                              <td className="w-15">
+                              <td className="w-20">
                                 <span
                                   className="ps-3"
                                   style={{ color: "#97999D" }}
@@ -897,7 +897,7 @@ const Product = () => {
                                 </span>
                               </td>
                               {localStorage.getItem("userId") == fb.userId ? (
-                                <td className="w-70 fs-5" rowSpan="2">
+                                <td className="w-60 fs-5" rowSpan="2">
                                   <span className="px-2">
                                     <FontAwesomeIcon
                                       icon="fa-solid fa-pen-to-square"
