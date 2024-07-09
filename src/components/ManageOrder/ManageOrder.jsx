@@ -548,7 +548,6 @@ const ManageOrder = () => {
                               <option value="0" selected disabled>
                                 Status
                               </option>
-                              <option value="1">Đang chờ</option>
                               <option value="2">Đặt hàng thành công</option>
                               <option value="3">Đã hủy</option>
                               <option value="0">Không</option>
@@ -657,19 +656,14 @@ const ManageOrder = () => {
                                 </span>
                               </td>
                               <td className="p-3 px-4 ">
-                              {o.paymentStatus === "Thành Công" && (
+                              {o.status === "Đặt Hàng Thành Công" && (
                                 <div className="status-order-complete px-1 py-2">
                                   <span className="inter">COMPLETED</span>
                                 </div>
                               )}
-                              {o.paymentStatus === "Thất Bại" && (
+                              {o.status === "Đã Hủy" && (
                                 <div className="status-order-cancelled px-1 py-2">
                                   <span className="inter">CANCELLED</span>
-                                </div>
-                              )}
-                              {o.paymentStatus === "Đang chờ" && (
-                                <div className="status-order-pending px-1 py-2">
-                                  <span className="inter">PENDING</span>
                                 </div>
                               )}
                               </td>
@@ -1172,7 +1166,6 @@ const ManageOrder = () => {
                             <option value="" selected disabled>
                               Choose
                             </option>
-                            <option value="0">Đang chờ</option>
                             <option value="1">Đặt hàng thành công</option>
                             <option value="2">Đã hủy</option>
                         </select>
