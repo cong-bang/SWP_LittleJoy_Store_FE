@@ -157,7 +157,7 @@ const ManageUser = () => {
         return {
           ...user,
           roleName: role ? role.roleName : "USER",
-          addressName: address ? address.address1 : "Không có địa chỉ"
+          addressName: address ? address.address1 : "Chưa có địa chỉ"
         };
       }));
       setUsers(formattedUsers);
@@ -202,9 +202,7 @@ const ManageUser = () => {
     if (
       username.trim() === "" ||
       password.trim() === "" ||
-      fullname.trim() === "" ||
-      email.trim() === "" ||
-      phoneNumber.trim() === ""
+      email.trim() === ""
     ) {
       notify();
       return;
@@ -304,9 +302,7 @@ const ManageUser = () => {
   const handleSaveUpdateUser = async () => {
     if (
       username.trim() === "" ||
-      fullname.trim() === "" ||
-      email.trim() === "" ||
-      phoneNumber.trim() === ""
+      email.trim() === ""
     ) {
       notify();
       return;
@@ -328,10 +324,9 @@ const ManageUser = () => {
       mainAddress: mainAddress,
       roleId: roleId,
     };
-
     try {
       const response = await fetch(
-        "https://littlejoyapi.azurewebsites.net/api/user",
+        "https://littlejoyapi.azurewebsites.net/api/user/update-user-for-admin",
         {
           method: "PUT",
           headers: {

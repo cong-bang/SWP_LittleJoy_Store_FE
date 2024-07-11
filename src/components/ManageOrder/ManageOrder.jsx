@@ -548,8 +548,9 @@ const ManageOrder = () => {
                               <option value="0" selected disabled>
                                 Status
                               </option>
-                              <option value="2">Đặt hàng thành công</option>
-                              <option value="3">Đã hủy</option>
+                              <option value="1">Đặt hàng thành công</option>
+                              <option value="2">Đã hủy</option>
+                              <option value="3">Đang chờ</option>
                               <option value="0">Không</option>
                             </select>
                           </div>
@@ -664,6 +665,11 @@ const ManageOrder = () => {
                               {o.status === "Đã Hủy" && (
                                 <div className="status-order-cancelled px-1 py-2">
                                   <span className="inter">CANCELLED</span>
+                                </div>
+                              )}
+                              {o.status === "Đang Chờ" && (
+                                <div className="status-order-pending px-1 py-2">
+                                  <span className="inter">PENDING</span>
                                 </div>
                               )}
                               </td>

@@ -56,20 +56,21 @@ const UserProfile = () => {
     });
 
   const handleChangProfile = async () => {
-    if (fullname.trim() === "" || phoneNumber.trim() === "") {
-      notify();
-      return;
-    }
-
+    // if (fullname.trim() === "" || phoneNumber.trim() === "") {
+    //   notify();
+    //   return;
+    // }
+    
     const newProfile = {
       id: user.id,
       fullname: fullname,
       phoneNumber: phoneNumber,
       avatar: avatar,
     };
+    console.log(newProfile);
     try {
       const response = await fetch(
-        "https://littlejoyapi.azurewebsites.net/api/user/user-role",
+        "https://littlejoyapi.azurewebsites.net/api/user/update-user-profile",
         {
           method: "PUT",
           headers: {

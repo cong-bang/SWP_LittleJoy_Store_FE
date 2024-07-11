@@ -432,9 +432,11 @@ const Dashboard = () => {
                       <td></td>
                       <td className="py-1 active-admin ps-3">
                         <span>
+                          <Link to="/dashboard">
                           <span style={{ fontFamily: "sans-serif" }}>
                             Dashboard
                           </span>
+                          </Link>
                         </span>
                       </td>
                     </tr>
