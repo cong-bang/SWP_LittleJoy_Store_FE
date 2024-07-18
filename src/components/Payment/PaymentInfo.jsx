@@ -141,10 +141,6 @@ import failure from "../../assets/img/failure-icon.png"
                                 <td>{inforOrder.paymentMethod}</td>
                             </tr>
                             <tr>
-                                <th>Loại thanh toán:</th>
-                                <td>VNPAY</td>
-                            </tr>
-                            <tr>
                                 <th>Ngày thanh toán:</th>
                                 <td>{inforOrder.date}</td>
                             </tr>
@@ -216,10 +212,6 @@ import failure from "../../assets/img/failure-icon.png"
                             <tr>
                                 <th>Phương thức thanh toán:</th>
                                 <td>{inforOrder.paymentMethod}</td>
-                            </tr>
-                            <tr>
-                                <th>Loại thanh toán:</th>
-                                <td>VNPAY</td>
                             </tr>
                             {/* <tr>
                                 <th>Bank transaction no:</th>
