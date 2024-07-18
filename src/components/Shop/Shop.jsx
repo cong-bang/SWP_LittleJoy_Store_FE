@@ -33,6 +33,7 @@ const Shop = () => {
   const [selectedBrandId, setSelectedBrandId] = useState(null);
   const [checkedBrands, setCheckedBrands] = useState({});
   const [loading, setLoading] = useState(false);
+  const [flag, setFlag] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -41,6 +42,8 @@ const Shop = () => {
   const fetchData = async (pageIndex, pageSize) => {
     setLoading(true);
     try {
+      
+
       const searchParams = new URLSearchParams();
       searchParams.append('PageIndex', pageIndex);
       searchParams.append('PageSize', pageSize);
@@ -100,7 +103,8 @@ const Shop = () => {
         ...product,
         price: formatPrice(product.price)
       }));
-      setProducts(formattedProducts);
+      setProducts(formattedProducts);    
+      console.log(formattedProducts);
     } catch (error) {
       console.error(error.message);
     } finally {
@@ -111,7 +115,7 @@ const Shop = () => {
   useEffect(() => {
     const fetchDataAndSetBrandId = async () => {
       const savedBrandId = localStorage.getItem('brandId');
-      if (savedBrandId) {
+      if (savedBrandId != null) {
         setBrandIds([parseInt(savedBrandId)]);  
         await fetchData(paging.CurrentPage, paging.PageSize);
         localStorage.removeItem('brandId');
@@ -119,7 +123,6 @@ const Shop = () => {
         await fetchData(paging.CurrentPage, paging.PageSize);
       }
     };
-    
     fetchDataAndSetBrandId();
   }, [paging.CurrentPage, sortOrder, keyword, cateIds, ageIds, originIds, brandIds]);
 

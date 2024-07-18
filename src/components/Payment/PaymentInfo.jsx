@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Loader from "react-js-loader";
+import success from "../../assets/img/success-icon.png"
+import failure from "../../assets/img/failure-icon.png"
 
  const PaymentInfo = () => {
     const [params, setParams] = useState({});
@@ -93,18 +95,18 @@ import Loader from "react-js-loader";
         <div class="container payment-body">
             <div class="row payment-container" style={{border: '2px solid #5D9C59'}}>
                 <div class="col-md-12 pay-header" style={{backgroundColor: '#5D9C59'}}>
-                    <h5>PAYMENT INFORMATION</h5>
+                    <h5>THÔNG TIN THANH TOÁN</h5>
                 </div>
 
                 <div class="col-md-12 pay-img">
-                    <img src="./assets/img/checkout/success-icon.png" alt="" width="100px"/>
-                    <h4>Payment success</h4>
+                    <img src={success} alt="" width="100px"/>
+                    <h4>Thanh toán thành công</h4>
                 </div>
                 <div class="col-md-12 payment-in4">
                     <table>
                         <tbody>
                             <tr>
-                                <th>Customer:</th>
+                                <th>Khách hàng:</th>
                                 <td>{user.fullname}</td>
                             </tr>
                             <tr>
@@ -112,42 +114,38 @@ import Loader from "react-js-loader";
                                 <td>{user.email}</td>
                             </tr>
                             <tr>
-                                <th>Order code:</th>
+                                <th>Mã đơn hàng:</th>
                                 <td>{responsePayment.code}</td>
                             </tr>
                             <tr>
-                                <th>Amout paid:</th>
+                                <th>Tổng cộng:</th>
                                 <td class="amout" style={{color: '#5D9C59'}}>{inforOrder.totalPrice} VND</td>
-                            </tr>
-                            <tr>
-                                <th>Transaction ID:</th>
-                                <td>{inforOrder.id}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="col-md-12 break">
                     <div class="line"></div>
-                    <span>Details</span>
+                    <span>Chi tiết</span>
                     <div class="line"></div>
                 </div>
                 <div class="col-md-12 payment-details">
                     <table>
                         <tbody>
                             <tr>
-                                <th>Billing content:</th>
+                                <th>Ghi chú:</th>
                                 <td>{inforOrder.note}</td>
                             </tr>
                             <tr>
-                                <th>Bank code:</th>
+                                <th>Phương thức thanh toán:</th>
                                 <td>{inforOrder.paymentMethod}</td>
                             </tr>
                             <tr>
-                                <th>Payment type:</th>
-                                <td>VISA</td>
+                                <th>Loại thanh toán:</th>
+                                <td>VNPAY</td>
                             </tr>
                             <tr>
-                                <th>Payment date:</th>
+                                <th>Ngày thanh toán:</th>
                                 <td>{inforOrder.date}</td>
                             </tr>
                         </tbody>
@@ -159,7 +157,7 @@ import Loader from "react-js-loader";
                     </div>
                     <div class="payment-footer">
                         <p><Link to="/" className='fs-6' style={{color: '#757575'}}>Quay lại trang chủ</Link></p>
-                        <p className='fs-6'>Powered by <a href="#" >VNPAY</a></p>
+                        <p className='fs-6'>Hỗ trợ bởi <a href="#" >VNPAY</a></p>
                     </div>
                 </div>
 
@@ -171,17 +169,17 @@ import Loader from "react-js-loader";
         <div class="container payment-body">
             <div class="row payment-container" style={{border: '2px solid #e74646'}}>
                 <div class="col-md-12 pay-header" style={{backgroundColor: '#e74646'}}>
-                    <h5>PAYMENT INFORMATION</h5>
+                    <h5>THÔNG TIN THANH TOÁN</h5>
                 </div>
                 <div class="col-md-12 pay-img">
-                    <img src="./assets/img/checkout/failure-icon.png" alt="" width="100px"/>
-                    <h4>Payment failure</h4>
+                    <img src={failure} alt="" width="100px"/>
+                    <h4>Thanh toán thất bại</h4>
                 </div>
                 <div class="col-md-12 payment-in4">
                     <table>
                         <tbody>
                             <tr>
-                                <th>Customer:</th>
+                                <th>Khách hàng:</th>
                                 <td>{user.fullname}</td>
                             </tr>
                             <tr>
@@ -189,16 +187,12 @@ import Loader from "react-js-loader";
                                 <td>{user.email}</td>
                             </tr>
                             <tr>
-                                <th>Order code:</th>
+                                <th>Mã đơn hàng:</th>
                                 <td>{inforOrder.orderCode}</td>
                             </tr>
                             <tr>
-                                <th>Amout paid:</th>
+                                <th>Tổng cộng:</th>
                                 <td class="amout" style={{color: '#e74646'}}>{inforOrder.totalPrice} VND</td>
-                            </tr>
-                            <tr>
-                                <th>Transaction ID:</th>
-                                <td>{inforOrder.id}</td>
                             </tr>
                             {/* <tr>
                                 <th>Error code:</th>
@@ -209,30 +203,30 @@ import Loader from "react-js-loader";
                 </div>
                 <div class="col-md-12 break">
                     <div class="line"></div>
-                    <span>Details</span>
+                    <span>Chi tiết</span>
                     <div class="line"></div>
                 </div>
                 <div class="col-md-12 payment-details">
                     <table>
                         <tbody>
                             <tr>
-                                <th>Billing content:</th>
+                                <th>Ghi chú:</th>
                                 <td>{inforOrder.note}</td>
                             </tr>
                             <tr>
-                                <th>Bank code:</th>
+                                <th>Phương thức thanh toán:</th>
                                 <td>{inforOrder.paymentMethod}</td>
                             </tr>
                             <tr>
-                                <th>Payment type:</th>
-                                <td>VISA</td>
+                                <th>Loại thanh toán:</th>
+                                <td>VNPAY</td>
                             </tr>
                             {/* <tr>
                                 <th>Bank transaction no:</th>
                                 <td>54325626226</td>
                             </tr> */}
                             <tr>
-                                <th>Payment date:</th>
+                                <th>Ngày đặt hàng:</th>
                                 <td>{inforOrder.date}</td>
                             </tr>
                         </tbody>
