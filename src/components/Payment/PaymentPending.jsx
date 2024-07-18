@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../../assets/css/stylepaymentsuccess.css'
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import notfound from "../../assets/img/404.jpg";
 
 const PaymentPending = () => {
     const [inforPending, setInforPending] = useState({});
@@ -38,11 +39,6 @@ const PaymentPending = () => {
                 const formattedPrice = dataOrder.totalPrice;
                 dataOrder.totalPrice = formattedPrice.toLocaleString('de-DE');
             }
- 
-            const totalQuantity = dataOrder.productOrders.reduce((total, product) => {
-                return total + product.quantity;
-            }, 0);
-            setCountP(totalQuantity);
 
             setInforPending(dataOrder);
         }
@@ -67,18 +63,18 @@ const PaymentPending = () => {
         <div className="container payment-body">
             <div className="row payment-container">
                 <div className="col-md-12 pay-header">
-                    <h5>PAYMENT PENDING</h5>
+                    <h5>THÔNG TIN THANH TOÁN</h5>
                 </div>
 
                 <div className="col-md-12 pay-img">
                     <img src="./assets/img/checkout/success-icon.png" alt="" width="100px"/>
-                    <h4>Payment pending</h4>
+                    <h4>Thanh toán đang chờ</h4>
                 </div>
                 <div className="col-md-12 payment-in4">
                     <table>
                         <tbody>
                             <tr>
-                                <th>Customer:</th>
+                                <th>Khách hàng:</th>
                                 <td>{user.fullname}</td>
                             </tr>
                             <tr>
@@ -86,11 +82,11 @@ const PaymentPending = () => {
                                 <td>{user.email}</td>
                             </tr>
                             <tr>
-                                <th>Order code:</th>
+                                <th>Mã đơn hàng:</th>
                                 <td>{inforPending.orderCode}</td>
                             </tr>
                             <tr>
-                                <th>Amout paid:</th>
+                                <th>Tổng cộng:</th>
                                 <td className="amout">{inforPending.totalPrice} VND</td>
                             </tr>
                         </tbody>
@@ -98,34 +94,30 @@ const PaymentPending = () => {
                 </div>
                 <div className="col-md-12 break">
                     <div className="line"></div>
-                    <span>Details</span>
+                    <span>Chi tiết</span>
                     <div className="line"></div>
                 </div>
                 <div className="col-md-12 payment-details">
                     <table>
                         <tbody>
                             <tr>
-                                <th>Order date:</th>
+                                <th>Ngày đặt hàng:</th>
                                 <td>{inforPending.date}</td>
                             </tr>
                             <tr>
-                                <th>Location:</th>
+                                <th>Địa chỉ:</th>
                                 <td>{inforPending.address}</td>
                             </tr>
                             <tr>
-                                <th>Phone number:</th>
+                                <th>Số điện thoại:</th>
                                 <td>{inforPending.phoneNumber}</td>
                             </tr>
                             <tr>
-                                <th>Total quantity:</th>
-                                <td>{countP}</td>
+                                <th>Phương thức thanh toán:</th>
+                                <td>{inforPending.paymentMethod}</td>
                             </tr>
                             <tr>
-                                <th>Payment type:</th>
-                                <td>COD</td>
-                            </tr>
-                            <tr>
-                                <th>Note:</th>
+                                <th>Ghi chú:</th>
                                 <td>{inforPending.note}</td>
                             </tr>
                         </tbody>
@@ -144,7 +136,46 @@ const PaymentPending = () => {
         </div>
     </div>
     ) : (
-    <div>Error</div>
+        <div
+        className="container-fluid py-5"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(60, 117, 166, 0.2) 0%, rgba(255, 255, 255, 0.15) 53%, #fff 68%, #fff 100%)",
+        }}
+      >
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12 py-5 my-5 text-center">
+            <div>
+                    
+                  <div className="col-md-12 text-center my-5 py-5">
+                  <div
+                    className="d-inline-block p-5"
+                    style={{
+                      backgroundColor: "#FAFAFA",
+                      border: "1px dotted black",
+                      borderRadius: "15px",
+                    }}
+                  >
+                    <div className="d-flex flex-column align-items-center p-3">
+                      <img src={notfound} alt="" className="w-50" />
+                      <span
+                        className="text-center fs-4 pt-3"
+                        style={{
+                          fontFamily: "sans-serif",
+                        }}
+                      >
+                        Không tìm thấy trang
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
     )}
     </>
   )

@@ -115,12 +115,13 @@ const Cart = () => {
     else {
       toast.error('Vui lòng đăng nhập trước khi thanh toán');
     }
-    
   }
 
   return (
     <>
-    <ToastContainer />
+    <ToastContainer 
+      position="bottom-left"
+    />
       <section>
         <div>
           <div className="banner container-fluid pb-5 mb-5">
@@ -197,10 +198,15 @@ const Cart = () => {
                                 value={p.quantity}
                                 onChange={(e) => {
                                   const value = e.target.value.trim(); 
-                                  const newValue = value === "" ? 1 : parseInt(value);
+                                  const newValue = value === "" ? 0 : parseInt(value);
                                   updateQuantity(p.id, newValue);
                                 }}
-                                min="1"
+                                onBlur={(e) => {
+                                  const value = e.target.value.trim();
+                                  if (value === "" || parseInt(value) <= 0) {
+                                    updateQuantity(p.id, 1);
+                                  }
+                                }}min="1"
                               ></input>
                             </div>
                             <div

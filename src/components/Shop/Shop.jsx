@@ -299,7 +299,7 @@ const Shop = () => {
 
   return (
     <>
-    <ToastContainer />
+    <ToastContainer position="bottom-left" />
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-12 banner py-5 text-center">

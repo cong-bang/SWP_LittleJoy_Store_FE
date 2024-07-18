@@ -288,7 +288,7 @@ const UserOrderDetail = () => {
                   </td>
                   <td>
                     <div className="pt-3">
-                      <span>{inforOrder.deliveryStatus || "Chưa có"}</span>
+                      <span>{inforOrder.deliveryStatus || "Chưa Có"}</span>
                     </div>
                   </td>
                 </tr>

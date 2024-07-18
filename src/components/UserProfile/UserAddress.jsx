@@ -11,6 +11,7 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { current } from "@reduxjs/toolkit";
+import notfound from "../../assets/img/404.jpg";
 
 const UserAddress = () => {
   const [mainAddress, setMainAddress] = useState({});
@@ -367,7 +368,7 @@ const UserAddress = () => {
                     }}
                   >
                     <div className="d-flex flex-column align-items-center p-3">
-                      <img src="" alt="" className="w-25" />
+                      <img src={notfound} alt="" className="w-50" />
                       <span
                         className="text-center fs-4 pt-3"
                         style={{

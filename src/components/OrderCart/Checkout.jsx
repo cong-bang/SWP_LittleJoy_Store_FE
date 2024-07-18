@@ -29,7 +29,10 @@ const Checkout = () => {
   useEffect(() => {
     const cartData = localStorage.getItem('cart');
     if (cartData) {
-      setCart(JSON.parse(cartData));
+      const parsedCart = JSON.parse(cartData);
+      const filteredCart = parsedCart.filter(item => item.quantity >= 1);
+      setCart(filteredCart);
+      localStorage.setItem('cart', JSON.stringify(filteredCart));
     }
   }, []);
 
@@ -384,7 +387,7 @@ const Checkout = () => {
                             type="text"
                             name="phoneNumber"
                             id=""
-                            placeholder="Mobile Phone"
+                            placeholder="Số điện thoại"
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
                             className="w-100 p-1 ps-2"
@@ -417,7 +420,7 @@ const Checkout = () => {
                                 onChange={(e) => setAddress(e.target.value)}
                               >
                                 <option value="" disabled>
-                                  Address
+                                  Địa chỉ
                                 </option>
                                 {addressList.map((a) => (
                                   <option key={a.id} value={a.address1}>
@@ -447,7 +450,7 @@ const Checkout = () => {
                             id=""
                             cols="30"
                             rows="3"
-                            placeholder="Note"
+                            placeholder="Ghi chú"
                             value={note}
                             onChange={(e) => setNote(e.target.value)}
                             style={{ resize: "none" }}
@@ -745,7 +748,7 @@ const Checkout = () => {
                   <div className="w-100 d-flex justify-content-center mt-3">
                     <input
                       type="submit"
-                      value="Payment"
+                      value="Thanh toán"
                       onClick={handleCreateOrder}
                       className="w-90 submit-checkout py-2"
                     />
