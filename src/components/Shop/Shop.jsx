@@ -33,7 +33,8 @@ const Shop = () => {
   const [selectedBrandId, setSelectedBrandId] = useState(null);
   const [checkedBrands, setCheckedBrands] = useState({});
   const [loading, setLoading] = useState(false);
-  const [initialFetch, setInitialFetch] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(true);
+  const [initializedBrandId, setInitializedBrandId] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -43,7 +44,6 @@ const Shop = () => {
     setLoading(true);
     try {
       
-
       const searchParams = new URLSearchParams();
       searchParams.append('PageIndex', pageIndex);
       searchParams.append('PageSize', pageSize);
@@ -112,25 +112,21 @@ const Shop = () => {
   };
 
   useEffect(() => {
-    const savedBrandId = localStorage.getItem('brandId');
-    if (savedBrandId != null) {
-      setBrandIds([parseInt(savedBrandId)]);
-      localStorage.removeItem('brandId');
-    }
-    setInitialFetch(false);
-  }, []);
-  
-  useEffect(() => {
-    if (!initialFetch) {
-      fetchData(paging.CurrentPage, paging.PageSize);
-    }
+    const fetchDataAndSetBrandId = async () => {
+      const savedBrandId = localStorage.getItem('brandId');
+      if (savedBrandId != null) {
+        setBrandIds([parseInt(savedBrandId)]);
+        await fetchData(paging.CurrentPage, paging.PageSize);
+        localStorage.removeItem('brandId');
+        setInitializedBrandId(true);
+      }
+      else {
+        await fetchData(paging.CurrentPage, paging.PageSize);
+      }
+    };
+    fetchDataAndSetBrandId();
   }, [paging.CurrentPage, sortOrder, keyword, cateIds, ageIds, originIds, brandIds]);
   
-  useEffect(() => {
-    if (!initialFetch && brandIds.length) {
-      fetchData(paging.CurrentPage, paging.PageSize);
-    }
-  }, [brandIds]);
 
   const handlePrevious = () => {
     if (paging.CurrentPage > 1) {

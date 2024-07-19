@@ -699,10 +699,11 @@ const Checkout = () => {
                     Phương thức thanh toán
                   </span>
                   <div className="w-100 d-flex flex-column justify-content-center">
-                    <div
+                    <label
                       className="payment w-100 d-flex justify-content-between pe-2"
                       onClick={() => setPaymentMethod(2)}
                       style={{ cursor: "po" }}
+                      htmlFor="vnpay"
                     >
                       <div className="w-75">
                         <img src={vnpay} alt="" className="w-25" />
@@ -716,11 +717,12 @@ const Checkout = () => {
                         className="float-end"
                         required
                       />
-                    </div>
-                    <div
+                    </label>
+                    <label
                       className="mt-3 payment w-100 d-flex justify-content-between pe-2"
                       onClick={() => setPaymentMethod(1)}
                       style={{ cursor: "po" }}
+                      htmlFor="cod"
                     >
                       <div className="w-75">
                         <img src={icon_payondelivery} alt="" className="w-25" />
@@ -734,15 +736,15 @@ const Checkout = () => {
                         className="float-end"
                         required
                       />
-                    </div>
+                    </label>
                   </div>
                   <div className="terms d-flex justify-content-center mt-3">
-                    <input type="checkbox" required checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)}/>
+                    <input type="checkbox" id="term" required checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)}/>
                     <p
                       className="m-0 ps-3"
                       style={{ fontFamily: "sans-serif", fontSize: "16px" }}
                     >
-                      Tôi đã đọc và chấp nhận các điều khoản
+                      <label htmlFor="term">Tôi đã đọc và chấp nhận các điều khoản</label>
                     </p>
                   </div>
                   <div className="w-100 d-flex justify-content-center mt-3">

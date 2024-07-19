@@ -187,10 +187,14 @@ const Cart = () => {
                       {cart.map((p) => (
                       <tr key={p.id} className="py-table">
                         <td className="text-center p-1">
-                          <img src={p.image} alt="" className="w-50" />
+                          <Link to={{pathname: `/product/${p.id}`}}>
+                            <img src={p.image} alt="" className="w-50" />
+                          </Link>
                         </td>
                         <td className="textbody">
-                          <span className="mb-0" style={{fontSize: '21px'}}><ProductName title={p.productName} maxLength={20} /></span>
+                          <Link to={{pathname: `/product/${p.id}`}} style={{color: 'black', textDecoration: 'none'}}>
+                            <span className="mb-0" style={{fontSize: '21px'}}><ProductName title={p.productName} maxLength={20} /></span>
+                          </Link>
                         </td>
                         <td className="text-center textbody ">
                           <p className="mb-0" style={{fontSize: '20px'}}>VND {(p.price).toLocaleString('de-DE')}</p>
@@ -217,7 +221,7 @@ const Cart = () => {
                                 value={p.quantity}
                                 onChange={(e) => {
                                   const value = e.target.value.trim(); 
-                                  const newValue = value === "" ? 0 : parseInt(value);
+                                  const newValue = value === "" ? "" : parseInt(value);
                                   updateQuantity(p.id, newValue);
                                 }}
                                 onBlur={(e) => {
