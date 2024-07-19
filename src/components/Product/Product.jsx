@@ -572,6 +572,17 @@ const Product = () => {
                         {numberOfFeedback}
                       </span>
                       <span> đánh giá</span>
+                      <div className="vertical-line d-inline-block ms-2">
+                        &nbsp;
+                      </div>
+                      <span>Còn </span>
+                      <span
+                        className="fw-bold"
+                        style={{ textDecoration: "underline" }}
+                      >
+                        {product.quantity}
+                      </span>
+                      <span> sản phẩm</span>
                     </div>
                     <div className="w-100 ps-3 mt-5">
                       <div
