@@ -32,7 +32,6 @@ import failure from "../../assets/img/failure-icon.png"
             }
           });
           const data = await response.json();
-          console.log(data)
           if (response.ok) {
             setResponsePayment(data);
             
