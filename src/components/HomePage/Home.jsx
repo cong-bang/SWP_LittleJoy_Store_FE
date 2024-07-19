@@ -228,7 +228,7 @@ const Home = () => {
     if (existingProductIndex > -1) {
       if (cart[existingProductIndex].quantity + 1 > maxQuantity) {
         toast.error(
-          `Số lượng ${productData.productName} đã đạt giới hạn tồn kho`
+          `Số lượng ${productData.productName} đã đạt giới hạn tồn kho. Chỉ còn ${maxQuantity} sản phẩm trong kho.`
         );
         return;
       }
@@ -281,7 +281,7 @@ const Home = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer position="bottom-left" />
       <div className="banner container-fluid py-5">
         <div className="row">
           <div className="col-md-12 d-flex justify-content-center">

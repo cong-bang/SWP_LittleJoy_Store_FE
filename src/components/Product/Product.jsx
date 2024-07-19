@@ -457,7 +457,7 @@ const Product = () => {
     }
 
     if (newQuantity > maxQuantity) {
-      toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho`);
+      toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho. Chỉ còn ${maxQuantity} sản phẩm trong kho.`);
       return;
     }
 
@@ -474,7 +474,7 @@ const Product = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer position="bottom-left"/>
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-12 banner py-5 text-center">

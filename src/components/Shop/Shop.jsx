@@ -261,7 +261,7 @@ const Shop = () => {
       return;
     }
 
-    const maxQuantity = productData.quantity - 1;
+    const maxQuantity = productData.quantity;
 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const existingProductIndex = cart.findIndex(p => p.id === product.id);
@@ -270,7 +270,7 @@ const Shop = () => {
 
     if (existingProductIndex > -1) {
       if (cart[existingProductIndex].quantity + 1 > maxQuantity) {
-        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn tồn kho`);
+        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn tồn kho. Chỉ còn ${maxQuantity} sản phẩm trong kho.`);
         return;
       }
       cart[existingProductIndex].quantity += 1;

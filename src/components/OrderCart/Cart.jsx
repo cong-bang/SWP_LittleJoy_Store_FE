@@ -60,18 +60,36 @@ const Cart = () => {
       if (totalQuantityInCart < maxQuantity) {
         updateQuantity(productId, product.quantity + 1);
       } else {
-        toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho`);
+        toast.error(`Số lượng ${product.productName} đã đạt giới hạn tồn kho. Chỉ còn ${maxQuantity} sản phẩm trong kho.`);
       }
     }
   };
 
+  // const updateQuantity = async (productId, newQuantity) => {
+  //   const productData = await fetchProductById(productId);
+
+  //   if (productData) {
+  //     const maxQuantity = productData.quantity;
+  //     //const totalQuantityInCart = getCartTotalQuantity(productId);
+
+  //     if (newQuantity <= maxQuantity) {
+  //       const updatedCart = cart.map(product =>
+  //         product.id === productId ? { ...product, quantity: newQuantity } : product
+  //       );
+  //       setCart(updatedCart);
+  //       localStorage.setItem('cart', JSON.stringify(updatedCart));
+  //     } else {
+  //       toast.error(`Số lượng ${productData.productName} đã đạt giới hạn tồn kho`);
+  //     }
+  //   }
+  // };
+
   const updateQuantity = async (productId, newQuantity) => {
     const productData = await fetchProductById(productId);
-
+  
     if (productData) {
       const maxQuantity = productData.quantity;
-      //const totalQuantityInCart = getCartTotalQuantity(productId);
-
+  
       if (newQuantity <= maxQuantity) {
         const updatedCart = cart.map(product =>
           product.id === productId ? { ...product, quantity: newQuantity } : product
@@ -79,10 +97,11 @@ const Cart = () => {
         setCart(updatedCart);
         localStorage.setItem('cart', JSON.stringify(updatedCart));
       } else {
-        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn tồn kho`);
+        toast.error(`Số lượng ${productData.productName} đã đạt giới hạn tồn kho. Chỉ còn ${maxQuantity} sản phẩm trong kho.`);
       }
     }
   };
+  
 
   const fetchProductById = async (productId) => {
     try {
