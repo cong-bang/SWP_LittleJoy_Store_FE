@@ -135,9 +135,6 @@ export default function Forgotpass1() {
     localStorage.removeItem('userName');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    
-    navigate("/");
-    window.location.reload();
   };
 
   return (
