@@ -120,12 +120,24 @@ export default function Forgotpass1() {
       const data = await response.json();
       if (response.ok) {
         notify("Đổi mật khẩu thành công");
+        await handleLogout();
         navigate("/login");
       } else {
         setMessResetPass(data.errors);
       }
     } catch (error) {
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    
+    navigate("/");
+    window.location.reload();
   };
 
   return (
