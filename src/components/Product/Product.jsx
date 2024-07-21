@@ -338,6 +338,8 @@ const Product = () => {
           await fetchData();
           await fetchFeedback(paging.CurrentPage);
           toast.success("Bình luận được xóa thành công!");
+          setSelectedRating("");
+          setComment("");
         } else {
           toast.error("Xóa bình luận thất bại!");
         }
@@ -877,10 +879,10 @@ const Product = () => {
                         <table className="w-75">
                           <tbody>
                             <tr>
-                              <td className="w-20">
+                              <td className="w-30">
                                 <div className="w-100 d-flex">
                                   <div
-                                    className="w-30"
+                                    className="w-20"
                                     style={{
                                       borderRadius: "50%",
                                       overflow: "hidden",
@@ -890,6 +892,7 @@ const Product = () => {
                                       src={fb.avatar || avtunknow}
                                       alt=""
                                       className="w-100"
+                                      
                                     />
                                   </div>
                                     <div className="d-flex justify-content-center flex-column">

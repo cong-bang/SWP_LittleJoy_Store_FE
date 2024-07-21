@@ -180,7 +180,7 @@ const UserOrderManagement = () => {
                 </td>
               </tr>
               {o.productOrders.map((p) => (
-              <tr>
+              <tr key={p.id}>
                 <td className="py-2">
                   <Link to={{ pathname: `/product/${p.id}` }}>
                   <div className="w-100 text-center">
