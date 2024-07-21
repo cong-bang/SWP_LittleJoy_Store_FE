@@ -121,7 +121,7 @@ export default function Forgotpass1() {
       if (response.ok) {
         notify("Đổi mật khẩu thành công");
         await handleLogout();
-        navigate("/login");
+        
       } else {
         setMessResetPass(data.errors);
       }
@@ -135,6 +135,9 @@ export default function Forgotpass1() {
     localStorage.removeItem('userName');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    
+    navigate("/login");
+    window.location.reload();
   };
 
   return (
